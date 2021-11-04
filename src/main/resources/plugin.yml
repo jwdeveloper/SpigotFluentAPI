@@ -1,0 +1,4 @@
+name: Fluent_spigot_test
+version: '${project.version}'
+main: jw.fluent_spigot_test.Main
+api-version: 1.17
