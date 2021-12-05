@@ -16,7 +16,6 @@ public class BindingField<T> implements Bindable<T> {
     protected Class fieldType;
     protected boolean isBinded;
     protected List<Consumer<T>> onChange = new ArrayList<>();
-
     public BindingField(String filed, Object classObject)
     {
         isBinded = bind(filed, classObject);

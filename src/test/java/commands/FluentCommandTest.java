@@ -28,6 +28,4 @@ public class FluentCommandTest
         when(command.setParent(any())).thenReturn(command);
         verify(command,times(1)).setParent(command);
     }
-
-
 }

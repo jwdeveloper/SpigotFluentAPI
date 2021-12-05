@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.data_models.annotation;
+package jw.spigot_fluent_api.data.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

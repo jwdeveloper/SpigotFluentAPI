@@ -1,7 +1,7 @@
-package jw.spigot_fluent_api.data_models.repositories;
+package jw.spigot_fluent_api.data.repositories;
 
-import jw.spigot_fluent_api.data_models.Saveable;
-import jw.spigot_fluent_api.data_models.models.DataModel;
+import jw.spigot_fluent_api.data.Saveable;
+import jw.spigot_fluent_api.data.models.DataModel;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
 import org.bukkit.ChatColor;
@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class RepositoryBase<T extends DataModel> implements Repository<T> , Saveable {
 
@@ -34,8 +35,14 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
     public RepositoryBase(Class<T> entityClass)
     {
-        this(FluentPlugin.getPath(),entityClass,entityClass.getName());
+        this(FluentPlugin.getPath(),entityClass,entityClass.getSimpleName());
     }
+
+    public Stream<T> query()
+    {
+        return content.stream();
+    }
+
 
     @Override
     public Class<T> getEntityClass() {
@@ -43,10 +50,10 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
 
     @Override
-    public T getOne(String id) {
+    public T getOne(UUID id) {
         Optional<T> data = content
                 .stream()
-                .filter(p -> p.id.equalsIgnoreCase(id))
+                .filter(p -> p.uuid == id)
                 .findFirst();
         return data.orElseGet(this::CreateEmpty);
     }
@@ -72,7 +79,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     @Override
     public boolean insertOne(T data) {
         if (data != null) {
-            data.id = UUID.randomUUID().toString();
+            data.uuid = UUID.randomUUID();
             content.add(data);
             return true;
         }
@@ -86,7 +93,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
 
     @Override
-    public boolean updateOne(String id, T data) {
+    public boolean updateOne(UUID id, T data) {
         return false;
     }
 
@@ -104,10 +111,10 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         }
         return false;
     }
-    public boolean deleteOneById(String id)
+    public boolean deleteOneById(UUID uuid)
     {
         Optional<T> exist = content.stream()
-                .filter(p -> p.id.equalsIgnoreCase(id))
+                .filter(p -> p.uuid == uuid)
                 .findFirst();
         if (exist.isPresent()) {
             content.remove(exist.get());
@@ -117,7 +124,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
     @Override
     public boolean deleteMany(ArrayList<T> data) {
-        data.stream().forEach(a -> this.deleteOneById(a.id));
+        data.stream().forEach(a -> this.deleteOneById(a.uuid));
         return true;
     }
 
@@ -130,7 +137,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     public T CreateEmpty() {
         try {
             T empty = entityClass.newInstance();
-            empty.id = "-1";
+            empty.uuid = null;
             empty.name = "-1";
             return empty;
         } catch (IllegalAccessException | InstantiationException igonre) {

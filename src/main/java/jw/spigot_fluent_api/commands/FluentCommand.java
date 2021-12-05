@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.commands;
 
 
 import jw.spigot_fluent_api.commands.events.FluentCommandEvent;
+import jw.spigot_fluent_api.commands.events.FluentCommandPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -19,7 +20,7 @@ public abstract class FluentCommand extends BukkitCommand {
 
     private FluentCommand parent;
     private final ArrayList<String> permissions = new ArrayList<>();
-    private final ArrayList<FluentCommand> children = new ArrayList<>();
+    private final ArrayList<FluentCommand> subCommands = new ArrayList<>();
     private final HashMap<Integer, Supplier<ArrayList<String>>> tabCompletes = new HashMap<>();
     private final ArrayList<String> emptyTabCompletes = new ArrayList<>();
     private Consumer<CommandSender> OnNoArguments;
@@ -119,6 +120,12 @@ public abstract class FluentCommand extends BukkitCommand {
         return commandResult;
     }
 
+    public List<String> getSubCommandsNames()
+    {
+        return subCommands.stream().map(c -> c.getName()).toList();
+    }
+
+
     public String getMessage(String[] args) {
         StringBuilder toReturn = new StringBuilder();
         for (String s : args) {
@@ -132,7 +139,7 @@ public abstract class FluentCommand extends BukkitCommand {
     //rekurencja bejbe
     public FluentCommand isChildInvoked(String[] args) {
         FluentCommand result = null;
-        for (FluentCommand c : children) {
+        for (FluentCommand c : subCommands) {
             //szukanie komendy wsrod dzieci
             if (args.length > 1) {
                 String[] part = Arrays.copyOfRange(args, 1, args.length);
@@ -186,20 +193,23 @@ public abstract class FluentCommand extends BukkitCommand {
         }).get();
     }
 
-    public void setTabCompleter(int argument, String... acction) {
-        ArrayList<String> complieters = new ArrayList<>();
-
-        for (int i = 0; i < acction.length; i++) {
-            complieters.add(acction[i]);
-        }
-
+    public void addTabCompletes(int argument, String... actions) {
         tabCompletes.putIfAbsent(argument, () -> {
-            return complieters;
+            return new ArrayList(List.of(actions));
         });
     }
 
+    public void addTabCompletes(int argument,Supplier<ArrayList<String>> actions) {
+        tabCompletes.putIfAbsent(argument,actions);
+    }
 
-    public void addTabComplets(String ... complets)
+    public void addTabCompletes(int argument, ArrayList<String> actions) {
+        tabCompletes.putIfAbsent(argument, () -> {
+            return actions;
+        });
+    }
+
+    public void addTabCompletes(String ... complets)
     {
             tabCompletes.putIfAbsent(0, () ->
             {
@@ -210,9 +220,8 @@ public abstract class FluentCommand extends BukkitCommand {
     public void displaySubCommandsNames() {
         tabCompletes.putIfAbsent(1, () ->
         {
-            ArrayList<String> names = new ArrayList<>();
-
-            this.children.forEach(c -> {
+            var names = new ArrayList<String>();
+            this.subCommands.forEach(c -> {
                 names.add(c.getName());
             });
 
@@ -236,19 +245,41 @@ public abstract class FluentCommand extends BukkitCommand {
 
     public FluentCommand addSubCommand(FluentCommand child) {
         child.setParent(this);
-        children.add(child);
+        subCommands.add(child);
         return this;
     }
     
-    public FluentCommand addSubCommand(String name, FluentCommandEvent commandEvent)
+    public FluentCommand addSubCommand(String name, FluentCommandPlayerEvent commandEvent)
     {
         this.addSubCommand(new FluentSubCommand(name,commandEvent));
+        return this;
+    }
+
+    public FluentCommand addSubCommand(String name, FluentCommandEvent commandEvent)
+    {
+        this.addSubCommand(new FluentCommand(name,false)
+        {
+            @Override
+            public void onInvoke(Player playerSender, String[] args) {
+                commandEvent.execute(playerSender,args);
+            }
+
+            @Override
+            public void onInvoke(ConsoleCommandSender serverSender, String[] args) {
+                commandEvent.execute(serverSender,args);
+            }
+
+            @Override
+            public void onInitialize() {
+
+            }
+        });
         return this;
     }
     
     public void removeChild(FluentCommand child) {
         child.parent = null;
-        children.remove(child);
+        subCommands.remove(child);
     }
     protected String connectArgs(String[] stringArray) {
         StringJoiner joiner = new StringJoiner("");

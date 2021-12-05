@@ -256,7 +256,10 @@ public abstract class InventoryGUI {
         Arrays.fill(buttons, null);
         this.refresh();
     }
-
+    public int getHeight()
+    {
+        return this.height;
+    }
     public int getSize()
     {
         return this.size;

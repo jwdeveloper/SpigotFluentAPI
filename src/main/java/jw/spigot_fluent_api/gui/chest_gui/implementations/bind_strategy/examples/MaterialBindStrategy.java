@@ -3,7 +3,6 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.example
 
 import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
-import jw.spigot_fluent_api.gui.chest_gui.implementations.SelectListGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import jw.spigot_fluent_api.utilites.binding.BindingField;
@@ -21,11 +20,11 @@ public class MaterialBindStrategy extends BindingStrategy<Material> {
     @Override
     public void onClick(Player player, Button button, BindingStrategy<Material> bindingStrategy, Material currentValue)
     {
-        SelectListGUI.get(player, SelectListGUI.SearchType.Materials, (player1, button1) ->
+       /* SelectListGUI.get(player, SelectListGUI.SearchType.Materials, (player1, button1) ->
         {
             setValue(button1.getHoldingObject());
             this.chestGUI.open(player1);
-        }).setParent(chestGUI).open(player);
+        }).setParent(chestGUI).open(player);*/
     }
 
     @Override

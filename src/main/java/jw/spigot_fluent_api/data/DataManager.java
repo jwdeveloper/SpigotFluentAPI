@@ -1,6 +1,6 @@
-package jw.spigot_fluent_api.data_models;
+package jw.spigot_fluent_api.data;
 
-import jw.spigot_fluent_api.data_models.repositories.Repository;
+import jw.spigot_fluent_api.data.repositories.Repository;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ObjectUtility;

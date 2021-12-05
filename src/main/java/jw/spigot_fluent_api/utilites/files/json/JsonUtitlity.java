@@ -21,9 +21,9 @@ public final class JsonUtitlity implements FileUtility
 {
     public static boolean save(Object data, String path, String fileName) {
         String fullPath =getFullPath(path,fileName);
-        if(!FileUtility.isPathValid(path))
+        if(!FileUtility.isPathValid(fullPath))
         {
-            ensureFile(path,fileName);
+            ensureFile(path,fileName,"{}");
         }
         try (FileWriter file = new FileWriter(fullPath))
         {
@@ -41,7 +41,7 @@ public final class JsonUtitlity implements FileUtility
         String fullPath = getFullPath(path,fileName);
         if(!FileUtility.isPathValid(path))
         {
-            ensureFile(path,fileName);
+            ensureFile(path,fileName,"{}");
         }
         try (FileReader reader = new FileReader(fullPath)) {
 
@@ -58,9 +58,9 @@ public final class JsonUtitlity implements FileUtility
     public static <T> ArrayList<T> loadList(String path, String fileName, Class<T> type) {
         ArrayList<T> result = new ArrayList<>();
         String fullPath =getFullPath(path,fileName);
-        if(!FileUtility.isPathValid(path))
+        if(!FileUtility.isPathValid(fullPath))
         {
-            ensureFile(path,fileName);
+            ensureFile(path,fileName,"[]");
         }
         try (FileReader reader = new FileReader(fullPath)) {
             Gson gson = getGson();
@@ -84,7 +84,7 @@ public final class JsonUtitlity implements FileUtility
                 .create();
     }
 
-    private static void ensureFile(String path,String fileName)
+    private static void ensureFile(String path,String fileName,String content)
     {
         final String fullPath =getFullPath(path,fileName);
         final File file = new File(fullPath);
@@ -97,7 +97,7 @@ public final class JsonUtitlity implements FileUtility
             file.getParentFile().mkdirs();
             file.createNewFile();
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write("{}");
+            fileWriter.write(content);
             fileWriter.flush();
         }
         catch (IOException exception)

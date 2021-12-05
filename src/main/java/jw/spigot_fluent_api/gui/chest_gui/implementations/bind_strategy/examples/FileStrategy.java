@@ -2,7 +2,6 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.example
 
 import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
-import jw.spigot_fluent_api.gui.chest_gui.implementations.SelectListGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
 import jw.spigot_fluent_api.utilites.binding.BindingField;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
@@ -33,11 +32,11 @@ public class FileStrategy extends BindingStrategy<String> {
     @Override
     public void onClick(Player player, Button button, BindingStrategy<String> bindingStrategy, String currentValue)
     {
-        SelectListGUI.get(player,"Select file", Files(),(player2, button1) ->
+        /*SelectListGUI.get(player,"Select file", Files(),(player2, button1) ->
         {
             setValue(button1.getHoldingObject());
             chestGUI.open(player);
-        }).setParent(chestGUI).open(player);
+        }).setParent(chestGUI).open(player);*/
     }
 
     @Override

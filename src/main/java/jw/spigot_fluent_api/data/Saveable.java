@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.data_models;
+package jw.spigot_fluent_api.data;
 
 public interface Saveable
 {

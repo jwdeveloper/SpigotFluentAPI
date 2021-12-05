@@ -11,5 +11,5 @@ public @interface SpigotBean
 {
     InjectionType injectionType() default InjectionType.SINGLETON;
 
-    boolean autoInit() default false;
+    boolean lazyLoad() default true;
 }

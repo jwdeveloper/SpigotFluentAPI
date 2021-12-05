@@ -67,21 +67,21 @@ public abstract class ChestGUI<T> extends InventoryGUI {
     @Override
     protected void doClick(Player player, int index, ItemStack itemStack, InventoryInteractEvent interactEvent) {
         if (index < this.size) {
-            Button button = this.getButton(index);
+            var button = this.getButton(index);
             if (button != null && button.isActive()) {
                 if (button.hasSound())
                     player.playSound(player.getLocation(), button.getSound(), 1, 1);
                 if (!button.checkPermission(player))
                     return;
                 //Invoke all binded varables events for button
-                for (BindingStrategy bindingStrategy : bindingStrategies) {
+                for (var bindingStrategy : bindingStrategies) {
 
                     if (bindingStrategy.getButton() == button) {
                         bindingStrategy.Execute(player, button);
                     }
                 }
                 //Invoke button onclick
-                InventoryClickEvent inventoryClickEvent = (InventoryClickEvent)interactEvent;
+                var inventoryClickEvent = (InventoryClickEvent)interactEvent;
                 switch (inventoryClickEvent.getClick())
                 {
                     case SHIFT_LEFT:

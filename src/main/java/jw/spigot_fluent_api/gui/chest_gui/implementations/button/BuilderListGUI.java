@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.button;
 
 import jw.spigot_fluent_api.gui.button.ButtonActionsEnum;
 import jw.spigot_fluent_api.gui.InventoryGUI;
-import jw.spigot_fluent_api.gui.chest_gui.implementations.ListGUI;
+import jw.spigot_fluent_api.gui.chest_gui.implementations.list_gui.ListGUI;
 import jw.spigot_fluent_api.gui.events.InventoryEvent;
 import org.bukkit.Material;
 
@@ -61,13 +61,9 @@ public class BuilderListGUI<T> {
         chestGUI = new ListGUI<T>(parent, "Pick up", height) {
             @Override
             public void onInitialize() {
-                this.getInsertButton().setActive(false);
-                this.getDeleteButton().setActive(false);
-                this.getSearchButton().setActive(false);
-                this.getCopyButton().setActive(false);
-                this.getCancelButton().setActive(false);
-                this.currentAcction.set(ButtonActionsEnum.GET);
-                this.onSelect = onSelectEvent;
+
+
+
                 this.setTitle(title);
                 this.setBackgroundMaterial(material);
                 this.addButtons(content, buttonMapper);

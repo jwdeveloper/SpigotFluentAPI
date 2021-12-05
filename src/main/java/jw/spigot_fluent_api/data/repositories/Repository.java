@@ -1,13 +1,14 @@
-package jw.spigot_fluent_api.data_models.repositories;
+package jw.spigot_fluent_api.data.repositories;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public interface Repository <T>
 {
      Class<T> getEntityClass();
 
-     T getOne(String id);
+     T getOne(UUID id);
 
      ArrayList<T> getMany(HashMap<String,String> args);
 
@@ -17,7 +18,7 @@ public interface Repository <T>
 
      boolean insertMany(ArrayList<T> data);
 
-     boolean updateOne(String id,T data);
+     boolean updateOne(UUID id,T data);
 
      boolean updateMany(HashMap<String,T> data);
 

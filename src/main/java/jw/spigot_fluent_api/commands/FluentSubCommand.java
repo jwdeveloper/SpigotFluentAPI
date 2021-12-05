@@ -1,21 +1,21 @@
 package jw.spigot_fluent_api.commands;
 
-import jw.spigot_fluent_api.commands.events.FluentCommandEvent;
+import jw.spigot_fluent_api.commands.events.FluentCommandPlayerEvent;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class FluentSubCommand extends FluentCommand
 {
 
-    private FluentCommandEvent commandEvent;
+    private FluentCommandPlayerEvent commandEvent;
 
     private boolean runByConsle =false;
-    public FluentSubCommand(String name, FluentCommandEvent commandEvent)
+    public FluentSubCommand(String name, FluentCommandPlayerEvent commandEvent)
     {
         super(name,false);
         this.commandEvent = commandEvent;
     }
-    public FluentSubCommand(String name, FluentCommandEvent commandEvent, boolean runByConsle)
+    public FluentSubCommand(String name, FluentCommandPlayerEvent commandEvent, boolean runByConsle)
     {
         this(name,commandEvent);
         this.runByConsle = runByConsle;

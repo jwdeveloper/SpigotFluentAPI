@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.initialization;
 import jw.spigot_fluent_api.commands.FluentCommands;
-import jw.spigot_fluent_api.data_models.DataManager;
+import jw.spigot_fluent_api.data.DataManager;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -27,10 +28,15 @@ public class FluentPluginConfiguration
         dependencyInjectionEnable = true;
         return this;
     }
-
-    public FluentPluginConfiguration configureDataManager(Consumer<DataManager> dataManagerConsumer)
+    public FluentPluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
     {
-        dataManagerConsumerConfiguration = dataManagerConsumer;
+        dependencyInjectionEnable = true;
+        configuration.accept(InjectionManager.Instance());
+        return this;
+    }
+    public FluentPluginConfiguration configureDataManager(Consumer<DataManager> configuration)
+    {
+        dataManagerConsumerConfiguration = configuration;
         return this;
     }
 
