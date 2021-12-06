@@ -15,16 +15,30 @@ import java.util.function.Consumer;
 
 public class FluentEvents implements Listener {
     private static FluentEvents instnace;
-    private static List<FluentEvent<PluginDisableEvent>> onPluginStopEvents;
+    private static List<FluentEvent<PluginDisableEvent>> onPluginDisableEvents;
+    private static List<FluentEvent<PluginEnableEvent>> onPluginEnableEvents;
     private static FluentEvents getInstnace()
     {
         if(instnace == null)
         {
             instnace = new FluentEvents();
             Bukkit.getPluginManager().registerEvents(instnace, FluentPlugin.getPlugin());
-            onPluginStopEvents = new ArrayList<>();
+            onPluginDisableEvents = new ArrayList<>();
+            onPluginEnableEvents = new ArrayList<>();
         }
         return  instnace;
+    }
+
+    @EventHandler
+    public final void onPluginStart(PluginEnableEvent pluginEnableEvent)
+    {
+        if(pluginEnableEvent.getPlugin() == FluentPlugin.getPlugin())
+        {
+            for(var fluentEvent :onPluginEnableEvents)
+            {
+                fluentEvent.invoke(pluginEnableEvent);
+            }
+        }
     }
 
     @EventHandler
@@ -32,7 +46,7 @@ public class FluentEvents implements Listener {
     {
         if(pluginDisableEvent.getPlugin() == FluentPlugin.getPlugin())
         {
-            for(var fluentEvent :onPluginStopEvents)
+            for(var fluentEvent :onPluginDisableEvents)
             {
                 fluentEvent.invoke(pluginDisableEvent);
             }
@@ -45,7 +59,12 @@ public class FluentEvents implements Listener {
 
         if(eventType.equals(PluginDisableEvent.class))
         {
-            getInstnace().onPluginStopEvents.add((FluentEvent<PluginDisableEvent>)fluentEvent);
+            getInstnace().onPluginDisableEvents.add((FluentEvent<PluginDisableEvent>)fluentEvent);
+            return fluentEvent;
+        }
+        if(eventType.equals(PluginEnableEvent.class))
+        {
+            getInstnace().onPluginEnableEvents.add((FluentEvent<PluginEnableEvent>)fluentEvent);
             return fluentEvent;
         }
 
