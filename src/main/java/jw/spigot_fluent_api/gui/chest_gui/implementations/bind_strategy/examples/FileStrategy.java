@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.example
 import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,12 +17,12 @@ public class FileStrategy extends BindingStrategy<String> {
     private final String[] extentions;
     private  Material material = Material.PAPER;
 
-    public FileStrategy(BindingField<String> bindingField, Material material, String path, String... extentions)
+    public FileStrategy(Observable<String> bindingField, Material material, String path, String... extentions)
     {
         this(bindingField,path,extentions);
         this.material = material;
     }
-    public FileStrategy(BindingField<String> bindingField, String path, String... extentions)
+    public FileStrategy(Observable<String> bindingField, String path, String... extentions)
     {
         super(bindingField);
         this.path = path;

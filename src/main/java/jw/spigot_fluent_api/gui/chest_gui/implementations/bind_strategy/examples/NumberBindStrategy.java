@@ -4,14 +4,14 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.example
 import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class NumberBindStrategy extends BindingStrategy<Number> {
 
 
-    public NumberBindStrategy(BindingField<Number> bindingField) {
+    public NumberBindStrategy(Observable<Number> bindingField) {
         super(bindingField);
     }
 

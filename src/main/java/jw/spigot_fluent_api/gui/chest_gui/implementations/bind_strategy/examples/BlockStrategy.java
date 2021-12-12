@@ -4,7 +4,7 @@ import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class BlockStrategy extends BindingStrategy<Material>
 {
-    public BlockStrategy(BindingField<Material> bindingField) {
+    public BlockStrategy(Observable<Material> bindingField) {
         super(bindingField);
     }
 

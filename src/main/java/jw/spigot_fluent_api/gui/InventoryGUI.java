@@ -198,7 +198,6 @@ public abstract class InventoryGUI {
          buttons[pos] = button;
     }
 
-
     public void addButton(Material material, String name, String description, int height, int width, ButtonEvent onClick) {
         Button gui_button = new Button(material, name, height, width, onClick);
         gui_button.setDescription(description);

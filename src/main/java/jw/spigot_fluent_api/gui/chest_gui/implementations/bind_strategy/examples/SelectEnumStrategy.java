@@ -5,7 +5,7 @@ import jw.spigot_fluent_api.gui.button.Button;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.BindingStrategy;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class SelectEnumStrategy<T extends Enum<T>> extends BindingStrategy<T> {
     private T[] enumValues;
     private int index = 0;
 
-    public SelectEnumStrategy(BindingField<T> bindingField, Class<T> tEnum) {
+    public SelectEnumStrategy(Observable<T> bindingField, Class<T> tEnum) {
         super(bindingField);
         enumValues = tEnum.getEnumConstants();
     }

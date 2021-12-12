@@ -2,19 +2,19 @@ package jw.spigot_fluent_api.utilites.binding;
 
 import java.util.function.Consumer;
 
-public class BindingObject<T> extends BindingField<T> {
+public class BindingObject<T> extends Observable<T> {
 
 
     private String objectName;
 
     public BindingObject(String name) {
-        super(name, new Object());
+        super(new Object(), name);
     }
     public BindingObject() {
         this("Object");
     }
     @Override
-    protected boolean bind(String filed, Object classObject) {
+    protected boolean bind(Object classObject, String filed) {
         this.objectName = filed;
         this.object = classObject;
         return true;

@@ -6,24 +6,24 @@ import jw.spigot_fluent_api.gui.events.ButtonEvent;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.interfaces.OnChangeEvent;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.interfaces.OnClickEvent;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 import org.bukkit.entity.Player;
 
 public class BindingStrategy<T> implements ButtonEvent {
 
     protected ChestGUI chestGUI;
     protected Button button;
-    protected BindingField<T> bindingField;
+    protected Observable<T> bindingField;
     public OnChangeEvent<T> onChangeEvent = this::onValueChanged;
     public OnClickEvent<T> onClickEvent = this::onClick;
 
-    public BindingStrategy(Button button,ChestGUI chestGUI,BindingField<T> bindingField)
+    public BindingStrategy(Button button, ChestGUI chestGUI, Observable<T> bindingField)
     {
       setBindingField(bindingField);
       setButton(button);
       setChestGUI(chestGUI);
     }
-    public BindingStrategy(BindingField<T> bindingField)
+    public BindingStrategy(Observable<T> bindingField)
     {
         setBindingField(bindingField);
     }
@@ -71,7 +71,7 @@ public class BindingStrategy<T> implements ButtonEvent {
         this.chestGUI = chestGUI;
         chestGUI.addBindStrategy(this);
     }
-    public void setBindingField(BindingField<T> bindingField)
+    public void setBindingField(Observable<T> bindingField)
     {
         this.bindingField = bindingField;
         this.bindingField.onChange(this::onChange);

@@ -18,7 +18,7 @@ public class Pagination<T>
     }
     public Pagination(List<T> content, int maxContentOnPage)
     {
-        this.maxContentOnPage = maxContentOnPage;
+        this(maxContentOnPage);
         setContent(content);
     }
 
@@ -52,6 +52,17 @@ public class Pagination<T>
         }
         return pageContent;
     }
+    public List<T> nextPage()
+    {
+        currentPage++;
+        return getPageContent(currentPage);
+    }
+    public List<T> backPage()
+    {
+        currentPage--;
+        return getPageContent(currentPage);
+    }
+
     public int getMaxContentOnPage()
     {
         return maxContentOnPage;
@@ -68,17 +79,6 @@ public class Pagination<T>
     {
         return pages;
     }
-    public List<T> nextPage()
-    {
-        currentPage++;
-        return getPageContent(currentPage);
-    }
-    public List<T> backPage()
-    {
-        currentPage--;
-       return getPageContent(currentPage);
-    }
-
     public boolean canNextPage()
     {
         return currentPage + 1 <=pages;
@@ -87,8 +87,4 @@ public class Pagination<T>
     {
         return currentPage - 1 >0;
     }
-
-
-
-
 }

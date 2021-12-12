@@ -9,30 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BindingField<T> implements Bindable<T> {
+public class Observable<T> implements Bindable<T> {
 
     protected Field field;
     protected Object object;
     protected Class fieldType;
     protected boolean isBinded;
     protected List<Consumer<T>> onChange = new ArrayList<>();
-    public BindingField(String filed, Object classObject)
-    {
-        isBinded = bind(filed, classObject);
+
+    public Observable(Object classObject, String filed) {
+        isBinded = bind(classObject, filed);
     }
-    public BindingField(Field filed, Object classObject)
-    {
+
+    public Observable(Object classObject, Field filed) {
         this.field = filed;
         this.object = classObject;
         this.fieldType = field.getType();
         isBinded = true;
     }
+
     public Class getType() {
         return fieldType;
     }
 
-    public boolean isBinded()
-    {
+    public boolean isBinded() {
         return isBinded;
     }
 
@@ -80,17 +80,14 @@ public class BindingField<T> implements Bindable<T> {
         }
     }
 
-    protected boolean bind(String filedName, Object classObject){
-        try
-        {
+    protected boolean bind(Object classObject, String filedName) {
+        try {
             this.field = classObject.getClass().getField(filedName);
             this.object = classObject;
             this.fieldType = this.field.getType();
             return true;
-        }
-        catch (NoSuchFieldException e)
-        {
-            FluentPlugin.logError("Binding error:"+e.getMessage()+" Field: "+filedName);
+        } catch (NoSuchFieldException e) {
+            FluentPlugin.logError("Binding error:" + e.getMessage() + " Field: " + filedName);
             return false;
         }
     }

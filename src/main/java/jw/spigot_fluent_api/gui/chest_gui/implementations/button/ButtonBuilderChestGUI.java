@@ -10,7 +10,7 @@ import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.examples
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.examples.NumberBindStrategy;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.examples.TextBindStrategy;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,7 +35,7 @@ public class ButtonBuilderChestGUI extends ButtonBuilder<ButtonBuilderChestGUI> 
         return self();
     }
 
-    public ButtonBuilderChestGUI bindField(BindingField bindingField) {
+    public ButtonBuilderChestGUI bindField(Observable bindingField) {
         if (!bindingField.isBinded()) {
             FluentPlugin.logError("Field " +
                                   ChatColor.WHITE + bindingField.getClass() +

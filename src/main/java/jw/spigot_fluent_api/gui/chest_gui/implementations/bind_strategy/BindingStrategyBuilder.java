@@ -4,7 +4,7 @@ package jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy;
 import jw.spigot_fluent_api.gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.interfaces.OnChangeEvent;
 import jw.spigot_fluent_api.gui.chest_gui.implementations.bind_strategy.interfaces.OnClickEvent;
-import jw.spigot_fluent_api.utilites.binding.BindingField;
+import jw.spigot_fluent_api.utilites.binding.Observable;
 
 
 public class BindingStrategyBuilder<T>
@@ -15,12 +15,12 @@ public class BindingStrategyBuilder<T>
     {
         bindingStrategy = new BindingStrategy<T>();
     }
-    public BindingStrategyBuilder(BindingField<T> bindingField)
+    public BindingStrategyBuilder(Observable<T> bindingField)
     {
         this();
         this.setBindingFile(bindingField);
     }
-    public BindingStrategyBuilder<T> setBindingFile(BindingField<T> bindingField)
+    public BindingStrategyBuilder<T> setBindingFile(Observable<T> bindingField)
     {
         bindingStrategy.setBindingField(bindingField);
         return this;
@@ -35,7 +35,7 @@ public class BindingStrategyBuilder<T>
         bindingStrategy.onChangeEvent = onChangeEvent;
         return this;
     }
-    public BindingStrategyBuilder<T> setButton(BindingField<T> bindingField)
+    public BindingStrategyBuilder<T> setButton(Observable<T> bindingField)
     {
         bindingStrategy.setBindingField(bindingField);
         return this;
