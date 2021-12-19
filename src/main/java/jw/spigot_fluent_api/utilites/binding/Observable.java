@@ -48,19 +48,7 @@ public class Observable<T> implements Bindable<T> {
         return field != null ? field.getName() : "";
     }
 
-    @Override
-    public void set(T value) {
-        if (!isBinded)
-            return;
-        try {
-            field.set(object, value);
-            for (Consumer<T> consumer : onChange) {
-                consumer.accept(value);
-            }
-        } catch (Exception e) {
-            FluentPlugin.logError("Set binding field: " + e.getMessage());
-        }
-    }
+
 
     public void setAsync(T value) {
         Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(), () ->
@@ -79,10 +67,25 @@ public class Observable<T> implements Bindable<T> {
             return null;
         }
     }
+    @Override
+    public void set(T value) {
+        if (!isBinded)
+            return;
+        try {
+            field.set(object, value);  //set new value to field
+            for (Consumer<T> onChangeEvent : onChange)
+            {
+                onChangeEvent.accept(value);          //trigger all OnValueChange events
+            }
+        } catch (Exception e) {
+            FluentPlugin.logError("Set binding field: " + e.getMessage());
+        }
+    }
 
     protected boolean bind(Object classObject, String filedName) {
         try {
-            this.field = classObject.getClass().getField(filedName);
+            this.field = classObject.getClass().getDeclaredField(filedName);
+            this.field.setAccessible(true);
             this.object = classObject;
             this.fieldType = this.field.getType();
             return true;

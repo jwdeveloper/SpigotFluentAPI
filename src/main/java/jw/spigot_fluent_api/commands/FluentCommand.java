@@ -5,6 +5,7 @@ import jw.spigot_fluent_api.commands.events.FluentCommandEvent;
 import jw.spigot_fluent_api.commands.events.FluentCommandPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -22,7 +23,6 @@ public abstract class FluentCommand extends BukkitCommand {
     private final ArrayList<String> permissions = new ArrayList<>();
     private final ArrayList<FluentCommand> subCommands = new ArrayList<>();
     private final HashMap<Integer, Supplier<ArrayList<String>>> tabCompletes = new HashMap<>();
-    private Consumer<CommandSender> onNoArguments;
 
     public FluentCommand(String name, boolean registerCommand) {
         super(name);
@@ -39,9 +39,15 @@ public abstract class FluentCommand extends BukkitCommand {
     }
 
     protected abstract void onInitialize();
-    protected void onPlayerInvoke(Player playerSender, String[] args) {}
-    protected void onConsoleInvoke(ConsoleCommandSender serverSender, String[] args) {}
-    protected void onInvoke(CommandSender serverSender, String[] args) {}
+
+    protected void onPlayerInvoke(Player playerSender, String[] args) {
+    }
+
+    protected void onConsoleInvoke(ConsoleCommandSender serverSender, String[] args) {
+    }
+
+    protected void onInvoke(CommandSender serverSender, String[] args) {
+    }
 
     protected boolean onPermissionCheck(Player player, ArrayList<String> permissions) {
         if (permissions.size() == 0) {
@@ -59,18 +65,20 @@ public abstract class FluentCommand extends BukkitCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        FluentCommand target = this;
-        String[] arguments = args;
-        if (args.length != 0) {
-            FluentCommand child_invoked = target.isChildInvoked(args);
-            if (child_invoked != null) {
-                target = child_invoked;
-                for (int j = 0; j < args.length; j++) {
-                    if (args[j].equalsIgnoreCase(target.getName())) {
-                        arguments = Arrays.copyOfRange(args, j + 1, args.length);
-                        break;
-                    }
-                }
+        if (args.length == 0)
+            return new ArrayList<>();
+
+        var target = this;
+        var arguments = args;
+        var child = target.isSubCommandInvoked(arguments);
+        if (child == null)
+            return tabCompletes.get(1).get();
+
+        target = child;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equalsIgnoreCase(target.getName())) {
+                arguments = Arrays.copyOfRange(args, i + 1, args.length);
+                return target.tabComplete(sender,alias,arguments);
             }
         }
         return new ArrayList<>();
@@ -83,7 +91,7 @@ public abstract class FluentCommand extends BukkitCommand {
         if (args.length != 0) {
             //null nie jest najlepszym rozwiazaniem, ale nie chce mi się robić opcjonala
             //magia połaczona z rekurencją
-            FluentCommand child_invoked = target.isChildInvoked(args);
+            FluentCommand child_invoked = target.isSubCommandInvoked(args);
             if (child_invoked != null) {
                 target = child_invoked;
                 for (int j = 0; j < args.length; j++) {
@@ -94,18 +102,13 @@ public abstract class FluentCommand extends BukkitCommand {
                 }
             }
         }
-        if (target.onNoArguments != null && arguments.length == 0) {
-            target.onNoArguments.accept(commandSender);
-            return true;
-        }
-        if (commandSender instanceof Player) {
+        if (commandSender instanceof Player playerSender) {
 
-            if (!onPermissionCheck((Player) commandSender, target.permissions)) {
+            if (!onPermissionCheck(playerSender, target.permissions)) {
                 return false;
             }
-            target.onPlayerInvoke((Player) commandSender, arguments);
-        } else
-        {
+            target.onPlayerInvoke(playerSender, arguments);
+        } else {
             target.onConsoleInvoke((ConsoleCommandSender) commandSender, arguments);
         }
         target.onInvoke(commandSender, arguments);
@@ -113,36 +116,23 @@ public abstract class FluentCommand extends BukkitCommand {
     }
 
     public List<String> getSubCommandsNames() {
-        return subCommands.stream().map(c -> c.getName()).toList();
-    }
-
-    public boolean execute(String... args) {
-        return execute(null, "", args);
-    }
-
-    public String getMessage(String[] args) {
-        StringBuilder toReturn = new StringBuilder();
-        for (String s : args) {
-            toReturn.append(s);
-            toReturn.append(' ');
-        }
-
-        return toReturn.toString();
+        return subCommands.stream().map(Command::getName).toList();
     }
 
     //rekurencja bejbe
-    public FluentCommand isChildInvoked(String[] args) {
+    public FluentCommand isSubCommandInvoked(String[] args) {
         FluentCommand result = null;
+        String[] part = null;
         for (FluentCommand c : subCommands) {
             //szukanie komendy wsrod dzieci
             if (args.length > 1) {
-                String[] part = Arrays.copyOfRange(args, 1, args.length);
-                result = c.isChildInvoked(part);
+                part = Arrays.copyOfRange(args, 1, args.length);
+                result = c.isSubCommandInvoked(part);
                 if (result != null) {
                     break;
                 }
             }
-            // jesli nie znaleziono udzieci to moze rodzic jest wlasicielm komendy
+            // jesli nie znaleziono dziecka, to rodzic jest wywolywany
             if (c.getName().equalsIgnoreCase(args[0])) {
                 result = c;
                 break;
@@ -151,33 +141,29 @@ public abstract class FluentCommand extends BukkitCommand {
         return result;
     }
 
-    public FluentCommand addPermission(String name) {
-        if (permissions.contains(name))
-            return this;
-        this.permissions.add(name);
+    public FluentCommand addPermission(String permission) {
+        if (!permissions.contains(permission))
+            this.permissions.add(permission);
         return this;
     }
 
-    public FluentCommand addPermission(String... name) {
-        for (var permission : name) {
-            if (permissions.contains(permission))
-                return this;
-            this.permissions.add(permission);
+    public FluentCommand addPermission(String... permissions) {
+        for (var permission : permissions) {
+            addPermission(permission);
         }
         return this;
     }
 
     public FluentCommand addDefaultPermission() {
         //x.a.b.c
-        String result = this.getName();
+        StringBuilder result = new StringBuilder(this.getName());
         FluentCommand parent = this.parent;
         while (parent != null) {
-            result = parent.getName() + "." + result;
+            result.insert(0, parent.getName() + ".");
             parent = parent.parent;
         }
-        return addPermission(result);
+        return addPermission(result.toString());
     }
-
 
     public void addTabCompletes(int argument, String... actions) {
         tabCompletes.putIfAbsent(argument, () -> {
@@ -209,20 +195,15 @@ public abstract class FluentCommand extends BukkitCommand {
             this.subCommands.forEach(c -> {
                 names.add(c.getName());
             });
-
             return names;
         });
     }
 
-    public FluentCommand setParent(FluentCommand parent) {
+    public FluentCommand setParent(FluentCommand parent)
+    {
         this.parent = parent;
         return this;
     }
-
-    public void setNoArgsError(Consumer<CommandSender> action) {
-        onNoArguments = action;
-    }
-
     public void setTabCompleter(int argument, Supplier<ArrayList<String>> acction) {
         tabCompletes.putIfAbsent(argument, acction);
     }
@@ -238,8 +219,7 @@ public abstract class FluentCommand extends BukkitCommand {
         return this;
     }
 
-    public FluentCommand addSubCommand(String name, FluentCommandEvent commandEvent)
-    {
+    public FluentCommand addSubCommand(String name, FluentCommandEvent commandEvent) {
         this.addSubCommand(new FluentCommand(name, false) {
 
             @Override
@@ -255,12 +235,16 @@ public abstract class FluentCommand extends BukkitCommand {
         return this;
     }
 
-    public void removeChild(FluentCommand child) {
-        child.parent = null;
-        subCommands.remove(child);
+    public void removeSubCommand(FluentCommand subCommand)
+    {
+        if(!subCommands.contains(subCommand))
+            return;
+        subCommand.parent = null;
+        subCommands.remove(subCommand);
     }
 
-    protected String connectArgs(String[] stringArray) {
+    protected String connectArgs(String[] stringArray)
+    {
         StringJoiner joiner = new StringJoiner("");
         for (int i = 0; i < stringArray.length; i++) {
             if (i < stringArray.length - 1)
@@ -277,11 +261,10 @@ public abstract class FluentCommand extends BukkitCommand {
 
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-
             commandMap.register(this.getName(), this);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
-
 }

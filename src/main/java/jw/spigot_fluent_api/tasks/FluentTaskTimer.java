@@ -8,14 +8,14 @@ import java.util.function.Consumer;
 
 public class FluentTaskTimer
 {
-    private TaskAction task;
+    private final TaskAction task;
     private Consumer<FluentTaskTimer> onStop;
-    private int speed =20;
+    private int speed = 20;
     private int time = 0;
     private int runAfter = 0;
     private int stopAfter = Integer.MAX_VALUE;
-    private  boolean isCancel = false;
-    private  BukkitTask taskId;
+    private boolean isCancel = false;
+    private BukkitTask bukkitTaskId;
 
     public FluentTaskTimer(int speed, TaskAction action)
     {
@@ -24,12 +24,12 @@ public class FluentTaskTimer
     }
     public FluentTaskTimer runAsync()
     {
-        taskId= Bukkit.getScheduler().runTaskTimerAsynchronously(FluentPlugin.getPlugin(),()->
+        bukkitTaskId = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentPlugin.getPlugin(),()->
         {
             if(time>=stopAfter || isCancel)
             {
                 if(this.onStop!=null)
-                    this.onStop.accept(null);
+                    this.onStop.accept(this);
                 stop();
                 return;
             }
@@ -45,12 +45,12 @@ public class FluentTaskTimer
 
     public FluentTaskTimer run()
     {
-        taskId= Bukkit.getScheduler().runTaskTimer(FluentPlugin.getPlugin(),()->
+        bukkitTaskId = Bukkit.getScheduler().runTaskTimer(FluentPlugin.getPlugin(),()->
         {
             if(time>=stopAfter || isCancel)
             {
-                if(this.onStop!=null)
-                    this.onStop.accept(null);
+                if(onStop!=null)
+                    onStop.accept(this);
                 stop();
                 return;
             }
@@ -61,8 +61,8 @@ public class FluentTaskTimer
     }
     public void stop()
     {
-        if(taskId!=null)
-            taskId.cancel();
+        if(bukkitTaskId !=null)
+            bukkitTaskId.cancel();
     }
     public void cancel()
     {

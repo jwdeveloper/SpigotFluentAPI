@@ -1,6 +1,6 @@
 package pagination;
 
-import jw.spigot_fluent_api.gui_v2.list_ui.content_manger.ContentManager;
+import jw.spigot_fluent_api.gui.implementation.list_ui.content_manger.ContentManager;
 import jw.spigot_fluent_api.utilites.bukkit_mocks.ServerMock;
 import org.bukkit.Bukkit;
 import org.junit.Test;

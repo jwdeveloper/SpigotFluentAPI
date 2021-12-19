@@ -2,13 +2,14 @@ package jw.spigot_fluent_api.data.repositories;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface Repository <T>
 {
      Class<T> getEntityClass();
 
-     T getOne(UUID id);
+     Optional<T> getOne(UUID id);
 
      ArrayList<T> getMany(HashMap<String,String> args);
 

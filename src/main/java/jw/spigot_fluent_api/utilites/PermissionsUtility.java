@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.utilites;
 
 import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
@@ -8,7 +9,6 @@ import java.util.List;
 
 public class PermissionsUtility
 {
-
     public static boolean playerHasPermissions(Player player, List<String> permissions)
     {
         for (var permission: permissions)

@@ -15,15 +15,18 @@ import java.util.stream.Stream;
 
 public class RepositoryBase<T extends DataModel> implements Repository<T> , Saveable {
 
-    public ArrayList<T> content = new ArrayList<>();
-    private String path;
+    private ArrayList<T> content;
     private String fileName;
-    private Class<T> entityClass;
+    private final String path;
+    private final Class<T> entityClass;
+
 
     public Consumer<String> onError = (s) -> {
     };
 
-    public RepositoryBase(String path, Class<T> entityClass) {
+    public RepositoryBase(String path, Class<T> entityClass)
+    {
+        this.content = new ArrayList<>();
         this.path = path;
         this.fileName = entityClass.getSimpleName();
         this.entityClass = entityClass;
@@ -43,28 +46,25 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         return content.stream();
     }
 
-
     @Override
     public Class<T> getEntityClass() {
         return entityClass;
     }
 
     @Override
-    public T getOne(UUID id) {
-        Optional<T> data = content
+    public Optional<T> getOne(UUID id) {
+      return content
                 .stream()
                 .filter(p -> p.uuid == id)
                 .findFirst();
-        return data.orElseGet(this::CreateEmpty);
     }
 
-    public T getOneByName(String name) {
-        Optional<T> data = content
+    public Optional<T> getOneByName(String name) {
+      return content
                 .stream()
                 .filter(p -> ChatColor.stripColor(p.name)
                 .equalsIgnoreCase(name))
                 .findFirst();
-        return data.orElseGet(this::CreateEmpty);
     }
 
     @Override
@@ -88,12 +88,13 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
 
     @Override
     public boolean insertMany(ArrayList<T> data) {
-        data.stream().forEach(this::insertOne);
+        data.forEach(this::insertOne);
         return true;
     }
 
     @Override
-    public boolean updateOne(UUID id, T data) {
+    public boolean updateOne(UUID id, T data)
+    {
         return false;
     }
 
@@ -113,26 +114,23 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
     public boolean deleteOneById(UUID uuid)
     {
-        Optional<T> exist = content.stream()
-                .filter(p -> p.uuid == uuid)
-                .findFirst();
-        if (exist.isPresent()) {
-            content.remove(exist.get());
-            return true;
-        }
-        return false;
+        var data = getOne(uuid);
+        if(data.isEmpty())
+            return false;
+
+        content.remove(data.get());
+        return true;
     }
     @Override
-    public boolean deleteMany(ArrayList<T> data) {
-        data.stream().forEach(a -> this.deleteOneById(a.uuid));
+    public boolean deleteMany(ArrayList<T> data)
+    {
+        data.forEach(a -> this.deleteOneById(a.uuid));
         return true;
     }
 
     public void deleteAll() {
         content.clear();
     }
-
-
 
     public T CreateEmpty() {
         try {
@@ -152,7 +150,8 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
             try {
                 content = JsonUtitlity.loadList(path, fileName, entityClass);
                 return true;
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 onError.accept(fileName + " " + entityClass.getName() + " " + e.getMessage());
                 return false;
             }
@@ -160,10 +159,12 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
 
     @Override
     public boolean save() {
-        try {
+        try
+        {
             JsonUtitlity.save(content, path, fileName);
             return true;
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             onError.accept(fileName + " " + entityClass.getName() + " " + e.getMessage());
             return false;
         }

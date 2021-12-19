@@ -30,9 +30,8 @@ public class FluentPluginConfiguration
     }
     public FluentPluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
     {
-        dependencyInjectionEnable = true;
         configuration.accept(InjectionManager.Instance());
-        return this;
+        return useDependencyInjection();
     }
     public FluentPluginConfiguration configureDataManager(Consumer<DataManager> configuration)
     {
@@ -45,7 +44,7 @@ public class FluentPluginConfiguration
         return this;
     }
 
-    public FluentPluginConfiguration runInDebbug()
+    public FluentPluginConfiguration runInDebug()
     {
         FluentCommands.onConsoleCommand("disable",(player, args) ->
         {
@@ -60,7 +59,8 @@ public class FluentPluginConfiguration
         return this;
     }
 
-    private String getDefaultPath() {
+    private String getDefaultPath()
+    {
         return new StringBuilder()
                 .append(Paths.get("").toAbsolutePath())
                 .append(File.separator)
