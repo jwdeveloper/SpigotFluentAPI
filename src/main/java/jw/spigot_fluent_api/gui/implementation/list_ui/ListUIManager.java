@@ -10,13 +10,13 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListContentManager<T>
+public class ListUIManager<T>
 {
     private final ContentManager<T> contentManager;
     private final ListUI<T> listUI;
     private List<T> realContent;
 
-   public ListContentManager(ListUI<T> listUI)
+   public ListUIManager(ListUI<T> listUI)
    {
        this.listUI = listUI;
        contentManager = new ContentManager<>(listUI.getHeight(),listUI.getWidth());
@@ -59,7 +59,8 @@ public class ListContentManager<T>
 
     public String pageDescription()
     {
-        var page = (contentManager.getCurrentPage()+1)+"/"+(contentManager.getPagesCount());
+        var pages = contentManager.getPagesCount() == 0? 1 : contentManager.getPagesCount();
+        var page = (contentManager.getCurrentPage()+1)+"/"+(pages);
         var description  = new MessageBuilder();
         if(listUI.getListTitle().length() != 0)
         {
@@ -82,7 +83,6 @@ public class ListContentManager<T>
            return;
         }
         contentManager.nextPage();
-        listUI.setTitle(pageDescription());
         listUI.refreshContent();
     }
 
@@ -93,7 +93,6 @@ public class ListContentManager<T>
             return;
         }
         contentManager.backPage();
-        listUI.setTitle(pageDescription());
         listUI.refreshContent();
     }
 

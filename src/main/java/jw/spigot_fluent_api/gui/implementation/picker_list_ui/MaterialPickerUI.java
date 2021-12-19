@@ -13,7 +13,7 @@ public class MaterialPickerUI extends PickerUI<Material> {
         items = Arrays.stream(Material.values()).filter(Material::isItem).toList();
     }
 
-    public MaterialPickerUI(String name, int height) {
+    public MaterialPickerUI(String name) {
         super(name);
         setContentButtons(items,(material, button) ->
         {

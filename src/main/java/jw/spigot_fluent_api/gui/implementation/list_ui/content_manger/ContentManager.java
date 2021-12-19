@@ -13,8 +13,8 @@ public class ContentManager<T> extends Pagination<T> {
     private final ButtonUI[] buttons;
     private ButtonUIMapper<T> buttonMapper = (a,b)->{};
     private final List<FilterContentEvent<T>> filters;
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
 
     public ContentManager(int height, int width)
     {

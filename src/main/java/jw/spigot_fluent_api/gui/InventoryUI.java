@@ -99,7 +99,6 @@ public abstract class InventoryUI {
 
         if (player == null || !player.isOnline())
             return;
-
         this.title = title;
         EventsListenerInventoryUI.unregisterUI(this);
         var currentContent = inventory.getContents();
@@ -124,6 +123,10 @@ public abstract class InventoryUI {
     }
 
     public void refreshButtons() {
+
+        if (inventory == null)
+            return;
+
         ButtonUI button = null;
         for (int i = 0; i < buttons.length; i++) {
             button = buttons[i];
@@ -194,7 +197,7 @@ public abstract class InventoryUI {
             case CHEST:
                 return Bukkit.createInventory(player, slots, title);
             default:
-                new Exception("Sorry UI for "+inventoryType.name()+" not implemented yet ;<");
+                new Exception("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
         }
         return Bukkit.createInventory(player, inventoryType, title);
     }

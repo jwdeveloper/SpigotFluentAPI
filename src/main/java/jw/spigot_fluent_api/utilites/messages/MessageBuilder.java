@@ -81,6 +81,15 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder space(int count)
+    {
+       for(;count>0;count--)
+       {
+           space();
+       }
+        return this;
+    }
+
     public MessageBuilder space() {
         stringBuilder.append(" ");
         return this;

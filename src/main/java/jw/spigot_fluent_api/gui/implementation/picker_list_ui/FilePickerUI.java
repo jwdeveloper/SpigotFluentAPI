@@ -1,7 +1,5 @@
 package jw.spigot_fluent_api.gui.implementation.picker_list_ui;
 
-import jw.spigot_fluent_api.gui.events.ButtonUIEvent;
-import jw.spigot_fluent_api.gui.implementation.list_ui.ListUI;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +11,8 @@ import java.util.ArrayList;
 @Getter
 public class FilePickerUI extends PickerUI<String> {
 
-    private String path;
+    private String path = "";
+    private String[] extensions;
 
     public FilePickerUI(String name, int height) {
         super(name);
@@ -29,7 +28,14 @@ public class FilePickerUI extends PickerUI<String> {
     }
 
 
+    public void setExtensions(String... extensions) {
+        this.extensions = extensions;
+    }
+
     private ArrayList<String> getFolderFilesName() {
-        return FileUtility.getFolderFilesName(path);
+        if (extensions == null)
+            return FileUtility.getFolderFilesName(path);
+        else
+            return FileUtility.getFolderFilesName(path, extensions);
     }
 }

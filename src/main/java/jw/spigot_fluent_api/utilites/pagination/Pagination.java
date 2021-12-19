@@ -40,7 +40,6 @@ public class Pagination<T> {
                 break;
             result.add(allContent[i]);
         }
-        FluentPlugin.logInfo(result.size()+ " Size");
         return result;
     }
 

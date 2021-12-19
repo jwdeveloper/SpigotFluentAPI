@@ -16,15 +16,15 @@ import java.util.List;
 @Setter
 public class ButtonObserverUI extends ButtonUI {
     @Singular
-    protected List<ButtonObserver> observers = new ArrayList<>();
+    protected List<ButtonObserver<?>> observers = new ArrayList<>();
 
-    public void addObserver(ButtonObserver observer) {
+    public void addObserver(ButtonObserver<?> observer) {
         observer.setButtonUI(this);
         observers.add(observer);
     }
 
     public <T> void addObserver(Observable<T> observable, ButtonNotifier<T> buttonNotifier) {
-        var observer = new ButtonObserver(observable, buttonNotifier);
+        var observer = new ButtonObserver<>(observable, buttonNotifier);
         observer.setButtonUI(this);
         observers.add(observer);
     }
@@ -40,9 +40,10 @@ public class ButtonObserverUI extends ButtonUI {
     public void click(Player player, InventoryUI inventoryUI) {
         super.click(player);
         for (var observable : observers) {
-            observable.invoke(player);
+           observable.click(player);
+           inventoryUI.refreshButton(observable.buttonUI);
         }
-        inventoryUI.refreshButtons();
+
     }
 
     public static ButtonObserverUIBuilder builder()

@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.gui.button.button_observer;
 
 import jw.spigot_fluent_api.gui.button.ButtonUI;
+import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.binding.Observable;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,7 @@ public class ButtonObserver<T>
 {
     private final Observable<T> observable;
     private final ButtonNotifier buttonNotifier;
-    private ButtonUI buttonUI;
+    public ButtonUI buttonUI;
 
     public ButtonObserver(Observable<T> observable,ButtonNotifier buttonNotifier)
     {
@@ -16,6 +17,7 @@ public class ButtonObserver<T>
         this.buttonNotifier =buttonNotifier;
         this.observable.onChange(value ->
         {
+            FluentPlugin.logInfo("C");
             if(!validateButton())
                 return;
             buttonNotifier.onValueChanged(new ButtonObserverEvent(null,buttonUI,this,value));
@@ -31,8 +33,9 @@ public class ButtonObserver<T>
         this.buttonUI = buttonUI;
     }
 
-    public void invoke(Player player)
+    public void click(Player player)
     {
+        //FluentPlugin.logInfo("A");
         if(!validateButton())
             return;
         buttonNotifier.onClick(new ButtonObserverEvent(player, buttonUI,this, observable.get()));
@@ -40,6 +43,7 @@ public class ButtonObserver<T>
 
     public void refresh()
     {
+       // FluentPlugin.logInfo("B"+ this.toString());
         if(!validateButton())
             return;
         buttonNotifier.onValueChanged(new ButtonObserverEvent(null, buttonUI,this, observable.get()));
@@ -57,9 +61,6 @@ public class ButtonObserver<T>
 
     private boolean validateButton()
     {
-        if(buttonUI == null || !buttonUI.isActive())
-            return false;
-
-        return true;
+        return buttonUI != null && buttonUI.isActive();
     }
 }

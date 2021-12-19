@@ -39,29 +39,33 @@ public class ClassTypeUtility
 
 
         for (String file : files) {
-            FluentPlugin.logSuccess(file+"  PLIK");
             File jar = new File(path + File.separator + file);
             try {
                 JarInputStream is = new JarInputStream(new FileInputStream(jar));
                 JarEntry entry;
-                FluentPlugin.logSuccess(file+"  Dzialam");
                 while ((entry = is.getNextJarEntry()) != null)
                 {
-                    String name = entry.getName();
-                   // FluentPlugin.logSuccess(name+"  klasa");
-                    if (name.endsWith(".class")) {
-                        String classPath = name.substring(0, entry.getName().length() - 6);
-                        classPath = classPath.replaceAll("[\\|/]", ".");
-                        if (classPath.contains(packageName)) {
-                            FluentPlugin.logSuccess(classPath+"  klasa z pakietu");
-                            //classes.add(Class.forName(classPath));
+                    try {
+                        String name = entry.getName();
+                        if (name.endsWith(".class")) {
+                            String classPath = name.substring(0, entry.getName().length() - 6);
+                            classPath = classPath.replaceAll("[\\|/]", ".");
+                            if (classPath.contains(packageName)) {
+                                classes.add(Class.forName(classPath));
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        FluentPlugin.logError("Could not load class");
+                        FluentPlugin.logError(e.getMessage());
+                    }
+
                 }
-            } catch (Exception ex) {
+            } catch (Exception ex)
+            {
                 FluentPlugin.logError("Could not load class");
                 FluentPlugin.logError(ex.getMessage());
-               // Bukkit.getConsoleSender().sendMessage(ex.getMessage());
             }
         }
         return classes;

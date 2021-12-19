@@ -49,7 +49,6 @@ public interface FileUtility {
         if (!isPathValid(path)) {
             return filesName;
         }
-
         final File folder = new File(path);
         for (final File fileEntry : Objects.requireNonNull(folder.listFiles())) {
             if (fileEntry.isDirectory()) {

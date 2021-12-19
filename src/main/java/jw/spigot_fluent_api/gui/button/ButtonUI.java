@@ -9,7 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -59,6 +61,7 @@ public class ButtonUI {
         location = new Vector(0, 0, 0);
         description = new ArrayList<>();
         permissions = new ArrayList<>();
+        hideAttributes();
     }
 
     public ButtonUI(Material material) {
@@ -135,6 +138,28 @@ public class ButtonUI {
         if (meta == null)
             return;
         meta.setDisplayName(name);
+        itemStack.setItemMeta(meta);
+    }
+
+    public void setHighlighted(boolean value)
+    {
+        ItemMeta meta = ensureMeta(itemStack);
+        if(meta == null)
+            return;
+        if (value)
+            meta.addEnchant(Enchantment.ARROW_FIRE, 10, true);
+        else
+            meta.removeEnchant(Enchantment.ARROW_FIRE);
+        isHighLighted = value;
+        itemStack.setItemMeta(meta);
+    }
+
+    private void hideAttributes()
+    {
+        ItemMeta meta = ensureMeta(itemStack);
+        if(meta == null)
+            return;
+        Arrays.asList(ItemFlag.values()).forEach(i -> meta.addItemFlags(i));
         itemStack.setItemMeta(meta);
     }
 

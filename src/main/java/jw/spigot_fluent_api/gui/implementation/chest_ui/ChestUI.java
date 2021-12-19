@@ -107,6 +107,21 @@ public class ChestUI extends InventoryUI {
         }
     }
 
+    public void refreshBorder()
+    {
+        ButtonUI button;
+        for (int i = 0; i < INVENTORY_WIDTH; i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                if (i == 0 || j == 0 || j == getHeight() - 1 || i == INVENTORY_WIDTH - 1) {
+                    button = getButton(j, i);
+                    if (button.getButtonType() == ButtonType.BACKGROUND) {
+                       refreshButton(button);
+                    }
+                }
+            }
+        }
+    }
+
     public void setBorderMaterial(Material material) {
         ButtonUI button;
         for (int i = 0; i < INVENTORY_WIDTH; i++) {
@@ -155,8 +170,6 @@ public class ChestUI extends InventoryUI {
             }
         }
     }
-
-
 
 
 }

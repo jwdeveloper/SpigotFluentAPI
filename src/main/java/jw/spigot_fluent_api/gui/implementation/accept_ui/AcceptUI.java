@@ -36,7 +36,7 @@ public class AcceptUI extends ChestUI
                 .setLocation(getHeight()/2,5)
                 .setMaterial(Material.RED_STAINED_GLASS_PANE)
                 .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets("Denay"))
-                .setOnClick(this::onDenay)
+                .setOnClick(this::onDeny)
                 .buildAndAdd(this);
     }
 
@@ -47,7 +47,7 @@ public class AcceptUI extends ChestUI
         onUserChoice.accept(true);
     }
 
-    private void onDenay(Player player, ButtonUI button)
+    private void onDeny(Player player, ButtonUI button)
     {
         if(onUserChoice == null)
             return;

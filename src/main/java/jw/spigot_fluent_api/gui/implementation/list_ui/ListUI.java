@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.gui.implementation.list_ui.content_manger.FilterContentEvent;
+import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 
 @Getter
 public class ListUI<T> extends ChestUI {
-    private final ListContentManager<T> listContentManager;
+    private final ListUIManager<T> listContentManager;
     private final List<Consumer<Player>> onListOpen;
     private final List<Consumer<Player>> onListClose;
     private final List<ButtonUIEvent> onClickContent;
@@ -31,7 +32,7 @@ public class ListUI<T> extends ChestUI {
 
     @Getter
     @Setter
-    private String listTitle;
+    private String listTitle = "";
 
 
     public ListUI(String name, int height) {
@@ -39,7 +40,7 @@ public class ListUI<T> extends ChestUI {
         onListOpen = new ArrayList<>();
         onListClose = new ArrayList<>();
         onClickContent = new ArrayList<>();
-        listContentManager = new ListContentManager<>(this);
+        listContentManager = new ListUIManager<>(this);
         loadSpecialButtons();
     }
 
@@ -49,8 +50,12 @@ public class ListUI<T> extends ChestUI {
         buttonSearch = ButtonObserverUI
                 .builder()
                 .setLocation(0, 0)
-                .setTitle(new MessageBuilder().color(ChatColor.BLUE).inBrackets("Search"))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Search"))
                 .setMaterial(Material.SPYGLASS)
+                .setOnClick((player, button) ->
+                {
+                    player.sendMessage(ChatColor.YELLOW+"Not implemented yet ;/");
+                })
                 .buildAndAdd(this);
 
         buttonPageDown = ButtonObserverUI
@@ -142,10 +147,12 @@ public class ListUI<T> extends ChestUI {
         refreshContent();
     }
 
+
+
     public void refreshContent()
     {
-        addButtons(listContentManager.getButtons());
         setTitle(listContentManager.pageDescription());
+        refreshButtons();
         displayLog("Content refreshed",ChatColor.GREEN);
     }
 
