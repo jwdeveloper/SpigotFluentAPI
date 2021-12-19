@@ -80,7 +80,7 @@ public class InjectionManager {
                 continue;
             register(serviceAttribute.injectionType(), type);
 
-            if(serviceAttribute.autoInit())
+            if(!serviceAttribute.lazyLoad())
             {
                 toInstantiate.add(type);
             }

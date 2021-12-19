@@ -31,7 +31,7 @@ public class PaginationTests
     @Test
     public void ShouldHasRightAmountOfPages()
     {
-        Assertions.assertEquals(4,mock.getPages());
+        Assertions.assertEquals(4,mock.getPagesCount());
     }
 
     @Test

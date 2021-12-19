@@ -57,6 +57,7 @@ public class InjectionContainer
         {
             FluentPlugin.logError("Exception with getting service "+type.getTypeName());
             FluentPlugin.logError(e.toString());
+            FluentPlugin.logError(e.getCause().getMessage());
             return null;
         }
     }

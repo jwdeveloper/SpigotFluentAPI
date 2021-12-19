@@ -385,7 +385,7 @@ public class PlayerMock implements Player
 
     @Override
     public UUID getUniqueId() {
-        return null;
+        return UUID.randomUUID();
     }
 
     @Override
@@ -745,6 +745,11 @@ public class PlayerMock implements Player
 
     @Override
     public void stopSound(String sound, SoundCategory category) {
+
+    }
+
+    @Override
+    public void stopAllSounds() {
 
     }
 

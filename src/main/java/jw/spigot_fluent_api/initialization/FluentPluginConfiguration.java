@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.initialization;
 import jw.spigot_fluent_api.commands.FluentCommands;
-import jw.spigot_fluent_api.data_models.DataManager;
+import jw.spigot_fluent_api.data.DataManager;
+import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -27,10 +28,14 @@ public class FluentPluginConfiguration
         dependencyInjectionEnable = true;
         return this;
     }
-
-    public FluentPluginConfiguration configureDataManager(Consumer<DataManager> dataManagerConsumer)
+    public FluentPluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
     {
-        dataManagerConsumerConfiguration = dataManagerConsumer;
+        configuration.accept(InjectionManager.Instance());
+        return useDependencyInjection();
+    }
+    public FluentPluginConfiguration configureDataManager(Consumer<DataManager> configuration)
+    {
+        dataManagerConsumerConfiguration = configuration;
         return this;
     }
 
@@ -39,7 +44,7 @@ public class FluentPluginConfiguration
         return this;
     }
 
-    public FluentPluginConfiguration runInDebbug()
+    public FluentPluginConfiguration runInDebug()
     {
         FluentCommands.onConsoleCommand("disable",(player, args) ->
         {
@@ -54,7 +59,8 @@ public class FluentPluginConfiguration
         return this;
     }
 
-    private String getDefaultPath() {
+    private String getDefaultPath()
+    {
         return new StringBuilder()
                 .append(Paths.get("").toAbsolutePath())
                 .append(File.separator)

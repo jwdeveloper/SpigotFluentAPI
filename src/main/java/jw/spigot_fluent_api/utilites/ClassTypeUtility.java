@@ -25,13 +25,12 @@ public class ClassTypeUtility
             type = type.getSuperclass();
 
             if (type.equals(Object.class)) {
-                break;
+                return false;
             }
         }
-        return false;
     }
 
-    public static final List<Class<?>> getClassesInPackage(String packageName) {
+    public static List<Class<?>> getClassesInPackage(String packageName) {
         List<Class<?>> classes = new ArrayList<>();
         String path = FileUtility.pluginsPath();
         ArrayList<String> files = FileUtility.getFolderFilesName(path, "jar");

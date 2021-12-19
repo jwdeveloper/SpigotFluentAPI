@@ -49,8 +49,12 @@ public class ServerMock implements Server {
     }
 
     @Override
-    public Collection<? extends Player> getOnlinePlayers() {
-        return new ArrayList<>();
+    public Collection<? extends Player> getOnlinePlayers()
+    {
+        var players = new ArrayList<PlayerMock>();
+        players.add(new PlayerMock());
+
+        return players;
     }
 
     @Override
@@ -290,7 +294,7 @@ public class ServerMock implements Server {
 
     @Override
     public boolean dispatchCommand(CommandSender sender, String commandLine) throws CommandException {
-        return false;
+        return true;
     }
 
     @Override
@@ -655,7 +659,7 @@ public class ServerMock implements Server {
 
     @Override
     public UnsafeValues getUnsafe() {
-        return null;
+        return new UnsafeValuesMock();
     }
 
     @Override

@@ -10,7 +10,7 @@ public class DatabaseConfiguration
     }
    public Database databaseType;
    public String databaseName;
-   public String databaseAdress;
+   public String databaseAddres;
    public String user;
    public String password;
 }
