@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.function.Consumer;
 
-public class CrudListManager<T> {
+public class CrudListController<T> {
     private final Material DEFAULT_BACKGROUND = Material.GRAY_STAINED_GLASS_PANE;
     private final ListUI<T> listUI;
 
@@ -30,7 +30,7 @@ public class CrudListManager<T> {
     public ButtonUIEvent onGetEvent = (a, b) -> {
     };
 
-    public CrudListManager(ListUI<T> listUI) {
+    public CrudListController(ListUI<T> listUI) {
         _currentState = CrudListState.None;
         currentState = new Observable<CrudListState>(this, "_currentState");
         this.listUI = listUI;
@@ -100,7 +100,7 @@ public class CrudListManager<T> {
                 .onClick(event ->
                 {
                     if (event.getValue() != listState) {
-                        event.getBindingStrategy().setValue(listState);
+                        event.getObserver().setValue(listState);
                     }
                 })
                 .onValueChange(event ->

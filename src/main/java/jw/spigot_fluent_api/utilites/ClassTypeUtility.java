@@ -1,4 +1,5 @@
 package jw.spigot_fluent_api.utilites;
+import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import org.bukkit.Bukkit;
 
@@ -34,23 +35,33 @@ public class ClassTypeUtility
         List<Class<?>> classes = new ArrayList<>();
         String path = FileUtility.pluginsPath();
         ArrayList<String> files = FileUtility.getFolderFilesName(path, "jar");
+
+
+
         for (String file : files) {
+            FluentPlugin.logSuccess(file+"  PLIK");
             File jar = new File(path + File.separator + file);
             try {
                 JarInputStream is = new JarInputStream(new FileInputStream(jar));
                 JarEntry entry;
-                while ((entry = is.getNextJarEntry()) != null) {
+                FluentPlugin.logSuccess(file+"  Dzialam");
+                while ((entry = is.getNextJarEntry()) != null)
+                {
                     String name = entry.getName();
+                   // FluentPlugin.logSuccess(name+"  klasa");
                     if (name.endsWith(".class")) {
                         String classPath = name.substring(0, entry.getName().length() - 6);
                         classPath = classPath.replaceAll("[\\|/]", ".");
                         if (classPath.contains(packageName)) {
-                            classes.add(Class.forName(classPath));
+                            FluentPlugin.logSuccess(classPath+"  klasa z pakietu");
+                            //classes.add(Class.forName(classPath));
                         }
                     }
                 }
             } catch (Exception ex) {
-                Bukkit.getConsoleSender().sendMessage(ex.getMessage());
+                FluentPlugin.logError("Could not load class");
+                FluentPlugin.logError(ex.getMessage());
+               // Bukkit.getConsoleSender().sendMessage(ex.getMessage());
             }
         }
         return classes;

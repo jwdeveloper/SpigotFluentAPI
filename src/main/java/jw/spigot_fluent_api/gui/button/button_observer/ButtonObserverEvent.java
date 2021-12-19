@@ -11,6 +11,6 @@ public class ButtonObserverEvent<T>
 {
     private Player player;
     private ButtonUI button;
-    private ButtonObserver<T> bindingStrategy;
+    private ButtonObserver<T> observer;
     private T value;
 }

@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import java.util.Arrays;
 import java.util.List;
 
-public class MaterialPickerUI extends ListUI<Material> {
+public class MaterialPickerUI extends PickerUI<Material> {
     private static final List<Material> items;
 
     static {
@@ -14,7 +14,7 @@ public class MaterialPickerUI extends ListUI<Material> {
     }
 
     public MaterialPickerUI(String name, int height) {
-        super(name, height);
+        super(name);
         setContentButtons(items,(material, button) ->
         {
             if (material.isAir()) {

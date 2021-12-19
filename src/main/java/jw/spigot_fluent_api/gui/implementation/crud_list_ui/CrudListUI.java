@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 public class CrudListUI<T> extends ListUI<T>
 {
-    private final CrudListManager<T> listViewModel;
+    private final CrudListController<T> listViewModel;
     private ButtonObserverUI buttonCancel;
     private ButtonObserverUI buttonDelete;
     private ButtonObserverUI buttonEdit;
@@ -18,7 +18,7 @@ public class CrudListUI<T> extends ListUI<T>
     public CrudListUI(String name, int height)
     {
         super(name, height);
-        listViewModel = new CrudListManager<>(this);
+        listViewModel = new CrudListController<>(this);
         loadCrudButtons();
     }
 
