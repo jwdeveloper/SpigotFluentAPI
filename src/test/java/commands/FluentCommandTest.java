@@ -1,8 +1,6 @@
 package commands;
 
-import jw.spigot_fluent_api.commands.FluentCommand;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

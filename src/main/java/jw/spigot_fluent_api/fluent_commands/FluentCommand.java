@@ -1,8 +1,8 @@
-package jw.spigot_fluent_api.commands;
+package jw.spigot_fluent_api.fluent_commands;
 
 
-import jw.spigot_fluent_api.commands.events.FluentCommandEvent;
-import jw.spigot_fluent_api.commands.events.FluentCommandPlayerEvent;
+import jw.spigot_fluent_api.fluent_commands.events.FluentCommandEvent;
+import jw.spigot_fluent_api.fluent_commands.events.FluentCommandPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class FluentCommand extends BukkitCommand {

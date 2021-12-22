@@ -1,7 +1,7 @@
-package jw.spigot_fluent_api.commands;
+package jw.spigot_fluent_api.fluent_commands;
 
-import jw.spigot_fluent_api.commands.events.FluentCommandConsoleEvent;
-import jw.spigot_fluent_api.commands.events.FluentCommandPlayerEvent;
+import jw.spigot_fluent_api.fluent_commands.events.FluentCommandConsoleEvent;
+import jw.spigot_fluent_api.fluent_commands.events.FluentCommandPlayerEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

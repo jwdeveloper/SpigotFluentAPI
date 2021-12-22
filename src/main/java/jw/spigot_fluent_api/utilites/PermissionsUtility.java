@@ -11,6 +11,11 @@ public class PermissionsUtility
 {
     public static boolean playerHasPermissions(Player player, List<String> permissions)
     {
+       return playerHasPermissions(player,permissions);
+    }
+
+    public static boolean playerHasPermissions(Player player, String[] permissions)
+    {
         for (var permission: permissions)
         {
             if(!player.hasPermission(permission))

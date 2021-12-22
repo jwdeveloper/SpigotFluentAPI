@@ -1,5 +1,5 @@
 package jw.spigot_fluent_api.initialization;
-import jw.spigot_fluent_api.commands.FluentCommands;
+import jw.spigot_fluent_api.fluent_commands.FluentCommands;
 import jw.spigot_fluent_api.data.DataManager;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import org.bukkit.Bukkit;
