@@ -6,10 +6,7 @@ import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -87,7 +84,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
 
     @Override
-    public boolean insertMany(ArrayList<T> data) {
+    public boolean insertMany(List<T> data) {
         data.forEach(this::insertOne);
         return true;
     }
@@ -122,7 +119,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         return true;
     }
     @Override
-    public boolean deleteMany(ArrayList<T> data)
+    public boolean deleteMany(List<T> data)
     {
         data.forEach(a -> this.deleteOneById(a.uuid));
         return true;
@@ -132,7 +129,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         content.clear();
     }
 
-    public T CreateEmpty() {
+    public T createEmpty() {
         try {
             T empty = entityClass.newInstance();
             empty.uuid = null;
@@ -142,6 +139,11 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
             onError.accept(igonre.getMessage());
         }
         return null;
+    }
+
+    public boolean contains(T data)
+    {
+        return content.contains(data);
     }
 
     @Override

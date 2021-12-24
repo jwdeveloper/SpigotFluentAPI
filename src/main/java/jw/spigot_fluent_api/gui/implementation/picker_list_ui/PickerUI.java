@@ -4,6 +4,7 @@ import jw.spigot_fluent_api.gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.gui.implementation.list_ui.ListUI;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 @Getter
@@ -17,7 +18,7 @@ public class PickerUI<T> extends ListUI<T> {
         {
             if (onItemPicked == null)
                 return;
-
+            displayLog("Content clicked", ChatColor.YELLOW);
             onItemPicked.execute(player, button);
         });
     }

@@ -84,7 +84,7 @@ public final class JsonUtitlity implements FileUtility
                 .create();
     }
 
-    private static void ensureFile(String path,String fileName,String content)
+    public static void ensureFile(String path,String fileName,String content)
     {
         final String fullPath =getFullPath(path,fileName);
         final File file = new File(fullPath);

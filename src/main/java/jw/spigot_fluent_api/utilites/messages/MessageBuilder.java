@@ -30,7 +30,7 @@ public class MessageBuilder {
     }
 
     public MessageBuilder field(String name, Object value) {
-        return inBrackets(name).text(" - ").text(value).newLine();
+        return inBrackets(name).text(" - ").text(value).space();
     }
 
     public <T> MessageBuilder addList(List<T> name, Consumer<T> action) {
@@ -116,13 +116,18 @@ public class MessageBuilder {
     }
 
     public MessageBuilder newLine() {
-        stringBuilder.append("\n");
+        stringBuilder.append(System.lineSeparator());
         return this;
     }
 
     public MessageBuilder number(float number) {
         stringBuilder.append(number);
         return this;
+    }
+
+    public String[] getArray() {
+
+        return get().split(System.lineSeparator());
     }
 
     public String get() {

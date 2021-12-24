@@ -3,6 +3,7 @@ package jw.spigot_fluent_api.gui;
 
 import jw.spigot_fluent_api.gui.button.ButtonUI;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -81,7 +82,7 @@ public abstract class InventoryUI {
         EventsListenerInventoryUI.registerUI(this);
         player.openInventory(getInventory());
         this.isOpen = true;
-        displayLog("Open", ChatColor.GREEN);
+        displayLog("Open with Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void close() {
@@ -95,46 +96,56 @@ public abstract class InventoryUI {
         displayLog("Close", ChatColor.RED);
     }
 
+    public void setTitle(MessageBuilder title) {
+        setTitle(title.toString());
+    }
     public void setTitle(String title) {
 
         if (player == null || !player.isOnline())
             return;
         this.title = title;
         EventsListenerInventoryUI.unregisterUI(this);
-        var currentContent = inventory.getContents();
+        var currentContent =  getInventory().getContents();
         this.inventory = createInventory(inventoryType);
         getInventory().setContents(currentContent);
         if (isOpen)
             player.openInventory(getInventory());
         EventsListenerInventoryUI.registerUI(this);
 
-        this.displayLog("Title changed", ChatColor.GREEN);
+        this.displayLog("Title changed with Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void refresh() {
         if (!isOpen())
+        {
+            displayLog("Gui cant be refresh since is closed", ChatColor.YELLOW);
             return;
+        }
+
         if (!validatePlayer(player))
+        {
+            displayLog("Gui cant be refresh since player is invalid", ChatColor.YELLOW);
             return;
+        }
+
 
         refreshButtons();
         onRefresh(player);
-        displayLog("Refresh", ChatColor.YELLOW);
+        displayLog("Refresh", ChatColor.GREEN);
     }
 
     public void refreshButtons() {
-
-        if (inventory == null)
+        if (getInventory() == null)
             return;
-
         ButtonUI button = null;
         for (int i = 0; i < buttons.length; i++) {
             button = buttons[i];
             if (button != null && button.isActive()) {
-                inventory.setItem(i, button.getItemStack());
+                getInventory().setItem(i, button.getItemStack());
             } else
-                inventory.setItem(i, null);
+                getInventory().setItem(i, null);
         }
+        displayLog("New content loaded for Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void refreshButton(ButtonUI button) {

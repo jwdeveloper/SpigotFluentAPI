@@ -95,15 +95,15 @@ public class ListUI<T> extends ChestUI {
     @Override
     protected final void onOpen(Player player)
     {
-       this.setTitle(listContentManager.pageDescription());
         for (var event: onListOpen)
         {
           event.accept(player);
         }
+        this.setTitle(listContentManager.pageDescription());
     }
 
     @Override
-    protected void onClose(Player player) {
+    protected final void onClose(Player player) {
         for (var event: onListClose)
         {
             event.accept(player);
@@ -123,6 +123,7 @@ public class ListUI<T> extends ChestUI {
     public void setContentButtons(List<T> data, ButtonUIMapper<T> buttonMapper) {
         listContentManager.setButtonFormatter(data, buttonMapper);
         refreshContent();
+        displayLog("ContentButtons set, count:"+ data.size(),ChatColor.GREEN);
     }
 
     public void applyFilters()
@@ -152,8 +153,8 @@ public class ListUI<T> extends ChestUI {
     public void refreshContent()
     {
         setTitle(listContentManager.pageDescription());
+        addButtons(listContentManager.getButtons());
         refreshButtons();
-        displayLog("Content refreshed",ChatColor.GREEN);
     }
 
 
