@@ -22,7 +22,6 @@ public class MaterialPickerUI extends PickerUI<Material> {
                 button.setMaterial(Material.BLACK_STAINED_GLASS_PANE);
                 return;
             }
-
             button.setTitle(material.name());
             button.setMaterial(material);
             button.setDataContext(material);

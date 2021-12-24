@@ -71,7 +71,7 @@ public class InjectionManager {
     }
 
     public static void registerAllFromPackage(Package packName) {
-        var types = ClassTypeUtility.getClassesInPackage(packName.getName());
+        var types = ClassTypeUtility.fineClassesInPackage(packName.getName());
         var toInstantiate = new ArrayList<Class<?>>();
 
         for (Class<?> type : types) {

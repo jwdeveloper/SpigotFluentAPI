@@ -13,4 +13,14 @@ public class ButtonObserverEvent<T>
     private ButtonUI button;
     private ButtonObserver<T> observer;
     private T value;
+
+    @Override
+    public String toString() {
+        return "ButtonObserverEvent{" +
+                "player=" + player +
+                ", button=" + button +
+                ", observer=" + observer +
+                ", value=" + value +
+                '}';
+    }
 }

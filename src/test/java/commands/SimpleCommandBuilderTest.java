@@ -1,31 +1,57 @@
 package commands;
 
 import jw.spigot_fluent_api.simple_commands.SimpleCommand;
-import org.bukkit.Material;
+import jw.spigot_fluent_api.simple_commands.enums.CommandArgumentType;
+import jw.spigot_fluent_api.utilites.bukkit_mocks.PlayerMock;
+import jw.spigot_fluent_api.utilites.bukkit_mocks.ServerMock;
+import org.bukkit.Bukkit;
 import org.junit.Test;
 
 public class SimpleCommandBuilderTest {
 
     @Test
     public void shouldBuild() {
-        var command = SimpleCommand
-                .build("player")
+
+        Bukkit.setServer(new ServerMock());
+        var commandSenderMock = new PlayerMock();
+        var command = "player openItems";
+        var wrongCommand = "player openx";
+
+        commandSenderMock.setDisplayName("testPlayer");
+
+        var root = getRootCommand("player");
+        var child1= getChild("openItems");
+        var child2= getChild("openMoney");
+        root.addSubCommand(child1);
+        root.addSubCommand(child2);
+
+       // root.execute(commandSenderMock,)
+    }
+
+
+    public SimpleCommand getRootCommand(String name)
+    {
+        return SimpleCommand
+                .builder(name)
                 .setDescription("help all player")
                 .setShortDescription("help player")
-                .addArgument("item")
-                .setType(Material.class)
-                .setDescription("works always")
-                .build()
                 .addPermission("player")
                 .addOpPermission()
+                .addArgument("subcomands")
+                .setType(CommandArgumentType.SUBCOMMAND)
+                .build()
                 .onPlayerExecute(simpleCommandEvent ->
                 {
-
                     simpleCommandEvent.setResult(true);
                 })
-                .register();
+               .register();
+    }
 
-        command.addSubCommand(command);
-        command.setActive(false);
+    public SimpleCommand getChild(String name)
+    {
+        return SimpleCommand
+                .builder(name)
+                .setDescription("child command "+name)
+                .register();
     }
 }

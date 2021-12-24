@@ -1,9 +1,6 @@
 package jw.spigot_fluent_api.data.repositories;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public interface Repository <T>
 {
@@ -17,7 +14,7 @@ public interface Repository <T>
 
      boolean insertOne(T data);
 
-     boolean insertMany(ArrayList<T> data);
+     boolean insertMany(List<T> data);
 
      boolean updateOne(UUID id,T data);
 
@@ -25,5 +22,5 @@ public interface Repository <T>
 
      boolean deleteOne(T data);
 
-     boolean deleteMany(ArrayList<T> data);
+     boolean deleteMany(List<T> data);
 }

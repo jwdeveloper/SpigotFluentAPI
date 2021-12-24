@@ -12,6 +12,7 @@ public class FluentPluginConfiguration
 {
     boolean autoSaveLoadFiles;
     boolean dependencyInjectionEnable;
+    boolean runWithIntegrationTests;
     String pluginPath;
     Consumer<DataManager> dataManagerConsumerConfiguration;
     private final FluentPlugin fluentPlugin;
@@ -21,6 +22,7 @@ public class FluentPluginConfiguration
         this.pluginPath = getDefaultPath();
         this.autoSaveLoadFiles = true;
         this.dependencyInjectionEnable = false;
+        this.runWithIntegrationTests =false;
     }
 
     public FluentPluginConfiguration useDependencyInjection()
@@ -51,6 +53,12 @@ public class FluentPluginConfiguration
             FluentPlugin.logInfo("Plugins disabled");
             Bukkit.getPluginManager().disablePlugins();
         });
+        return this;
+    }
+
+    public FluentPluginConfiguration runWithIntegrationTests()
+    {
+        this.runWithIntegrationTests = true;
         return this;
     }
 

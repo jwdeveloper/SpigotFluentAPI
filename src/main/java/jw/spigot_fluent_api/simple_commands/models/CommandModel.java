@@ -3,6 +3,8 @@ package jw.spigot_fluent_api.simple_commands.models;
 import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,13 +13,21 @@ public class CommandModel {
 
     private String name;
 
-    private String shortDescription;
+    private String shortDescription ="";
 
-    private String description;
+    private String description = "";
 
-    private List<CommandAccessType> commandAccesses;
+    private String usageMessage ="";
 
-    private List<String> permissions;
+    private String permissionMessage ="";
 
-    private List<CommandArgument> arguments;
+    private String label ="";
+
+    private List<CommandAccessType> commandAccesses = new ArrayList<>();
+
+    private List<String> permissions = new ArrayList<>();
+
+    private List<CommandArgument> arguments = new ArrayList<>();
+
+    private boolean allParametersRequired =true;
 }

@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.simple_commands;
 
+import jw.spigot_fluent_api.events.EventBase;
 import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ObjectUtility;
@@ -9,115 +10,83 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.event.server.PluginDisableEvent;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class SimpleCommandManger extends BukkitCommand {
-
+public class SimpleCommandManger extends EventBase {
     private HashMap<String, SimpleCommand> commands;
     private static SimpleCommandManger instance;
 
     private static SimpleCommandManger getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new SimpleCommandManger();
-
+            instance.commands = new HashMap<>();
+        }
         return instance;
     }
 
-    private SimpleCommandManger() {
-        super("");
+    @Override
+    public void onPluginStop(PluginDisableEvent event) {
+        var instance= getInstance();
+        for(var command:instance.commands.values())
+        {
+            instance.unregisterBukkitCommand(command);
+        }
+        instance.commands.clear();
     }
 
-    public static void register(SimpleCommand command) {
+    public static boolean register(SimpleCommand command) {
         var instance = getInstance();
         if (instance.commands.containsKey(command.getName())) {
-            return;
+            return false;
+        }
+        if(! instance.registerBukkitCommand(command))
+        {
+            return false;
         }
         instance.commands.put(command.getName(), command);
-        instance.registerBukkitCommand(command);
+       return true;
     }
 
-    public static void unregister(SimpleCommand command) {
+    public static boolean unregister(SimpleCommand command) {
         var instance = getInstance();
-        instance.unregisterBukkitCommand(command);
-        instance.commands.remove(command.getName());
-    }
-
-    @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-        var command = getCommand(args);
-        if (command == null)
-            return List.of();
-        command = isSubcommandInvoked(command, args);
-        if (command == null)
-            return List.of();
-
-        return super.tabComplete(sender, alias, args);
-    }
-
-    @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        var command = getCommand(args);
-        if (command == null)
+        if (!instance.unregisterBukkitCommand(command)) {
             return false;
-        command = isSubcommandInvoked(command, args);
-        if (command == null)
-            return false;
-        return command.execute(sender, commandLabel, args);
-    }
-
-    private SimpleCommand isSubcommandInvoked(SimpleCommand command, String[] args) {
-        SimpleCommand result = command;
-        String[] part = null;
-        for (SimpleCommand subcommand : result.getSubCommands()) {
-            if (args.length > 1) {
-                part = Arrays.copyOfRange(args, 1, args.length);
-                result = isSubcommandInvoked(result, args);
-                if (result != null) {
-                    break;
-                }
-            }
-            if (subcommand.getName().equalsIgnoreCase(args[0])) {
-                result = subcommand;
-                break;
-            }
         }
-        return result;
-    }
-
-    private SimpleCommand getCommand(String[] args) {
-        if (args.length == 0)
-            return null;
-        var commandName = args[0];
-        if (!commands.containsKey(commandName))
-            return null;
-        return commands.get(commandName);
+        instance.commands.remove(command.getName());
+        return true;
     }
 
 
-    private void registerBukkitCommand(SimpleCommand simpleCommand) {
+    private boolean registerBukkitCommand(SimpleCommand simpleCommand) {
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            commandMap.register(simpleCommand.getName(), simpleCommand);
+           return commandMap.register(FluentPlugin.getPlugin().getName(), simpleCommand);
         } catch (Exception e) {
-            e.printStackTrace();
+            FluentPlugin.logException("Unable to register command " + simpleCommand.getName(), e);
+            return false;
         }
     }
 
-    private void unregisterBukkitCommand(SimpleCommand command) {
+    private boolean unregisterBukkitCommand(SimpleCommand command) {
         try {
-
             Object result = ObjectUtility.getPrivateField(Bukkit.getPluginManager(), "commandMap");
             SimpleCommandMap commandMap = (SimpleCommandMap) result;
-            Object map = ObjectUtility.getPrivateField(commandMap, "knownCommands");
-            @SuppressWarnings("unchecked")
+            var field = SimpleCommandMap.class.getDeclaredField("knownCommands");
+            field.setAccessible(true);
+            var map = field.get(commandMap);
+            field.setAccessible(false);
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
-            knownCommands.remove(command.getName());
+            command.unregister(commandMap);
+            knownCommands.remove(command.getName(),command);
+            knownCommands.remove(command.getName()+":"+command.getName());
             for (String alias : command.getAliases()) {
                 if (!knownCommands.containsKey(alias))
                     continue;
@@ -127,10 +96,24 @@ public class SimpleCommandManger extends BukkitCommand {
                 }
                 knownCommands.remove(alias);
             }
+            return true;
         } catch (Exception e) {
-            FluentPlugin.logError(e.getMessage());
-            e.printStackTrace();
+            FluentPlugin.logException("Unable to unregister command " + command.getName(), e);
+            return false;
         }
+    }
+
+    public static List<String> getAllServerCommands() {
+        List<String> result = new ArrayList<>();
+        try {
+
+            Object commandMap = ObjectUtility.getPrivateField(Bukkit.getPluginManager(), "commandMap");
+            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
+            return simpleCommandMap.getCommands().stream().map(c -> c.getName()).toList();
+        } catch (Exception e) {
+            FluentPlugin.logException("can't get all commands", e);
+        }
+        return result;
     }
 
 }

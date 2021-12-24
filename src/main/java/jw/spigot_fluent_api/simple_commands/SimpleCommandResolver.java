@@ -23,11 +23,11 @@ public class SimpleCommandResolver {
 
             model = new CommandModel();
             resolveCommandInformations(command,model);
-            var permissions = resolvePermissions(command,model.getFullName());
-            var parameters = resolveParameters(command, model.getFullName());
-            model.setPermissions(permissions);
+          //  var permissions = resolvePermissions(command,model.getFullName());
+         //   var parameters = resolveParameters(command, model.getFullName());
+          //  model.setPermissions(permissions);
          //   model.setMethod(command);
-            model.setArguments(parameters);
+        //    model.setArguments(parameters);
         }
         return result;
     }
@@ -45,8 +45,8 @@ public class SimpleCommandResolver {
 
         var commandInfo = command.getAnnotation(Command.class);
         commandModel.setName(commandInfo.name());
-        commandModel.setFullName(commandInfo.name());
-        commandModel.setCommandAccess(commandInfo.access());
+     //   commandModel.setFullName(commandInfo.name());
+      //  commandModel.setCommandAccess(commandInfo.access());
         commandModel.setDescription(commandInfo.description());
         return commandModel;
     }
@@ -85,8 +85,8 @@ public class SimpleCommandResolver {
             }
             var commandParameter = new CommandArgument();
            // commandParameter.index = i;
-            commandParameter.name = paramsNames.get(i);
-            commandParameter.type = paramtersTypes[i];
+         //   commandParameter.name = paramsNames.get(i);
+         //   commandParameter.type = paramtersTypes[i];
             result.add(commandParameter);
         }
         return result;

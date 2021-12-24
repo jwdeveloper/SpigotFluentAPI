@@ -1,8 +1,10 @@
 package jw.spigot_fluent_api.gui.implementation.picker_list_ui;
 
+import jw.spigot_fluent_api.initialization.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -18,21 +20,22 @@ public class FilePickerUI extends PickerUI<String> {
         super(name);
         onListOpen(player ->
         {
-            setContentButtons(getFolderFilesName(), (data, button) ->
+            var files = getFolderFilesName();
+            displayLog("Loaded "+files.size()+" files from path "+path, ChatColor.GREEN);
+            setContentButtons(files, (data, button) ->
             {
                 button.setMaterial(Material.PAPER);
                 button.setTitle(data);
                 button.setDataContext(data);
             });
+            refresh();
         });
     }
-
-
     public void setExtensions(String... extensions) {
         this.extensions = extensions;
     }
 
-    private ArrayList<String> getFolderFilesName() {
+    public final ArrayList<String> getFolderFilesName() {
         if (extensions == null)
             return FileUtility.getFolderFilesName(path);
         else

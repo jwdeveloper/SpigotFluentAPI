@@ -17,7 +17,6 @@ public class ButtonObserver<T>
         this.buttonNotifier =buttonNotifier;
         this.observable.onChange(value ->
         {
-            FluentPlugin.logInfo("C");
             if(!validateButton())
                 return;
             buttonNotifier.onValueChanged(new ButtonObserverEvent(null,buttonUI,this,value));

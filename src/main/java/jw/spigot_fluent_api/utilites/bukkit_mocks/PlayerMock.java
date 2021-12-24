@@ -45,7 +45,7 @@ public class PlayerMock implements Player
 
     @Override
     public void setDisplayName(String name) {
-
+        mockStringValue = name;
     }
 
     @Override
@@ -748,7 +748,7 @@ public class PlayerMock implements Player
 
     }
 
-    @Override
+
     public void stopAllSounds() {
 
     }

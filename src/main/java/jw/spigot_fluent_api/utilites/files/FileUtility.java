@@ -1,7 +1,10 @@
 package jw.spigot_fluent_api.utilites.files;
+
 import jw.spigot_fluent_api.initialization.FluentPlugin;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,7 +36,7 @@ public interface FileUtility {
                     else if (!childFile.delete()) {
 
                     }
-                  FluentPlugin.logError("Could not delete file: " + childFile.getName());
+                    FluentPlugin.logError("Could not delete file: " + childFile.getName());
                 }
             }
         }
@@ -44,9 +47,18 @@ public interface FileUtility {
         FluentPlugin.logError("Could not delete file: " + file.getName());
     }
 
+    static String combinePath(String... paths) {
+        var res = "";
+        for (var p : paths) {
+            res += p + File.separator;
+        }
+        return res;
+    }
+
     static ArrayList<String> getFolderFilesName(String path, String... extensions) {
         final ArrayList<String> filesName = new ArrayList<>();
         if (!isPathValid(path)) {
+            FluentPlugin.logError("Files count not be loaded since path " + path + " not exists!");
             return filesName;
         }
         final File folder = new File(path);
@@ -71,5 +83,9 @@ public interface FileUtility {
             }
         }
         return filesName;
+    }
+
+    public static void ensureDirectory(String path) {
+        new File(path).mkdirs();
     }
 }

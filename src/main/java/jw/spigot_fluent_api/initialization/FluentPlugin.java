@@ -5,6 +5,7 @@ import jw.spigot_fluent_api.data.Saveable;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTestsRunner;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -34,6 +35,11 @@ public abstract class FluentPlugin extends JavaPlugin {
             fluentPluginConfiguration.dataManagerConsumerConfiguration.accept(dataManager);
         }
         dataManager.load();
+        if(configuration().runWithIntegrationTests)
+        {
+            SpigotIntegrationTestsRunner.loadTests();
+        }
+
         OnFluentPluginEnable();
     }
 
@@ -52,7 +58,7 @@ public abstract class FluentPlugin extends JavaPlugin {
     }
 
     public static String getPath() {
-        return instnace.fluentPluginConfiguration.pluginPath;
+        return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
     }
 
     public static DataManager getDataManager() {
@@ -70,6 +76,23 @@ public abstract class FluentPlugin extends JavaPlugin {
     public static void logError(String message) {
 
         logFormat(LogUtility.error(), message).send();
+    }
+
+    public static void logException(String message, Exception e) {
+
+        var cause = e.getCause() != null? e.getCause().getMessage():e.getMessage();
+
+        logFormat(LogUtility.error(), message)
+                .newLine()
+                .color(ChatColor.DARK_RED)
+                .inBrackets("Reason")
+                .color(ChatColor.YELLOW)
+                .space()
+                .text(cause)
+                .color(ChatColor.WHITE).send();
+        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-",100).send();
+        e.printStackTrace();
+        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-",100).send();
     }
 
     public static void logSuccess(String message) {

@@ -11,7 +11,7 @@ public class PermissionsUtility
 {
     public static boolean playerHasPermissions(Player player, List<String> permissions)
     {
-       return playerHasPermissions(player,permissions);
+       return playerHasPermissions(player,permissions.toArray(new String[permissions.size()]));
     }
 
     public static boolean playerHasPermissions(Player player, String[] permissions)

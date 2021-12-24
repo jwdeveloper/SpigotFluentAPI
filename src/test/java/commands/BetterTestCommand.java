@@ -54,9 +54,4 @@ public class BetterTestCommand extends SimpleCommand {
     public void wrongFormatCmd(Player player, String playerName, int amount) {
         System.out.println("Player: " + player.getName() + "Player name: " + playerName + " amount:" + amount);
     }
-
-    @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        return false;
-    }
 }

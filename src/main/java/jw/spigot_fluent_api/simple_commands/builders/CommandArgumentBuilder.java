@@ -1,7 +1,12 @@
 package jw.spigot_fluent_api.simple_commands.builders;
 
+import jw.spigot_fluent_api.simple_commands.enums.CommandArgumentType;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgumentValidator;
+import jw.spigot_fluent_api.simple_commands.validators.BoolValidator;
+import jw.spigot_fluent_api.simple_commands.validators.ColorValidator;
+import jw.spigot_fluent_api.simple_commands.validators.FloatValidator;
+import jw.spigot_fluent_api.simple_commands.validators.IntValidator;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -20,13 +25,22 @@ public class CommandArgumentBuilder {
     }
 
     public CommandArgumentBuilder setName(String name) {
-        argument.setName(name);
+        argument.setName(name.toLowerCase());
         return this;
     }
 
-    public CommandArgumentBuilder setType(Class<?> type)
+    public CommandArgumentBuilder setType(CommandArgumentType type)
     {
         argument.setType(type);
+
+        switch (type)
+        {
+            case INT -> argument.addValidator(new IntValidator());
+            case NUMBER, FLOAT -> argument.addValidator(new FloatValidator());
+            case BOOL -> argument.addValidator(new BoolValidator());
+            case COLOR -> argument.addValidator(new ColorValidator());
+        }
+
         return this;
     }
 
