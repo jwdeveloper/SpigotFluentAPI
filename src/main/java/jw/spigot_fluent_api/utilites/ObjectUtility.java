@@ -48,6 +48,16 @@ public class ObjectUtility {
         };
     }
 
+    public static Object getPrivateField(Object object, String field)throws SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
+    }
+
     public static void copyToObject(Object obj, Object obj2, Class type) {
         Field[] files = type.getFields();
         for (var file : files) {

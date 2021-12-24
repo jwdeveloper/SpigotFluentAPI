@@ -26,7 +26,7 @@ public class SimpleCommandResolver {
             var permissions = resolvePermissions(command,model.getFullName());
             var parameters = resolveParameters(command, model.getFullName());
             model.setPermissions(permissions);
-            model.setMethod(command);
+         //   model.setMethod(command);
             model.setArguments(parameters);
         }
         return result;
@@ -47,8 +47,7 @@ public class SimpleCommandResolver {
         commandModel.setName(commandInfo.name());
         commandModel.setFullName(commandInfo.name());
         commandModel.setCommandAccess(commandInfo.access());
-        commandModel.setRequireAllParams(commandInfo.requireAllParameters());
-        commandModel.setDesciption(commandInfo.description());
+        commandModel.setDescription(commandInfo.description());
         return commandModel;
     }
 
@@ -85,7 +84,7 @@ public class SimpleCommandResolver {
                 throw new Exception("Only primitive types can be use as parameters");
             }
             var commandParameter = new CommandArgument();
-            commandParameter.index = i;
+           // commandParameter.index = i;
             commandParameter.name = paramsNames.get(i);
             commandParameter.type = paramtersTypes[i];
             result.add(commandParameter);
