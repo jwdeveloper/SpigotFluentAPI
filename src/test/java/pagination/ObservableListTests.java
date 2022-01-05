@@ -1,8 +1,9 @@
 package pagination;
 
-import jw.spigot_fluent_api.utilites.bukkit_mocks.ServerMock;
+
 import jw.spigot_fluent_api.utilites.pagination.Pagination;
 import org.bukkit.Bukkit;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -10,10 +11,10 @@ import java.util.ArrayList;
 
 public class ObservableListTests
 {
-    @Test
+    @Ignore
+    @Test()
     public void testContentManager() {
         var max = 28;
-        Bukkit.setServer(new ServerMock());
         Pagination<String> contentManager = new Pagination<>(max);
         ArrayList<String> data = new ArrayList<>();
         for(int i=0;i<max*2+3;i++)

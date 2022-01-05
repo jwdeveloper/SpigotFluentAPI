@@ -1,13 +1,11 @@
 package jw.spigot_fluent_api.utilites.files.json;
 
 import com.google.gson.*;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import jw.spigot_fluent_api.utilites.files.json.adapters.ItemStackAdapter;
 import jw.spigot_fluent_api.utilites.files.json.adapters.LocationAdapter;
 import jw.spigot_fluent_api.utilites.files.json.execution.BindingFieldSkip;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,12 +1,11 @@
 package jw.spigot_fluent_api_integration_tests;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ClassTypeUtility;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SpigotIntegrationTestsRunner {
 

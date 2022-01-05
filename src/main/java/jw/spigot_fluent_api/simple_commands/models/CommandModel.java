@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.simple_commands.models;
 
-import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
+import jw.spigot_fluent_api.simple_commands.enums.AccessType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ public class CommandModel {
 
     private String label ="";
 
-    private List<CommandAccessType> commandAccesses = new ArrayList<>();
+    private List<AccessType> commandAccesses = new ArrayList<>();
 
     private List<String> permissions = new ArrayList<>();
 

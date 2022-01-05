@@ -1,8 +1,9 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.simple_commands.SimpleCommand;
 import jw.spigot_fluent_api.simple_commands.SimpleCommandManger;
-import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
+import jw.spigot_fluent_api.simple_commands.enums.AccessType;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import jw.spigot_fluent_api_integration_tests.SpigotTest;
 import jw.spigot_fluent_api_integration_tests.spigotAssertions.SpigotAssertion;
@@ -15,48 +16,64 @@ public class SimpleCommandManagerTests extends SpigotIntegrationTest {
     private SimpleCommand simpleCommand;
 
     @Override
-    public void beforeTests()
-    {
+    public void beforeTests() {
         simpleCommand = SimpleCommand
-                .builder(commandName)
+                .newCommand(commandName)
                 .setDescription("Test command full desciption")
                 .setShortDescription("Test command short description")
-                .addAccess(CommandAccessType.COMMAND_SENDER)
                 .build();
     }
 
     @SpigotTest
     public void shouldRegisterCommand() throws Exception {
         var result = SimpleCommandManger.register(simpleCommand);
-        var allSpigotCommands = SimpleCommandManger.getAllServerCommands();
+        var allSpigotCommands = SimpleCommandManger.getAllServerCommandsName();
         SpigotAssertion.shouldBeTrue(result);
-        SpigotAssertion.shouldContains(allSpigotCommands,commandName);
+        SpigotAssertion.shouldContains(allSpigotCommands, commandName);
     }
 
     @SpigotTest
     public void shouldUnregisterCommand() throws Exception {
         var result = SimpleCommandManger.unregister(simpleCommand);
         var allSpigotCommands = SimpleCommandManger.getAllServerCommands();
+        var cmd = allSpigotCommands.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(simpleCommand.getName()))
+                .findFirst();
+
         SpigotAssertion.shouldBeTrue(result);
-        SpigotAssertion.shouldNotContains(allSpigotCommands,commandName);
+        SpigotAssertion.shouldBeTrue(cmd.isPresent());
+        SpigotAssertion.shouldBeFalse(cmd.get().isRegistered());
     }
 
 
     @SpigotTest
     public void shouldUnRegisterAllSimpleCommandsOnServerDisable() throws Exception {
 
-       var cmd1 = SimpleCommand.builder("cmd1").build();
-       var cmd2 = SimpleCommand.builder("cmd2").build();
+        var command1 = SimpleCommand.newCommand("cmd1").build();
+        var command2 = SimpleCommand.newCommand("cmd2").build();
 
-        var resultRegister1 = SimpleCommandManger.register(cmd1);
-        var resultRegister2 = SimpleCommandManger.register(cmd2);
+        var resultRegister1 = SimpleCommandManger.register(command1);
+        var resultRegister2 = SimpleCommandManger.register(command2);
 
         Bukkit.getServer().getPluginManager().callEvent(new PluginDisableEvent(FluentPlugin.getPlugin()));
 
-        var allCommands = SimpleCommandManger.getAllServerCommands();
+        var allSpigotCommands = SimpleCommandManger.getAllServerCommands();
+        var cmd1 = allSpigotCommands.stream()
+                .filter(c -> c.getName()
+                .equalsIgnoreCase(simpleCommand.getName()))
+                .findFirst();
+
+        var cmd2 = allSpigotCommands.stream()
+                .filter(c -> c.getName()
+                        .equalsIgnoreCase(simpleCommand.getName()))
+                .findFirst();
+        SpigotAssertion.shouldBeTrue(cmd1.isPresent());
+        SpigotAssertion.shouldBeTrue(cmd2.isPresent());
+
+        SpigotAssertion.shouldBeFalse(cmd1.get().isRegistered());
+        SpigotAssertion.shouldBeFalse(cmd2.get().isRegistered());
+
         SpigotAssertion.shouldBeTrue(resultRegister1);
         SpigotAssertion.shouldBeTrue(resultRegister2);
-        SpigotAssertion.shouldNotContains(allCommands,cmd1.getName());
-        SpigotAssertion.shouldNotContains(allCommands,cmd2.getName());
     }
 }

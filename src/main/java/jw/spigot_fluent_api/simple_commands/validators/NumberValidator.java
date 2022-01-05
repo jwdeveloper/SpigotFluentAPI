@@ -1,10 +1,13 @@
 package jw.spigot_fluent_api.simple_commands.validators;
 
-import jw.spigot_fluent_api.simple_commands.models.CommandArgumentValidator;
+import jw.spigot_fluent_api.simple_commands.models.ValidationResult;
 
 public class NumberValidator implements CommandArgumentValidator {
     @Override
-    public boolean validate(String arg) {
-        return arg.matches("^[1-9]\\d*(\\.\\d+)?$");
+    public ValidationResult validate(String arg) {
+        if(arg.matches("^[1-9]\\d*(\\.\\d+)?$"))
+            return new ValidationResult(true,"");
+        else
+            return new ValidationResult(false,"should be number");
     }
 }

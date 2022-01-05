@@ -1,13 +1,13 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.simple_commands.SimpleCommand;
-import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
-import jw.spigot_fluent_api.simple_commands.enums.CommandArgumentType;
-import jw.spigot_fluent_api.simple_commands.events.SimpleCommandEvent;
+import jw.spigot_fluent_api.simple_commands.enums.AccessType;
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
+import jw.spigot_fluent_api.simple_commands.events.CommandEvent;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
-import jw.spigot_fluent_api.simple_commands.models.CommandModel;
 import jw.spigot_fluent_api.simple_commands.models.CommandTarget;
+import jw.spigot_fluent_api.simple_commands.models.ValidationResult;
 import jw.spigot_fluent_api.simple_commands.services.CommandService;
 import jw.spigot_fluent_api.simple_commands.services.SimpleCommandService;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
@@ -26,30 +26,31 @@ import java.util.function.Consumer;
 public class SimpleCommandTests extends SpigotIntegrationTest
 {
     SimpleCommand simpleCommand;
-    Consumer<SimpleCommandEvent> onExecute;
+    Consumer<CommandEvent> onExecute;
     CommandService commandServiceMock;
     @Override
     public void beforeTests()
     {
         simpleCommand = SimpleCommand
-                .builder("example-command")
+                .newCommand("example-command")
                 .setDescription("full description")
                 .setShortDescription("short description")
+                .addPermissions("test-permissions")
+                .newArgument("testBool")
+                .setColor(ChatColor.AQUA)
+                .setType(ArgumentType.BOOL)
+                .build()
+                .newArgument("testInt")
+                .setColor(ChatColor.GREEN)
+                .setType(ArgumentType.INT)
+                .build()
                 .onExecute(simpleCommandEvent ->
                 {
                     onExecute.accept(simpleCommandEvent);
                 })
-                .addArgument("testBool")
-                .setColor(ChatColor.AQUA)
-                .setType(CommandArgumentType.BOOL)
-                .build()
-                .addArgument("testInt")
-                .setColor(ChatColor.GREEN)
-                .setType(CommandArgumentType.INT)
-                .build()
                 .register();
         commandServiceMock = getCommandServiceMock();
-        simpleCommand.setImplementation(commandServiceMock);
+        simpleCommand.setCommandService(commandServiceMock);
     }
 
     @Override
@@ -97,54 +98,87 @@ public class SimpleCommandTests extends SpigotIntegrationTest
         SpigotAssertion.shouldBeFalse(eventInvoked.get());
     }
 
+    @SpigotTest
+    public void shouldNotInvokeCommandLackOfPermissions() throws Exception {
+        AtomicBoolean eventInvoked = new AtomicBoolean(false);
+        onExecute = (c)->
+        {
+            eventInvoked.set(true);
+        };
+        var command  = simpleCommand.getName();
+        var player = getExamplePlayer();
+        player.setOp(false);
+        var result = Bukkit.dispatchCommand(player,command);
+        player.setOp(true);
+        SpigotAssertion.shouldBeFalse(result);
+        SpigotAssertion.shouldBeFalse(eventInvoked.get());
+     
+    }
+
     public CommandService getCommandServiceMock()
     {
         return new SimpleCommandService() {
-            @Override
-            public String connectArgs(String[] stringArray) {
-                return null;
-            }
 
             @Override
-            public Object[] getArgumentValues(String[] args, List<CommandArgument> commandArguments) {
-                return super.getArgumentValues(args,commandArguments);
-            }
-
-            @Override
-            public boolean hasSenderAccess(CommandSender commandSender, List<CommandAccessType> commandAccessType)
+            public Object[] getArgumentValues(String[] args, List<CommandArgument> commandArguments)
             {
-                FluentPlugin.logInfo("Checking access for "+commandSender.getName());
-                return super.hasSenderAccess(commandSender,commandAccessType);
+                var start = System.nanoTime();
+                var res = super.getArgumentValues(args,commandArguments);;
+                var finish = System.nanoTime();
+                var result = finish - start;
+                var inMS = result / Math.pow(10, 6);
+                FluentPlugin.logInfo("Perparing arguments "+" in time: "+inMS);
+                return res;
             }
 
             @Override
-            public CommandTarget isSubcommandInvoked(SimpleCommand command, String[] args) {
-                FluentPlugin.logInfo("Looking for sub Command "+command.getName());
-                return super.isSubcommandInvoked(command,args);
+            public boolean hasSenderAccess(CommandSender commandSender, List<AccessType> commandAccessType)
+            {
+                var start = System.nanoTime();
+                var res = super.hasSenderAccess(commandSender,commandAccessType);
+                var finish = System.nanoTime();
+                var result = finish - start;
+                var inMS = result / Math.pow(10, 6);
+                FluentPlugin.logInfo("Checking access for "+commandSender.getName()+" in time: "+inMS);
+                return res;
             }
-
             @Override
-            public boolean hasSenderAccess(CommandSender commandSender, CommandAccessType commandAccessType) {
+            public boolean hasSenderAccess(CommandSender commandSender, AccessType commandAccessType) {
                 return true;
             }
 
             @Override
-            public boolean hasSenderPermissions(CommandSender commandSender, List<String> permissons) {
-                FluentPlugin.logInfo("Checking permissions for "+commandSender.getName());
-                return super.hasSenderPermissions(commandSender,permissons);
+            public CommandTarget isSubcommandInvoked(SimpleCommand command, String[] args) {
+                var start = System.nanoTime();
+                var res = super.isSubcommandInvoked(command,args);;
+                var finish = System.nanoTime();
+                var result = finish - start;
+                var inMS = result / Math.pow(10, 6);
+                FluentPlugin.logInfo("Looking for sub Command "+command.getName()+" in time: "+inMS);
+                return res;
+            }
+
+
+            @Override
+            public ValidationResult hasSenderPermissions(CommandSender commandSender, List<String> permissions) {
+                var start = System.nanoTime();
+                var res = super.hasSenderPermissions(commandSender, permissions);
+                var finish = System.nanoTime();
+                var result = finish - start;
+                var inMS = result / Math.pow(10, 6);
+                FluentPlugin.logInfo("Checking permissions for "+commandSender.getName()+" in time: "+inMS+ " result "+ res.result());
+                return res;
             }
 
             @Override
-            public boolean validateArguments(String[] args, List<CommandArgument> commandArguments) {
-                FluentPlugin.logInfo("Validating arguments");
-                return super.validateArguments(args,commandArguments);
-            }
-
-            @Override
-            public List<Consumer<SimpleCommandEvent>> getEventsToInvoke(CommandSender sender, HashMap<CommandAccessType, Consumer<SimpleCommandEvent>> events)
-            {
-                FluentPlugin.logInfo("Preparing events to execute");
-                return super.getEventsToInvoke(sender,events);
+            public ValidationResult validateArguments(String[] args, List<CommandArgument> commandArguments) {
+                var start = System.nanoTime();
+                var res = super.validateArguments(args,commandArguments);
+                var finish = System.nanoTime();
+                var result = finish - start;
+                var inMS = result / Math.pow(10, 6);
+                FluentPlugin.logInfo("Validating arguments"+" in time: "+inMS);
+                return res;
             }
         };
     }

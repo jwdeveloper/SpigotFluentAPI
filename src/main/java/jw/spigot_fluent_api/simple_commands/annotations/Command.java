@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.simple_commands.annotations;
 
-import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
+import jw.spigot_fluent_api.simple_commands.enums.AccessType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,7 +15,7 @@ public @interface Command
 
     String description() default "";
 
-    CommandAccessType access() default CommandAccessType.COMMAND_SENDER;
+    AccessType access() default AccessType.COMMAND_SENDER;
 
     boolean requireAllParameters() default true;
 }

@@ -1,20 +1,16 @@
 package jw.spigot_fluent_api.simple_commands;
 
-import jw.spigot_fluent_api.events.EventBase;
-import jw.spigot_fluent_api.fluent_commands.FluentCommand;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ObjectUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.event.server.PluginDisableEvent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -86,7 +82,7 @@ public class SimpleCommandManger extends EventBase {
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             command.unregister(commandMap);
             knownCommands.remove(command.getName(),command);
-            knownCommands.remove(command.getName()+":"+command.getName());
+            knownCommands.remove(FluentPlugin.getPlugin().getName()+":"+command.getName(),command);
             for (String alias : command.getAliases()) {
                 if (!knownCommands.containsKey(alias))
                     continue;
@@ -103,7 +99,7 @@ public class SimpleCommandManger extends EventBase {
         }
     }
 
-    public static List<String> getAllServerCommands() {
+    public static List<String> getAllServerCommandsName() {
         List<String> result = new ArrayList<>();
         try {
 
@@ -111,9 +107,19 @@ public class SimpleCommandManger extends EventBase {
             SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
             return simpleCommandMap.getCommands().stream().map(c -> c.getName()).toList();
         } catch (Exception e) {
-            FluentPlugin.logException("can't get all commands", e);
+            FluentPlugin.logException("can't get all commands names", e);
         }
         return result;
     }
+    public static List<Command> getAllServerCommands() {
+        try {
 
+            Object commandMap = ObjectUtility.getPrivateField(Bukkit.getPluginManager(), "commandMap");
+            SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
+            return simpleCommandMap.getCommands().stream().toList();
+        } catch (Exception e) {
+            FluentPlugin.logException("can't get all commands", e);
+        }
+        return new ArrayList<>();
+    }
 }

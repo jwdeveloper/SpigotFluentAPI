@@ -1,7 +1,6 @@
 package jw.spigot_fluent_api.utilites;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
-import jw.spigot_fluent_api.utilites.messages.Emoticons;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 

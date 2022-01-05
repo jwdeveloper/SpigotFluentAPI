@@ -1,6 +1,6 @@
 package commands;
 
-import jw.spigot_fluent_api.simple_commands.SimpleCommandResolver;
+import jw.spigot_fluent_api.simple_commands.utilites.SimpleCommandResolver;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

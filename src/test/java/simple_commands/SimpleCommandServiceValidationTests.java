@@ -1,7 +1,8 @@
 package simple_commands;
 
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
-import jw.spigot_fluent_api.simple_commands.models.CommandArgumentValidator;
+import jw.spigot_fluent_api.simple_commands.validators.CommandArgumentValidator;
 import jw.spigot_fluent_api.simple_commands.services.SimpleCommandService;
 import jw.spigot_fluent_api.simple_commands.validators.BoolValidator;
 import jw.spigot_fluent_api.simple_commands.validators.NumberValidator;
@@ -22,11 +23,21 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
     }
 
     @Test
-    public void shouldReturnFalse()  {
+    public void shouldReturnTrueWhenHasNoArguments()  {
         var arguments = new String[5];
         var commandArguments = new ArrayList<CommandArgument>();
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result);
+        Assert.assertTrue(result.result());
+    }
+
+    @Test
+    public void shouldReturnFalseWhenHasArguments()  {
+        var arguments = new String[3];
+        var commandArguments = new ArrayList<CommandArgument>();
+        commandArguments.add(getCommandArgument(new NumberValidator()));
+        commandArguments.add(getCommandArgument(new NumberValidator()));
+        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertFalse(result.result());
     }
 
     @Test
@@ -34,7 +45,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var arguments = new String[0];
         var commandArguments = new ArrayList<CommandArgument>();
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result);
+        Assert.assertTrue(result.result());
     }
     @Test
     public void shouldValidateNotNumber() {
@@ -43,7 +54,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result);
+        Assert.assertFalse(result.result());
     }
 
     @Test
@@ -53,7 +64,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result);
+        Assert.assertFalse(result.result());
     }
 
     @Test
@@ -63,7 +74,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result);
+        Assert.assertTrue(result.result());
     }
 
     @Test
@@ -73,7 +84,19 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new BoolValidator()));
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result);
+        Assert.assertTrue(result.result());
+    }
+
+    @Test
+    public void shouldIgnoreSubCommandArgument()  {
+        var arguments = new String[2];
+        arguments[0] = "true";
+        arguments[1] = "false";
+        var commandArguments = new ArrayList<CommandArgument>();
+        commandArguments.add(getCommandArgument(new BoolValidator()));
+        commandArguments.add(getCommandArgument(new BoolValidator()));
+        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(result.result());
     }
 
     @Test
@@ -83,7 +106,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new BoolValidator()));
         var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result);
+        Assert.assertFalse(result.result());
     }
 
     private CommandArgument getCommandArgument(CommandArgumentValidator validator)

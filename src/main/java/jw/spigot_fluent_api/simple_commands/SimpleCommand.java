@@ -1,23 +1,21 @@
 package jw.spigot_fluent_api.simple_commands;
 
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.simple_commands.builders.SimpleCommandBuilder;
-import jw.spigot_fluent_api.simple_commands.enums.CommandAccessType;
-import jw.spigot_fluent_api.simple_commands.events.SimpleCommandEvent;
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
 import jw.spigot_fluent_api.simple_commands.models.CommandModel;
-import jw.spigot_fluent_api.simple_commands.services.CommandService;
-import jw.spigot_fluent_api.simple_commands.services.SimpleCommandService;
+import jw.spigot_fluent_api.simple_commands.services.*;
+import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Getter
 public class SimpleCommand extends Command {
@@ -27,8 +25,6 @@ public class SimpleCommand extends Command {
     @Setter
     private SimpleCommand parent;
 
-    private HashMap<CommandAccessType, Consumer<SimpleCommandEvent>> events;
-
     private final CommandModel commandModel;
 
     @Setter
@@ -36,95 +32,112 @@ public class SimpleCommand extends Command {
     @Setter
     private boolean active = true;
 
+    @Getter @Setter
+    private EventsService eventsService;
+    @Getter @Setter
     private CommandService commandService;
+    @Getter @Setter
+    private MessagesService messagesService;
 
     public SimpleCommand(CommandModel commandModel) {
         super(commandModel.getName());
         this.commandModel = commandModel;
         this.subCommands = new ArrayList<>();
         this.commandService = new SimpleCommandService();
-        this.events = new HashMap<>();
+        this.messagesService = new SimpleCommandMessageService();
+        this.eventsService = new SimpleCommandEventsService();
         this.setPermissionMessage(commandModel.getPermissionMessage());
         this.setDescription(commandModel.getDescription());
         this.setUsage(commandModel.getUsageMessage());
         this.setLabel(commandModel.getLabel());
-        for (var accessType : CommandAccessType.values()) {
-            this.events.put(accessType, (a) -> {
-            });
-        }
     }
 
     @Override
     public final boolean execute(CommandSender sender, String commandLabel, String[] args) {
         displayLog("command triggered");
         var commandTarget = commandService.isSubcommandInvoked(this, args);
-        return commandTarget.getSimpleCommand().invokeCommand(sender, args,commandTarget.getArgs());
+        return commandTarget.getSimpleCommand().invokeCommand(sender, args, commandTarget.getArgs());
     }
 
     public boolean invokeCommand(CommandSender sender, String[] args, String[] commandArgs) {
-        if (!this.isActive())
-        {
+        if (!this.isActive()) {
             displayLog("inactive");
+            sender.sendMessage(messagesService.inactiveCommand(this.getName()));
             return false;
         }
 
+        if (!commandService.hasSenderAccess(sender, commandModel.getCommandAccesses())) {
+            displayLog(sender.getName() + " has no access");
+            sender.sendMessage(messagesService.noAccess(sender));
+            return false;
+        }
 
-        if (!commandService.hasSenderAccess(sender, commandModel.getCommandAccesses()))
+        var permissionResult = commandService.hasSenderPermissions(sender, commandModel.getPermissions());
+        if (!permissionResult.result())
         {
-            displayLog(sender.getName()+" has no access");
+            displayLog(sender.getName() + " has no permissions "+permissionResult.message());
+            sender.sendMessage(messagesService.noPermission(sender,permissionResult.message()));
             return false;
         }
 
-
-        if (!commandService.hasSenderPermissions(sender, commandModel.getPermissions()))
-        {
-            displayLog(sender.getName()+" has no permissions");
+        var validationResult = commandService.validateArguments(commandArgs, commandModel.getArguments());
+        if (!validationResult.result()) {
+            displayLog("invalid arguments");
+            sender.sendMessage(messagesService.invalidArgument(validationResult.message()));
             return false;
         }
-
-
-        if (!commandService.validateArguments(commandArgs, commandModel.getArguments()))
-        {
-            displayLog(" invalid arguments");
-            return false;
-        }
-
 
         try {
-            var values = commandService.getArgumentValues(commandArgs, commandModel.getArguments());
-            var eventDto = new SimpleCommandEvent(sender, commandArgs, args, values, true);
-            var eventsToInvoke = commandService.getEventsToInvoke(sender, events);
-            for (var event : eventsToInvoke) {
-                event.accept(eventDto);
-            }
-            displayLog("command invoked with status "+eventDto.getResult());
-            return eventDto.getResult();
+            var invokeStatus = eventsService.invokeEvent(sender,args,commandArgs);
+            displayLog("command invoked with status " + invokeStatus);
+            return invokeStatus;
         } catch (Exception exception) {
-            FluentPlugin.logException("while invoking " + this.getName(), exception);
+            FluentPlugin.logException("error while invoking command " + this.getName(), exception);
             return false;
         }
     }
 
-    public void onExecute(Consumer<SimpleCommandEvent> event) {
-        registerEvent(CommandAccessType.COMMAND_SENDER, event);
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+        var commandTarget = commandService.isSubcommandInvoked(this, args);
+        return commandTarget.getSimpleCommand().displayTabComplete(sender, args, commandTarget.getArgs());
     }
 
-    public void onPlayerExecute(Consumer<SimpleCommandEvent> event) {
-        registerEvent(CommandAccessType.PLAYER, event);
+
+    public List<String> displayTabComplete(CommandSender sender, String[] args, String[] commandArgs) {
+        var arguments = this.getArguments();
+
+        if (commandArgs.length > arguments.size()) {
+            if (commandArgs.length == arguments.size() + 1) {
+                return subCommands.stream().map(c -> c.getName()).toList();
+            } else
+                return List.of();
+        }
+        if (arguments.size() == 0) {
+            return List.of();
+        }
+
+        var argIndex = commandArgs.length - 1;
+        argIndex = argIndex < 0 ? 0 : argIndex;
+        var argument = arguments.get(argIndex);
+        switch (argument.getArgumentDisplayMode()) {
+            case TAB_COMPLETE -> {
+                if (argument.getType() == ArgumentType.PLAYERS) {
+                    return Bukkit.getOnlinePlayers().stream().map(c -> c.getName()).toList();
+                }
+                return argument.getTabCompleter();
+            }
+            case NAME -> {
+                return List.of(new MessageBuilder().text(argument.getType().name()).toString());
+            }
+            case TYPE -> {
+                return List.of(new MessageBuilder().inBrackets(argument.getType().name().toLowerCase()).toString());
+            }
+        }
+        return List.of();
     }
 
-    public void onConsoleExecute(Consumer<SimpleCommandEvent> event) {
-        registerEvent(CommandAccessType.CONSOLE_SENDER, event);
-    }
 
-    public void onBlockExecute(Consumer<SimpleCommandEvent> event) {
-
-
-    }
-
-    public void onEntityExecute(Consumer<SimpleCommandEvent> event) {
-
-    }
 
     public void addSubCommand(SimpleCommand command) {
         command.setParent(null);
@@ -137,11 +150,6 @@ public class SimpleCommand extends Command {
         command.setParent(null);
         this.subCommands.remove(command);
     }
-
-    public void setImplementation(CommandService commandService) {
-        this.commandService = commandService;
-    }
-
     public String getName() {
         return commandModel.getName();
     }
@@ -150,11 +158,9 @@ public class SimpleCommand extends Command {
         return commandModel.getArguments();
     }
 
-    public void displayLog(String log)
-    {
-        if(logs)
-        {
-            FluentPlugin.logInfo("Command "+this.getName()+" "+log);
+    private void displayLog(String log) {
+        if (logs) {
+            FluentPlugin.logInfo("Command " + this.getName() + " " + log);
         }
     }
 
@@ -162,17 +168,18 @@ public class SimpleCommand extends Command {
         return !(parent == null);
     }
 
-    private void registerEvent(CommandAccessType accessType, Consumer<SimpleCommandEvent> event) {
-        if (event == null)
-            return;
-        events.replace(accessType, event);
-    }
-
-    public static SimpleCommandBuilder builder(String name) {
-        return new SimpleCommandBuilder(name);
-    }
-
     public void unregister() {
-        SimpleCommandManger.unregister(this);
+        var status = SimpleCommandManger.unregister(this);
+        displayLog("Unregistered status " + status);
+
+    }
+
+    public void register() {
+        var status = SimpleCommandManger.register(this);
+        displayLog("registered status " + status);
+    }
+
+    public static SimpleCommandBuilder newCommand(String name) {
+        return new SimpleCommandBuilder(name);
     }
 }

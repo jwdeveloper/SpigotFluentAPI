@@ -1,8 +1,7 @@
 package jw.spigot_fluent_api.utilites.binding;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

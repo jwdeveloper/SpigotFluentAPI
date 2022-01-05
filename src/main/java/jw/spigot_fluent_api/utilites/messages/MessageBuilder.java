@@ -71,6 +71,11 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder color(int r, int g, int b) {
+        stringBuilder.append(net.md_5.bungee.api.ChatColor.of(new java.awt.Color(r,g,b)));
+        return this;
+    }
+
     public MessageBuilder bold(Object texy) {
         stringBuilder.append(ChatColor.BOLD).append(texy);
         return this;
@@ -97,6 +102,27 @@ public class MessageBuilder {
 
     public MessageBuilder inBrackets(String message) {
         stringBuilder.append("[").append(message).append("]");
+        return this;
+    }
+
+    public MessageBuilder withFix(String message, String fix) {
+        stringBuilder.append(fix).append(message).append(fix);
+        return this;
+    }
+
+    public MessageBuilder withFix(String message, String prefix, String endfix) {
+        stringBuilder.append(prefix).append(message).append(endfix);
+        return this;
+    }
+
+
+    public MessageBuilder withPrefix(String message, String prefix) {
+        stringBuilder.append(prefix).append(message);
+        return this;
+    }
+
+    public MessageBuilder withEndfix(String message, String endfix) {
+        stringBuilder.append(message).append(endfix);
         return this;
     }
 

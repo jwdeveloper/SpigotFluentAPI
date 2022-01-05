@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.data;
 
 import jw.spigot_fluent_api.data.repositories.Repository;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ObjectUtility;
 import org.bukkit.Bukkit;
 

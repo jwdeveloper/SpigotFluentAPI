@@ -7,11 +7,12 @@ import java.util.*;
 
 public class InjectionManager {
 
-    private InjectionContainer serviceContainer;
     private static InjectionManager instance;
-    private HashMap<UUID,HashMap<Class<?>,Object>> playerObjects;
 
-    public static InjectionManager Instance() {
+    private final InjectionContainer serviceContainer;
+    private final HashMap<UUID,HashMap<Class<?>,Object>> playerObjects;
+
+    public static InjectionManager instance() {
         if (instance == null) {
             instance = new InjectionManager();
         }
@@ -25,11 +26,11 @@ public class InjectionManager {
     public static <T> List<T> getObjectByType(Class<T> searchType)
     {
         List<T> result = new ArrayList<>();
-        instance.serviceContainer.getInjections().forEach((type, b)->
+        instance().serviceContainer.getInjections().forEach((type, b)->
         {
             if(ClassTypeUtility.isClassContainsType(type, searchType))
             {
-                result.add(instance.serviceContainer.getObject(type));
+                result.add(instance().serviceContainer.getObject(type));
             }
         });
       return result;
@@ -37,16 +38,16 @@ public class InjectionManager {
 
     public static <T> T getObject(Class<T> tClass)
     {
-        return instance.serviceContainer.getObject(tClass);
+        return instance().serviceContainer.getObject(tClass);
     }
 
     public static <T> T getObjectPlayer(Class<T> tClass,UUID uuid)
     {
-        if(!instance.playerObjects.containsKey(uuid))
+        if(!instance().playerObjects.containsKey(uuid))
         {
-             instance.playerObjects.put(uuid,new HashMap<>());
+            instance().playerObjects.put(uuid,new HashMap<>());
         }
-        HashMap<Class<?>,Object> objectHashMap = instance.playerObjects.get(uuid);
+        HashMap<Class<?>,Object> objectHashMap = instance().playerObjects.get(uuid);
         if(!objectHashMap.containsKey(tClass))
         {
          objectHashMap.put(tClass,getObject(tClass));
@@ -55,32 +56,39 @@ public class InjectionManager {
     }
     public static Set<Class<?>> getInjectedTypes()
     {
-      return instance.serviceContainer.getInjections().keySet();
+      return instance().serviceContainer.getInjections().keySet();
     }
 
     public static <T> void register(InjectionType serviceType, Class<T> type) {
-        instance.serviceContainer.register(serviceType, type);
+        instance().serviceContainer.register(serviceType, type);
     }
 
     public static <T> void registerSingletone(Class<T> type) {
-        instance.serviceContainer.register(InjectionType.SINGLETON, type);
+        instance().serviceContainer.register(InjectionType.SINGLETON, type);
     }
 
     public static <T> void registerTransient(Class<T> type) {
-        instance.serviceContainer.register(InjectionType.TRANSIENT, type);
+        instance().serviceContainer.register(InjectionType.TRANSIENT, type);
+    }
+
+    public static  void dispose()
+    {
+        instance().playerObjects.clear();
+        instance().serviceContainer.dispose();
     }
 
     public static void registerAllFromPackage(Package packName) {
-        var types = ClassTypeUtility.fineClassesInPackage(packName.getName());
+        var packageTypes = ClassTypeUtility.fineClassesInPackage(packName.getName());
         var toInstantiate = new ArrayList<Class<?>>();
 
-        for (Class<?> type : types) {
-            SpigotBean serviceAttribute = type.getAnnotation(SpigotBean.class);
-            if (serviceAttribute == null)
+        for (Class<?> type : packageTypes) {
+            SpigotBean spigotBean = type.getAnnotation(SpigotBean.class);
+            if (spigotBean == null)
                 continue;
-            register(serviceAttribute.injectionType(), type);
 
-            if(!serviceAttribute.lazyLoad())
+            register(spigotBean.injectionType(), type);
+
+            if(!spigotBean.lazyLoad())
             {
                 toInstantiate.add(type);
             }

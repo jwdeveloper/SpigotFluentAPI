@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.utilites.binding;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import javax.naming.Binding;
 import java.util.HashSet;

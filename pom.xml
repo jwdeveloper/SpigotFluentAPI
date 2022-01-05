@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>jw</groupId>
-    <artifactId>fluent_spigot_test</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>SpigotFluentApi</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-
-    <name>Fluent_spigot_test</name>
+    <name>SpigotFluentApi</name>
 
     <properties>
         <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <minecraft.version>1.17</minecraft.version>
     </properties>
 
     <build>
@@ -39,6 +39,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>${project.basedir}\builds\${minecraft.version}\${project.name}_${project.version}.${project.packaging}</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -93,6 +94,12 @@
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.17</artifactId>
+            <version>1.7.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

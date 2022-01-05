@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api_integration_tests;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

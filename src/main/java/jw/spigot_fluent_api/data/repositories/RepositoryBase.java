@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.data.repositories;
 import jw.spigot_fluent_api.data.Saveable;
 import jw.spigot_fluent_api.data.models.DataModel;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
 
 import java.util.*;

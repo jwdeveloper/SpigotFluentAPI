@@ -1,8 +1,7 @@
 package jw.spigot_fluent_api.utilites;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
-import org.bukkit.Bukkit;
 
 import java.io.*;
 import java.lang.reflect.ParameterizedType;

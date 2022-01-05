@@ -1,6 +1,6 @@
 package simple_commands;
 
-import jw.spigot_fluent_api.simple_commands.enums.CommandArgumentType;
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
 import jw.spigot_fluent_api.simple_commands.services.SimpleCommandService;
 import org.bukkit.ChatColor;
@@ -24,7 +24,7 @@ public class SimpleCommandServiceArgumentValuesTests
         var arguments = new String[1];
         arguments[0] = "1";
         var commandArguments = new ArrayList<CommandArgument>();
-        commandArguments.add(getCommandArgument(CommandArgumentType.INT));
+        commandArguments.add(getCommandArgument(ArgumentType.INT));
         var result  = simpleCommandService.getArgumentValues(arguments,commandArguments);
         Assert.assertEquals(result[0],1);
     }
@@ -34,7 +34,7 @@ public class SimpleCommandServiceArgumentValuesTests
         var arguments = new String[1];
         arguments[0] = "True";
         var commandArguments = new ArrayList<CommandArgument>();
-        commandArguments.add(getCommandArgument(CommandArgumentType.BOOL));
+        commandArguments.add(getCommandArgument(ArgumentType.BOOL));
         var result  = simpleCommandService.getArgumentValues(arguments,commandArguments);
         Assert.assertEquals(result[0],true);
     }
@@ -44,7 +44,7 @@ public class SimpleCommandServiceArgumentValuesTests
         var arguments = new String[1];
         arguments[0] = "1.2";
         var commandArguments = new ArrayList<CommandArgument>();
-        commandArguments.add(getCommandArgument(CommandArgumentType.NUMBER));
+        commandArguments.add(getCommandArgument(ArgumentType.NUMBER));
         var result  = simpleCommandService.getArgumentValues(arguments,commandArguments);
         Assert.assertEquals(result[0],1.2f);
     }
@@ -54,12 +54,12 @@ public class SimpleCommandServiceArgumentValuesTests
         var arguments = new String[1];
         arguments[0] = "yellow";
         var commandArguments = new ArrayList<CommandArgument>();
-        commandArguments.add(getCommandArgument(CommandArgumentType.COLOR));
+        commandArguments.add(getCommandArgument(ArgumentType.COLOR));
         var result  = simpleCommandService.getArgumentValues(arguments,commandArguments);
         Assert.assertEquals(result[0], ChatColor.YELLOW);
     }
 
-    public CommandArgument getCommandArgument(CommandArgumentType type)
+    public CommandArgument getCommandArgument(ArgumentType type)
     {
         CommandArgument commandArgument = new CommandArgument();
         commandArgument.setType(type);

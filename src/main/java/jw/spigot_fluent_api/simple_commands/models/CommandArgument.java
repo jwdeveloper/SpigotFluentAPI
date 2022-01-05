@@ -1,6 +1,8 @@
 package jw.spigot_fluent_api.simple_commands.models;
 
-import jw.spigot_fluent_api.simple_commands.enums.CommandArgumentType;
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentDisplay;
+import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
+import jw.spigot_fluent_api.simple_commands.validators.CommandArgumentValidator;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -14,15 +16,17 @@ public class CommandArgument
 {
     private String name;
 
-    private int position;
+    private ArgumentType type = ArgumentType.TEXT;
 
-    private CommandArgumentType type;
+    private ArgumentDisplay argumentDisplayMode = ArgumentDisplay.TYPE;
 
     private List<CommandArgumentValidator> validators = new ArrayList<>();
 
     private String description;
 
-    private ChatColor color;
+    private ChatColor color = ChatColor.WHITE;
+
+    private List<String> tabCompleter = new ArrayList<>();
 
     public void addValidator(CommandArgumentValidator validator)
     {

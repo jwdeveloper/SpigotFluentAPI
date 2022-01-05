@@ -1,12 +1,6 @@
 package jw.spigot_fluent_api.utilites;
 
-import jw.spigot_fluent_api.gui_legacy.chest_gui.implementations.bind_strategy.examples.BoolenBindStrategy;
-import jw.spigot_fluent_api.gui_legacy.chest_gui.implementations.bind_strategy.examples.MaterialBindStrategy;
-import jw.spigot_fluent_api.gui_legacy.chest_gui.implementations.bind_strategy.examples.NumberBindStrategy;
-import jw.spigot_fluent_api.gui_legacy.chest_gui.implementations.bind_strategy.examples.TextBindStrategy;
-import jw.spigot_fluent_api.initialization.FluentPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Material;
 
 import java.lang.annotation.Annotation;
