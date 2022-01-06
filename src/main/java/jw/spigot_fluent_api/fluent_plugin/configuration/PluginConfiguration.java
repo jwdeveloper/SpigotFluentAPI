@@ -1,25 +1,28 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration;
 
 import jw.spigot_fluent_api.data.DataContext;
+import jw.spigot_fluent_api.data.DataHandler;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.fluent_plugin.configuration.actions.ConfigAction;
 
 import java.util.function.Consumer;
 
 public interface PluginConfiguration {
-    PluginConfiguration withDependencyInjection();
+    PluginConfiguration useDependencyInjection();
 
-    PluginConfiguration withDependencyInjection(Consumer<InjectionManager> configuration);
+    PluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration);
 
-    PluginConfiguration withDataContext(Consumer<DataContext> configuration);
+    PluginConfiguration useDataContext(Consumer<DataHandler> configuration);
 
-    PluginConfiguration withInfoMessage();
+     PluginConfiguration useDataContext();
 
-    PluginConfiguration withCustomAction(ConfigAction configAction);
+    PluginConfiguration useInfoMessage();
 
-    PluginConfiguration withMetrics(int metricsId);
+    PluginConfiguration useCustomAction(ConfigAction configAction);
 
-    PluginConfiguration withIntegrationTests();
+    PluginConfiguration useMetrics(int metricsId);
 
-    PluginConfiguration withDebugMode();
+    PluginConfiguration useIntegrationTests();
+
+    PluginConfiguration useDebugMode();
 }

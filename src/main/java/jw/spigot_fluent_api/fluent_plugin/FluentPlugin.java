@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.fluent_plugin;
 
 import jw.spigot_fluent_api.data.DataContext;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.configuration.actions.ConfigAction;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import org.bukkit.ChatColor;
@@ -10,14 +11,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+import java.util.List;
 
 public abstract class FluentPlugin extends JavaPlugin {
 
     private FluentPluginConfiguration configuration;
-    private DataContext dataContext;
     private static FluentPlugin instance;
     private static JavaPlugin plugin;
     private static boolean isInitialized;
+    private List<ConfigAction> configActions;
 
     public FluentPlugin() {
         super();
@@ -39,18 +41,17 @@ public abstract class FluentPlugin extends JavaPlugin {
         instance = this;
         plugin = this;
         configuration = new FluentPluginConfiguration();
-        dataContext = new DataContext();
     }
 
     @Override
     public final void onEnable() {
         OnConfiguration(configuration);
-        var configActions = configuration.getConfigurationActions();
+        configActions = configuration.getConfigurationActions();
         for(var configAction:configActions)
         {
             try
             {
-                configAction.execute(this);
+                configAction.pluginEnable(this);
             }
             catch (Exception e)
             {
@@ -70,12 +71,19 @@ public abstract class FluentPlugin extends JavaPlugin {
             return;
 
         OnFluentPluginDisable();
-        dataContext.save();
-    }
-
-    public DataContext getDataContext()
-    {
-        return dataContext;
+        for(var configAction:configActions)
+        {
+            try
+            {
+                configAction.pluginDisable(this);
+            }
+            catch (Exception e)
+            {
+                isInitialized = false;
+                FluentPlugin.logException("Error while plugin disable ",e);
+                return;
+            }
+        }
     }
 
     public FluentPluginConfiguration configuration() {
@@ -92,10 +100,6 @@ public abstract class FluentPlugin extends JavaPlugin {
 
     public static String getPath() {
         return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
-    }
-
-    public static DataContext getDataManager() {
-        return instance.dataContext;
     }
 
     public static MessageBuilder log(String message) {

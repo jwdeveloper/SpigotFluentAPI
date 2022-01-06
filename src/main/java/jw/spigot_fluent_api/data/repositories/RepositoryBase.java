@@ -10,19 +10,14 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class RepositoryBase<T extends DataModel> implements Repository<T> , Saveable {
+public class RepositoryBase<T extends DataModel> implements Repository<T>, Saveable {
 
     private ArrayList<T> content;
     private String fileName;
     private final String path;
     private final Class<T> entityClass;
 
-
-    public Consumer<String> onError = (s) -> {
-    };
-
-    public RepositoryBase(String path, Class<T> entityClass)
-    {
+    public RepositoryBase(String path, Class<T> entityClass) {
         this.content = new ArrayList<>();
         this.path = path;
         this.fileName = entityClass.getSimpleName();
@@ -33,13 +28,12 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         this(path, entityClass);
         this.fileName = filename;
     }
-    public RepositoryBase(Class<T> entityClass)
-    {
-        this(FluentPlugin.getPath(),entityClass,entityClass.getSimpleName());
+
+    public RepositoryBase(Class<T> entityClass) {
+        this(FluentPlugin.getPath(), entityClass, entityClass.getSimpleName());
     }
 
-    public Stream<T> query()
-    {
+    public Stream<T> query() {
         return content.stream();
     }
 
@@ -50,17 +44,17 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
 
     @Override
     public Optional<T> getOne(UUID id) {
-      return content
+        return content
                 .stream()
                 .filter(p -> p.uuid == id)
                 .findFirst();
     }
 
     public Optional<T> getOneByName(String name) {
-      return content
+        return content
                 .stream()
                 .filter(p -> ChatColor.stripColor(p.name)
-                .equalsIgnoreCase(name))
+                        .equalsIgnoreCase(name))
                 .findFirst();
     }
 
@@ -90,8 +84,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
 
     @Override
-    public boolean updateOne(UUID id, T data)
-    {
+    public boolean updateOne(UUID id, T data) {
         return false;
     }
 
@@ -101,26 +94,25 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     }
 
     @Override
-    public boolean deleteOne(T data)
-    {
-        if ( content.contains(data)) {
+    public boolean deleteOne(T data) {
+        if (content.contains(data)) {
             content.remove(data);
             return true;
         }
         return false;
     }
-    public boolean deleteOneById(UUID uuid)
-    {
+
+    public boolean deleteOneById(UUID uuid) {
         var data = getOne(uuid);
-        if(data.isEmpty())
+        if (data.isEmpty())
             return false;
 
         content.remove(data.get());
         return true;
     }
+
     @Override
-    public boolean deleteMany(List<T> data)
-    {
+    public boolean deleteMany(List<T> data) {
         data.forEach(a -> this.deleteOneById(a.uuid));
         return true;
     }
@@ -129,45 +121,32 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
         content.clear();
     }
 
-    public T createEmpty() {
-        try {
-            T empty = entityClass.newInstance();
-            empty.uuid = null;
-            empty.name = "-1";
-            return empty;
-        } catch (IllegalAccessException | InstantiationException igonre) {
-            onError.accept(igonre.getMessage());
-        }
-        return null;
+    public int getSize() {
+        return content.size();
     }
 
-    public boolean contains(T data)
-    {
+    public boolean contains(T data) {
         return content.contains(data);
     }
 
     @Override
-    public boolean load()
-    {
-            try {
-                content = JsonUtility.loadList(path, fileName, entityClass);
-                return true;
-            } catch (Exception e)
-            {
-                onError.accept(fileName + " " + entityClass.getName() + " " + e.getMessage());
-                return false;
-            }
+    public boolean load() {
+        try {
+            content = JsonUtility.loadList(path, fileName, entityClass);
+            return true;
+        } catch (Exception e) {
+            FluentPlugin.logException(fileName + " " + entityClass.getName(), e);
+            return false;
+        }
     }
 
     @Override
     public boolean save() {
-        try
-        {
+        try {
             JsonUtility.save(content, path, fileName);
             return true;
-        } catch (Exception e)
-        {
-            onError.accept(fileName + " " + entityClass.getName() + " " + e.getMessage());
+        } catch (Exception e) {
+            FluentPlugin.logException(fileName + " " + entityClass.getName(), e);
             return false;
         }
     }

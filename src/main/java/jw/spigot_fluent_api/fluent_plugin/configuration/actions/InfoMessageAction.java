@@ -8,13 +8,18 @@ import org.bukkit.ChatColor;
 public class InfoMessageAction implements ConfigAction
 {
     @Override
-    public void execute(FluentPlugin fluentPlugin) {
+    public void pluginEnable(FluentPlugin fluentPlugin) {
         sendInfo(fluentPlugin,"Status","Enabled");
         sendInfo(fluentPlugin,"Version",fluentPlugin.getDescription().getVersion());
-        sendInfo(fluentPlugin,"Metric","Enabled");
+
     }
 
-    public void sendInfo(FluentPlugin fluentPlugin, String name, String value)
+    @Override
+    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
+
+    }
+
+    protected void sendInfo(FluentPlugin fluentPlugin, String name, String value)
     {
         var message = new MessageBuilder()
                 .color(ChatColor.WHITE)

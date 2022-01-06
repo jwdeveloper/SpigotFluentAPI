@@ -16,8 +16,13 @@ public class Observable<T> implements Bindable<T> {
     protected boolean isBinded;
     protected List<Consumer<T>> onChange = new ArrayList<>();
 
+    public Observable() {
+
+    }
+
     public Observable(Object classObject, String filed) {
-        isBinded = bind(classObject, filed);
+        isBinded = bind(classObject.getClass(), filed);
+        this.object = classObject;
     }
 
     public Observable(Object classObject, Field filed) {
@@ -80,12 +85,11 @@ public class Observable<T> implements Bindable<T> {
             FluentPlugin.logError("Set binding field: " + e.getMessage());
         }
     }
-
-    protected boolean bind(Object classObject, String filedName) {
+    public boolean bind(Class _class, String filedName) {
         try {
-            this.field = classObject.getClass().getDeclaredField(filedName);
+            this.field = _class.getDeclaredField(filedName);
             this.field.setAccessible(true);
-            this.object = classObject;
+
             this.fieldType = this.field.getType();
             return true;
         } catch (NoSuchFieldException e) {

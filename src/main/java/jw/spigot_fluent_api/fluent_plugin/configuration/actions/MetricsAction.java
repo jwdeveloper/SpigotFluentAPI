@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.fluent_plugin.configuration.actions;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.metricts.MetricsLite;
 
-public class MetricsAction implements ConfigAction {
+public class MetricsAction extends InfoMessageAction {
 
 
     private int metricsKey =-1;
@@ -13,8 +13,14 @@ public class MetricsAction implements ConfigAction {
     }
 
     @Override
-    public void execute(FluentPlugin fluentPlugin) throws Exception
+    public void pluginEnable(FluentPlugin fluentPlugin)
     {
+        sendInfo(fluentPlugin,"Metric","Enabled");
         new MetricsLite(fluentPlugin,metricsKey);
+    }
+
+    @Override
+    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
+
     }
 }

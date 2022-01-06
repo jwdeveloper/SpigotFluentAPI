@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 public class CheckFileAction implements ConfigAction
 {
     @Override
-    public void execute(FluentPlugin fluentPlugin) throws Exception {
+    public void pluginEnable(FluentPlugin fluentPlugin) throws Exception {
         if (!FileUtility.isPathValid(fluentPlugin.getPath() + ".jar"))
         {
             var msg = new MessageBuilder().color(ChatColor.YELLOW)
@@ -19,5 +19,10 @@ public class CheckFileAction implements ConfigAction
                     .text(" in plugins folder, check name of file").reset().toString();
             throw new Exception(msg);
         }
+    }
+
+    @Override
+    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
+
     }
 }

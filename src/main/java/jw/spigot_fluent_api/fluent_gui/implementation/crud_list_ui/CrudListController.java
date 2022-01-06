@@ -66,6 +66,7 @@ public class CrudListController<T> {
                 .onClick(event ->
                 {
                     //to do insert
+                    onInsertEvent.execute(event.getPlayer(),event.getButton());
                 }).build();
     }
 
@@ -91,6 +92,7 @@ public class CrudListController<T> {
                                 .inBrackets("Cancel")
                                 .toString());
                     }
+                    listUI.refreshBorder();
                 }).build();
     }
 

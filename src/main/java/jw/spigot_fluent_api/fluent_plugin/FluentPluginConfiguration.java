@@ -1,9 +1,11 @@
 package jw.spigot_fluent_api.fluent_plugin;
 import jw.spigot_fluent_api.data.DataContext;
+import jw.spigot_fluent_api.data.DataHandler;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.actions.*;
 import jw.spigot_fluent_api.legacy_commands.FluentCommands;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.simple_commands.SimpleCommand;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -25,63 +27,73 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     @Override
-    public PluginConfiguration withDependencyInjection()
+    public PluginConfiguration useDependencyInjection()
     {
         dependencyInjection = new DependencyInjectionAction();
         return this;
     }
     @Override
-    public PluginConfiguration withDependencyInjection(Consumer<InjectionManager> configuration)
+    public PluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
     {
         dependencyInjection = new DependencyInjectionAction(configuration);
         return this;
     }
 
     @Override
-    public PluginConfiguration withDataContext(Consumer<DataContext> configuration)
+    public PluginConfiguration useDataContext()
+    {
+        dataContext = new DataContextAction();
+        return this;
+    }
+
+
+    @Override
+    public PluginConfiguration useDataContext(Consumer<DataHandler> configuration)
     {
         dataContext = new DataContextAction(configuration);
         return this;
     }
 
     @Override
-    public PluginConfiguration withInfoMessage()
+    public PluginConfiguration useInfoMessage()
     {
         infoMessage = new InfoMessageAction();
         return this;
     }
 
     @Override
-    public PluginConfiguration withCustomAction(ConfigAction configAction)
+    public PluginConfiguration useCustomAction(ConfigAction configAction)
     {
         customActions.add(configAction);
         return this;
     }
 
     @Override
-    public PluginConfiguration withMetrics(int metricsId)
+    public PluginConfiguration useMetrics(int metricsId)
     {
         metrics = new MetricsAction(metricsId);
         return this;
     }
     @Override
-    public PluginConfiguration withIntegrationTests()
+    public PluginConfiguration useIntegrationTests()
     {
         integrationTests = new IntegrationTestAction();
         return this;
     }
 
     @Override
-    public PluginConfiguration withDebugMode()
+    public PluginConfiguration useDebugMode()
     {
-        FluentCommands.onConsoleCommand("disable",(player, args) ->
-        {
-            if(!player.isOp())
-                return;
 
-            FluentPlugin.logInfo("Plugins disabled");
-            Bukkit.getPluginManager().disablePlugins();
-        });
+        SimpleCommand.newCommand("disable")
+                        .setDescription("disable all plugin without restarting server")
+                        .setUsageMessage("Can be use only with Console")
+                        .onConsoleExecute(consoleCommandEvent ->
+                        {
+                            Bukkit.getPluginManager().disablePlugins();
+                            FluentPlugin.logInfo("Plugins disabled");
+                        })
+                        .register();
         return this;
     }
 

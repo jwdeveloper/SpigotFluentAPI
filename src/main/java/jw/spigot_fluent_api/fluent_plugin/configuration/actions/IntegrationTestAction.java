@@ -7,7 +7,12 @@ public class IntegrationTestAction implements ConfigAction
 {
 
     @Override
-    public void execute(FluentPlugin fluentPlugin) {
+    public void pluginEnable(FluentPlugin fluentPlugin) {
         SpigotIntegrationTestsRunner.loadTests();
+    }
+
+    @Override
+    public void pluginDisable(FluentPlugin fluentPlugin) throws Exception {
+
     }
 }

@@ -9,8 +9,7 @@ import jw.spigot_fluent_api.utilites.files.yml.YmlFileUtility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataContext
-{
+public class DataContext implements DataHandler {
     protected final String path;
     protected final List<Saveable> saveables = new ArrayList<>();
     protected final List<Object> ymlFiles = new ArrayList<>();
@@ -20,50 +19,35 @@ public class DataContext
         this(FluentPlugin.getPath());
     }
 
-    public DataContext(String path)
-    {
+    public DataContext(String path) {
         this.path = path;
     }
 
     public void addSaveableObject(List<Saveable> objects) {
         saveables.addAll(objects);
     }
+
+
     public void addYmlObjects(List<Object> objects) {
         ymlFiles.addAll(objects);
     }
+
     public void addJsonObjects(List<Object> objects) {
         jsonFiles.addAll(objects);
     }
+
     public void load() {
         for (var saveable : saveables) {
-            if (saveable instanceof Repository)
-                saveable.load();
-            else {
-                try {
-                    var loadedObject = JsonUtility.load(
-                            path,
-                            saveable.getClass().getSimpleName(),
-                            saveable.getClass());
-
-                    if (loadedObject != null) {
-                        ObjectUtility.copyToObject(loadedObject, saveable, loadedObject.getClass());
-                    }
-
-                } catch (Exception e) {
-                    FluentPlugin.logException("Loading data from file",e);
-                }
-            }
+            saveable.load();
         }
-        for(var obj:ymlFiles)
-        {
-            var data = YmlFileUtility.load(obj.getClass().getSimpleName(),obj.getClass());
+        for (var obj : ymlFiles) {
+            var data = YmlFileUtility.load(obj.getClass().getSimpleName(), obj.getClass());
             if (data == null) {
-                   return;
+                return;
             }
             ObjectUtility.copyToObject(data, obj, data.getClass());
         }
-        for(var jsonObject:jsonFiles)
-        {
+        for (var jsonObject : jsonFiles) {
             try {
                 var loadedObject = JsonUtility.load(
                         path,
@@ -75,24 +59,19 @@ public class DataContext
                 }
 
             } catch (Exception e) {
-                FluentPlugin.logException("Loading data from file",e);
+                FluentPlugin.logException("Loading file data error", e);
             }
         }
     }
 
     public void save() {
         for (Saveable saveable : saveables) {
-            if (saveable instanceof Repository)
-                saveable.load();
-            else
-                JsonUtility.save(saveable, path, saveable.getClass().getSimpleName());
+            saveable.save();
         }
-        for(var obj:ymlFiles)
-        {
-            YmlFileUtility.save(obj.getClass().getSimpleName(),obj);
+        for (var obj : ymlFiles) {
+            YmlFileUtility.save(obj.getClass().getSimpleName(), obj);
         }
-        for(var obj:jsonFiles)
-        {
+        for (var obj : jsonFiles) {
             JsonUtility.save(obj, path, obj.getClass().getSimpleName());
         }
     }

@@ -41,7 +41,9 @@ public class YmlFileUtility implements FileUtility {
         var className = tClass.getSimpleName();
         configuration.createSection(className);
         for (var field : tClass.getDeclaredFields()) {
+            field.setAccessible(true);
             Object value = field.get(obj);
+            field.setAccessible(false);
             if (value.getClass().equals(Material.class)) {
                 var material = (Material) value;
                 value = material.name();
@@ -69,13 +71,23 @@ public class YmlFileUtility implements FileUtility {
             if (field.getType().equals(Material.class)) {
                 value = Material.valueOf((String)value);
             }
-            if (value.getClass().equals(ChatColor.class)) {
+            if (field.getType().equals(ChatColor.class)) {
                 value  = section.getColor(field.getName());
             }
-            if (value.getClass().equals(ItemStack.class)) {
+            if (field.getType().equals(ItemStack.class)) {
                 value  = section.getItemStack(field.getName());
             }
+            if(field.getType().getName().equalsIgnoreCase("double"))
+            {
+                value =Double.parseDouble(value.toString());
+            }
+            if(field.getType().getName().equalsIgnoreCase("float"))
+            {
+                value =Float.parseFloat(value.toString());
+            }
+            field.setAccessible(true);
             field.set(result,value);
+            field.setAccessible(false);
         }
         return result;
     }

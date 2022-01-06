@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.utilites.files.FileUtility;
 import jw.spigot_fluent_api.utilites.files.json.adapters.ItemStackAdapter;
 import jw.spigot_fluent_api.utilites.files.json.adapters.LocationAdapter;
 import jw.spigot_fluent_api.utilites.files.json.execution.BindingFieldSkip;
+import jw.spigot_fluent_api.utilites.files.json.execution.JsonIgnoreAnnotationSkip;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -78,6 +79,7 @@ public final class JsonUtility implements FileUtility
                 .registerTypeHierarchyAdapter(ItemStack.class, new ItemStackAdapter())
                 .registerTypeHierarchyAdapter(Location.class, new LocationAdapter())
                 .setExclusionStrategies(new BindingFieldSkip())
+                .setExclusionStrategies(new JsonIgnoreAnnotationSkip())
                 .setPrettyPrinting()
                 .create();
     }
