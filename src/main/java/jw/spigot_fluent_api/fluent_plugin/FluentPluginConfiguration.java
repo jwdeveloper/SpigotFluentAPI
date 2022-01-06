@@ -1,58 +1,78 @@
 package jw.spigot_fluent_api.fluent_plugin;
+import jw.spigot_fluent_api.data.DataContext;
+import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.configuration.actions.*;
 import jw.spigot_fluent_api.legacy_commands.FluentCommands;
-import jw.spigot_fluent_api.data.DataManager;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import org.bukkit.Bukkit;
 
-import java.io.File;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class FluentPluginConfiguration
-{
-    boolean autoSaveLoadFiles;
-    boolean dependencyInjectionEnable;
-    boolean runWithIntegrationTests;
-    boolean displayHelloMessage =true;
-    String pluginPath;
-    Consumer<DataManager> dataManagerConsumerConfiguration;
-    private final FluentPlugin fluentPlugin;
+public class FluentPluginConfiguration implements PluginConfiguration {
+    private ConfigAction dataContext;
+    private ConfigAction dependencyInjection;
+    private ConfigAction integrationTests;
+    private ConfigAction infoMessage;
+    private ConfigAction metrics;
+    private final List<ConfigAction> configurationActions;
+    private final List<ConfigAction> customActions;
 
-    public FluentPluginConfiguration(FluentPlugin fluentPlugin) {
-        this.fluentPlugin = fluentPlugin;
-        this.pluginPath = getDefaultPath();
-        this.autoSaveLoadFiles = true;
-        this.dependencyInjectionEnable = false;
-        this.runWithIntegrationTests =false;
+    public FluentPluginConfiguration() {
+        this.configurationActions =new ArrayList<>();
+        this.customActions = new ArrayList<>();
     }
 
-    public FluentPluginConfiguration useDependencyInjection()
+    @Override
+    public PluginConfiguration withDependencyInjection()
     {
-        dependencyInjectionEnable = true;
+        dependencyInjection = new DependencyInjectionAction();
         return this;
     }
-    public FluentPluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
+    @Override
+    public PluginConfiguration withDependencyInjection(Consumer<InjectionManager> configuration)
     {
-        configuration.accept(InjectionManager.instance());
-        return useDependencyInjection();
-    }
-    public FluentPluginConfiguration configureDataManager(Consumer<DataManager> configuration)
-    {
-        dataManagerConsumerConfiguration = configuration;
+        dependencyInjection = new DependencyInjectionAction(configuration);
         return this;
     }
 
-    public FluentPluginConfiguration configureDataBase(Consumer<DatabaseConfiguration> databaseConfiguration)
+    @Override
+    public PluginConfiguration withDataContext(Consumer<DataContext> configuration)
     {
-        return this;
-    }
-    public FluentPluginConfiguration displayHelloMessage(boolean value)
-    {
-        this.displayHelloMessage =value;
+        dataContext = new DataContextAction(configuration);
         return this;
     }
 
-    public FluentPluginConfiguration runInDebug()
+    @Override
+    public PluginConfiguration withInfoMessage()
+    {
+        infoMessage = new InfoMessageAction();
+        return this;
+    }
+
+    @Override
+    public PluginConfiguration withCustomAction(ConfigAction configAction)
+    {
+        customActions.add(configAction);
+        return this;
+    }
+
+    @Override
+    public PluginConfiguration withMetrics(int metricsId)
+    {
+        metrics = new MetricsAction(metricsId);
+        return this;
+    }
+    @Override
+    public PluginConfiguration withIntegrationTests()
+    {
+        integrationTests = new IntegrationTestAction();
+        return this;
+    }
+
+    @Override
+    public PluginConfiguration withDebugMode()
     {
         FluentCommands.onConsoleCommand("disable",(player, args) ->
         {
@@ -65,26 +85,25 @@ public class FluentPluginConfiguration
         return this;
     }
 
-    public FluentPluginConfiguration withIntegrationTests()
+    public List<ConfigAction> getConfigurationActions()
     {
-        this.runWithIntegrationTests = true;
-        return this;
+        addIfNotNull(new CheckFileAction());
+        addIfNotNull(dependencyInjection);
+        addIfNotNull(dataContext);
+        addIfNotNull(metrics);
+        configurationActions.addAll(customActions);
+        addIfNotNull(integrationTests);
+        addIfNotNull(infoMessage);
+        return configurationActions;
     }
 
-    public FluentPluginConfiguration usePath(String path) {
-        this.pluginPath = path;
-        return this;
+
+    private void addIfNotNull(ConfigAction action)
+    {
+        if(action != null)
+            configurationActions.add(action);
     }
 
-    private String getDefaultPath()
-    {
-        return new StringBuilder()
-                .append(Paths.get("").toAbsolutePath())
-                .append(File.separator)
-                .append("plugins")
-                .append(File.separator)
-                .append(fluentPlugin.getName())
-                .toString();
-    }
+
 
 }

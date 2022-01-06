@@ -62,7 +62,7 @@ public class CrudListController<T> {
 
     public ButtonObserver<?> insertObserver() {
         return ButtonObserver.<CrudListState>builder()
-                .observable(currentState)
+                .withObserver(currentState)
                 .onClick(event ->
                 {
                     //to do insert
@@ -96,7 +96,7 @@ public class CrudListController<T> {
 
     private ButtonObserverBuilder<CrudListState> baseObserver(CrudListState listState, Consumer<ButtonObserverEvent<CrudListState>> observerEvent) {
         return ButtonObserver.<CrudListState>builder()
-                .observable(currentState)
+                .withObserver(currentState)
                 .onClick(event ->
                 {
                     if (event.getValue() != listState) {

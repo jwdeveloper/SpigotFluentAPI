@@ -15,7 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public final class JsonUtitlity implements FileUtility
+public final class JsonUtility implements FileUtility
 {
     public static boolean save(Object data, String path, String fileName) {
         String fullPath =getFullPath(path,fileName);

@@ -1,12 +1,9 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
-import jw.spigot_fluent_api.data.DataManager;
-import jw.spigot_fluent_api.data.Saveable;
-import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.data.DataContext;
+import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
-import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTestsRunner;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,85 +14,75 @@ import java.io.File;
 public abstract class FluentPlugin extends JavaPlugin {
 
     private FluentPluginConfiguration configuration;
-    private DataManager dataManager;
+    private DataContext dataContext;
     private static FluentPlugin instance;
     private static JavaPlugin plugin;
-    public FluentPlugin()
-    {
+    private static boolean isInitialized;
+
+    public FluentPlugin() {
         super();
     }
 
-    protected FluentPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
-    {
+    protected FluentPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
     }
 
-    protected abstract void OnConfiguration(FluentPluginConfiguration configuration);
+    protected abstract void OnConfiguration(PluginConfiguration configuration);
 
     protected abstract void OnFluentPluginEnable();
 
     protected abstract void OnFluentPluginDisable();
 
     @Override
-    public final void onEnable() {
+    public void onLoad()
+    {
         instance = this;
-        plugin =this;
-        configuration = new FluentPluginConfiguration(this);
-        OnConfiguration(configuration);
-        dataManager = new DataManager(configuration.pluginPath);
-        if (configuration.dependencyInjectionEnable) {
-            InjectionManager.instance();
-            InjectionManager.registerAllFromPackage(getClass().getPackage());
-            dataManager.addSaveableObject(InjectionManager.getObjectByType(Saveable.class));
-        }
-        if (configuration.dataManagerConsumerConfiguration != null) {
-            configuration.dataManagerConsumerConfiguration.accept(dataManager);
-        }
-        dataManager.load();
-        if(configuration().runWithIntegrationTests)
-        {
-            SpigotIntegrationTestsRunner.loadTests();
-        }
-        if(configuration().displayHelloMessage)
-        {
-            var message = new MessageBuilder()
-                    .color(ChatColor.DARK_GREEN)
-                    .bar("=",40)
-                    .color(ChatColor.WHITE)
-                    .newLine()
-                    .text(getPlugin().getName())
-                    .space()
-                    .color(ChatColor.GREEN)
-                    .inBrackets("enabled")
-                    .color(ChatColor.WHITE)
-                    .newLine()
-                    .withEndfix("Version ","->")
-                    .space()
-                    .color(ChatColor.GREEN)
-                    .text(getPlugin().getDescription().getVersion())
-                    .color(ChatColor.WHITE)
-                    .newLine()
-                    .color(ChatColor.DARK_GREEN)
-                    .bar("=",40)
-                    .color(ChatColor.WHITE)
-                    .toString();
-            Bukkit.getConsoleSender().sendMessage(message);
-        }
-        OnFluentPluginEnable();
+        plugin = this;
+        configuration = new FluentPluginConfiguration();
+        dataContext = new DataContext();
     }
 
     @Override
-    public final void onDisable() {
+    public final void onEnable() {
+        OnConfiguration(configuration);
+        var configActions = configuration.getConfigurationActions();
+        for(var configAction:configActions)
+        {
+            try
+            {
+                configAction.execute(this);
+            }
+            catch (Exception e)
+            {
+                isInitialized = false;
+                FluentPlugin.logException("Plugin can not be loaded since ",e);
+                return;
+            }
+        }
+        OnFluentPluginEnable();
+        isInitialized =true;
+    }
+
+    @Override
+    public final void onDisable()
+    {
+        if(!isInitialized)
+            return;
+
         OnFluentPluginDisable();
-        dataManager.save();
+        dataContext.save();
+    }
+
+    public DataContext getDataContext()
+    {
+        return dataContext;
     }
 
     public FluentPluginConfiguration configuration() {
         return configuration;
     }
 
-    public static void setPlugin(JavaPlugin javaPlugin)
-    {
+    public static void setPlugin(JavaPlugin javaPlugin) {
         plugin = javaPlugin;
     }
 
@@ -107,8 +94,8 @@ public abstract class FluentPlugin extends JavaPlugin {
         return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
     }
 
-    public static DataManager getDataManager() {
-        return instance.dataManager;
+    public static DataContext getDataManager() {
+        return instance.dataContext;
     }
 
     public static MessageBuilder log(String message) {
@@ -126,7 +113,7 @@ public abstract class FluentPlugin extends JavaPlugin {
 
     public static void logException(String message, Exception e) {
 
-        var cause = e.getCause() != null? e.getCause().getMessage():e.getMessage();
+        var cause = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
 
         logFormat(LogUtility.error(), message)
                 .newLine()
@@ -136,9 +123,9 @@ public abstract class FluentPlugin extends JavaPlugin {
                 .space()
                 .text(cause)
                 .color(ChatColor.WHITE).send();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-",100).send();
+        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
         e.printStackTrace();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-",100).send();
+        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
     }
 
     public static void logSuccess(String message) {

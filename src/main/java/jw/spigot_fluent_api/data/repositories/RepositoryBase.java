@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.data.repositories;
 
 import jw.spigot_fluent_api.data.Saveable;
 import jw.spigot_fluent_api.data.models.DataModel;
-import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
+import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
 
@@ -150,7 +150,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     public boolean load()
     {
             try {
-                content = JsonUtitlity.loadList(path, fileName, entityClass);
+                content = JsonUtility.loadList(path, fileName, entityClass);
                 return true;
             } catch (Exception e)
             {
@@ -163,7 +163,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T> , Save
     public boolean save() {
         try
         {
-            JsonUtitlity.save(content, path, fileName);
+            JsonUtility.save(content, path, fileName);
             return true;
         } catch (Exception e)
         {

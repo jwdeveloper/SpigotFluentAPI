@@ -1,8 +1,10 @@
 package jw.spigot_fluent_api.dependency_injection;
 
 
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ClassTypeUtility;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 public class InjectionManager {
@@ -23,10 +25,10 @@ public class InjectionManager {
         playerObjects = new HashMap<>();
     }
 
-    public static <T> List<T> getObjectByType(Class<T> searchType)
+    public static <T> List<T> getObjectsByParentType(Class<T> searchType)
     {
         List<T> result = new ArrayList<>();
-        instance().serviceContainer.getInjections().forEach((type, b)->
+        instance().serviceContainer.getInjections().forEach((type, bean)->
         {
             if(ClassTypeUtility.isClassContainsType(type, searchType))
             {
@@ -34,6 +36,19 @@ public class InjectionManager {
             }
         });
       return result;
+    }
+
+    public static List<Object> getObjectByAnnotation(Class<? extends Annotation> searchType)
+    {
+        List<Object> result = new ArrayList<>();
+        instance().serviceContainer.getInjections().forEach((type, bean)->
+        {
+            if(type.isAnnotationPresent(searchType))
+            {
+                result.add(instance().serviceContainer.getObject(type));
+            }
+        });
+        return result;
     }
 
     public static <T> T getObject(Class<T> tClass)

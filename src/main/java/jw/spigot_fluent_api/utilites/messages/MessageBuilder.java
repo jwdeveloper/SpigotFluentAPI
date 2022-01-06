@@ -28,7 +28,10 @@ public class MessageBuilder {
         stringBuilder.append(text);
         return this;
     }
-
+    public MessageBuilder reset() {
+        stringBuilder.append(ChatColor.RESET);
+        return this;
+    }
     public MessageBuilder field(String name, Object value) {
         return inBrackets(name).text(" - ").text(value).space();
     }
@@ -151,7 +154,7 @@ public class MessageBuilder {
         return this;
     }
 
-    public String[] getArray() {
+    public String[] toArray() {
 
         return get().split(System.lineSeparator());
     }

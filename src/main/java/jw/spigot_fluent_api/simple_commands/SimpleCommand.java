@@ -7,12 +7,17 @@ import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
 import jw.spigot_fluent_api.simple_commands.models.CommandModel;
 import jw.spigot_fluent_api.simple_commands.services.*;
+import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +145,8 @@ public class SimpleCommand extends Command {
 
 
     public void addSubCommand(SimpleCommand command) {
+        if(command == this)
+            return;
         command.setParent(null);
         this.subCommands.add(command);
     }
@@ -167,6 +174,36 @@ public class SimpleCommand extends Command {
     public boolean hasParent() {
         return !(parent == null);
     }
+
+    public void sendHelpMessage(CommandSender commandSender)
+    {
+        var messages =new MessageBuilder()
+                .color(ChatColor.GRAY)
+                .bar("_",30)
+                .newLine()
+                .color(ChatColor.GRAY)
+                .text("Available commands")
+                .newLine()
+                .newLine();
+        Objective s;
+
+        for(var subCommand:subCommands)
+        {
+            messages.color(ChatColor.AQUA)
+                    .text("/")
+                    .text(subCommand.getName());
+            for(var argument : subCommand.getArguments())
+            {
+                messages.space().inBrackets(argument.getName());
+            }
+            messages.newLine();
+        }
+       var result = messages.color(ChatColor.GRAY)
+                .bar("_",30).toArray();
+
+        commandSender.sendMessage(result);
+    }
+
 
     public void unregister() {
         var status = SimpleCommandManger.unregister(this);

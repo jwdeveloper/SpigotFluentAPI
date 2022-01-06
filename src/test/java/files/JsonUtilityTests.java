@@ -1,6 +1,6 @@
 package files;
 
-import jw.spigot_fluent_api.utilites.files.json.JsonUtitlity;
+import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ public class JsonUtilityTests {
 
     @Test
     public void ShouldLoadFile() {
-        var testdto =JsonUtitlity.load(path,"TestDto",TestDto.class);
+        var testdto = JsonUtility.load(path,"TestDto",TestDto.class);
         Assertions.assertNotNull(testdto);
     }
 
@@ -29,7 +29,7 @@ public class JsonUtilityTests {
     public void ShouldSaveFile() {
         TestDto testDto = new TestDto();
 
-        var result =JsonUtitlity.save(testDto,path,"TestDto");
+        var result = JsonUtility.save(testDto,path,"TestDto");
         Assertions.assertTrue(result);
     }
 }

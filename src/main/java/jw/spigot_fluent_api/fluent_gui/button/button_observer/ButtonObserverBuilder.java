@@ -13,12 +13,12 @@ public class ButtonObserverBuilder<T> {
     private Consumer<ButtonObserverEvent<T>> onChangeEvent = (a) -> {
     };
 
-    public ButtonObserverBuilder<T> observable(Observable<T> observable) {
+    public ButtonObserverBuilder<T> withObserver(Observable<T> observable) {
         this.observable = observable;
         return this;
     }
 
-    public ButtonObserverBuilder<T> buttonUI(ButtonUI buttonUI) {
+    public ButtonObserverBuilder<T> withButton(ButtonUI buttonUI) {
         this.buttonUI = buttonUI;
         return this;
     }
