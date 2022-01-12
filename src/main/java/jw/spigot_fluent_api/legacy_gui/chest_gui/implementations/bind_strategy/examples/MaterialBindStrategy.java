@@ -34,7 +34,7 @@ public class MaterialBindStrategy extends BindingStrategy<Material> {
             return;
 
         button.setMaterial(newValue);
-        button.addDescription(ChatColor.WHITE+ Emoticons.arrowright+" "+newValue.name());
+        button.addDescription(ChatColor.WHITE+ Emoticons.arrowRight+" "+newValue.name());
     }
 
 }

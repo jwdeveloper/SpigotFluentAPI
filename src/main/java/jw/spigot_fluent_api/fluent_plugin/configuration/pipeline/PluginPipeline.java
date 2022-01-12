@@ -1,8 +1,8 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.actions;
+package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
-public interface ConfigAction
+public interface PluginPipeline
 {
     public void pluginEnable(FluentPlugin fluentPlugin) throws Exception;
 

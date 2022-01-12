@@ -28,26 +28,39 @@ public class MessageBuilder {
         stringBuilder.append(text);
         return this;
     }
+
     public MessageBuilder reset() {
         stringBuilder.append(ChatColor.RESET);
         return this;
     }
+
     public MessageBuilder field(String name, Object value) {
-        return inBrackets(name).text(" - ").text(value).space();
+        return field(Emoticons.dot,name,value);
+    }
+    public MessageBuilder field(String prefix, String name, Object value) {
+        return color(ChatColor.WHITE)
+                .text(prefix)
+                .space()
+                .text(name)
+                .space()
+                .color(ChatColor.GRAY)
+                .text(Emoticons.arrowRight)
+                .space()
+                .text(value)
+                .space()
+                .reset();
     }
 
     public <T> MessageBuilder addList(List<T> name, Consumer<T> action) {
-        for (var value : name)
-        {
+        for (var value : name) {
             action.accept(value);
         }
         return this;
     }
 
     public MessageBuilder addList(ArrayList<String> name) {
-        for (var value : name)
-        {
-           this.text(" -"+name).newLine();
+        for (var value : name) {
+            this.text(" -" + name).newLine();
         }
         return this;
     }
@@ -64,7 +77,7 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder text(Object text, Color color) {
+    public MessageBuilder text(Object text, ChatColor color) {
         stringBuilder.append(color).append(text);
         return this;
     }
@@ -75,12 +88,17 @@ public class MessageBuilder {
     }
 
     public MessageBuilder color(int r, int g, int b) {
-        stringBuilder.append(net.md_5.bungee.api.ChatColor.of(new java.awt.Color(r,g,b)));
+        stringBuilder.append(net.md_5.bungee.api.ChatColor.of(new java.awt.Color(r, g, b)));
         return this;
     }
 
-    public MessageBuilder bold(Object texy) {
-        stringBuilder.append(ChatColor.BOLD).append(texy);
+    public MessageBuilder bold(Object text) {
+        stringBuilder.append(ChatColor.BOLD).append(text);
+        return this;
+    }
+
+    public MessageBuilder bold() {
+        stringBuilder.append(ChatColor.BOLD);
         return this;
     }
 
@@ -89,12 +107,10 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder space(int count)
-    {
-       for(;count>0;count--)
-       {
-           space();
-       }
+    public MessageBuilder space(int count) {
+        for (; count > 0; count--) {
+            space();
+        }
         return this;
     }
 

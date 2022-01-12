@@ -4,6 +4,7 @@ import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ContentManager;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.FilterContentEvent;
+import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import org.bukkit.ChatColor;
 
@@ -73,8 +74,6 @@ public class ListUIManager<T>
 
         return description.space().color(ChatColor.WHITE).inBrackets(page).toString();
     }
-
-
 
     public void nextPage()
     {

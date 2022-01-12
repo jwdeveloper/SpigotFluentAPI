@@ -52,29 +52,26 @@ public class ObjectUtility {
         return result;
     }
 
-    public static void copyToObject(Object obj, Object obj2, Class type) {
-        Field[] files = type.getFields();
-        for (var file : files) {
+    public static boolean copyToObject(Object obj, Object desination, Class type) {
+        for (var file : type.getDeclaredFields()) {
             try {
                 file.setAccessible(true);
-                file.set(obj2, file.get(obj));
+                file.set(desination, file.get(obj));
             } catch (Exception ignored) {
-                FluentPlugin.logError("Unable copy object" + obj + " to " + obj2);
+                FluentPlugin.logError("Unable copy object" + obj + " to " + desination);
+                return false;
             }
         }
+        return true;
     }
 
-    //Not implemented yet
-    public static void copyObject(Object obj, Class type) {
-        Field[] files = type.getFields();
-        for (var file : files) {
-            try {
-                file.setAccessible(true);
-                //file.set(obj2, file.get(obj));
-            } catch (Exception ignored) {
-
-            }
+    public static Object copyObject(Object obj, Class type) throws InstantiationException, IllegalAccessException {
+        var result= type.newInstance();
+        if(!copyToObject(obj,result,type))
+        {
+            return null;
         }
+        return result;
     }
 
     public static void setFieldValue(Object obj, String fieldName, Object value) {

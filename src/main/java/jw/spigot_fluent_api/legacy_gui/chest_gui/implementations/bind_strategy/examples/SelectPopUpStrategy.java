@@ -27,7 +27,7 @@ public class SelectPopUpStrategy extends BindingStrategy<Integer> {
         String[] description = new String[options.length];
         for (int i = 0; i < options.length; i++) {
             if (i == newIndex) {
-                description[i] = ChatColor.WHITE + "" + ChatColor.BOLD + Emoticons.arrowright + " " + options[i];
+                description[i] = ChatColor.WHITE + "" + ChatColor.BOLD + Emoticons.arrowRight + " " + options[i];
             } else {
                 description[i] = ChatColor.GRAY + "- " + options[i];
             }

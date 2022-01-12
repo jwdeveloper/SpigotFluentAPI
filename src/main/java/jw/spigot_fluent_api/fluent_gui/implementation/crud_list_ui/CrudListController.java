@@ -17,7 +17,6 @@ import java.util.function.Consumer;
 public class CrudListController<T> {
     private final Material DEFAULT_BACKGROUND = Material.GRAY_STAINED_GLASS_PANE;
     private final ListUI<T> listUI;
-
     private final Observable<CrudListState> currentState;
     private CrudListState _currentState;
 

@@ -5,35 +5,33 @@ import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import java.util.HashMap;
 
 public class InjectionContainer {
-    private final HashMap<Class<?>, Injection> serviceHashMap = new HashMap<>();
+    private final HashMap<Class<?>, Injection> container = new HashMap<>();
 
     public HashMap<Class<?>, Injection> getInjections() {
-        return serviceHashMap;
+        return container;
     }
 
-    public Injection getInjection(Class<?> _class) {
-        if (serviceHashMap.containsKey(_class)) {
-            return serviceHashMap.get(_class);
+    public Injection getInjection(Class<?> type) {
+        if (!container.containsKey(type)) {
+            return null;
         }
-        return null;
+        return container.get(type);
     }
 
-    public <T> void register(InjectionType serviceType, Class<T> type) {
-        if (serviceHashMap.containsKey(type))
-            return;
-
-        serviceHashMap.put(type, new Injection(serviceType, type));
+    public <T> void register(InjectionType injectionType, Class<T> type) {
+        container.putIfAbsent(type, new Injection(injectionType, type));
     }
 
     public <T> T getObject(Class<?> type) {
         try {
-            if (!serviceHashMap.containsKey(type)) {
-                FluentPlugin.logError("Service " + type.getTypeName() + " not found!");
+            if (!container.containsKey(type)) {
+                FluentPlugin.logError("Injection for class " + type.getTypeName() + " has not been found!");
                 return null;
             }
-            Injection injection = serviceHashMap.get(type);
+            Injection injection = container.get(type);
             if (injection.getInjectionType() == InjectionType.TRANSIENT ||
-                    !injection.isInit()) {
+                    !injection.hasInstance()) {
+                //for each constructor param method getObject(paramClass) is invoked
                 if (injection.setParams(this::getObject)) {
                     injection.createInstance();
                 } else {
@@ -43,14 +41,13 @@ public class InjectionContainer {
             }
             return injection.getInstance();
         } catch (Exception e) {
-            FluentPlugin.logException("Exception with getting service " + type.getTypeName(), e);
+            FluentPlugin.logException("Can not get injection for class " + type.getTypeName(), e);
             return null;
         }
     }
 
-    public void dispose()
-    {
-        serviceHashMap.clear();
+    public void dispose() {
+        container.clear();
     }
 
 }

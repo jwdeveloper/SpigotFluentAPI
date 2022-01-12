@@ -4,15 +4,20 @@ import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 public class CrudListUI<T> extends ListUI<T>
 {
     private final CrudListController<T> listViewModel;
+    @Getter
     private ButtonObserverUI buttonCancel;
+    @Getter
     private ButtonObserverUI buttonDelete;
+    @Getter
     private ButtonObserverUI buttonEdit;
+    @Getter
     private ButtonObserverUI buttonInsert;
 
     public CrudListUI(String name, int height)

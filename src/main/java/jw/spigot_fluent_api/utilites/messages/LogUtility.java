@@ -9,14 +9,19 @@ public class LogUtility
         return getLog(ChatColor.DARK_RED,"Error");
     }
 
+    public static MessageBuilder exception()
+    {
+        return getLog(ChatColor.DARK_RED,"Critical error");
+    }
+
     public static MessageBuilder success()
     {
-        return getLog(ChatColor.DARK_GREEN,"Success");
+        return getLog(ChatColor.GREEN,"Success");
     }
 
     public static MessageBuilder info()
     {
-      return getLog(ChatColor.YELLOW,"Info");
+      return getLog(ChatColor.AQUA,"Info");
     }
 
     private static MessageBuilder getLog(ChatColor color,String type)

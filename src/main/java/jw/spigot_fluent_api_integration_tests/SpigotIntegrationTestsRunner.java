@@ -11,7 +11,7 @@ public class SpigotIntegrationTestsRunner {
 
     public static void loadTests() {
         FluentPlugin.logSuccess("Integration tests enabled");
-        var classes = ClassTypeUtility.fineClassesInPackage(SpigotIntegrationTestsRunner.class.getPackageName());
+        var classes = ClassTypeUtility.findClassesInPackage(SpigotIntegrationTestsRunner.class.getPackageName());
         var integrationTestsClasses = classes.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).toList();
         List<SpigotIntegrationTest> integrationTests = new ArrayList<SpigotIntegrationTest>();
         for (var integration : integrationTestsClasses) {

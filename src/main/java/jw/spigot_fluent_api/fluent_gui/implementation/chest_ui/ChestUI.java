@@ -5,6 +5,7 @@ import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -79,43 +80,46 @@ public class ChestUI extends InventoryUI {
 
     @Override
     protected final void doClick(Player player, int index, ItemStack itemStack, InventoryInteractEvent interactEvent) {
-        if (index > getSlots()) {
-            onClickAtPlayerItem(player, itemStack);
-            return;
-        }
-
-        var button = this.getButton(index);
-        if (button == null || !button.isActive())
-            return;
-
-        if (!checkPermissions(button.getPermissions()))
-            return;
-
-        if (button.hasSound())
-            player.playSound(player.getLocation(), button.getSound(), 1, 1);
-
-        var inventoryClickEvent = (InventoryClickEvent) interactEvent;
-        switch (inventoryClickEvent.getClick()) {
-            case SHIFT_LEFT, SHIFT_RIGHT -> button.getOnShiftClick().execute(player, button);
-            default -> {
-                if (button instanceof ButtonObserverUI buttonObserverUI)
-                    buttonObserverUI.click(player, this);
-                else
-                    button.click(player);
-                onClick(player, button);
+        try {
+            if (index > getSlots()) {
+                onClickAtPlayerItem(player, itemStack);
+                return;
             }
+
+            var button = this.getButton(index);
+            if (button == null || !button.isActive())
+                return;
+
+            if (!checkPermissions(button.getPermissions()))
+                return;
+
+            if (button.hasSound())
+                player.playSound(player.getLocation(), button.getSound(), 1, 1);
+
+            var inventoryClickEvent = (InventoryClickEvent) interactEvent;
+            switch (inventoryClickEvent.getClick()) {
+                case SHIFT_LEFT, SHIFT_RIGHT -> button.getOnShiftClick().execute(player, button);
+                default -> {
+                    if (button instanceof ButtonObserverUI buttonObserverUI)
+                        buttonObserverUI.click(player, this);
+                    else
+                        button.click(player);
+                    onClick(player, button);
+                }
+            }
+        } catch (Exception e) {
+            FluentPlugin.logException("Error onClick, inventory " + this.getName()+" by player "+player.getName(), e);
         }
     }
 
-    public void refreshBorder()
-    {
+    public void refreshBorder() {
         ButtonUI button;
         for (int i = 0; i < INVENTORY_WIDTH; i++) {
             for (int j = 0; j < getHeight(); j++) {
                 if (i == 0 || j == 0 || j == getHeight() - 1 || i == INVENTORY_WIDTH - 1) {
                     button = getButton(j, i);
                     if (button.getButtonType() == ButtonType.BACKGROUND) {
-                       refreshButton(button);
+                        refreshButton(button);
                     }
                 }
             }

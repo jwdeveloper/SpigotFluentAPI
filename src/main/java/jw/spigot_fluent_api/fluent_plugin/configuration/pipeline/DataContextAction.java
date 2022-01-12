@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.actions;
+package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
 import jw.spigot_fluent_api.data.DataContext;
 import jw.spigot_fluent_api.data.DataHandler;
@@ -10,7 +10,7 @@ import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.util.function.Consumer;
 
-public class DataContextAction implements ConfigAction
+public class DataContextAction implements PluginPipeline
 {
     private Consumer<DataHandler> configure;
     private final DataContext dataContext;
@@ -30,7 +30,7 @@ public class DataContextAction implements ConfigAction
     @Override
     public void pluginEnable(FluentPlugin fluentPlugin) {
         //load files from files
-        var savableFiles = InjectionManager.getObjectsByParentType(Saveable.class);
+        var savableFiles = InjectionManager.getObjectsWithParentType(Saveable.class);
         var ymlFiles = InjectionManager.getObjectByAnnotation(YmlFile.class);
         var jsonFiles = InjectionManager.getObjectByAnnotation(JsonFile.class);
         dataContext.addSaveableObject(savableFiles);

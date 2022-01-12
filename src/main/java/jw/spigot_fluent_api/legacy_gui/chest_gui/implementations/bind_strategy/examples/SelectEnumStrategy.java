@@ -30,7 +30,7 @@ public class SelectEnumStrategy<T extends Enum<T>> extends BindingStrategy<T> {
         String[] description = new String[enumValues.length];
         for (int i = 0; i < enumValues.length; i++) {
             if (i == index) {
-                description[i] = ChatColor.WHITE + "" + ChatColor.BOLD + Emoticons.arrowright + " " + enumValues[i].name();
+                description[i] = ChatColor.WHITE + "" + ChatColor.BOLD + Emoticons.arrowRight + " " + enumValues[i].name();
             } else {
                 description[i] = ChatColor.GRAY + "- " + enumValues[i].name();
             }

@@ -1,14 +1,11 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.actions;
+package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
-import jw.spigot_fluent_api.data.Saveable;
-import jw.spigot_fluent_api.data.annotation.files.JsonFile;
-import jw.spigot_fluent_api.data.annotation.files.YmlFile;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.util.function.Consumer;
 
-public class DependencyInjectionAction implements ConfigAction {
+public class DependencyInjectionAction implements PluginPipeline {
 
     private final Consumer<InjectionManager> consumer;
 

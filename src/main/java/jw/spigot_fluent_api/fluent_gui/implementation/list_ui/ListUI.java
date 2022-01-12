@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.FilterContentEvent;
+import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
@@ -53,7 +54,7 @@ public class ListUI<T> extends ChestUI {
                 .setMaterial(Material.SPYGLASS)
                 .setOnClick((player, button) ->
                 {
-                    player.sendMessage(ChatColor.YELLOW+"Not implemented yet ;/");
+                    player.sendMessage("Not implemented yet...");
                 })
                 .buildAndAdd(this);
 
@@ -92,19 +93,16 @@ public class ListUI<T> extends ChestUI {
     }
 
     @Override
-    protected final void onOpen(Player player)
-    {
-        for (var event: onListOpen)
-        {
-          event.accept(player);
+    protected final void onOpen(Player player) {
+        for (var event : onListOpen) {
+            event.accept(player);
         }
         this.setTitle(listContentManager.pageDescription());
     }
 
     @Override
     protected final void onClose(Player player) {
-        for (var event: onListClose)
-        {
+        for (var event : onListClose) {
             event.accept(player);
         }
     }
@@ -114,60 +112,51 @@ public class ListUI<T> extends ChestUI {
         if (!listContentManager.isContentButton(button))
             return;
 
-        for (var event: onClickContent)
-        {
-            event.execute(player,button);
+        for (var event : onClickContent) {
+            event.execute(player, button);
         }
     }
+
     public void setContentButtons(List<T> data, ButtonUIMapper<T> buttonMapper) {
         listContentManager.setButtonFormatter(data, buttonMapper);
         refreshContent();
-        displayLog("ContentButtons set, count:"+ data.size(),ChatColor.GREEN);
+        displayLog("ContentButtons set, count:" + data.size(), ChatColor.GREEN);
     }
 
-    public void applyFilters()
-    {
+    public void applyFilters() {
         listContentManager.applyFilters();
         refreshContent();
     }
 
-    public void addContentFilter(FilterContentEvent<T> filterContentEvent)
-    {
+    public void addContentFilter(FilterContentEvent<T> filterContentEvent) {
         listContentManager.addFilter(filterContentEvent);
     }
 
-    public void removeFilter(FilterContentEvent<T> filterContentEvent)
-    {
+    public void removeFilter(FilterContentEvent<T> filterContentEvent) {
         listContentManager.removeFilter(filterContentEvent);
     }
 
-    public void resetFilter()
-    {
+    public void resetFilter() {
         listContentManager.resetFilter();
         refreshContent();
     }
 
 
-
-    public void refreshContent()
-    {
+    public void refreshContent() {
         setTitle(listContentManager.pageDescription());
         addButtons(listContentManager.getButtons());
         refreshButtons();
     }
 
-
-    public void onListOpen(Consumer<Player> event)
-    {
+    public void onListOpen(Consumer<Player> event) {
         onListOpen.add(event);
     }
 
-    public void onContentClick(ButtonUIEvent event)
-    {
+    public void onContentClick(ButtonUIEvent event) {
         onClickContent.add(event);
     }
-    public void onListClose(Consumer<Player> event)
-    {
+
+    public void onListClose(Consumer<Player> event) {
         onListClose.add(event);
     }
 }

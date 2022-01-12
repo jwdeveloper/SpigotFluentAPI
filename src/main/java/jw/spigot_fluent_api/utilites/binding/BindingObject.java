@@ -13,7 +13,7 @@ public class BindingObject<T> extends Observable<T> {
     public BindingObject() {
         this("Object");
     }
-    @Override
+
     protected boolean bind(Object classObject, String filed) {
         this.objectName = filed;
         this.object = classObject;

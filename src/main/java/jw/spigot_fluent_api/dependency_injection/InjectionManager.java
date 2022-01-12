@@ -1,8 +1,8 @@
 package jw.spigot_fluent_api.dependency_injection;
 
 
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ClassTypeUtility;
+import jw.spigot_fluent_api.utilites.disposing.Disposable;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -10,9 +10,8 @@ import java.util.*;
 public class InjectionManager {
 
     private static InjectionManager instance;
-
     private final InjectionContainer serviceContainer;
-    private final HashMap<UUID,HashMap<Class<?>,Object>> playerObjects;
+    private final HashMap<UUID, HashMap<Class<?>, Object>> playerObjects;
 
     public static InjectionManager instance() {
         if (instance == null) {
@@ -20,58 +19,50 @@ public class InjectionManager {
         }
         return instance;
     }
+
     private InjectionManager() {
         serviceContainer = new InjectionContainer();
         playerObjects = new HashMap<>();
     }
 
-    public static <T> List<T> getObjectsByParentType(Class<T> searchType)
-    {
+    public static <T> List<T> getObjectsWithParentType(Class<T> searchType) {
         List<T> result = new ArrayList<>();
-        instance().serviceContainer.getInjections().forEach((type, bean)->
-        {
-            if(ClassTypeUtility.isClassContainsType(type, searchType))
-            {
+        for (var type : instance().serviceContainer.getInjections().keySet()) {
+            if (ClassTypeUtility.isClassContainsType(type, searchType)) {
                 result.add(instance().serviceContainer.getObject(type));
             }
-        });
-      return result;
+        }
+        return result;
     }
 
-    public static List<Object> getObjectByAnnotation(Class<? extends Annotation> searchType)
-    {
+    public static List<Object> getObjectByAnnotation(Class<? extends Annotation> searchType) {
         List<Object> result = new ArrayList<>();
-        instance().serviceContainer.getInjections().forEach((type, bean)->
+        instance().serviceContainer.getInjections().forEach((type, bean) ->
         {
-            if(type.isAnnotationPresent(searchType))
-            {
+            if (type.isAnnotationPresent(searchType)) {
                 result.add(instance().serviceContainer.getObject(type));
             }
         });
         return result;
     }
 
-    public static <T> T getObject(Class<T> tClass)
-    {
+    public static <T> T getObject(Class<T> tClass) {
         return instance().serviceContainer.getObject(tClass);
     }
 
-    public static <T> T getObjectPlayer(Class<T> tClass,UUID uuid)
-    {
-        if(!instance().playerObjects.containsKey(uuid))
-        {
-            instance().playerObjects.put(uuid,new HashMap<>());
+    public static <T> T getObjectPlayer(Class<T> tClass, UUID uuid) {
+        if (!instance().playerObjects.containsKey(uuid)) {
+            instance().playerObjects.put(uuid, new HashMap<>());
         }
-        HashMap<Class<?>,Object> objectHashMap = instance().playerObjects.get(uuid);
-        if(!objectHashMap.containsKey(tClass))
-        {
-         objectHashMap.put(tClass,getObject(tClass));
+        HashMap<Class<?>, Object> objectHashMap = instance().playerObjects.get(uuid);
+        if (!objectHashMap.containsKey(tClass)) {
+            objectHashMap.put(tClass, getObject(tClass));
         }
-        return (T)objectHashMap.get(tClass);
+        return (T) objectHashMap.get(tClass);
     }
-    public static Set<Class<?>> getInjectedTypes()
-    {
-      return instance().serviceContainer.getInjections().keySet();
+
+    public static Set<Class<?>> getInjectedTypes() {
+        return instance().serviceContainer.getInjections().keySet();
     }
 
     public static <T> void register(InjectionType serviceType, Class<T> type) {
@@ -86,30 +77,44 @@ public class InjectionManager {
         instance().serviceContainer.register(InjectionType.TRANSIENT, type);
     }
 
-    public static  void dispose()
-    {
+    public static void dispose() {
+        var disposeType = Disposable.class;
+        var disposableObjects = InjectionManager.getObjectsWithParentType(disposeType);
+        for (var object : disposableObjects) {
+            object.dispose();
+        }
+        var hashMapsCollection = instance().playerObjects.values();
+        var toDispose = new ArrayList<Disposable>();
+        for (var map : hashMapsCollection) {
+            for (var object : map.values()) {
+                if (ClassTypeUtility.isClassContainsType(object.getClass(), disposeType)) {
+                    toDispose.add((Disposable) object);
+                }
+            }
+        }
+        for (var disposable : toDispose) {
+            disposable.dispose();
+        }
         instance().playerObjects.clear();
         instance().serviceContainer.dispose();
     }
 
     public static void registerAllFromPackage(Package packName) {
-        var packageTypes = ClassTypeUtility.fineClassesInPackage(packName.getName());
+        var classes = ClassTypeUtility.findClassesInPackage(packName.getName());
         var toInstantiate = new ArrayList<Class<?>>();
 
-        for (Class<?> type : packageTypes) {
+        for (Class<?> type : classes) {
             SpigotBean spigotBean = type.getAnnotation(SpigotBean.class);
             if (spigotBean == null)
                 continue;
 
             register(spigotBean.injectionType(), type);
 
-            if(!spigotBean.lazyLoad())
-            {
+            if (!spigotBean.lazyLoad()) {
                 toInstantiate.add(type);
             }
         }
-        for(Class<?> type:toInstantiate)
-        {
+        for (Class<?> type : toInstantiate) {
             getObject(type);
         }
     }

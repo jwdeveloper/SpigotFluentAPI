@@ -1,9 +1,8 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration;
 
-import jw.spigot_fluent_api.data.DataContext;
 import jw.spigot_fluent_api.data.DataHandler;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
-import jw.spigot_fluent_api.fluent_plugin.configuration.actions.ConfigAction;
+import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
 
 import java.util.function.Consumer;
 
@@ -18,11 +17,13 @@ public interface PluginConfiguration {
 
     PluginConfiguration useInfoMessage();
 
-    PluginConfiguration useCustomAction(ConfigAction configAction);
+    PluginConfiguration useCustomAction(PluginPipeline pipeline);
 
     PluginConfiguration useMetrics(int metricsId);
 
     PluginConfiguration useIntegrationTests();
 
     PluginConfiguration useDebugMode();
+
+    PluginConfiguration configureLogs();
 }

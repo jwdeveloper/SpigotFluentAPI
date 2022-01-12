@@ -3,10 +3,14 @@ package jw.spigot_fluent_api.utilites;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
+
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -64,12 +68,43 @@ public class ClassTypeUtility {
         return classes;
     }
 
-    public static List<Class<?>> fineClassesInPackage(String packageName) {
-        List<Class<?>> classes = new ArrayList<>();
-        String path = FluentPlugin.getPath();
-        File jar = new File(path + ".jar");
+    // not working yet
+    public static List<Class<?>> getClassesFromPluginClassLoader(JavaPlugin plugin) {
         try {
-            JarInputStream is = new JarInputStream(new FileInputStream(jar));
+            var classLoaderFiled = JavaPlugin.class.getDeclaredField("classLoader");
+            classLoaderFiled.setAccessible(true);
+            var classLoaderObject = classLoaderFiled.get(plugin);
+            classLoaderFiled.setAccessible(false);
+
+
+            var pluginClassLoaderClass = Class.forName("org.bukkit.plugin.java.PluginClassLoader");
+            var pluginClassLoaderObject = pluginClassLoaderClass.cast(classLoaderObject);
+
+            var classesField = pluginClassLoaderObject.getClass().getDeclaredField("classes");
+            classesField.setAccessible(true);
+            var classes = classesField.get(pluginClassLoaderObject);
+            classesField.setAccessible(false);
+
+
+
+            var listOfClasses = (Map<String, Class<?>>) classes;
+            for(var a : listOfClasses.entrySet())
+            {
+                FluentPlugin.logSuccess("VAlue "+a.getValue());
+            }
+            return listOfClasses.values().stream().toList();
+        } catch (Exception e) {
+            FluentPlugin.logException("Could not load classes from pluginClassLoader", e);
+            return findClassesInPackage(plugin.getClass().getPackageName());
+        }
+    }
+
+
+    public static List<Class<?>> findClassesInPackage(String packageName) {
+        List<Class<?>> result = new ArrayList<>();
+        var pluginFile = FluentPlugin.getPluginFile();
+        try {
+            JarInputStream is = new JarInputStream(new FileInputStream(pluginFile));
             JarEntry entry;
             while ((entry = is.getNextJarEntry()) != null) {
                 try {
@@ -78,18 +113,18 @@ public class ClassTypeUtility {
                         String classPath = name.substring(0, entry.getName().length() - 6);
                         classPath = classPath.replaceAll("[\\|/]", ".");
                         if (classPath.contains(packageName)) {
-                            classes.add(Class.forName(classPath));
+                            result.add(Class.forName(classPath));
                         }
                     }
                 } catch (Exception ex) {
-                    FluentPlugin.logException("Could not load class",ex);
+                    FluentPlugin.logException("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            FluentPlugin.logException("Could not load class",ex);
+            FluentPlugin.logException("Could not load class", ex);
         }
-        return classes;
+        return result;
     }
 
 

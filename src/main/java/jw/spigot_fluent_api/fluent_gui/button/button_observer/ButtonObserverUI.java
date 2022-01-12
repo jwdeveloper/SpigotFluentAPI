@@ -46,6 +46,8 @@ public class ButtonObserverUI extends ButtonUI {
 
     }
 
+    public static ButtonObserverUIFactory factory(){return new ButtonObserverUIFactory();}
+
     public static ButtonObserverUIBuilder builder()
     {
         return new ButtonObserverUIBuilder();

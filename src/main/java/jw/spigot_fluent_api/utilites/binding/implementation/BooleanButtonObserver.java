@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.utilites.binding.implementation;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserver;
 import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
 
 public class BooleanButtonObserver
 {
@@ -17,12 +18,12 @@ public class BooleanButtonObserver
                   if(event.getValue())
                   {
                       event.getButton().setHighlighted(true);
-                      event.getButton().setDescription("Enable");
+                      event.getButton().setDescription(new MessageBuilder().field("State","Enable"));
                   }
                   else
                   {
                       event.getButton().setHighlighted(false);
-                      event.getButton().setDescription("Disable");
+                      event.getButton().setDescription(new MessageBuilder().field("State","Disable"));
                   }
               })
               .build();

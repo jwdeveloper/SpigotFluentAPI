@@ -30,7 +30,7 @@ public class BlockStrategy extends BindingStrategy<Material>
     public void onValueChanged(ChestGUI inventoryGUI, Button button, Material newValue)
     {
         button.setMaterial(newValue);
-        button.addDescription(ChatColor.WHITE+ Emoticons.arrowright+" "+newValue.name());
+        button.addDescription(ChatColor.WHITE+ Emoticons.arrowRight+" "+newValue.name());
     }
 
 }

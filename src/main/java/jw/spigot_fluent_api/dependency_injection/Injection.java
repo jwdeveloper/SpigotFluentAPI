@@ -7,38 +7,38 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Injection {
     private final InjectionType serviceType;
-    private final Class<?> aClass;
+    private final Class<?> type;
     private Object instance;
     private Constructor<?> constructor;
-    private Object[] params;
-    private Class<?>[] parametersType;
+    private Object[] constructorParams;
+    private Class<?>[] constructorParamsType;
 
-    public Injection(InjectionType serviceType, Class<?> aClass) {
-        this.aClass = aClass;
-        this.serviceType = serviceType;
-        if (aClass.getConstructors().length > 0) {
-            this.constructor = aClass.getConstructors()[0];
+    public Injection(InjectionType injectionType, Class<?> type) {
+        this.type = type;
+        this.serviceType = injectionType;
+        if (type.getConstructors().length > 0) {
+            this.constructor = type.getConstructors()[0];
             if (this.constructor.getParameterCount() > 0)
-                this.params = new Object[constructor.getParameterCount()];
-            this.parametersType = constructor.getParameterTypes();
+                this.constructorParams = new Object[constructor.getParameterCount()];
+            this.constructorParamsType = constructor.getParameterTypes();
         }
     }
 
     public Class<?> getType() {
-        return aClass;
+        return type;
     }
 
     public boolean setParams(InjectionMapper mapParams) {
-        if (constructor == null || params == null) {
+        if (constructor == null || constructorParams == null) {
             return true;
         }
 
-        for (int i = 0; i < parametersType.length; i++) {
-            params[i] = mapParams.map(parametersType[i]);
+        for (int i = 0; i < constructorParamsType.length; i++) {
+            constructorParams[i] = mapParams.map(constructorParamsType[i]);
 
-            if (params[i] == null) {
+            if (constructorParams[i] == null) {
                 FluentPlugin.logError("Constructor parameter with type " +
-                        parametersType[i] +
+                        constructorParamsType[i] +
                         " at index " + i +
                         " Not found in " +
                         getClass().getSimpleName());
@@ -48,7 +48,7 @@ public class Injection {
         return true;
     }
 
-    public boolean isInit() {
+    public boolean hasInstance() {
         return instance != null;
     }
 
@@ -61,19 +61,20 @@ public class Injection {
     }
 
     public void createInstance() throws InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (constructor != null) {
-            if (params != null)
-                this.instance = this.constructor.newInstance(params);
-            else
-                this.instance = this.constructor.newInstance();
-        }
+        if (constructor == null)
+            return;
 
+
+        if (constructorParams != null)
+            this.instance = this.constructor.newInstance(constructorParams);
+        else
+            this.instance = this.constructor.newInstance();
     }
 
     @Override
     public String toString() {
-        return  "Injection " + this.hashCode() +
+        return "Injection " + this.hashCode() +
                 "Injection type " + serviceType +
-                "Is init " + this.isInit();
+                "has Instance " + this.hasInstance();
     }
 }

@@ -1,9 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin;
-import jw.spigot_fluent_api.data.DataContext;
 import jw.spigot_fluent_api.data.DataHandler;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.configuration.actions.*;
-import jw.spigot_fluent_api.legacy_commands.FluentCommands;
+import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.*;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.simple_commands.SimpleCommand;
 import org.bukkit.Bukkit;
@@ -13,13 +11,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class FluentPluginConfiguration implements PluginConfiguration {
-    private ConfigAction dataContext;
-    private ConfigAction dependencyInjection;
-    private ConfigAction integrationTests;
-    private ConfigAction infoMessage;
-    private ConfigAction metrics;
-    private final List<ConfigAction> configurationActions;
-    private final List<ConfigAction> customActions;
+    private PluginPipeline dataContext;
+    private PluginPipeline dependencyInjection;
+    private PluginPipeline integrationTests;
+    private PluginPipeline infoMessage;
+    private PluginPipeline metrics;
+    private final List<PluginPipeline> configurationActions;
+    private final List<PluginPipeline> customActions;
 
     public FluentPluginConfiguration() {
         this.configurationActions =new ArrayList<>();
@@ -62,9 +60,9 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     @Override
-    public PluginConfiguration useCustomAction(ConfigAction configAction)
+    public PluginConfiguration useCustomAction(PluginPipeline pipeline)
     {
-        customActions.add(configAction);
+        customActions.add(pipeline);
         return this;
     }
 
@@ -97,9 +95,13 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         return this;
     }
 
-    public List<ConfigAction> getConfigurationActions()
+    @Override
+    public PluginConfiguration configureLogs() {
+        return null;
+    }
+
+    public List<PluginPipeline> getConfigurationActions()
     {
-        addIfNotNull(new CheckFileAction());
         addIfNotNull(dependencyInjection);
         addIfNotNull(dataContext);
         addIfNotNull(metrics);
@@ -110,7 +112,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
 
-    private void addIfNotNull(ConfigAction action)
+    private void addIfNotNull(PluginPipeline action)
     {
         if(action != null)
             configurationActions.add(action);

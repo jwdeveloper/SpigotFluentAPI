@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.data.repositories;
 
 import jw.spigot_fluent_api.data.Saveable;
 import jw.spigot_fluent_api.data.models.DataModel;
+import jw.spigot_fluent_api.utilites.ObjectUtility;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
@@ -46,21 +47,16 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Savea
     public Optional<T> getOne(UUID id) {
         return content
                 .stream()
-                .filter(p -> p.uuid == id)
+                .filter(p -> p.getUuid().equals(id))
                 .findFirst();
     }
 
     public Optional<T> getOneByName(String name) {
         return content
                 .stream()
-                .filter(p -> ChatColor.stripColor(p.name)
+                .filter(p -> ChatColor.stripColor(p.getName())
                         .equalsIgnoreCase(name))
                 .findFirst();
-    }
-
-    @Override
-    public ArrayList<T> getMany(HashMap<String, String> args) {
-        return content;
     }
 
     public ArrayList<T> getMany() {
@@ -69,12 +65,14 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Savea
 
     @Override
     public boolean insertOne(T data) {
-        if (data != null) {
-            data.uuid = UUID.randomUUID();
-            content.add(data);
-            return true;
+        if (data == null) {
+            return false;
         }
-        return false;
+        if (data.getUuid() == null)
+            data.setUuid(UUID.randomUUID());
+        content.add(data);
+        return true;
+
     }
 
     @Override
@@ -85,12 +83,17 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Savea
 
     @Override
     public boolean updateOne(UUID id, T data) {
-        return false;
+        var optional = getOne(id);
+        if (optional.isEmpty())
+            return false;
+
+        return ObjectUtility.copyToObject(data, optional.get(), entityClass);
     }
 
     @Override
-    public boolean updateMany(HashMap<String, T> data) {
-        return false;
+    public boolean updateMany(HashMap<UUID, T> data) {
+        data.forEach(this::updateOne);
+        return true;
     }
 
     @Override
@@ -113,7 +116,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Savea
 
     @Override
     public boolean deleteMany(List<T> data) {
-        data.forEach(a -> this.deleteOneById(a.uuid));
+        data.forEach(a -> this.deleteOneById(a.getUuid()));
         return true;
     }
 

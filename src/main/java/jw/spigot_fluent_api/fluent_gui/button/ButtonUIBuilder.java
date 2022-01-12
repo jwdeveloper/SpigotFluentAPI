@@ -3,6 +3,7 @@ import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 
@@ -58,6 +59,12 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
         return self();
     }
 
+    public SELF setTitleHeader(String title)
+    {
+        this.button.setTitle(new MessageBuilder().color(ChatColor.WHITE).inBrackets(title).get());
+        return self();
+    }
+
     public SELF setMaterial(Material material)
     {
         this.button.setMaterial(material);
@@ -86,6 +93,12 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
     public SELF setActive(boolean isActive)
     {
         this.button.setActive(isActive);
+        return self();
+    }
+
+    public SELF setHighlighted()
+    {
+        this.button.setHighlighted(true);
         return self();
     }
 

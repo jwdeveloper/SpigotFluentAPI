@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.actions;
+package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.metricts.MetricsLite;

@@ -8,8 +8,6 @@ public interface Repository <T>
 
      Optional<T> getOne(UUID id);
 
-     ArrayList<T> getMany(HashMap<String,String> args);
-
      ArrayList<T> getMany();
 
      boolean insertOne(T data);
@@ -18,7 +16,7 @@ public interface Repository <T>
 
      boolean updateOne(UUID id,T data);
 
-     boolean updateMany(HashMap<String,T> data);
+     boolean updateMany(HashMap<UUID,T> data);
 
      boolean deleteOne(T data);
 

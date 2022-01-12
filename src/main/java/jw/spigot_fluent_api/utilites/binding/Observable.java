@@ -15,7 +15,6 @@ public class Observable<T> implements Bindable<T> {
     protected Class fieldType;
     protected boolean isBinded;
     protected List<Consumer<T>> onChange = new ArrayList<>();
-
     public Observable() {
 
     }
@@ -89,8 +88,8 @@ public class Observable<T> implements Bindable<T> {
         try {
             this.field = _class.getDeclaredField(filedName);
             this.field.setAccessible(true);
-
             this.fieldType = this.field.getType();
+            isBinded = true;
             return true;
         } catch (NoSuchFieldException e) {
             FluentPlugin.logError("Binding error:" + e.getMessage() + " Field: " + filedName);

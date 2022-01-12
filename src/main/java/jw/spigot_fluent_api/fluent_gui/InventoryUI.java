@@ -100,10 +100,9 @@ public abstract class InventoryUI {
         setTitle(title.toString());
     }
     public void setTitle(String title) {
-
+        this.title = title;
         if (player == null || !player.isOnline())
             return;
-        this.title = title;
         EventsListenerInventoryUI.unregisterUI(this);
         var currentContent =  getInventory().getContents();
         this.inventory = createInventory(inventoryType);

@@ -163,7 +163,9 @@ public class ButtonUI {
         itemStack.setItemMeta(meta);
     }
 
-
+    public static ButtonUIFactory factory() {
+        return new ButtonUIFactory();
+    }
     public static ButtonUIBuilder builder() {
         return new ButtonUIBuilder();
     }
