@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.data.Saveable;
 import jw.spigot_fluent_api.data.annotation.files.JsonFile;
 import jw.spigot_fluent_api.data.annotation.files.YmlFile;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.util.function.Consumer;
@@ -30,9 +31,12 @@ public class DataContextAction implements PluginPipeline
     @Override
     public void pluginEnable(FluentPlugin fluentPlugin) {
         //load files from files
-        var savableFiles = InjectionManager.getObjectsWithParentType(Saveable.class);
-        var ymlFiles = InjectionManager.getObjectByAnnotation(YmlFile.class);
-        var jsonFiles = InjectionManager.getObjectByAnnotation(JsonFile.class);
+        var container = FluentInjection.getInjectionContainer();
+
+        var savableFiles = container.getAllByInterface(Saveable.class);
+        var ymlFiles = container.getAllByAnnotation(YmlFile.class);
+        var jsonFiles =  container.getAllByAnnotation(JsonFile.class);
+
         dataContext.addSaveableObject(savableFiles);
         dataContext.addYmlObjects(ymlFiles);
         dataContext.addJsonObjects(jsonFiles);

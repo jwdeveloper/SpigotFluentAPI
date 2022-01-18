@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui.button;
 
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
-import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 

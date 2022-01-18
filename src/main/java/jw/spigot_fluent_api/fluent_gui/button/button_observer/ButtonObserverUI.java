@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Singular;

@@ -10,7 +10,7 @@ import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.e
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.examples.NumberBindStrategy;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.examples.TextBindStrategy;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

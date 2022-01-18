@@ -1,13 +1,14 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
+import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
 import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFileImpl;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.utilites.ClassTypeUtility;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
-import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public abstract class FluentPlugin extends JavaPlugin {
 
+    private TypeManager typeManager;
     private FluentPluginConfiguration configuration;
     private static FluentPlugin instance;
     private static JavaPlugin plugin;
@@ -41,31 +43,37 @@ public abstract class FluentPlugin extends JavaPlugin {
     public void onLoad() {
         instance = this;
         plugin = this;
+        typeManager = new TypeManager(ClassTypeUtility.findClassesInPlugin(this));
         configuration = new FluentPluginConfiguration();
     }
 
     @Override
     public final void onEnable() {
-        OnConfiguration(configuration,new ConfigFileImpl(getConfig()));
-        pluginPipeline = configuration.getConfigurationActions();
-        for (var action : pluginPipeline) {
-            try {
-                action.pluginEnable(this);
-            } catch (Exception e) {
-                isInitialized = false;
-                FluentPlugin.logException("Plugin can not be loaded since ", e);
-                return;
+        try {
+            OnConfiguration(configuration, new ConfigFileImpl(getConfig()));
+            pluginPipeline = configuration.getConfigurationActions();
+            for (var action : pluginPipeline) {
+                try {
+                    action.pluginEnable(this);
+                } catch (Exception e) {
+                    isInitialized = false;
+                    FluentPlugin.logException("Plugin can not be loaded since ", e);
+                    return;
+                }
             }
+            OnFluentPluginEnable();
+            isInitialized = true;
         }
-        OnFluentPluginEnable();
-        isInitialized = true;
+        catch (Exception e)
+        {
+            FluentPlugin.logException("Error while loading FluentPlugin ", e);
+        }
     }
 
     @Override
     public final void onDisable() {
         if (!isInitialized)
             return;
-
         OnFluentPluginDisable();
         for (var action : pluginPipeline) {
             try {
@@ -82,28 +90,28 @@ public abstract class FluentPlugin extends JavaPlugin {
         return configuration;
     }
 
-    public static void setPlugin(JavaPlugin javaPlugin) {
-        plugin = javaPlugin;
+    public static void setPlugin(JavaPlugin plugin) {
+        FluentPlugin.plugin = plugin;
     }
 
     public static JavaPlugin getPlugin() {
-        return plugin;
+        return FluentPlugin.plugin;
     }
 
-    public static File getPluginFile()
-    {
-        try
-        {
+    public static File getPluginFile() {
+        try {
             var plugin = getPlugin();
             var fileField = JavaPlugin.class.getDeclaredField("file");
             fileField.setAccessible(true);
-            return (File)fileField.get(plugin);
-        }
-        catch (Exception e)
-        {
-            FluentPlugin.logException("Can not laod plugin file",e);
+            return (File) fileField.get(plugin);
+        } catch (Exception e) {
+            FluentPlugin.logException("Can not load plugin file", e);
         }
         return null;
+    }
+
+    public TypeManager getTypeManager() {
+        return typeManager;
     }
 
     public static String getPath() {
@@ -148,7 +156,7 @@ public abstract class FluentPlugin extends JavaPlugin {
         stackTrace.color(ChatColor.WHITE);
         for (var trace : e.getStackTrace()) {
             int offset = 6;
-            offset = offset - (trace.getLineNumber()+"").length();
+            offset = offset - (trace.getLineNumber() + "").length();
             stackTrace
                     .newLine()
                     .color(ChatColor.WHITE)
@@ -159,7 +167,7 @@ public abstract class FluentPlugin extends JavaPlugin {
                     .text("in", ChatColor.WHITE)
                     .space()
                     .text(trace.getClassName(), ChatColor.GRAY)
-                    .text("."+trace.getMethodName()+"()", ChatColor.AQUA)
+                    .text("." + trace.getMethodName() + "()", ChatColor.AQUA)
                     .space()
 
                     .color(ChatColor.RESET);

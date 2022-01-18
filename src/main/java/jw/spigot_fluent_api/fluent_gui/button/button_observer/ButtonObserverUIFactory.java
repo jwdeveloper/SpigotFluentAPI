@@ -2,11 +2,9 @@ package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIFactory;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
-import jw.spigot_fluent_api.utilites.binding.Observable;
-import jw.spigot_fluent_api.utilites.binding.implementation.BooleanButtonObserver;
-import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 import org.bukkit.ChatColor;
 
 public class ButtonObserverUIFactory extends ButtonUIFactory {
@@ -14,8 +12,25 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
     public ButtonObserverUIBuilder boolObserver(Observable<Boolean> observable) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
-                .addObserver(BooleanButtonObserver.create(observable));
+                .addObserver(new ButtonObserverBuilder<Boolean>()
+                        .withObserver(observable)
+                        .onClick(event ->
+                        {
+                            event.getObserver().setValue(!event.getValue());
+                        })
+                        .onValueChange(event ->
+                        {
+                            if (event.getValue()) {
+                                event.getButton().setHighlighted(true);
+                                event.getButton().setDescription(new MessageBuilder().field("State", "Enable"));
+                            } else {
+                                event.getButton().setHighlighted(false);
+                                event.getButton().setDescription(new MessageBuilder().field("State", "Disable"));
+                            }
+                        })
+                );
     }
+
 
     public ButtonObserverUIBuilder stringObserver(Observable<String> observable, ChestUI chestUI) {
         return ButtonObserverUI.builder()
@@ -36,7 +51,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value",event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
                         })
                 );
     }
@@ -63,7 +78,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value",event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
                         })
                 );
     }
@@ -75,7 +90,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         .withObserver(observable)
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value",event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
                         })
                 );
     }

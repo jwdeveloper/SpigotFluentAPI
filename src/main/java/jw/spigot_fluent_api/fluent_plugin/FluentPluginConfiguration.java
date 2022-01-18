@@ -1,9 +1,11 @@
 package jw.spigot_fluent_api.fluent_plugin;
+
 import jw.spigot_fluent_api.data.DataHandler;
+import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.*;
-import jw.spigot_fluent_api.dependency_injection.InjectionManager;
-import jw.spigot_fluent_api.simple_commands.SimpleCommand;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -12,86 +14,79 @@ import java.util.function.Consumer;
 
 public class FluentPluginConfiguration implements PluginConfiguration {
     private PluginPipeline dataContext;
-    private PluginPipeline dependencyInjection;
+
     private PluginPipeline integrationTests;
     private PluginPipeline infoMessage;
     private PluginPipeline metrics;
     private final List<PluginPipeline> configurationActions;
     private final List<PluginPipeline> customActions;
+    private DependecyInjectionContainerBuilder dependecyInjectionContainerBuilder;
 
     public FluentPluginConfiguration() {
-        this.configurationActions =new ArrayList<>();
+        this.configurationActions = new ArrayList<>();
         this.customActions = new ArrayList<>();
+        dependecyInjectionContainerBuilder = new DependecyInjectionContainerBuilder();
     }
 
     @Override
-    public PluginConfiguration useDependencyInjection()
+    public PluginConfiguration configureDependencyInjection(Consumer<ContainerBuilder> configuration)
     {
-        dependencyInjection = new DependencyInjectionAction();
-        return this;
-    }
-    @Override
-    public PluginConfiguration useDependencyInjection(Consumer<InjectionManager> configuration)
-    {
-        dependencyInjection = new DependencyInjectionAction(configuration);
+        configuration.accept(dependecyInjectionContainerBuilder);
         return this;
     }
 
     @Override
-    public PluginConfiguration useDataContext()
-    {
+    public PluginConfiguration useDataContext() {
         dataContext = new DataContextAction();
         return this;
     }
 
 
     @Override
-    public PluginConfiguration useDataContext(Consumer<DataHandler> configuration)
-    {
+    public PluginConfiguration useDataContext(Consumer<DataHandler> configuration) {
         dataContext = new DataContextAction(configuration);
         return this;
     }
 
     @Override
-    public PluginConfiguration useInfoMessage()
-    {
+    public PluginConfiguration useInfoMessage() {
         infoMessage = new InfoMessageAction();
         return this;
     }
 
     @Override
-    public PluginConfiguration useCustomAction(PluginPipeline pipeline)
-    {
+    public PluginConfiguration useCustomAction(PluginPipeline pipeline) {
         customActions.add(pipeline);
         return this;
     }
 
     @Override
-    public PluginConfiguration useMetrics(int metricsId)
-    {
+    public PluginConfiguration useMetrics(int metricsId) {
         metrics = new MetricsAction(metricsId);
         return this;
     }
+
     @Override
-    public PluginConfiguration useIntegrationTests()
-    {
+    public PluginConfiguration useIntegrationTests() {
         integrationTests = new IntegrationTestAction();
         return this;
     }
 
     @Override
-    public PluginConfiguration useDebugMode()
-    {
+    public PluginConfiguration useDebugMode() {
 
-        SimpleCommand.newCommand("disable")
-                        .setDescription("disable all plugin without restarting server")
-                        .setUsageMessage("Can be use only with Console")
-                        .onConsoleExecute(consoleCommandEvent ->
-                        {
-                            Bukkit.getPluginManager().disablePlugins();
-                            FluentPlugin.logInfo("Plugins disabled");
-                        })
-                        .register();
+        FluentCommand.create("disable")
+                .setDescription("disable all plugin without restarting server")
+                .setUsageMessage("Can be use only with Console")
+                .nextStep()
+                .nextStep()
+                .onConsoleExecute(consoleCommandEvent ->
+                {
+                    Bukkit.getPluginManager().disablePlugins();
+                    FluentPlugin.logInfo("Plugins disabled");
+                })
+                .nextStep()
+                .buildAndRegister();
         return this;
     }
 
@@ -100,10 +95,11 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         return null;
     }
 
-    public List<PluginPipeline> getConfigurationActions()
-    {
-        addIfNotNull(dependencyInjection);
+    public List<PluginPipeline> getConfigurationActions() {
+       // addIfNotNull(new DependencyInjectionAction());
+        addIfNotNull(new DI_Action(dependecyInjectionContainerBuilder));
         addIfNotNull(dataContext);
+        addIfNotNull(new MediatorAction());
         addIfNotNull(metrics);
         configurationActions.addAll(customActions);
         addIfNotNull(integrationTests);
@@ -112,12 +108,10 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
 
-    private void addIfNotNull(PluginPipeline action)
-    {
-        if(action != null)
+    private void addIfNotNull(PluginPipeline action) {
+        if (action != null)
             configurationActions.add(action);
     }
-
 
 
 }

@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.web_socket;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;

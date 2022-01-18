@@ -4,7 +4,7 @@ import jw.spigot_fluent_api.legacy_gui.button.Button;
 import jw.spigot_fluent_api.legacy_gui.button.ButtonActionsEnum;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.list_gui.action_button.ActionButton;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.binding.BindingObject;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.BindingObject;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import java.util.HashMap;

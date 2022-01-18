@@ -1,19 +1,18 @@
 package ui;
 
+import desing_patterns.mediator.SpigotTestBase;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
-import jw.spigot_fluent_api.utilites.unit_tests.benchmark.Benchmarker;
-import org.bukkit.Bukkit;
+import jw.spigot_fluent_api.utilites.benchmark.Benchmarker;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class CreateUIBeanchmark
+public class CreateUIBeanchmark extends SpigotTestBase
 {
-    @Ignore
+
     @Test
     public void testContentManager() {
-        initSpigot();
         Benchmarker.run(10000,o ->
         {
             CrudListUI<String> crudListUI = new CrudListUI<>("test",2);
@@ -34,9 +33,4 @@ public class CreateUIBeanchmark
 
     }
 
-    public void initSpigot()
-    {
-       // Bukkit.setServer(new ServerMock());
-        CrudListUI<String> crudListUI = new CrudListUI<>("test",2);
-    }
 }

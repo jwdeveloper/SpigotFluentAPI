@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.dependency_injection;
 
 
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.ClassTypeUtility;
 import jw.spigot_fluent_api.utilites.disposing.Disposable;
 
@@ -13,7 +14,7 @@ public class InjectionManager {
     private final InjectionContainer serviceContainer;
     private final HashMap<UUID, HashMap<Class<?>, Object>> playerObjects;
 
-    public static InjectionManager instance() {
+    private static InjectionManager instance() {
         if (instance == null) {
             instance = new InjectionManager();
         }
@@ -25,7 +26,7 @@ public class InjectionManager {
         playerObjects = new HashMap<>();
     }
 
-    public static <T> List<T> getObjectsWithParentType(Class<T> searchType) {
+    public static <T> List<T> getObjectsByParentType(Class<T> searchType) {
         List<T> result = new ArrayList<>();
         for (var type : instance().serviceContainer.getInjections().keySet()) {
             if (ClassTypeUtility.isClassContainsType(type, searchType)) {
@@ -35,7 +36,7 @@ public class InjectionManager {
         return result;
     }
 
-    public static List<Object> getObjectByAnnotation(Class<? extends Annotation> searchType) {
+    public static List<Object> getObjectsByAnnotation(Class<? extends Annotation> searchType) {
         List<Object> result = new ArrayList<>();
         instance().serviceContainer.getInjections().forEach((type, bean) ->
         {
@@ -43,6 +44,16 @@ public class InjectionManager {
                 result.add(instance().serviceContainer.getObject(type));
             }
         });
+        return result;
+    }
+
+    public static <T> List<T> getObjectsByInterface(Class<T> _interface) {
+        List<T> result = new ArrayList<>();
+        for (var type : instance().serviceContainer.getInjections().keySet()) {
+            if (ClassTypeUtility.isClassContainsInterface(type, _interface)) {
+                result.add(instance().serviceContainer.getObject(type));
+            }
+        }
         return result;
     }
 
@@ -78,31 +89,13 @@ public class InjectionManager {
     }
 
     public static void dispose() {
-        var disposeType = Disposable.class;
-        var disposableObjects = InjectionManager.getObjectsWithParentType(disposeType);
-        for (var object : disposableObjects) {
-            object.dispose();
-        }
-        var hashMapsCollection = instance().playerObjects.values();
-        var toDispose = new ArrayList<Disposable>();
-        for (var map : hashMapsCollection) {
-            for (var object : map.values()) {
-                if (ClassTypeUtility.isClassContainsType(object.getClass(), disposeType)) {
-                    toDispose.add((Disposable) object);
-                }
-            }
-        }
-        for (var disposable : toDispose) {
-            disposable.dispose();
-        }
         instance().playerObjects.clear();
         instance().serviceContainer.dispose();
     }
 
-    public static void registerAllFromPackage(Package packName) {
-        var classes = ClassTypeUtility.findClassesInPackage(packName.getName());
+    public static void registerAll(List<Class<?>> classes)
+    {
         var toInstantiate = new ArrayList<Class<?>>();
-
         for (Class<?> type : classes) {
             SpigotBean spigotBean = type.getAnnotation(SpigotBean.class);
             if (spigotBean == null)

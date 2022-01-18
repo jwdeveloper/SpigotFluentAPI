@@ -1,9 +1,9 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
 
+import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.simple_commands.SimpleCommand;
-import jw.spigot_fluent_api.simple_commands.SimpleCommandManger;
-import jw.spigot_fluent_api.simple_commands.enums.AccessType;
+import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
+import jw.spigot_fluent_api.fluent_commands.SimpleCommandManger;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import jw.spigot_fluent_api_integration_tests.SpigotTest;
 import jw.spigot_fluent_api_integration_tests.spigotAssertions.SpigotAssertion;
@@ -17,10 +17,13 @@ public class SimpleCommandManagerTests extends SpigotIntegrationTest {
 
     @Override
     public void beforeTests() {
-        simpleCommand = SimpleCommand
-                .newCommand(commandName)
+        simpleCommand = FluentCommand
+                .create(commandName)
                 .setDescription("Test command full desciption")
                 .setShortDescription("Test command short description")
+                .nextStep()
+                .nextStep()
+                .nextStep()
                 .build();
     }
 
@@ -49,8 +52,8 @@ public class SimpleCommandManagerTests extends SpigotIntegrationTest {
     @SpigotTest
     public void shouldUnRegisterAllSimpleCommandsOnServerDisable() throws Exception {
 
-        var command1 = SimpleCommand.newCommand("cmd1").build();
-        var command2 = SimpleCommand.newCommand("cmd2").build();
+        var command1 = FluentCommand.create("cmd1").nextStep().nextStep().nextStep().build();
+        var command2 = FluentCommand.create("cmd2").nextStep().nextStep().nextStep().build();
 
         var resultRegister1 = SimpleCommandManger.register(command1);
         var resultRegister2 = SimpleCommandManger.register(command2);
@@ -60,7 +63,7 @@ public class SimpleCommandManagerTests extends SpigotIntegrationTest {
         var allSpigotCommands = SimpleCommandManger.getAllServerCommands();
         var cmd1 = allSpigotCommands.stream()
                 .filter(c -> c.getName()
-                .equalsIgnoreCase(simpleCommand.getName()))
+                        .equalsIgnoreCase(simpleCommand.getName()))
                 .findFirst();
 
         var cmd2 = allSpigotCommands.stream()

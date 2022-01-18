@@ -4,7 +4,7 @@ package jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.interfaces.OnChangeEvent;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.interfaces.OnClickEvent;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 
 
 public class BindingStrategyBuilder<T>

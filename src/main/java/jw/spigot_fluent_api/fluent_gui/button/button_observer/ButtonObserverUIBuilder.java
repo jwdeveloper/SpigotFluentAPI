@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIBuilder;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 
 
 public class ButtonObserverUIBuilder extends ButtonUIBuilder<ButtonObserverUIBuilder,ButtonObserverUI>

@@ -20,9 +20,8 @@ public class DependencyInjectionAction implements PluginPipeline {
 
     @Override
     public void pluginEnable(FluentPlugin fluentPlugin) {
-        InjectionManager.instance();
-        InjectionManager.registerAllFromPackage(fluentPlugin.getClass().getPackage());
-        consumer.accept(InjectionManager.instance());
+      //  InjectionManager.registerAll(fluentPlugin.getTypeManager().getClasses());
+      //  /consumer.accept(null);
 
          /*for(var yml : InjectionManager.getInjectedTypes())
         {

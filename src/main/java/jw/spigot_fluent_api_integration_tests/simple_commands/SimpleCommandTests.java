@@ -1,15 +1,16 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
 
+import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.simple_commands.SimpleCommand;
-import jw.spigot_fluent_api.simple_commands.enums.AccessType;
-import jw.spigot_fluent_api.simple_commands.enums.ArgumentType;
-import jw.spigot_fluent_api.simple_commands.events.CommandEvent;
-import jw.spigot_fluent_api.simple_commands.models.CommandArgument;
-import jw.spigot_fluent_api.simple_commands.models.CommandTarget;
-import jw.spigot_fluent_api.simple_commands.models.ValidationResult;
-import jw.spigot_fluent_api.simple_commands.services.CommandService;
-import jw.spigot_fluent_api.simple_commands.services.SimpleCommandService;
+import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
+import jw.spigot_fluent_api.fluent_commands.enums.AccessType;
+import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
+import jw.spigot_fluent_api.fluent_commands.events.CommandEvent;
+import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
+import jw.spigot_fluent_api.fluent_commands.models.CommandTarget;
+import jw.spigot_fluent_api.fluent_commands.models.ValidationResult;
+import jw.spigot_fluent_api.fluent_commands.services.CommandService;
+import jw.spigot_fluent_api.fluent_commands.services.SimpleCommandService;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import jw.spigot_fluent_api_integration_tests.SpigotTest;
 import jw.spigot_fluent_api_integration_tests.spigotAssertions.SpigotAssertion;
@@ -17,7 +18,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,24 +31,27 @@ public class SimpleCommandTests extends SpigotIntegrationTest
     @Override
     public void beforeTests()
     {
-        simpleCommand = SimpleCommand
-                .newCommand("example-command")
+        simpleCommand = FluentCommand
+                .create("example-command")
                 .setDescription("full description")
                 .setShortDescription("short description")
                 .addPermissions("test-permissions")
-                .newArgument("testBool")
+                .nextStep()
+                .withArgument("testBool")
                 .setColor(ChatColor.AQUA)
                 .setType(ArgumentType.BOOL)
                 .build()
-                .newArgument("testInt")
+                .withArgument("testInt")
                 .setColor(ChatColor.GREEN)
                 .setType(ArgumentType.INT)
                 .build()
+                .nextStep()
                 .onExecute(simpleCommandEvent ->
                 {
                     onExecute.accept(simpleCommandEvent);
                 })
-                .register();
+                .nextStep()
+                .buildAndRegister();
         commandServiceMock = getCommandServiceMock();
         simpleCommand.setCommandService(commandServiceMock);
     }

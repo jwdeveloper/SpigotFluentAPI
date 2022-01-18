@@ -2,8 +2,7 @@ package jw.spigot_fluent_api.utilites.files.json.execution;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 
 
 public class BindingFieldSkip implements ExclusionStrategy {

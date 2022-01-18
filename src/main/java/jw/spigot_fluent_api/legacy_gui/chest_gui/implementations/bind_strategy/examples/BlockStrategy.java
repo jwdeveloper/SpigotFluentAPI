@@ -4,7 +4,7 @@ import jw.spigot_fluent_api.legacy_gui.button.Button;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.ChestGUI;
 import jw.spigot_fluent_api.legacy_gui.chest_gui.implementations.bind_strategy.BindingStrategy;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
-import jw.spigot_fluent_api.utilites.binding.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

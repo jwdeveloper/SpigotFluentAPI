@@ -1,8 +1,7 @@
 package jw.spigot_fluent_api.utilites.code_generator;
 
 import jw.spigot_fluent_api.utilites.files.FileUtility;
-import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
-import jw.spigot_fluent_api.utilites.messages.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 
 public class ObserverClassGenerator {
 
@@ -75,26 +74,36 @@ public class ObserverClassGenerator {
 
     private static void saveToFile(String value, String path)
     {
-        FileUtility.save(value,path,"GeneratedCode.txt");
+        FileUtility.save(value,path,ObserverClassGenerator.class.getSimpleName()+".txt");
     }
 }
-/*
-//output
-public class LifeCrystalObserver
+
+/*example output
+public class PlayerStatsObserver
 {
-    private Observable<Integer> startLifesObserver =new Observable<>();
-    private Observable<Integer> maxLifesObserver =new Observable<>();
-    private Observable<String> deadMessageObserver =new Observable<>();
-    private Observable<Boolean> canBeCraftedObserver =new Observable<>();
-    public LifeCrystalObserver(Object model)
-    {
-        startLifesObserver = new Observable<>(model,"startLifes");
-        maxLifesObserver = new Observable<>(model,"maxLifes");
-        deadMessageObserver = new Observable<>(model,"deadMessage");
-        canBeCraftedObserver = new Observable<>(model,"canBeCrafted");
-    }
+   private Observable<Integer> scoreObserver = new Observable<>();
+   private Observable<String> playerNameObserver = new Observable<>();
+   private Observable<Boolean> isActiveObserver = new Observable<>();
+   private Observable<Number> pointsObserver = new Observable<>();
+   private Observable<List> permissionsObserver = new Observable<>();
 
-      //playerUUIDObserver.setObject();
+public PlayerStatsObserver()
+{
+   scoreObserver.bind(PlayerStats.class,"score");
+   playerNameObserver.bind(PlayerStats.class,"playerName");
+   isActiveObserver.bind(PlayerStats.class,"isActive");
+   pointsObserver.bind(PlayerStats.class,"points");
+   permissionsObserver.bind(PlayerStats.class,"permissions");
 }
 
+public void setObject(PlayerStats model)
+{
+   scoreObserver.setObject(model);
+   playerNameObserver.setObject(model);
+   isActiveObserver.setObject(model);
+   pointsObserver.setObject(model);
+   permissionsObserver.setObject(model);
+}
+
+}
  */

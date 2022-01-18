@@ -7,6 +7,7 @@ import jw.spigot_fluent_api.utilites.ObjectUtility;
 import jw.spigot_fluent_api.utilites.files.yml.YmlFileUtility;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DataContext implements DataHandler {
@@ -23,16 +24,14 @@ public class DataContext implements DataHandler {
         this.path = path;
     }
 
-    public void addSaveableObject(List<Saveable> objects) {
+    public void addSaveableObject(Collection<Saveable> objects) {
         saveables.addAll(objects);
     }
-
-
-    public void addYmlObjects(List<Object> objects) {
+    public void addYmlObjects(Collection<Object> objects) {
         ymlFiles.addAll(objects);
     }
 
-    public void addJsonObjects(List<Object> objects) {
+    public void addJsonObjects(Collection<Object> objects) {
         jsonFiles.addAll(objects);
     }
 
