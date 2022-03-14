@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
-import jw.spigot_fluent_api.data.DataHandler;
+import jw.spigot_fluent_api.data.interfaces.FileHandler;
+import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
@@ -43,7 +44,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
 
 
     @Override
-    public PluginConfiguration useDataContext(Consumer<DataHandler> configuration) {
+    public PluginConfiguration useDataContext(Consumer<FluentDataContext> configuration) {
         dataContext = new DataContextAction(configuration);
         return this;
     }
@@ -97,7 +98,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
 
     public List<PluginPipeline> getConfigurationActions() {
        // addIfNotNull(new DependencyInjectionAction());
-        addIfNotNull(new DI_Action(dependecyInjectionContainerBuilder));
+        addIfNotNull(new DependecyInjectionAction(dependecyInjectionContainerBuilder));
         addIfNotNull(dataContext);
         addIfNotNull(new MediatorAction());
         addIfNotNull(metrics);

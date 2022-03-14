@@ -1,15 +1,25 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIFactory;
+import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.EnumSelectorObserver;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 import org.bukkit.ChatColor;
 
 public class ButtonObserverUIFactory extends ButtonUIFactory {
 
-    public ButtonObserverUIBuilder boolObserver(Observable<Boolean> observable) {
+
+    public <T extends Enum<T>> ButtonObserverUIBuilder enumSelectorObserver(Observer<T> observable) {
+        final var _class = (Class<T>) observable.getType();
+        return ButtonObserverUI.builder()
+                .setTitle(observable.getFieldName())
+                .addObserver(observable, new EnumSelectorObserver<T>(_class));
+    }
+
+
+    public ButtonObserverUIBuilder boolObserver(Observer<Boolean> observable) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
                 .addObserver(new ButtonObserverBuilder<Boolean>()
@@ -32,7 +42,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
     }
 
 
-    public ButtonObserverUIBuilder stringObserver(Observable<String> observable, ChestUI chestUI) {
+    public ButtonObserverUIBuilder stringObserver(Observer<String> observable, ChestUI chestUI) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
                 .addObserver(new ButtonObserverBuilder<String>()
@@ -57,7 +67,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
     }
 
 
-    public ButtonObserverUIBuilder intObserver(Observable<Integer> observable, ChestUI chestUI) {
+    public ButtonObserverUIBuilder intObserver(Observer<Integer> observable, ChestUI chestUI) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
                 .addObserver(new ButtonObserverBuilder<Integer>()
@@ -83,7 +93,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                 );
     }
 
-    public ButtonObserverUIBuilder objectObserver(Observable<Integer> observable, ChestUI chestUI) {
+    public ButtonObserverUIBuilder objectObserver(Observer<Integer> observable, ChestUI chestUI) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
                 .addObserver(new ButtonObserverBuilder<Integer>()

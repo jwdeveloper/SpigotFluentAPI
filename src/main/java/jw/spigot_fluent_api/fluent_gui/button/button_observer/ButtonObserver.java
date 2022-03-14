@@ -1,16 +1,16 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import org.bukkit.entity.Player;
 
 public class ButtonObserver<T>
 {
-    private final Observable<T> observable;
+    private final Observer<T> observable;
     private final ButtonNotifier buttonNotifier;
     public ButtonUI buttonUI;
 
-    public ButtonObserver(Observable<T> observable,ButtonNotifier buttonNotifier)
+    public ButtonObserver(Observer<T> observable, ButtonNotifier buttonNotifier)
     {
         this.observable = observable;
         this.buttonNotifier =buttonNotifier;

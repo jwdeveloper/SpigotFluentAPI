@@ -2,14 +2,14 @@ package jw.spigot_fluent_api.fluent_particle.implementation.builder.sub_builders
 
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleDisplayMode;
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleSettings;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 import jw.spigot_fluent_api.fluent_particle.implementation.builder.ParticleBuilderBase;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 
-public class DetailBuilder extends ParticleBuilderBase implements NextStepable<EventBuilder>
+public class DetailBuilder extends ParticleBuilderBase implements NextStep<EventBuilder>
 {
 
     public DetailBuilder(ParticleSettings particleSettings)

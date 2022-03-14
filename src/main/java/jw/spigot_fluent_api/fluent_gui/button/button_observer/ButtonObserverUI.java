@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Singular;
@@ -23,7 +23,7 @@ public class ButtonObserverUI extends ButtonUI {
         observers.add(observer);
     }
 
-    public <T> void addObserver(Observable<T> observable, ButtonNotifier<T> buttonNotifier) {
+    public <T> void addObserver(Observer<T> observable, ButtonNotifier<T> buttonNotifier) {
         var observer = new ButtonObserver<>(observable, buttonNotifier);
         observer.setButtonUI(this);
         observers.add(observer);

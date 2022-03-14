@@ -4,11 +4,11 @@ import jw.spigot_fluent_api.fluent_commands.events.CommandEvent;
 import jw.spigot_fluent_api.fluent_commands.events.ConsoleCommandEvent;
 import jw.spigot_fluent_api.fluent_commands.events.PlayerCommandEvent;
 import jw.spigot_fluent_api.fluent_commands.models.CommandModel;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 
 import java.util.function.Consumer;
 
-public class EventsBuilder implements NextStepable<FinalizeBuild>
+public class EventsBuilder implements NextStep<FinalizeBuild>
 {
     private final CommandModel commandModel;
 

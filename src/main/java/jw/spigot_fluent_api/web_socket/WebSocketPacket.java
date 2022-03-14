@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.web_socket;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import jw.spigot_fluent_api.web_socket.annotations.PacketProperty;
 import org.java_websocket.WebSocket;
@@ -21,7 +21,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
 {
     private int packetSize =0;
     private int packetIdSize = 4;
-    private List<Observable<Object>> fieldList = new ArrayList<>();
+    private List<Observer<Object>> fieldList = new ArrayList<>();
     private Queue<Consumer<WebSocket>> tasks  = new LinkedList<>();
     private FluentTaskTimer taskTimer;
 
@@ -54,7 +54,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
         {
             if (field.getAnnotation(PacketProperty.class) == null)
                 continue;
-            fieldList.add(new Observable(this,field));
+            fieldList.add(new Observer(this,field));
         }
     }
 
@@ -103,7 +103,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
     private int getPacketSize()
     {
         int size =0;
-        for(Observable<Object> bindingField:fieldList)
+        for(Observer<Object> bindingField:fieldList)
         {
             if (bindingField.getType().getTypeName().equals("byte") ||
                     bindingField.getType().getTypeName().equals("bool")

@@ -1,11 +1,11 @@
 package jw.spigot_fluent_api.fluent_commands.builders.sub_builders;
 
 import jw.spigot_fluent_api.fluent_commands.models.CommandModel;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 
 import java.util.Arrays;
 
-public class DetailBuilder implements NextStepable<ArgumentBuilder>
+public class DetailBuilder implements NextStep<ArgumentBuilder>
 {
 
     private final CommandModel commandModel;

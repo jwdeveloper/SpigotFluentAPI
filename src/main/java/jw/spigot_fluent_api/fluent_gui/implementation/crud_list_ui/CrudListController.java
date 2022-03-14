@@ -6,7 +6,7 @@ import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverBuil
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverEvent;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import jw.spigot_fluent_api.fluent_message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class CrudListController<T> {
     private final Material DEFAULT_BACKGROUND = Material.GRAY_STAINED_GLASS_PANE;
     private final ListUI<T> listUI;
-    private final Observable<CrudListState> currentState;
+    private final Observer<CrudListState> currentState;
     private CrudListState _currentState;
 
     public ButtonUIEvent onDeleteEvent = (a, b) -> {
@@ -31,7 +31,7 @@ public class CrudListController<T> {
 
     public CrudListController(ListUI<T> listUI) {
         _currentState = CrudListState.None;
-        currentState = new Observable<CrudListState>(this, "_currentState");
+        currentState = new Observer<CrudListState>(this, "_currentState");
         this.listUI = listUI;
     }
 

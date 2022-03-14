@@ -1,19 +1,19 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 
 import java.util.function.Consumer;
 
 public class ButtonObserverBuilder<T> {
-    private Observable<T> observable;
+    private Observer<T> observable;
     private ButtonUI buttonUI;
     private Consumer<ButtonObserverEvent<T>> onClickEvent = (a) -> {
     };
     private Consumer<ButtonObserverEvent<T>> onChangeEvent = (a) -> {
     };
 
-    public ButtonObserverBuilder<T> withObserver(Observable<T> observable) {
+    public ButtonObserverBuilder<T> withObserver(Observer<T> observable) {
         this.observable = observable;
         return this;
     }

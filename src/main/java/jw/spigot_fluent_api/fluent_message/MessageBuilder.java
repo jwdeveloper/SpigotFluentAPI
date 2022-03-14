@@ -4,6 +4,7 @@ import jw.spigot_fluent_api.utilites.Unimplemented;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -190,6 +191,25 @@ public class MessageBuilder {
             for (var reciever : receivers) {
                 reciever.sendMessage(get());
             }
+        }
+    }
+
+    public void send(CommandSender... receivers) {
+        var message = toString();
+        for (var rective : receivers)
+        {
+            rective.sendMessage(message);
+        }
+    }
+    public void sendToConsole() {
+        Bukkit.getConsoleSender().sendMessage(toString());
+    }
+    public void sendToAllPlayer()
+    {
+        var message = toString();
+        for(var player : Bukkit.getOnlinePlayers())
+        {
+            player.sendMessage(message);
         }
     }
 

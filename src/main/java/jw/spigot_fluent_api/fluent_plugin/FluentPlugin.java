@@ -132,7 +132,7 @@ public abstract class FluentPlugin extends JavaPlugin {
     }
 
     public static void logException(String message, Exception e) {
-
+        //This mess need to be clean up
         var cause = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
 
         logFormat(LogUtility.exception(), ChatColor.RED + message + ChatColor.RESET)

@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CommandTarget {
+public class CommandTarget
+{
     private SimpleCommand simpleCommand;
 
     private String args[];

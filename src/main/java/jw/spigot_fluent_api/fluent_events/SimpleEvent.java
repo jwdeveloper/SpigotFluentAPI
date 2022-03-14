@@ -54,7 +54,7 @@ public class SimpleEvent<T extends Event> {
             return true;
         } catch (Exception exception)
         {
-            FluentPlugin.logException("Event exception",exception);
+            FluentPlugin.logException("SimpleEvent exception",exception);
             if (onError != null)
                 onError.accept(exception);
             return false;

@@ -4,38 +4,31 @@ package jw.spigot_fluent_api.web_socket;
 import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.java_websocket.WebSocket;
-import org.java_websocket.WebSocketAdapter;
-import org.java_websocket.WebSocketImpl;
-import org.java_websocket.drafts.Draft;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WebSocketBase extends WebSocketServer {
-    private final HashMap<Integer, WebSocketPacket> webSocketEvents = new HashMap<>();
+    private final ConcurrentHashMap<Integer, WebSocketPacket> webSocketEvents;
 
     public WebSocketBase(int port) {
         super(new InetSocketAddress(port));
+        webSocketEvents = new ConcurrentHashMap<>();
     }
 
-    public void registerPackets(List<WebSocketPacket> packets)
+    public void registerPackets(Collection<WebSocketPacket> packets)
     {
-        for (var event : packets)
+        for (var packet : packets)
         {
-            webSocketEvents.put(event.getPacketId(), event);
+            webSocketEvents.put(packet.getPacketId(), packet);
         }
     }
-
-
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
@@ -76,5 +69,10 @@ public class WebSocketBase extends WebSocketServer {
         FluentPlugin.logException("Web socket error ", e);
         else
        FluentPlugin.logException("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
+    }
+
+    @Override
+    public void onStart() {
+        FluentPlugin.logInfo("Web socket started");
     }
 }

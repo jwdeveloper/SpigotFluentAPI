@@ -8,7 +8,7 @@ public class ParticleInvoker
 {
     public void spawnParticle(ParticleEvent particleEvent)
     {
-        particleEvent.getLocation().getWorld().spawnParticle(particleEvent.getParticle(),particleEvent.location,particleEvent.amount);
+        particleEvent.getOriginLocation().getWorld().spawnParticle(particleEvent.getParticle(),particleEvent.originLocation,particleEvent.amount);
     }
 
     public void spawnParticle(Location location, Particle particle)

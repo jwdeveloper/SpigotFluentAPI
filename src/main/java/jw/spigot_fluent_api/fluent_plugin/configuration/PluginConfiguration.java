@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration;
 
-import jw.spigot_fluent_api.data.DataHandler;
+import jw.spigot_fluent_api.data.interfaces.FileHandler;
+import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
 
@@ -10,9 +11,9 @@ public interface PluginConfiguration {
 
     PluginConfiguration configureDependencyInjection(Consumer<ContainerBuilder> configuration);
 
-    PluginConfiguration useDataContext(Consumer<DataHandler> configuration);
+    PluginConfiguration useDataContext(Consumer<FluentDataContext> configuration);
 
-     PluginConfiguration useDataContext();
+    PluginConfiguration useDataContext();
 
     PluginConfiguration useInfoMessage();
 

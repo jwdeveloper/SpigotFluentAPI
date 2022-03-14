@@ -1,10 +1,10 @@
 package jw.spigot_fluent_api.fluent_particle.implementation.builder.sub_builders;
 
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleSettings;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 import jw.spigot_fluent_api.fluent_particle.implementation.builder.ParticleBuilderBase;
 
-public class TimeBuilder extends ParticleBuilderBase implements NextStepable<DetailBuilder>
+public class TimeBuilder extends ParticleBuilderBase implements NextStep<DetailBuilder>
 {
     public TimeBuilder(final ParticleSettings particleSettings)
     {

@@ -4,9 +4,9 @@ import jw.spigot_fluent_api.fluent_commands.builders.CommandArgumentBuilder;
 import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.models.CommandModel;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 
-public class ArgumentBuilder implements NextStepable<EventsBuilder>
+public class ArgumentBuilder implements NextStep<EventsBuilder>
 {
 
     private final CommandModel commandModel;

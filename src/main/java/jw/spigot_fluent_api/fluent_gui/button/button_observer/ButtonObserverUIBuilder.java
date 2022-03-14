@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIBuilder;
-import jw.spigot_fluent_api.desing_patterns.observer.fields.Observable;
+import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 
 
 public class ButtonObserverUIBuilder extends ButtonUIBuilder<ButtonObserverUIBuilder,ButtonObserverUI>
@@ -22,7 +22,7 @@ public class ButtonObserverUIBuilder extends ButtonUIBuilder<ButtonObserverUIBui
         return self();
     }
 
-    public <T> ButtonObserverUIBuilder addObserver(Observable<T> observable, ButtonNotifier<T> buttonNotifier)
+    public <T> ButtonObserverUIBuilder addObserver(Observer<T> observable, ButtonNotifier<T> buttonNotifier)
     {
         button.addObserver(observable, buttonNotifier);
         return self();

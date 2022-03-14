@@ -6,7 +6,7 @@ import org.bukkit.*;
 @Getter
 public class ParticleEvent {
     Color particleColor;
-    Location location;
+    Location originLocation;
     Particle particle;
     int index;
     int time;
@@ -27,6 +27,6 @@ public class ParticleEvent {
     }
 
     public World getWorld() {
-        return location.getWorld();
+        return originLocation.getWorld();
     }
 }

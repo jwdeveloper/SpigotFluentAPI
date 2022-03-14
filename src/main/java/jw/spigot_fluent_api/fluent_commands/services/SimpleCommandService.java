@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.models.CommandTarget;
 import jw.spigot_fluent_api.fluent_commands.models.ValidationResult;
 import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -100,7 +101,7 @@ public class SimpleCommandService implements CommandService {
                     default -> result[i] = value;
                 }
             } catch (Exception e) {
-
+                FluentPlugin.logException("Error while getting argument ",e);
             }
         }
         return result;

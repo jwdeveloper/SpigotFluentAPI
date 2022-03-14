@@ -25,7 +25,7 @@ public class ListUI<T> extends ChestUI {
     private final List<ButtonUIEvent> onClickContent;
 
     private ButtonObserverUI buttonSearch;
-    private ButtonObserverUI buttonExit;
+    private ButtonUI buttonExit;
     private ButtonObserverUI buttonPageUp;
     private ButtonObserverUI buttonPageDown;
 
@@ -79,16 +79,12 @@ public class ListUI<T> extends ChestUI {
                 })
                 .buildAndAdd(this);
 
-        buttonExit = ButtonObserverUI
-                .builder()
-                .setLocation(getHeight() - 1, INVENTORY_WIDTH - 1)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Exit"))
-                .setMaterial(Material.ARROW)
+        buttonExit = ButtonObserverUI.factory()
+                .goBackButton(this)
                 .setOnClick((player, button) ->
                 {
                     openParent();
-                })
-                .buildAndAdd(this);
+                }).buildAndAdd(this);
     }
 
     @Override

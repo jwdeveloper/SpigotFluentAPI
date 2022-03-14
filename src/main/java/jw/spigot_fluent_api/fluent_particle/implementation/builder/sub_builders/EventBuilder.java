@@ -2,10 +2,10 @@ package jw.spigot_fluent_api.fluent_particle.implementation.builder.sub_builders
 
 import jw.spigot_fluent_api.fluent_particle.implementation.OnParticleEvent;
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleSettings;
-import jw.spigot_fluent_api.desing_patterns.builder.NextStepable;
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 import jw.spigot_fluent_api.fluent_particle.implementation.builder.ParticleBuilderBase;
 
-public class EventBuilder  extends ParticleBuilderBase implements NextStepable<FinalizeBuild>
+public class EventBuilder  extends ParticleBuilderBase implements NextStep<FinalizeBuild>
 {
 
     public EventBuilder(final ParticleSettings particleSettings)

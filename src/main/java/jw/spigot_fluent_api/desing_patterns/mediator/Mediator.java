@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.desing_patterns.mediator;
 
-public interface Mediator<A,B>
+public interface Mediator<Input, Output>
 {
-    public B handle(A object);
+    public Output handle(Input object);
 }
