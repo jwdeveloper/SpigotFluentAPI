@@ -1,4 +1,4 @@
 name: Fluent_spigot_test
 version: '${project.version}'
-main: jw.fluent_spigot_test.Main
+main: jw.spigot_fluent_api.FluentPlugin
 api-version: 1.17

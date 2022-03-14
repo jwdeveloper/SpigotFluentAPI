@@ -1,7 +1,5 @@
 package jw.spigot_fluent_api.utilites.pagination;
 
-import jw.spigot_fluent_api.initialization.FluentPlugin;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +38,6 @@ public class Pagination<T> {
                 break;
             result.add(allContent[i]);
         }
-        FluentPlugin.logInfo(result.size()+ " Size");
         return result;
     }
 
