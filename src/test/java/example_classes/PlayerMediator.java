@@ -1,8 +1,8 @@
 package example_classes;
 
-import jw.spigot_fluent_api.desing_patterns.mediator.Mediator;
+import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
 
-public class PlayerMediator implements Mediator<PlayerStats,SuperInventory>
+public class PlayerMediator implements MediatorHandler<PlayerStats,SuperInventory>
 {
     @Override
     public SuperInventory handle(PlayerStats object)

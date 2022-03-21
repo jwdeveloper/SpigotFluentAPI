@@ -18,7 +18,7 @@ public class ParticleSettings {
     private Location location;
     private Color color;
     private Particle particle;
-    private ParticleDisplayMode particleDisplayMode = ParticleDisplayMode.ALL_AT_THE_TIME;
+    private ParticleDisplayMode particleDisplayMode = ParticleDisplayMode.ALL_AT_ONCE;
     private OnParticleEvent onParticleEvent = (a, b) -> {
     };
     private OnParticleEvent onStop = (a, b) -> {

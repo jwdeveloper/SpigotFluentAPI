@@ -1,13 +1,14 @@
 package jw.spigot_fluent_api.fluent_commands;
 
 
+import jw.spigot_fluent_api.fluent_commands.interfaces.SimpleCommandConfig;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_commands.builders.SimpleCommandBuilder;
 import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.models.CommandModel;
 import jw.spigot_fluent_api.fluent_commands.services.*;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -141,6 +142,10 @@ public class SimpleCommand extends Command {
 
 
 
+    public void addSubCommand(SimpleCommandConfig config) {
+        this.addSubCommand(config.configureCommand());
+    }
+
     public void addSubCommand(SimpleCommand command) {
         if(command == this)
             return;
@@ -213,7 +218,5 @@ public class SimpleCommand extends Command {
         displayLog("registered status " + status);
     }
 
-    public static SimpleCommandBuilder create(String name) {
-        return new SimpleCommandBuilder(name);
-    }
+
 }

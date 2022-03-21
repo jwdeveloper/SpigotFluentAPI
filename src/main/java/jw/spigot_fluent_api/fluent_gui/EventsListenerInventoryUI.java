@@ -74,13 +74,13 @@ public class EventsListenerInventoryUI extends EventBase {
 
     @EventHandler
     private void onInventoryClose(InventoryCloseEvent event) {
-        Inventory inventory;
-        for (InventoryUI InventoryUI : inventoriesGui) {
-            inventory = InventoryUI.getInventory();
-            if (inventory == null || !InventoryUI.isOpen()) continue;
+        Inventory spigotInventory;
+        for (InventoryUI inventoryUI : inventoriesGui) {
+            spigotInventory = inventoryUI.getInventory();
+            if (spigotInventory == null || !inventoryUI.isOpen()) continue;
 
-            if (event.getInventory() == inventory) {
-                InventoryUI.close();
+            if (event.getInventory() == spigotInventory) {
+                inventoryUI.close();
                 break;
             }
         }

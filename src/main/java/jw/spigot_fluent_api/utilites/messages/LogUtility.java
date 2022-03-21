@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.utilites.messages;
 
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 
 public class LogUtility

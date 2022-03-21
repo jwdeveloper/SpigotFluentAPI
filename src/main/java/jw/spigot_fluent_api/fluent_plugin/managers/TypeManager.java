@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.fluent_plugin.managers;
 
-import jw.spigot_fluent_api.utilites.ClassTypeUtility;
+import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 import lombok.Getter;
 
 import java.lang.annotation.Annotation;

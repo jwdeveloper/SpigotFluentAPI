@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.data.implementation.models;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.ObjectUtility;
+import jw.spigot_fluent_api.utilites.java.ObjectUtility;
 import lombok.Data;
 import org.bukkit.Material;
 

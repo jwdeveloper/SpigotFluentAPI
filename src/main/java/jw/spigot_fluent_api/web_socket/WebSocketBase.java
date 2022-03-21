@@ -1,17 +1,15 @@
 package jw.spigot_fluent_api.web_socket;
 
 
-import jw.spigot_fluent_api.dependency_injection.InjectionManager;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WebSocketBase extends WebSocketServer {
@@ -47,14 +45,21 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
-        int id = buffer.getInt(0);
-        if (!webSocketEvents.containsKey(id)) {
-            return;
+        FluentPlugin.logInfo("Byte message is incoming");
+        FluentPlugin.logInfo("A");
+        var packetId = buffer.getInt(0);
+        FluentPlugin.logInfo("packet");
+        for(int i=0;i<buffer.limit();i++)
+        {
+            FluentPlugin.logInfo(i+" -> "+buffer.get(i));
         }
-        WebSocketPacket webSocketEvent = webSocketEvents.get(id);
-        if (!webSocketEvent.resolvePacket(buffer)) {
+        FluentPlugin.logInfo("B");
+        var webSocketEvent = webSocketEvents.get(packetId);
+        if(webSocketEvent == null)
             return;
-        }
+        if (!webSocketEvent.resolvePacket(buffer))
+            return;
+        FluentPlugin.logInfo("C");
         webSocketEvent.onPacketTriggered(webSocket);
     }
 
@@ -73,6 +78,6 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onStart() {
-        FluentPlugin.logInfo("Web socket started");
+        FluentPlugin.logSuccess("Hello world from socket");
     }
 }

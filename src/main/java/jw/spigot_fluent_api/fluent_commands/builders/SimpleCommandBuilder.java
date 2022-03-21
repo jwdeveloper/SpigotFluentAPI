@@ -1,7 +1,9 @@
 package jw.spigot_fluent_api.fluent_commands.builders;
 
+import jw.spigot_fluent_api.desing_patterns.builder.NextStep;
 import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
 import jw.spigot_fluent_api.fluent_commands.SimpleCommandManger;
+import jw.spigot_fluent_api.fluent_commands.builders.sub_builders.DetailBuilder;
 import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
 import jw.spigot_fluent_api.fluent_commands.events.CommandEvent;
 import jw.spigot_fluent_api.fluent_commands.events.ConsoleCommandEvent;
@@ -16,16 +18,14 @@ public class SimpleCommandBuilder
 {
     private final CommandModel commandModel;
 
-    private Consumer<CommandEvent> onExecute;
-    private Consumer<PlayerCommandEvent> onPlayerExecute;
-    private Consumer<ConsoleCommandEvent> onConsoleExecute;
 
-    public SimpleCommandBuilder(String name)
+    public SimpleCommandBuilder()
     {
         commandModel = new CommandModel();
-        commandModel.setName(name);
     }
 
-
-
+    public DetailBuilder setName(String name)
+    {
+        return new DetailBuilder(commandModel);
+    }
 }

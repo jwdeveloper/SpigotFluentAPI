@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.desing_patterns.mediator;
+package jw.spigot_fluent_api.desing_patterns.mediator.implementation;
 
 public class Messages
 {

@@ -3,6 +3,8 @@ package jw.spigot_fluent_api.fluent_particle.implementation;
 import lombok.Getter;
 import org.bukkit.*;
 
+import java.time.LocalDate;
+
 @Getter
 public class ParticleEvent {
     Color particleColor;
@@ -28,5 +30,9 @@ public class ParticleEvent {
 
     public World getWorld() {
         return originLocation.getWorld();
+    }
+
+    public Location getLocation() {
+        return originLocation;
     }
 }

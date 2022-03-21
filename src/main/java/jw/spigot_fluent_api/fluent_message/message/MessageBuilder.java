@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.fluent_message;
+package jw.spigot_fluent_api.fluent_message.message;
 
 import jw.spigot_fluent_api.utilites.Unimplemented;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
@@ -13,16 +13,11 @@ import java.util.function.Consumer;
 
 public class MessageBuilder {
     private StringBuilder stringBuilder;
-    private Player[] receivers;
 
     public MessageBuilder() {
         stringBuilder = new StringBuilder();
     }
 
-    public MessageBuilder(Player... players) {
-        this();
-        receivers = players;
-    }
 
     public MessageBuilder text(String text) {
         stringBuilder.append(text);
@@ -172,10 +167,10 @@ public class MessageBuilder {
 
     public String[] toArray() {
 
-        return get().split(System.lineSeparator());
+        return build().split(System.lineSeparator());
     }
 
-    public String get() {
+    public String build() {
         return stringBuilder.toString();
     }
 
@@ -184,26 +179,18 @@ public class MessageBuilder {
         return stringBuilder.toString();
     }
 
-    public void send() {
-        if (receivers == null) {
-            Bukkit.getConsoleSender().sendMessage(get());
-        } else {
-            for (var reciever : receivers) {
-                reciever.sendMessage(get());
-            }
-        }
-    }
 
     public void send(CommandSender... receivers) {
         var message = toString();
-        for (var rective : receivers)
+        for (var receiver : receivers)
         {
-            rective.sendMessage(message);
+            receiver.sendMessage(message);
         }
     }
     public void sendToConsole() {
         Bukkit.getConsoleSender().sendMessage(toString());
     }
+
     public void sendToAllPlayer()
     {
         var message = toString();
@@ -213,5 +200,8 @@ public class MessageBuilder {
         }
     }
 
+    public void sendToPlayersWithPermission(String permission, Player ... players)
+    {
 
+    }
 }

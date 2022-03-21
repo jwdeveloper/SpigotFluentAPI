@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.utilites.code_generator;
 
 import jw.spigot_fluent_api.utilites.files.FileUtility;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 
 public class ObserverClassGenerator {
 

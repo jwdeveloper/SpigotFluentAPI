@@ -1,5 +1,9 @@
 package jw.spigot_fluent_api.utilites.math.collistions;
 
+import jw.spigot_fluent_api.fluent_particle.implementation.ParticleDisplayMode;
+import jw.spigot_fluent_api.fluent_particle.implementation.SimpleParticle;
+import jw.spigot_fluent_api.fluent_particle.implementation.builder.FluentParticle;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 
 import jw.spigot_fluent_api.utilites.math.MathUtility;
@@ -14,6 +18,7 @@ public class HitBox {
     private final Location min;
     private final Location max;
     private final double[] result = new double[10];
+    private SimpleParticle display;
 
     public HitBox(Location a, Location b) {
         max = MathUtility.max(a, b);
@@ -25,39 +30,41 @@ public class HitBox {
     }
 
     public void showHitBox() {
-
-        float size = 0.1F;
-        Color color = Color.fromRGB(0, 0, 255);
-        Particle.DustOptions options = new Particle.DustOptions(color, size);
-        new FluentTaskTimer(1, (time, taskTimer) ->
-        {
-            min.getWorld().spawnParticle(Particle.REDSTONE, min, 1,options);
-            max.getWorld().spawnParticle(Particle.REDSTONE, max, 1,options);
-        }).run();
-
-        //args from command invoke event
-        String[] args = new String[10];
-
-        int[] numbers = {1,2,3,4,5,6,7,8,9,10};
-        String playerName ="";
-        StringBuilder stringBuilder = new StringBuilder();
-        if(args.length >1)
-        {
-
-            for(int i=0;i<args.length;i++)
-            {
-                if(i ==0)
-                {
-                    playerName = args[i];
-                }
-                else
-                {
-                    stringBuilder.append(" ").append(args[i]);
-                }
-            }
-        }
-        String message = stringBuilder.toString();
+        if(display == null)
+            display = getHitboxDisplay();
+        display.start();
     }
+
+    public void hideHitbox() {
+
+        if(display == null)
+           return;
+        display.stop();
+    }
+
+    private SimpleParticle getHitboxDisplay()
+    {
+        float size = 0.6F;
+        Color color = Color.fromRGB(255, 0, 0);
+        Particle.DustOptions options = new Particle.DustOptions(color, size);
+       return FluentParticle.create()
+                .startAfterTicks(1)
+                .triggerEveryTicks(10)
+                .nextStep()
+                .withColor(Color.RED)
+                .withParticleCount(2)
+                .withFixedLocation(min)
+                .withDisplayMode(ParticleDisplayMode.ALL_AT_ONCE)
+                .nextStep()
+                .onParticle((particle, particleInvoker) ->
+                {
+                    particleInvoker.spawnParticle(max,Particle.REDSTONE,1,options);
+                    particleInvoker.spawnParticle(min,Particle.REDSTONE,1,options);
+                })
+                .nextStep()
+                .build();
+    }
+
     public boolean isCollider(Location rayOrigin, float length) {
         return rayBoxIntersect(rayOrigin.toVector(),
                 rayOrigin.getDirection(),

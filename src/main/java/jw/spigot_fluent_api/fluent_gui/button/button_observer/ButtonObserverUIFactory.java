@@ -5,7 +5,7 @@ import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.Enum
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
 import jw.spigot_fluent_api.desing_patterns.observer.Observer;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 
 public class ButtonObserverUIFactory extends ButtonUIFactory {

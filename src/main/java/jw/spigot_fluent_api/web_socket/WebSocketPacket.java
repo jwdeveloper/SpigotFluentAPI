@@ -11,10 +11,7 @@ import org.java_websocket.WebSocket;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class WebSocketPacket implements PacketInvokeEvent
@@ -62,6 +59,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
     {
         if(packetSize != buffer.limit())
         {
+            FluentPlugin.logSuccess(packetSize+" "+buffer.limit());
             return false;
         }
         int bufferIndex =packetIdSize;
@@ -74,7 +72,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
             {
                 start = bufferIndex;
                 type = fieldList.get(i).getType();
-
+                FluentPlugin.logSuccess(type.getTypeName()+" ");
                 if (type.getTypeName().equals("int"))
                 {
                     bufferIndex = start+4;
@@ -85,10 +83,31 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
                     bufferIndex = start+1;
                     value = buffer.get(start);
                 }
+                if (type.getTypeName().equals("long"))
+                {
+                    bufferIndex = start+8;
+                    value = buffer.getLong(start);
+                }
                 if (type.getTypeName().equals("bool"))
                 {
                     bufferIndex = start+1;
                     value = buffer.get(start) != 0;
+                }
+                if (type.getTypeName().equals("java.util.UUID"))
+                {
+                    FluentPlugin.logSuccess("UUID!!!!!!!!! ");
+                    bufferIndex = start+16;
+                    final var bytes = new byte[16];
+                    buffer.get(start,bytes);
+                    value = UUID.nameUUIDFromBytes(bytes);
+                    FluentPlugin.logSuccess(value+" ");
+                }
+                if (type.getTypeName().equals("string"))
+                {
+                    bufferIndex = start+1;
+                    final var bytes = new byte[buffer.limit()-start];
+                    buffer.get(start,bytes);
+                    value = new String(bytes);
                 }
                 fieldList.get(i).set(value);
             }
@@ -114,6 +133,14 @@ public abstract class WebSocketPacket implements PacketInvokeEvent
             if (bindingField.getType().getTypeName().equals("int"))
             {
                 size+=4;
+            }
+            if (bindingField.getType().getTypeName().equals("long"))
+            {
+                size+=8;
+            }
+            if (bindingField.getType().getTypeName().equals("java.util.UUID"))
+            {
+                size+=16;
             }
         }
         return packetIdSize + size;

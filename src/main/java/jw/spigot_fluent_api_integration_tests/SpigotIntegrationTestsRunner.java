@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api_integration_tests;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.ClassTypeUtility;
+import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

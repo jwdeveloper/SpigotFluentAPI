@@ -1,6 +1,6 @@
 package jw.spigot_fluent_api.fluent_message.title;
 
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.entity.Player;
 
 public class SimpleTitleBuilder {

@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.utilites;
+package jw.spigot_fluent_api.utilites.java;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,21 @@ public class ClassTypeUtility {
         return result;
     }
 
+    private static Type[] getInterfaceGenericTypes(Class<?> _class, Class<?> _interface)
+    {
+        ParameterizedType validator = null;
+        for (var classInterface : _class.getGenericInterfaces()) {
+            var name = classInterface.getTypeName();
+            if (name.contains(_interface.getClass().getSimpleName())) {
+                validator = (ParameterizedType) classInterface;
+                break;
+            }
+        }
+        if (validator == null)
+            return null;
 
+        return validator.getActualTypeArguments();
+    }
 
     private static Class getClass(String className, String packageName) {
         try {

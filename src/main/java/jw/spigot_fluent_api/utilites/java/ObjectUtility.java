@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.utilites;
+package jw.spigot_fluent_api.utilites.java;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Material;

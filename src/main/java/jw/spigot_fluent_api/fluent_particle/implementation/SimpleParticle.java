@@ -13,7 +13,6 @@ public class SimpleParticle {
     private BukkitTask bukkitTask;
     private int time;
 
-
     public SimpleParticle(final ParticleSettings particleSettings) {
         this.settings = particleSettings;
         this.particleInvoker = new ParticleInvoker();
@@ -47,17 +46,21 @@ public class SimpleParticle {
                         event.particle = settings.getParticle();
                         event.setParticleColor(settings.getColor());
                         event.time = time;
-                        if (settings.getParticleDisplayMode() == ParticleDisplayMode.ALL_AT_THE_TIME) {
-                            for (var i = 0; i < settings.getParticleCount(); i++) {
-                                event.originLocation = settings.getLocation().clone();
-                                event.index = i;
-                                settings.getOnParticleEvent().execute(event, particleInvoker);
+                        switch (settings.getParticleDisplayMode()) {
+                            case ALL_AT_ONCE -> {
+                                for (var i = 0; i < settings.getParticleCount(); i++) {
+                                    event.originLocation = settings.getLocation().clone();
+                                    event.index = i;
+                                    settings.getOnParticleEvent().execute(event, particleInvoker);
+                                }
+                                return;
                             }
-                        } else {
-                            event.index = time % settings.getParticleCount();
-                            settings.getOnParticleEvent().execute(event, particleInvoker);
+                            case SINGLE_AT_ONCE -> {
+                                event.index = time % settings.getParticleCount();
+                                settings.getOnParticleEvent().execute(event, particleInvoker);
+                                return;
+                            }
                         }
-
                         time++;
                     } catch (Exception e) {
                         FluentPlugin.logException("Error while running particleEffect", e);

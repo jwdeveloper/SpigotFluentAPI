@@ -28,7 +28,6 @@ public class SimpleCommandServiceSubCommandTests {
                 .create("subcommand")
                 .nextStep()
                 .withArgument("amount",ArgumentType.INT)
-                .build()
                 .withArgument("textArg")
                 .build()
                 .nextStep()
@@ -37,7 +36,6 @@ public class SimpleCommandServiceSubCommandTests {
                 .create("subsubCommand")
                 .nextStep()
                 .withArgument("color",ArgumentType.COLOR)
-                .build()
                 .nextStep()
                 .nextStep().build();
 

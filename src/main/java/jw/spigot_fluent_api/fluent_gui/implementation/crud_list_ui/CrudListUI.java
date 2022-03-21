@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -6,7 +6,7 @@ import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.FilterContentEvent;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -143,15 +143,15 @@ public class ListUI<T> extends ChestUI {
         refreshButtons();
     }
 
-    public void onListOpen(Consumer<Player> event) {
+    public final void onListOpen(Consumer<Player> event) {
         onListOpen.add(event);
     }
 
-    public void onContentClick(ButtonUIEvent event) {
+    public final void onContentClick(ButtonUIEvent event) {
         onClickContent.add(event);
     }
 
-    public void onListClose(Consumer<Player> event) {
+    public final void onListClose(Consumer<Player> event) {
         onListClose.add(event);
     }
 }

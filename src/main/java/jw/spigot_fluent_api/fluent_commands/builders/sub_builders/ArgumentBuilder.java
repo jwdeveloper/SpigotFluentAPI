@@ -22,12 +22,12 @@ public class ArgumentBuilder implements NextStep<EventsBuilder>
         return this;
     }
 
-    public CommandArgumentBuilder withArgument(String name, ArgumentType argumentType)
+    public ArgumentBuilder withArgument(String name, ArgumentType argumentType)
     {
         return new CommandArgumentBuilder(this,
                 commandModel.getArguments(),
                 name,
-                argumentType);
+                argumentType).build();
     }
 
     public CommandArgumentBuilder withArgument(String name)

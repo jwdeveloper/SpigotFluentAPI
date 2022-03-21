@@ -1,13 +1,14 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
 import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFileImpl;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
-import jw.spigot_fluent_api.utilites.ClassTypeUtility;
+import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -123,12 +124,12 @@ public abstract class FluentPlugin extends JavaPlugin {
     }
 
     public static void logInfo(String message) {
-        logFormat(LogUtility.info(), message).send();
+        logFormat(LogUtility.info(), message).sendToConsole();
     }
 
     public static void logError(String message) {
 
-        logFormat(LogUtility.error(), message).send();
+        logFormat(LogUtility.error(), message).sendToConsole();
     }
 
     public static void logException(String message, Exception e) {
@@ -150,8 +151,8 @@ public abstract class FluentPlugin extends JavaPlugin {
                 .space()
                 .text(e.getClass().getSimpleName())
                 .color(ChatColor.RESET)
-                .send();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
+                .sendToConsole();
+        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).sendToConsole();
         var stackTrace = new MessageBuilder();
         stackTrace.color(ChatColor.WHITE);
         for (var trace : e.getStackTrace()) {
@@ -172,12 +173,12 @@ public abstract class FluentPlugin extends JavaPlugin {
 
                     .color(ChatColor.RESET);
         }
-        stackTrace.send();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
+        stackTrace.sendToConsole();
+        FluentMessage.message().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).sendToConsole();
     }
 
     public static void logSuccess(String message) {
-        logFormat(LogUtility.success(), message).send();
+        logFormat(LogUtility.success(), message).sendToConsole();
     }
 
     private static MessageBuilder logFormat(MessageBuilder messageBuilder, String message) {

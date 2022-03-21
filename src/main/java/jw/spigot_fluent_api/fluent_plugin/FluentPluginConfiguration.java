@@ -97,10 +97,11 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     public List<PluginPipeline> getConfigurationActions() {
-       // addIfNotNull(new DependencyInjectionAction());
         addIfNotNull(new DependecyInjectionAction(dependecyInjectionContainerBuilder));
         addIfNotNull(dataContext);
         addIfNotNull(new MediatorAction());
+        addIfNotNull(new MapperAction());
+        addIfNotNull(new ValidatorAction());
         addIfNotNull(metrics);
         configurationActions.addAll(customActions);
         addIfNotNull(integrationTests);

@@ -7,7 +7,7 @@ import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverEven
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
 import jw.spigot_fluent_api.desing_patterns.observer.Observer;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

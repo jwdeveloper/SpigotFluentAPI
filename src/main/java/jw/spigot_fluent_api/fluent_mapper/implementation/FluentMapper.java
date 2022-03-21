@@ -1,31 +1,39 @@
 package jw.spigot_fluent_api.fluent_mapper.implementation;
 
-import jw.spigot_fluent_api.fluent_mapper.interfaces.IFluentMapper;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.IMap;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_mapper.implementation.builder.MappingProfileBuilder;
+import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FluentMapper implements IFluentMapper {
+public class FluentMapper {
+    private static final FluentMapper instance;
+    private SimpleMapper simpleMapper;
 
-    public <Output> Output map(IMap<?, Output> input) {
-        try {
-            var field = input.getClass().getField("map");
-            var result = field.get(input);
-            return (Output) result;
-        } catch (Exception e) {
-            FluentPlugin.logException("Mapping error", e);
-            return null;
-        }
+    static {
+        instance = new FluentMapper();
     }
 
-    public <Output> List<Output> map(List<?> inputs) {
-        var result = new ArrayList<Output>(inputs.size());
-        for (var input : inputs) {
-            var mapped = map((IMap<?, Output>) input);
-            result.add(mapped);
-        }
-        return result;
+    FluentMapper() {
+        simpleMapper = new SimpleMapper();
+    }
+
+
+    public static <Input,Output> Output map(Input input, Class<Output> outputClass)
+    {
+        return instance.simpleMapper.map(input,outputClass);
+    }
+
+    public static <Output> List<Output> mapAll(List<?> inputs, Class<Output> outputClass) {
+        return instance.simpleMapper.map(inputs,outputClass);
+    }
+
+    public static MappingProfileBuilder create()
+    {
+        return new MappingProfileBuilder(instance.simpleMapper);
+    }
+
+    public static void registerMappingProfile(Class<MapperProfile> mappingProfile)
+    {
+       instance.simpleMapper.registerMappingProfile(mappingProfile);
     }
 }

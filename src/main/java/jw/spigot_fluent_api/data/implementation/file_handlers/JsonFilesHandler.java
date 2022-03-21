@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.data.implementation.file_handlers;
 
 import jw.spigot_fluent_api.data.interfaces.FileHandler;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.utilites.ObjectUtility;
+import jw.spigot_fluent_api.utilites.java.ObjectUtility;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 
 import java.util.ArrayList;

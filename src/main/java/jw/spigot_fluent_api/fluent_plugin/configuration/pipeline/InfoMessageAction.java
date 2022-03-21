@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 
 public class InfoMessageAction implements PluginPipeline

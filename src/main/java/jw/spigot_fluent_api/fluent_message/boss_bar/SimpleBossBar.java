@@ -27,6 +27,7 @@ public class SimpleBossBar
     {
         bossBar.setColor(color);
     }
+
     public void setProgress(double progress)
 {
     bossBar.setProgress(progress);

@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.data.implementation.repositories;
 import jw.spigot_fluent_api.data.interfaces.CustomFile;
 import jw.spigot_fluent_api.data.implementation.models.DataModel;
 import jw.spigot_fluent_api.data.interfaces.Repository;
-import jw.spigot_fluent_api.utilites.ObjectUtility;
+import jw.spigot_fluent_api.utilites.java.ObjectUtility;
 import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
@@ -138,7 +138,8 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
             content = JsonUtility.loadList(path, fileName, entityClass);
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException(fileName + " " + entityClass.getName(), e);
+
+            FluentPlugin.logException("Repository load error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }
@@ -149,7 +150,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
             JsonUtility.save(content, path, fileName);
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException(fileName + " " + entityClass.getName(), e);
+            FluentPlugin.logException("Repository save error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }

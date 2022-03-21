@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.fluent_gui;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
