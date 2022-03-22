@@ -45,21 +45,12 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
-        FluentPlugin.logInfo("Byte message is incoming");
-        FluentPlugin.logInfo("A");
         var packetId = buffer.getInt(0);
-        FluentPlugin.logInfo("packet");
-        for(int i=0;i<buffer.limit();i++)
-        {
-            FluentPlugin.logInfo(i+" -> "+buffer.get(i));
-        }
-        FluentPlugin.logInfo("B");
         var webSocketEvent = webSocketEvents.get(packetId);
         if(webSocketEvent == null)
             return;
         if (!webSocketEvent.resolvePacket(buffer))
             return;
-        FluentPlugin.logInfo("C");
         webSocketEvent.onPacketTriggered(webSocket);
     }
 

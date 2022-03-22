@@ -93,6 +93,26 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                 );
     }
 
+    public ButtonObserverUIBuilder intSelectObserver(Observer<Integer> observable, int min, int max, int yield) {
+        return ButtonObserverUI.builder()
+                .setTitle(observable.getFieldName())
+                .addObserver(new ButtonObserverBuilder<Integer>()
+                        .withObserver(observable)
+                        .onClick(event ->
+                        {
+                            if (event.getValue() + yield > max) {
+                                event.getObserver().setValue(min);
+                                return;
+                            }
+                            event.getObserver().setValue(event.getValue() + yield);
+                        })
+                        .onValueChange(event ->
+                        {
+                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
+                        })
+                );
+    }
+
     public ButtonObserverUIBuilder objectObserver(Observer<Integer> observable, ChestUI chestUI) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
