@@ -9,6 +9,11 @@ public class ActionResult<T>
     private T payload;
     private String message;
 
+    public ActionResult()
+    {
+
+    }
+
     public ActionResult(T object)
     {
       this.payload = object;
@@ -54,5 +59,10 @@ public class ActionResult<T>
     public static <T>  ActionResult<T> failed(String message)
     {
         return new ActionResult<>(null,false,message);
+    }
+
+    public static <T> Class<ActionResult<T>> type()
+    {
+        return (Class<ActionResult<T>>) new ActionResult<T>().getClass();
     }
 }
