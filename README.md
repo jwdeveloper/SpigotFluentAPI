@@ -30,8 +30,6 @@ like # Commands, Events, Particle registration and more
 
 ### Example command
 ```java
-public void ExampleCommandRegistration()
-    {
         FluentCommand.create("give-item")
                   .setDescription("give yourself an item")
                   .setUsageMessage("example of use /give-item DIAMOND 1")
@@ -64,7 +62,6 @@ public void ExampleCommandRegistration()
                 })
                 .nextStep()
                 .buildAndRegister();
-    }
 ```
 ### Example task
 ```java
