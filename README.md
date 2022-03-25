@@ -89,3 +89,14 @@ like # Commands, Events, Particle registration and more
             player.sendMessage("hello on the server");
         });
 ```        
+### Example message
+```java
+ FluentMessage.message()
+                .color(ChatColor.GREEN)
+                .inBrackets("Information")
+                .space()
+                .color(ChatColor.GREEN)
+                .bold("All players will receive free stick!!")
+                .sendToAllPlayer();
+```                
+                
