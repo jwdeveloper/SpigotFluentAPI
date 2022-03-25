@@ -8,20 +8,20 @@ like # Commands, Events, Particle registration and more
  to atchieve simple golas like command registration system.
  
 ## 🤔 For who?
- -👦🏻 For begginers how wants quickly build up some plugin for own purpose.
+- 👦🏻 For begginers how wants quickly build up some plugin for own purpose.
 - 👨‍💻 For proffestion programmers who want to get more clean project structure. 
  
  
  # 👨🏼‍🔧 Features
--  ⚡ FlunetCommand
+ - ⚡ FlunetCommand
  - ⚡ FluentEvent
--  ⚡ FluentMessage
+ - ⚡ FluentMessage
  - ⚡ FluentParticle
--  ⚡ FluentTasks
+ - ⚡ FluentTasks
   
--  ⚡ FluentInjection 
+ - ⚡ FluentInjection 
  - ⚡ FluentMeditaor 
  - ⚡ FluentMapper  (in progress)
   
-  -⚡ FluentWebSocket (in progress)
+ - ⚡ FluentWebSocket (in progress)
  - ⚡ Json/YAML file mappers
