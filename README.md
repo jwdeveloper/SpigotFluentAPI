@@ -28,6 +28,7 @@ like # Commands, Events, Particle registration and more
 
 ## Code example
 
+### Example command
 ```java
 public void ExampleCommandRegistration()
     {
@@ -65,3 +66,29 @@ public void ExampleCommandRegistration()
                 .buildAndRegister();
     }
 ```
+### Example task
+```java
+ FluentTasks.taskTimer(20, (iteration, task) ->
+        {
+            Bukkit.getConsoleSender().sendMessage("Current iteration "+iteration);
+            int players = Bukkit.getOnlinePlayers().size();
+            if(players == 0)
+            {
+                task.cancel();
+            }
+            Bukkit.getConsoleSender().sendMessage("Current player number "+players);
+        }).startAfterIterations(100)
+          .onStop(fluentTaskTimer ->
+          {
+            Bukkit.getConsoleSender().sendMessage("Task is done");
+          })
+          .run();
+```
+### Example event
+```java
+  FluentEvent.onEvent(PlayerJoinEvent.class, event ->
+        {
+            Player player = event.getPlayer();
+            player.sendMessage("hello on the server");
+        });
+```        
