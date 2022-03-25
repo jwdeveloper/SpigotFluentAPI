@@ -25,3 +25,43 @@ like # Commands, Events, Particle registration and more
   
  - ⚡ FluentWebSocket (in progress)
  - ⚡ Json/YAML file mappers
+
+## Code example
+
+```java
+public void ExampleCommandRegistration()
+    {
+        FluentCommand.create("give-item")
+                  .setDescription("give yourself an item")
+                  .setUsageMessage("example of use /give-item DIAMOND 1")
+                  .addPermissions("example.permission","example.player")
+                .nextStep()
+                  .withArgument("material", ArgumentType.CUSTOM)
+                  .setTabComplete(Arrays.asList("diamond","apple","sword"))
+                  .addValidator(mateiral ->
+                  {
+                      if(mateiral.length() == 1)
+                          return new ValidationResult(false,"too short name");
+                      else 
+                          return new ValidationResult(true,"");
+                  })
+                  .build()
+                  .withArgument("amount",ArgumentType.INT)
+                  .build()
+                .nextStep()
+                .onPlayerExecute(event ->
+                {
+                    Player player = event.getPlayerSender();
+                    Material material = Material.valueOf(event.getArgumentValue(0));
+                    int amount = event.getArgumentValue(1);
+                    ItemStack itemStack = new ItemStack(material,amount);
+                    player.getInventory().setItemInMainHand(itemStack);
+                })
+                .onConsoleExecute(event ->
+                {
+                    event.getConsoleSender().sendMessage("This command is only for players");
+                })
+                .nextStep()
+                .buildAndRegister();
+    }
+```
