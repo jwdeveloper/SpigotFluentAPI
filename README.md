@@ -48,20 +48,20 @@ like # Commands, Events, Particle registration and more
                   .withArgument("amount",ArgumentType.INT)
                   .build()
                 .nextStep()
-                .onPlayerExecute(event ->
-                {
+                  .onPlayerExecute(event ->
+                  {
                     Player player = event.getPlayerSender();
                     Material material = Material.valueOf(event.getArgumentValue(0));
                     int amount = event.getArgumentValue(1);
                     ItemStack itemStack = new ItemStack(material,amount);
                     player.getInventory().setItemInMainHand(itemStack);
-                })
-                .onConsoleExecute(event ->
-                {
+                  })
+                  .onConsoleExecute(event ->
+                  {
                     event.getConsoleSender().sendMessage("This command is only for players");
-                })
+                  })
                 .nextStep()
-                .buildAndRegister();
+                  .buildAndRegister();
 ```
 ### Example task
 ```java
