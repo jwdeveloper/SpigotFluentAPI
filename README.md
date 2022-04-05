@@ -92,11 +92,11 @@ like # Commands, Events, Particle registration and more
 ### Example message
 ```java
  FluentMessage.message()
-                .color(ChatColor.GREEN)
-                .inBrackets("Information")
-                .space()
-                .color(ChatColor.GREEN)
-                .bold("All players will receive free stick!!")
-                .sendToAllPlayer();
+              .color(ChatColor.GREEN)
+              .inBrackets("Information")
+              .space()
+              .color(ChatColor.GREEN)
+              .bold("All players will receive free stick!!")
+              .sendToAllPlayer();
 ```                
                 
