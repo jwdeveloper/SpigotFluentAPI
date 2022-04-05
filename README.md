@@ -30,23 +30,23 @@ like # Commands, Events, Particle registration and more
 
 ### Example command
 ```java
-        FluentCommand.create("give-item")
+   FluentCommand.create("give-item")
                   .setDescription("give yourself an item")
                   .setUsageMessage("example of use /give-item DIAMOND 1")
                   .addPermissions("example.permission","example.player")
                 .nextStep()
                   .withArgument("material", ArgumentType.CUSTOM)
-                  .setTabComplete(Arrays.asList("diamond","apple","sword"))
-                  .addValidator(mateiral ->
-                  {
-                      if(mateiral.length() == 1)
+                   .setTabComplete(Arrays.asList("diamond","apple","sword"))
+                   .addValidator(mateiralName ->
+                   {
+                      if(mateiralName.length() == 1)
                           return new ValidationResult(false,"too short name");
                       else 
                           return new ValidationResult(true,"");
-                  })
-                  .build()
+                   })
+                   .build()
                   .withArgument("amount",ArgumentType.INT)
-                  .build()
+                   .build()
                 .nextStep()
                   .onPlayerExecute(event ->
                   {
