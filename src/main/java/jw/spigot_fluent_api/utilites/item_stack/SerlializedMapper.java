@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.item_stack;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.apache.commons.lang.SerializationUtils;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ public class SerlializedMapper<T extends Serializable>
             return SerializationUtils.serialize(complex);
         } catch (Exception e)
         {
-            FluentPlugin.logException("Can not serialize "+complex.getClass().getSimpleName()+ "object to byte array",e);
+            FluentLogger.error("Can not serialize "+complex.getClass().getSimpleName()+ "object to byte array",e);
             e.printStackTrace();
         }
         return new byte[0];
@@ -25,7 +26,7 @@ public class SerlializedMapper<T extends Serializable>
             return (T)SerializationUtils.deserialize(bytes);
         } catch (Exception e)
         {
-            FluentPlugin.logException("Can not deserialize byte array to object",e);
+            FluentLogger.error("Can not deserialize byte array to object",e);
         }
         return null;
     }

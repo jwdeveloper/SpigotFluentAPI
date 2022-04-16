@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.web_socket;
 
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -62,9 +63,9 @@ public class WebSocketBase extends WebSocketServer {
     @Override
     public void onError(WebSocket webSocket, Exception e) {
         if(webSocket == null)
-        FluentPlugin.logException("Web socket error ", e);
+            FluentLogger.error("Web socket error ", e);
         else
-       FluentPlugin.logException("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
+            FluentLogger.error("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
     }
 
     @Override

@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.fluent_commands;
 
 
 import jw.spigot_fluent_api.fluent_commands.interfaces.SimpleCommandConfig;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_commands.builders.SimpleCommandBuilder;
 import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
@@ -95,7 +96,7 @@ public class SimpleCommand extends Command {
             displayLog("command invoked with status " + invokeStatus);
             return invokeStatus;
         } catch (Exception exception) {
-            FluentPlugin.logException("error while invoking command " + this.getName(), exception);
+            FluentLogger.error("error while invoking command " + this.getName(), exception);
             return false;
         }
     }

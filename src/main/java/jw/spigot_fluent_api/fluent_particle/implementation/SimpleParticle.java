@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_particle.implementation;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -63,7 +64,7 @@ public class SimpleParticle {
                         }
                         time++;
                     } catch (Exception e) {
-                        FluentPlugin.logException("Error while running particleEffect", e);
+                        FluentLogger.error("Error while running particleEffect", e);
                         bukkitTask.cancel();
                     }
                 },

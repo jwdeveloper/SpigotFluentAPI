@@ -5,13 +5,13 @@ import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class SpigotIntegrationTestsRunner {
 
-    public static void loadTests() {
+    public static void loadTests(Collection<Class<?>> classes) {
         FluentPlugin.logSuccess("Integration tests enabled");
-        var classes = ClassTypeUtility.findClassesInPlugin(null);
         var integrationTestsClasses = classes.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).toList();
         List<SpigotIntegrationTest> integrationTests = new ArrayList<SpigotIntegrationTest>();
         for (var integration : integrationTestsClasses) {

@@ -18,7 +18,14 @@ public class FluentTasks
        return Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(), () ->
         {
             action.accept(null);
+        });
+    }
 
+    public static BukkitTask taskAsync(Consumer<Void> action)
+    {
+        return Bukkit.getScheduler().runTaskAsynchronously(FluentPlugin.getPlugin(), () ->
+        {
+            action.accept(null);
         });
     }
 }

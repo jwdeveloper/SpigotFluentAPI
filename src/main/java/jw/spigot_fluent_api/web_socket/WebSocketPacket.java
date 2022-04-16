@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.web_socket;
 
 
 import com.google.gson.Gson;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 import jw.spigot_fluent_api.desing_patterns.observer.Observer;
@@ -93,7 +94,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent {
                 packetField.getObserver().set(result);
             }
         } catch (Exception e) {
-            FluentPlugin.logException("Packet resolver error " + this.getClass().getSimpleName(), e);
+            FluentLogger.error("Packet resolver error " + this.getClass().getSimpleName(), e);
             return false;
         }
         return true;

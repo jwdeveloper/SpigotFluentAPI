@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.utilites.files.json;
 
 import com.google.gson.*;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import jw.spigot_fluent_api.utilites.files.json.adapters.DateTimeOffsetAdapter;
@@ -29,7 +30,7 @@ public final class JsonUtility implements FileUtility {
             file.write(gson.toJson(data));
             return true;
         } catch (IOException e) {
-            FluentPlugin.logException("Save File: " + fullPath, e);
+            FluentLogger.error("Save File: " + fullPath, e);
             e.printStackTrace();
         }
         return false;
@@ -47,7 +48,7 @@ public final class JsonUtility implements FileUtility {
             reader.close();
             return res;
         } catch (IOException e) {
-            FluentPlugin.logException("Load File: " + fullPath, e);
+            FluentLogger.error("Load File: " + fullPath, e);
         }
         return null;
     }
@@ -66,7 +67,7 @@ public final class JsonUtility implements FileUtility {
             reader.close();
             return result;
         } catch (IOException e) {
-            FluentPlugin.logException("Load File: " + fullPath, e);
+            FluentLogger.error("Load File: " + fullPath, e);
         }
         return result;
     }
@@ -95,7 +96,7 @@ public final class JsonUtility implements FileUtility {
             fileWriter.write(content);
             fileWriter.flush();
         } catch (IOException exception) {
-            FluentPlugin.logException("Creating file error " + exception.getMessage() + "  " + fullPath, exception);
+            FluentLogger.error("Creating file error " + exception.getMessage() + "  " + fullPath, exception);
         }
     }
 

@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.files.yml;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 import org.bukkit.ChatColor;
@@ -19,7 +20,7 @@ public class YmlFileUtility implements FileUtility {
             config.save(file);
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException("Could not save YML " + fileName + " file", e);
+            FluentLogger.error("Could not save YML " + fileName + " file", e);
             return false;
         }
     }
@@ -30,7 +31,7 @@ public class YmlFileUtility implements FileUtility {
            return configurationToObject(file,type);
         } catch (Exception e )
         {
-            FluentPlugin.logException("Error while load YML ",e);
+            FluentLogger.error("Error while load YML ",e);
         }
         return null;
     }
@@ -100,8 +101,7 @@ public class YmlFileUtility implements FileUtility {
                 FileConfiguration configuration = new YamlConfiguration();
                 configuration.save(file);
             } catch (IOException exception) {
-
-                FluentPlugin.logException("YML error", exception);
+                FluentLogger.error("YML error", exception);
             }
          }
         return file;

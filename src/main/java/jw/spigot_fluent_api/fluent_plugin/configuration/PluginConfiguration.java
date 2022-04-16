@@ -11,9 +11,9 @@ public interface PluginConfiguration {
 
     PluginConfiguration configureDependencyInjection(Consumer<ContainerBuilder> configuration);
 
-    PluginConfiguration useDataContext(Consumer<FluentDataContext> configuration);
+    PluginConfiguration useFilesHandler(Consumer<FluentDataContext> configuration);
 
-    PluginConfiguration useDataContext();
+    PluginConfiguration useFilesHandler();
 
     PluginConfiguration useInfoMessage();
 

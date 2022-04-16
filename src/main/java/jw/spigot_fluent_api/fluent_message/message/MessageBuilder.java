@@ -170,6 +170,12 @@ public class MessageBuilder {
         return build().split(System.lineSeparator());
     }
 
+    public MessageBuilder merge(MessageBuilder messageBuilder)
+    {
+        this.text(messageBuilder.toString());
+        return this;
+    }
+
     public String build() {
         return stringBuilder.toString();
     }
@@ -188,11 +194,21 @@ public class MessageBuilder {
         }
     }
     public void sendToConsole() {
+        if(Bukkit.getServer()==null)
+        {
+            System.out.println(stringBuilder.toString());
+            return;
+        }
         Bukkit.getConsoleSender().sendMessage(toString());
     }
 
     public void sendToAllPlayer()
     {
+        if(Bukkit.getServer()==null)
+        {
+            System.out.println(stringBuilder.toString());
+            return;
+        }
         var message = toString();
         for(var player : Bukkit.getOnlinePlayers())
         {

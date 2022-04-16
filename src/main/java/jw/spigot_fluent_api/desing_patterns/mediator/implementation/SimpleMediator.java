@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.desing_patterns.mediator.implementation;
 
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.Mediator;
 import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.java.KeySet;
 
@@ -32,7 +33,7 @@ public class SimpleMediator implements Mediator {
         try {
             return (Output) mediator.handle(input);
         } catch (Exception e) {
-            FluentPlugin.logException("Error while executing mediator " + mediator.getClass().getSimpleName(), e);
+            FluentLogger.error("Error while executing mediator " + mediator.getClass().getSimpleName(), e);
             return null;
         }
     }

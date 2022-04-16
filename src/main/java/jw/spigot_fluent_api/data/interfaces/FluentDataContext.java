@@ -1,7 +1,5 @@
 package jw.spigot_fluent_api.data.interfaces;
 
-import java.util.Collection;
-
 public interface FluentDataContext
 {
     void addCustomFileObject(CustomFile object);

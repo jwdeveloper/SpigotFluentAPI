@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api_integration_tests;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.Bukkit;
@@ -36,7 +37,7 @@ public abstract class SpigotIntegrationTest {
             }
         } catch (Exception e) {
 
-            FluentPlugin.logException("Test: " + this.getClass().getSimpleName() + " not loaded", e);
+            FluentLogger.error("Test: " + this.getClass().getSimpleName() + " not loaded", e);
         }
     }
 
@@ -45,7 +46,7 @@ public abstract class SpigotIntegrationTest {
         try {
             beforeTests();
         } catch (Exception e) {
-            FluentPlugin.logException("can lunch beforeRun method", e);
+            FluentLogger.error("can lunch beforeRun method", e);
         }
         for (var test : tests) {
             try {
@@ -62,7 +63,7 @@ public abstract class SpigotIntegrationTest {
         try {
             afterTests();
         } catch (Exception e) {
-            FluentPlugin.logException("can afterTests  method", e);
+            FluentLogger.error("can afterTests  method", e);
         }
     }
 

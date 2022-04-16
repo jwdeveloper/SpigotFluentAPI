@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_validator.implementation.builder;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_validator.api.builder.PropertyValidator;
 import jw.spigot_fluent_api.fluent_validator.api.builder.ValidatorConfiguration;
@@ -23,7 +24,7 @@ public class ValidatiorConfigurationBuilder<T> implements ValidatorConfiguration
             return new PropertyValidatorBuilder(this,field,validationDto);
         } catch (NoSuchFieldException e)
         {
-            FluentPlugin.logException("Validator exception",e);
+            FluentLogger.error("Validator exception",e);
             return null;
         }
     }

@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.java;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
 
@@ -67,12 +68,12 @@ public class ClassTypeUtility {
 
                     }
                 } catch (Exception ex) {
-                    FluentPlugin.logException("Could not load class", ex);
+                    FluentLogger.error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            FluentPlugin.logException("Could not load class", ex);
+            FluentLogger.error("Could not load class", ex);
         }
         return result;
     }

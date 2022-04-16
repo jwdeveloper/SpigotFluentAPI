@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_text_input;
 
 import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
 import org.bukkit.entity.Player;
@@ -55,7 +56,7 @@ public class FluentTextInput extends EventBase
             }
             catch (Exception e)
             {
-                FluentPlugin.logException("Error while text input",e);
+                FluentLogger.error("Error while text input",e);
             }
 
         }).stopAfterIterations(1).run();

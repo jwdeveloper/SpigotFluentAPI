@@ -1,5 +1,5 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
-import jw.spigot_fluent_api.fluent_mapper.implementation.FluentMapper;
+import jw.spigot_fluent_api.fluent_mapper.FluentMapper;
 import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 

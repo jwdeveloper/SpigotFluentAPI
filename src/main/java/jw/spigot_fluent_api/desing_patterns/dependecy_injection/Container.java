@@ -3,6 +3,7 @@ package jw.spigot_fluent_api.desing_patterns.dependecy_injection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.factory.InjectedClassFactory;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.utilites.Messages;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.lang.annotation.Annotation;
@@ -25,7 +26,7 @@ public class Container {
         try {
             return (T) injections.get(_injection).getInstnace(injections);
         } catch (Exception e) {
-            FluentPlugin.logException(String.format(Messages.INJECTION_CANT_CREATE, _injection.getSimpleName()), e);
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _injection.getSimpleName()), e);
         }
         return null;
     }
@@ -73,7 +74,7 @@ public class Container {
             injections.put(_class, injection);
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException("Error while register class", e);
+            FluentLogger.error("Error while register class", e);
             return false;
         }
     }

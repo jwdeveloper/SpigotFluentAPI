@@ -5,6 +5,7 @@ import jw.spigot_fluent_api.fluent_commands.enums.AccessType;
 import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.models.CommandTarget;
 import jw.spigot_fluent_api.fluent_commands.models.ValidationResult;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.ChatColor;
@@ -101,7 +102,7 @@ public class SimpleCommandService implements CommandService {
                     default -> result[i] = value;
                 }
             } catch (Exception e) {
-                FluentPlugin.logException("Error while getting argument ",e);
+                FluentLogger.error("Error while getting argument ",e);
             }
         }
         return result;

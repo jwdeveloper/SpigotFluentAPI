@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 public class Benchmarker
 {
 
-    public static long run(Consumer<?> work)
+    public static long run(Consumer<Void> work)
     {
         var start = System.nanoTime();
         work.accept(null);
@@ -18,7 +18,7 @@ public class Benchmarker
         return result;
     }
 
-    public static long run(int repeat, Consumer<?> work)
+    public static long run(int repeat, Consumer<Void> work)
     {
         var sum =0;
         for(int i=0;i<repeat;i++)

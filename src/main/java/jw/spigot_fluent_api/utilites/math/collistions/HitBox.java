@@ -2,9 +2,7 @@ package jw.spigot_fluent_api.utilites.math.collistions;
 
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleDisplayMode;
 import jw.spigot_fluent_api.fluent_particle.implementation.SimpleParticle;
-import jw.spigot_fluent_api.fluent_particle.implementation.builder.FluentParticle;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_tasks.FluentTaskTimer;
+import jw.spigot_fluent_api.fluent_particle.FluentParticle;
 
 import jw.spigot_fluent_api.utilites.math.MathUtility;
 import org.bukkit.Color;

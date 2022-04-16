@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_commands;
 
 import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.java.ObjectUtility;
 import org.bukkit.Bukkit;
@@ -66,7 +67,7 @@ public class SimpleCommandManger extends EventBase {
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
            return commandMap.register(FluentPlugin.getPlugin().getName(), simpleCommand);
         } catch (Exception e) {
-            FluentPlugin.logException("Unable to register command " + simpleCommand.getName(), e);
+            FluentLogger.error("Unable to register command " + simpleCommand.getName(), e);
             return false;
         }
     }
@@ -94,7 +95,7 @@ public class SimpleCommandManger extends EventBase {
             }
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException("Unable to unregister command " + command.getName(), e);
+            FluentLogger.error("Unable to unregister command " + command.getName(), e);
             return false;
         }
     }
@@ -107,7 +108,7 @@ public class SimpleCommandManger extends EventBase {
             SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
             return simpleCommandMap.getCommands().stream().map(c -> c.getName()).toList();
         } catch (Exception e) {
-            FluentPlugin.logException("can't get all commands names", e);
+            FluentLogger.error("can't get all commands names", e);
         }
         return result;
     }
@@ -118,7 +119,7 @@ public class SimpleCommandManger extends EventBase {
             SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
             return simpleCommandMap.getCommands().stream().toList();
         } catch (Exception e) {
-            FluentPlugin.logException("can't get all commands", e);
+            FluentLogger.error("can't get all commands", e);
         }
         return new ArrayList<>();
     }

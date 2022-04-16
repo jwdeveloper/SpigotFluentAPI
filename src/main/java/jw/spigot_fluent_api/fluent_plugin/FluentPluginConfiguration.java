@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 
 public class FluentPluginConfiguration implements PluginConfiguration {
     private PluginPipeline dataContext;
-
     private PluginPipeline integrationTests;
     private PluginPipeline infoMessage;
     private PluginPipeline metrics;
@@ -37,14 +36,14 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     @Override
-    public PluginConfiguration useDataContext() {
+    public PluginConfiguration useFilesHandler() {
         dataContext = new DataContextAction();
         return this;
     }
 
 
     @Override
-    public PluginConfiguration useDataContext(Consumer<FluentDataContext> configuration) {
+    public PluginConfiguration useFilesHandler(Consumer<FluentDataContext> configuration) {
         dataContext = new DataContextAction(configuration);
         return this;
     }

@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
@@ -58,16 +59,14 @@ public abstract class FluentPlugin extends JavaPlugin {
                     action.pluginEnable(this);
                 } catch (Exception e) {
                     isInitialized = false;
-                    FluentPlugin.logException("Plugin can not be loaded since ", e);
+                    FluentLogger.error("Plugin can not be loaded since ", e);
                     return;
                 }
             }
             OnFluentPluginEnable();
             isInitialized = true;
-        }
-        catch (Exception e)
-        {
-            FluentPlugin.logException("Error while loading FluentPlugin ", e);
+        } catch (Exception e) {
+            FluentLogger.error("Error while loading FluentPlugin ", e);
         }
     }
 
@@ -81,7 +80,7 @@ public abstract class FluentPlugin extends JavaPlugin {
                 action.pluginDisable(this);
             } catch (Exception e) {
                 isInitialized = false;
-                FluentPlugin.logException("Error while plugin disable ", e);
+                FluentLogger.error("Error while plugin disable ", e);
                 return;
             }
         }
@@ -106,7 +105,7 @@ public abstract class FluentPlugin extends JavaPlugin {
             fileField.setAccessible(true);
             return (File) fileField.get(plugin);
         } catch (Exception e) {
-            FluentPlugin.logException("Can not load plugin file", e);
+            FluentLogger.error("Can not load plugin file", e);
         }
         return null;
     }
@@ -132,50 +131,6 @@ public abstract class FluentPlugin extends JavaPlugin {
         logFormat(LogUtility.error(), message).sendToConsole();
     }
 
-    public static void logException(String message, Exception e) {
-        //This mess need to be clean up
-        var cause = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
-
-        logFormat(LogUtility.exception(), ChatColor.RED + message + ChatColor.RESET)
-                .newLine()
-                .color(ChatColor.DARK_RED)
-                .inBrackets("Reason")
-                .color(ChatColor.YELLOW)
-                .space()
-                .text(cause)
-                .color(ChatColor.RESET)
-                .newLine()
-                .color(ChatColor.DARK_RED)
-                .inBrackets("Exception type")
-                .color(ChatColor.YELLOW)
-                .space()
-                .text(e.getClass().getSimpleName())
-                .color(ChatColor.RESET)
-                .sendToConsole();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).sendToConsole();
-        var stackTrace = new MessageBuilder();
-        stackTrace.color(ChatColor.WHITE);
-        for (var trace : e.getStackTrace()) {
-            int offset = 6;
-            offset = offset - (trace.getLineNumber() + "").length();
-            stackTrace
-                    .newLine()
-                    .color(ChatColor.WHITE)
-                    .text("at line", ChatColor.WHITE)
-                    .space(2)
-                    .text(trace.getLineNumber(), ChatColor.AQUA)
-                    .space(offset)
-                    .text("in", ChatColor.WHITE)
-                    .space()
-                    .text(trace.getClassName(), ChatColor.GRAY)
-                    .text("." + trace.getMethodName() + "()", ChatColor.AQUA)
-                    .space()
-
-                    .color(ChatColor.RESET);
-        }
-        stackTrace.sendToConsole();
-        FluentMessage.message().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).sendToConsole();
-    }
 
     public static void logSuccess(String message) {
         logFormat(LogUtility.success(), message).sendToConsole();
