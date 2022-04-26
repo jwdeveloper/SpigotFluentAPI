@@ -1,8 +1,9 @@
 package desing_patterns.dependecy_injection;
 
-import example_classes.*;
-import example_classes.annotations.TestingAnnotation;
-import example_classes.interfaces.TestingInterface;
+import assets.*;
+import assets.annotations.TestingAnnotation;
+import assets.interfaces.TestingInterface;
+import desing_patterns.dependecy_injection.assets.ExampleDefaultObject;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.Container;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import org.junit.Before;
@@ -22,7 +23,18 @@ public class ContainerTests {
     }
 
 
+    @Test
+    public void should_register_default_object()
+    {
+        var text = "Example";
+        var object = new ExampleDefaultObject(text);
+        container.register(object);
 
+        var result = container.get(ExampleDefaultObject.class);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(object,result);
+        Assertions.assertEquals(text,result.getName());
+    }
 
     @Test
     public void should_classes_be_registered() {

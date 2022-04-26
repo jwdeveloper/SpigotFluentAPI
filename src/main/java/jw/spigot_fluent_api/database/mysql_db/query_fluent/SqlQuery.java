@@ -4,9 +4,10 @@ import jw.spigot_fluent_api.database.api.database_table.models.ColumnModel;
 import jw.spigot_fluent_api.database.api.database_table.models.TableModel;
 import jw.spigot_fluent_api.database.api.query_fluent.QueryFluent;
 import jw.spigot_fluent_api.database.mysql_db.query_builder.SqlSyntaxUtils;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.Stopper;
 import lombok.SneakyThrows;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 
@@ -53,11 +54,11 @@ public abstract class SqlQuery<T> implements QueryFluent<T> {
     private List<T> getResult(ResultSet resultSet, TableModel tableModel)
     {
         stopper.start();
-        var result = new SqlQueryMapper<T>(resultSet)
+        var result = new SqlQueryExecutor<T>(resultSet)
                 .setTable(tableModel)
                 .setJoins(joinedColumns)
                 .toList();
-        stopper.stop("Result mapping");
+        stopper.stop(" Result mapping");
         return result;
     }
 
@@ -68,7 +69,7 @@ public abstract class SqlQuery<T> implements QueryFluent<T> {
 
         stopper.start();
         var result = statement.executeQuery();
-        stopper.stop("Query");
+        stopper.stop(query);
         return result;
     }
 

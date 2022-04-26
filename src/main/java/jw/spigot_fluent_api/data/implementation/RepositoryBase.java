@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class RepositoryBase<T extends DataModel> implements Repository<T>, CustomFile
+public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, CustomFile
 {
 
     private ArrayList<T> content;
@@ -45,6 +45,13 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
     }
 
     @Override
+    public Optional<T> findById(UUID id) {
+        return content
+                .stream()
+                .filter(p -> p.getUuid().equals(id))
+                .findFirst();
+    }
+
     public Optional<T> getOne(UUID id) {
         return content
                 .stream()
@@ -60,11 +67,20 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
                 .findFirst();
     }
 
-    public ArrayList<T> getMany() {
+    public ArrayList<T> findAll() {
         return content;
     }
 
     @Override
+    public boolean insert(T data) {
+        return false;
+    }
+
+    @Override
+    public boolean update(UUID id, T data) {
+        return false;
+    }
+
     public boolean insertOne(T data) {
         if (data == null) {
             return false;
@@ -76,13 +92,11 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
 
     }
 
-    @Override
     public boolean insertMany(List<T> data) {
         data.forEach(this::insertOne);
         return true;
     }
 
-    @Override
     public boolean updateOne(UUID id, T data) {
         var optional = getOne(id);
         if (optional.isEmpty())
@@ -91,7 +105,6 @@ public class RepositoryBase<T extends DataModel> implements Repository<T>, Custo
         return ObjectUtility.copyToObject(data, optional.get(), entityClass);
     }
 
-    @Override
     public boolean updateMany(HashMap<UUID, T> data) {
         data.forEach(this::updateOne);
         return true;

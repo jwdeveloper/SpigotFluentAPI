@@ -2,21 +2,17 @@ package jw.spigot_fluent_api.data.interfaces;
 
 import java.util.*;
 
-public interface Repository <T>
+public interface Repository <T, Key>
 {
      Class<T> getEntityClass();
 
-     Optional<T> getOne(UUID id);
+     Optional<T> findById(Key id);
 
-     ArrayList<T> getMany();
+     List<T> findAll();
 
-     boolean insertOne(T data);
+     boolean insert(T data);
 
-     boolean insertMany(List<T> data);
-
-     boolean updateOne(UUID id,T data);
-
-     boolean updateMany(HashMap<UUID,T> data);
+     boolean update(Key id, T data);
 
      boolean deleteOne(T data);
 

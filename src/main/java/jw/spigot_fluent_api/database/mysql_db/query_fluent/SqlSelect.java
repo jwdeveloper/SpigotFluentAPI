@@ -97,7 +97,7 @@ public class SqlSelect<T> extends SqlQuery<T> implements SelectFluentBridge<T>, 
             bridgeBuilder.join()
                     .inner(tableModel.getName(),
                     column.getForeignKeyName(),
-                    column.getType(),
+                    column.getForeignKeyTableName(),
                     column.getForeignKeyReference());
         }
         return query.append(selectBuilder.getQuery()).toString();

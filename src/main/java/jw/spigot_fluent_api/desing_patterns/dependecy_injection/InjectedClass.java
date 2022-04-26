@@ -23,7 +23,7 @@ public class InjectedClass {
     private Set<Class<?>> parentTypes;
     private Set<Class<?>> interfaces;
 
-    private Object instnace;
+    Object instnace;
 
 
     public InjectedClass(Class<?> type) {

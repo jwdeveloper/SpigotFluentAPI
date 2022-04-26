@@ -28,6 +28,8 @@ public class ColumnModel {
 
     private String foreignKeyName;
 
+    private String foreignKeyTableName;
+
     private ReferenceOption onDelete;
 
     public String getOnDeleteString()

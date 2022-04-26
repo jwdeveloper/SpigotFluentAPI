@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MessageBuilder {
-    private StringBuilder stringBuilder;
+public class MessageBuilder
+{
+
+    private final StringBuilder stringBuilder;
 
     public MessageBuilder() {
         stringBuilder = new StringBuilder();
@@ -55,7 +57,7 @@ public class MessageBuilder {
 
     public MessageBuilder addList(ArrayList<String> name) {
         for (var value : name) {
-            this.text(" -" + name).newLine();
+            this.text(" -" + value).newLine();
         }
         return this;
     }
