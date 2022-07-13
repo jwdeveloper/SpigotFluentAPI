@@ -6,7 +6,6 @@ import jw.spigot_fluent_api.database.api.query_fluent.QueryFluent;
 import jw.spigot_fluent_api.database.mysql_db.query_builder.SqlSyntaxUtils;
 import jw.spigot_fluent_api.utilites.Stopper;
 import lombok.SneakyThrows;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

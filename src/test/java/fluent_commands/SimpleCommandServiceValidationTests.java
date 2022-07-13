@@ -1,10 +1,10 @@
 package fluent_commands;
 
-import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
-import jw.spigot_fluent_api.fluent_commands.validators.CommandArgumentValidator;
-import jw.spigot_fluent_api.fluent_commands.services.SimpleCommandService;
-import jw.spigot_fluent_api.fluent_commands.validators.BoolValidator;
-import jw.spigot_fluent_api.fluent_commands.validators.NumberValidator;
+import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
+import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
+import jw.spigot_fluent_api.fluent_commands.implementation.validators.CommandArgumentValidator;
+import jw.spigot_fluent_api.fluent_commands.implementation.validators.BoolValidator;
+import jw.spigot_fluent_api.fluent_commands.implementation.validators.NumberValidator;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,19 +14,19 @@ import java.util.ArrayList;
 
 public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
 {
-    SimpleCommandService simpleCommandService;
+    CommandServiceImpl simpleCommandService;
 
     @Before
     public void beforeTests() {
-        simpleCommandService = new SimpleCommandService();
+        simpleCommandService = new CommandServiceImpl();
     }
 
     @Test
     public void shouldReturnTrueWhenHasNoArguments()  {
         var arguments = new String[5];
         var commandArguments = new ArrayList<CommandArgument>();
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(isSuccess.isSuccess());
     }
 
     @Test
@@ -35,16 +35,16 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
         commandArguments.add(getCommandArgument(new NumberValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertFalse(isSuccess.isSuccess());
     }
 
     @Test
     public void shouldReturnTrue() {
         var arguments = new String[0];
         var commandArguments = new ArrayList<CommandArgument>();
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(isSuccess.isSuccess());
     }
     @Test
     public void shouldValidateNotNumber() {
@@ -52,8 +52,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         arguments[0] = "12.2asda";
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertFalse(isSuccess.isSuccess());
     }
 
     @Test
@@ -62,8 +62,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         arguments[0] = "12,2";
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertFalse(isSuccess.isSuccess());
     }
 
     @Test
@@ -72,8 +72,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         arguments[0] = "12.2";
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new NumberValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(isSuccess.isSuccess());
     }
 
     @Test
@@ -82,8 +82,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         arguments[0] = "TRUE";
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new BoolValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(isSuccess.isSuccess());
     }
 
     @Test
@@ -94,8 +94,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new BoolValidator()));
         commandArguments.add(getCommandArgument(new BoolValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertTrue(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertTrue(isSuccess.isSuccess());
     }
 
     @Test
@@ -104,8 +104,8 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
         arguments[0] = "randomtext";
         var commandArguments = new ArrayList<CommandArgument>();
         commandArguments.add(getCommandArgument(new BoolValidator()));
-        var result  = simpleCommandService.validateArguments(arguments,commandArguments);
-        Assert.assertFalse(result.result());
+        var isSuccess  = simpleCommandService.validateArguments(arguments,commandArguments);
+        Assert.assertFalse(isSuccess.isSuccess());
     }
 
     private CommandArgument getCommandArgument(CommandArgumentValidator validator)

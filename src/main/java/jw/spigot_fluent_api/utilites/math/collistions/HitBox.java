@@ -23,6 +23,13 @@ public class HitBox {
         min = MathUtility.min(a, b);
     }
 
+    public boolean isCollider(Location rayOrigin, float length) {
+        return rayBoxIntersect(rayOrigin.toVector(),
+                rayOrigin.getDirection(),
+                min.toVector(),
+                max.toVector()) > 0;
+    }
+
     public void setOrigin(Location location) {
         this.origin = location;
     }
@@ -63,12 +70,7 @@ public class HitBox {
                 .build();
     }
 
-    public boolean isCollider(Location rayOrigin, float length) {
-        return rayBoxIntersect(rayOrigin.toVector(),
-                rayOrigin.getDirection(),
-                min.toVector(),
-                max.toVector()) > 0;
-    }
+
     private double rayBoxIntersect(Vector position, Vector direction, Vector vmin, Vector vmax) {
         result[1] = (vmin.getX() - position.getX()) / direction.getX();
         result[2] = (vmax.getX() - position.getX()) / direction.getX();

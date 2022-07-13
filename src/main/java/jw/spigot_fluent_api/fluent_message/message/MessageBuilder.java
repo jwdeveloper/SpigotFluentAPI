@@ -1,6 +1,5 @@
 package jw.spigot_fluent_api.fluent_message.message;
 
-import jw.spigot_fluent_api.utilites.Unimplemented;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -99,7 +98,6 @@ public class MessageBuilder
         return this;
     }
 
-    @Unimplemented
     public MessageBuilder color(String hexColor) {
         return this;
     }

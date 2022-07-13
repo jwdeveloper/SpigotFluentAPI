@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.fluent_mapper;
 
 import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
 import jw.spigot_fluent_api.fluent_mapper.implementation.builder.MappingProfileBuilder;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
+import jw.spigot_fluent_api.fluent_mapper.api.MapperProfile;
 
 import java.util.List;
 

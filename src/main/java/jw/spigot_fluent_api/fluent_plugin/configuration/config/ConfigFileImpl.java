@@ -8,6 +8,12 @@ public record ConfigFileImpl(FileConfiguration fileConfiguration) implements Con
         return (T) fileConfiguration.get(name);
     }
 
+    @Override
+    public <T> T toObject(Class<T> clazz)
+    {
+        return null;
+    }
+
     public Object getRequired(String name) throws Exception {
         var value = get(name);
         if (value == null) {

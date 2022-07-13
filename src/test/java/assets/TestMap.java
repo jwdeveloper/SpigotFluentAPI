@@ -1,7 +1,7 @@
 package assets;
 
 import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.IMap;
+import jw.spigot_fluent_api.fluent_mapper.api.IMap;
 
 import java.util.ArrayList;
 import java.util.List;

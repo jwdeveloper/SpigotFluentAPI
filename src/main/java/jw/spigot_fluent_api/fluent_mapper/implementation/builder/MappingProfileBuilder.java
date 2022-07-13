@@ -1,8 +1,8 @@
 package jw.spigot_fluent_api.fluent_mapper.implementation.builder;
 
 import jw.spigot_fluent_api.desing_patterns.builder.FinishBuilder;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.Mapper;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
+import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
+import jw.spigot_fluent_api.fluent_mapper.api.MapperProfile;
 
 public class MappingProfileBuilder implements FinishBuilder<MapperProfile> {
     private final Mapper mapper;

@@ -32,6 +32,13 @@ public class DependecyInjectionContainerBuilder implements ContainerBuilder
         return this;
     }
 
+    public ContainerBuilder registerSigleton(Object instance)
+    {
+        container.register(instance);
+        registered.add(instance.getClass());
+        return this;
+    }
+
     public ContainerBuilder registerTransient(Class _class)
     {
         container.register(_class,LifeTime.TRANSIENT);

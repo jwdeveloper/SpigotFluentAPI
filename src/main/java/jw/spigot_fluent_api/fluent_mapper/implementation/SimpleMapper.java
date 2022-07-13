@@ -4,8 +4,8 @@ import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.Mapper;
-import jw.spigot_fluent_api.fluent_mapper.interfaces.MapperProfile;
+import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
+import jw.spigot_fluent_api.fluent_mapper.api.MapperProfile;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.java.KeySet;
 

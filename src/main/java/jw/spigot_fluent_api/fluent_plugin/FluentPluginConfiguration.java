@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
 import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
-import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
@@ -73,7 +73,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     @Override
     public PluginConfiguration useDebugMode() {
 
-        FluentCommand.create("disable")
+        FluentCommand.create_OLDWAY("disable")
                 .setDescription("disable all plugin without restarting server")
                 .setUsageMessage("Can be use only with Console")
                 .nextStep()

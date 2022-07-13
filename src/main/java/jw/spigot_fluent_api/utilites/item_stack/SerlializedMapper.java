@@ -14,7 +14,6 @@ public class SerlializedMapper<T extends Serializable>
         } catch (Exception e)
         {
             FluentLogger.error("Can not serialize "+complex.getClass().getSimpleName()+ "object to byte array",e);
-            e.printStackTrace();
         }
         return new byte[0];
     }
