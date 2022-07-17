@@ -73,6 +73,14 @@ public class ButtonUI {
         itemStack.setType(material);
     }
 
+    public void setCustomMaterial(Material material, int id)
+    {
+        itemStack.setType(material);
+        final var meta = itemStack.getItemMeta();
+        meta.setCustomModelData(id);
+        itemStack.setItemMeta(meta);
+    }
+
     public void setDescription(MessageBuilder messageBuilder) {
         setDescription(messageBuilder.toString());
     }

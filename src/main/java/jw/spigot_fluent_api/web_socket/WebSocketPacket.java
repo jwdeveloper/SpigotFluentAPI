@@ -14,13 +14,14 @@ import org.java_websocket.WebSocket;
 import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public abstract class WebSocketPacket implements PacketInvokeEvent {
     private int packetSize = 0;
     private final int packetIdSize = 4;
     private final List<PacketFieldWrapper> packetFields;
-    private final Queue<Consumer<WebSocket>> tasks = new LinkedList<>();
+    private final Queue<Consumer<WebSocket>> tasks = new LinkedBlockingQueue<>();
     private final FluentTaskTimer taskTimer;
     private final Gson gson;
 
@@ -34,8 +35,8 @@ public abstract class WebSocketPacket implements PacketInvokeEvent {
         packetSize = getPacketSize();
         taskTimer = new FluentTaskTimer(1, (time, taskTimer1) ->
         {
-            for (final var webSocket : tasks) {
-                webSocket.accept(null);
+            for (final var task : tasks) {
+                task.accept(null);
             }
             tasks.clear();
         });
