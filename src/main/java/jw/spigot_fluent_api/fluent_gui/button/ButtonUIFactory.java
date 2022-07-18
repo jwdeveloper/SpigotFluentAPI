@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui.button;
 
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
+import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,6 +23,14 @@ public class ButtonUIFactory {
         else
             result.setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Go back"));
         return result;
+    }
+
+    public ButtonUIBuilder backgroundButton(int height, int width, Material material) {
+        return new ButtonUIBuilder<>()
+                .setLocation(height,width)
+                .setMaterial(material)
+                .setButtonType(ButtonType.BACKGROUND)
+                .setTitle(" ");
     }
 
     public ButtonUIBuilder goBackButton(InventoryUI inventory) {

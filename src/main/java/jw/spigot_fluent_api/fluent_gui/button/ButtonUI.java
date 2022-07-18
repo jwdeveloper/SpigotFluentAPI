@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -69,6 +70,22 @@ public class ButtonUI {
         setMaterial(material);
     }
 
+    public void setPermissions(List<String> permissions)
+    {
+        for(var p : permissions)
+        {
+            this.permissions.add(p);
+        }
+    }
+
+    public void setPermissions(String ... permissions)
+    {
+        for(var p : permissions)
+        {
+            this.permissions.add(p);
+        }
+    }
+
     public void setMaterial(Material material) {
         itemStack.setType(material);
     }
@@ -102,6 +119,11 @@ public class ButtonUI {
     public void setTitle(String title) {
         this.title = title;
         setDisplayedName(title);
+    }
+
+    public void setTitlePrimary(String title)
+    {
+      setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).build());
     }
 
     public int getHeight() {

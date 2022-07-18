@@ -41,8 +41,6 @@ public abstract class WebSocketPacket implements PacketInvokeEvent {
             tasks.clear();
         });
         taskTimer.run();
-        FluentPlugin.logSuccess("Packet fields "+packetFields.size());
-        FluentPlugin.logSuccess("Packet Size "+packetSize);
     }
 
     protected void addSpigotTask(Consumer<WebSocket> consumer) {

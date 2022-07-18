@@ -10,7 +10,6 @@ public class MapperAction implements PluginPipeline{
         var mappingProfiles = fluentPlugin.getTypeManager().getByInterface(MapperProfile.class);
         for(var profile: mappingProfiles)
         {
-            FluentPlugin.logSuccess(profile.getName());
             FluentMapper.registerMappingProfile((Class<MapperProfile>)profile);
         }
     }

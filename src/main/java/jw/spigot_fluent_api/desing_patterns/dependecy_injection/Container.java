@@ -21,7 +21,7 @@ public class Container {
 
     public <T> T get(Class<T> _injection) {
         if (!injections.containsKey(_injection)) {
-            FluentPlugin.logError(String.format(Messages.INJECTION_NOT_FOUND, _injection.getSimpleName()));
+            FluentLogger.error(String.format(Messages.INJECTION_NOT_FOUND, _injection.getSimpleName()));
             return null;
         }
         try {
@@ -69,7 +69,7 @@ public class Container {
     public boolean register(Class<?> _class, LifeTime lifeTime) {
 
         if (injections.containsKey(_class)) {
-            FluentPlugin.logError(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
             return false;
         }
         try {
@@ -85,13 +85,13 @@ public class Container {
     public boolean register(Object _object) {
         if(_object == null)
         {
-            FluentPlugin.logError(String.format(Messages.INJECTION_CANT_CREATE, "default injection object can not be null"));
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, "default injection object can not be null"));
             return false;
         }
 
         var _class = _object.getClass();
         if (injections.containsKey(_class)) {
-            FluentPlugin.logError(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
             return false;
         }
         try {

@@ -137,9 +137,11 @@ public abstract class FluentPlugin extends JavaPlugin {
     }
 
     private static MessageBuilder logFormat(MessageBuilder messageBuilder, String message) {
+
+        var name = getPlugin() == null?"Plugin":getPlugin().getName();
         return new MessageBuilder()
                 .color(ChatColor.WHITE)
-                .inBrackets(getPlugin().getName())
+                .inBrackets(name)
                 .space()
                 .text(messageBuilder.toString())
                 .color(ChatColor.RESET)

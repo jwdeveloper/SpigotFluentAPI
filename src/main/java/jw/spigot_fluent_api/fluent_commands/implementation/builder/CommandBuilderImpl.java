@@ -9,6 +9,7 @@ import jw.spigot_fluent_api.fluent_commands.api.builder.config.SubCommandConfig;
 import jw.spigot_fluent_api.fluent_commands.implementation.builder.config.ArgumentConfigImpl;
 import jw.spigot_fluent_api.fluent_commands.implementation.builder.config.EventConfigImpl;
 import jw.spigot_fluent_api.fluent_commands.implementation.builder.config.PropertiesConfigImpl;
+import jw.spigot_fluent_api.fluent_commands.implementation.builder.config.SubCommandConfigImpl;
 import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
 import jw.spigot_fluent_api.fluent_commands.implementation.services.EventsServiceImpl;
 import jw.spigot_fluent_api.fluent_commands.implementation.services.MessageServiceImpl;
@@ -66,7 +67,7 @@ public class CommandBuilderImpl implements CommandBuilder {
 
     @Override
     public CommandBuilder subCommandsConfig(Consumer<SubCommandConfig> config) {
-        configs.put(config, new ArgumentConfigImpl(model));
+        configs.put(config, new SubCommandConfigImpl(subCommands));
         return this;
     }
 

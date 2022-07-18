@@ -31,12 +31,12 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
+      //  FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " leave the room!");
+       // FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " leave the room!");
     }
 
     @Override
@@ -70,6 +70,6 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onStart() {
-        FluentPlugin.logSuccess("Hello world from socket");
+        //FluentPlugin.logSuccess("Hello world from socket");
     }
 }

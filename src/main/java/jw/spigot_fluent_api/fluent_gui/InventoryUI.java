@@ -2,8 +2,10 @@ package jw.spigot_fluent_api.fluent_gui;
 
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -224,9 +226,24 @@ public abstract class InventoryUI {
         if (!validatePlayer(player))
             return false;
 
+        if(player.isOp())
+            return true;
+
         for (var permission : permissions) {
-            if (!player.hasPermission(permission)) ;
-            return false;
+            if (!player.hasPermission(permission))
+            {
+                FluentMessage.message()
+                        .color(ChatColor.DARK_RED)
+                        .text("You need to have permissions ")
+                        .color(ChatColor.GRAY)
+                        .text(Emoticons.arrowRight)
+                        .space()
+                        .color(ChatColor.RED)
+                        .text(permission)
+                        .send(player);
+                return false;
+            }
+
         }
         return true;
     }
