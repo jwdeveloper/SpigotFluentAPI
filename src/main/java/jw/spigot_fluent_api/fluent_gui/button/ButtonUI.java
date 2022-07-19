@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui.button;
 
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
+import jw.spigot_fluent_api.fluent_gui.enums.PermissionType;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
@@ -50,6 +51,8 @@ public class ButtonUI {
 
     protected ArrayList<String> permissions;
 
+    protected PermissionType permissionType;
+
     private ButtonUIEvent onClick = (player, button) -> {
     };
 
@@ -62,6 +65,7 @@ public class ButtonUI {
         location = new Vector(0, 0, 0);
         description = new ArrayList<>();
         permissions = new ArrayList<>();
+        permissionType = PermissionType.ONE_OF;
         hideAttributes();
     }
 

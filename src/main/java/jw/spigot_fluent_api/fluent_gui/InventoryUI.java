@@ -84,7 +84,7 @@ public abstract class InventoryUI {
         EventsListenerInventoryUI.registerUI(this);
         player.openInventory(getInventory());
         this.isOpen = true;
-        displayLog("Open with Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
+        displayLog("Open with Bukkit inv " + inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void close() {
@@ -101,30 +101,29 @@ public abstract class InventoryUI {
     public void setTitle(MessageBuilder title) {
         setTitle(title.toString());
     }
+
     public void setTitle(String title) {
         this.title = title;
         if (player == null || !player.isOnline())
             return;
         EventsListenerInventoryUI.unregisterUI(this);
-        var currentContent =  getInventory().getContents();
+        var currentContent = getInventory().getContents();
         this.inventory = createInventory(inventoryType);
         getInventory().setContents(currentContent);
         if (isOpen)
             player.openInventory(getInventory());
         EventsListenerInventoryUI.registerUI(this);
 
-        this.displayLog("Title changed with Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
+        this.displayLog("Title changed with Bukkit inv " + inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void refresh() {
-        if (!isOpen())
-        {
+        if (!isOpen()) {
             displayLog("Gui cant be refresh since is closed", ChatColor.YELLOW);
             return;
         }
 
-        if (!validatePlayer(player))
-        {
+        if (!validatePlayer(player)) {
             displayLog("Gui cant be refresh since player is invalid", ChatColor.YELLOW);
             return;
         }
@@ -146,7 +145,7 @@ public abstract class InventoryUI {
             } else
                 getInventory().setItem(i, null);
         }
-        displayLog("New content loaded for Bukkit inv "+inventory.hashCode(), ChatColor.GREEN);
+        displayLog("New content loaded for Bukkit inv " + inventory.hashCode(), ChatColor.GREEN);
     }
 
     public void refreshButton(ButtonUI button) {
@@ -222,16 +221,27 @@ public abstract class InventoryUI {
         return Math.min(height, 6);
     }
 
-    protected boolean checkPermissions(List<String> permissions) {
+    protected boolean checkPermissions(ButtonUI buttonUI) {
         if (!validatePlayer(player))
             return false;
 
-        if(player.isOp())
+        if (player.isOp())
             return true;
 
+        if(buttonUI.getPermissions().size() == 0)
+            return true;
+
+        var result = switch (buttonUI.getPermissionType()) {
+            case ALL -> shouldHaveAllPermission(buttonUI.getPermissions());
+            case ONE_OF -> shouldHaveOnePermissions(buttonUI.getPermissions());
+            default -> true;
+        };
+        return result;
+    }
+
+    private boolean shouldHaveAllPermission(List<String> permissions) {
         for (var permission : permissions) {
-            if (!player.hasPermission(permission))
-            {
+            if (!player.hasPermission(permission)) {
                 FluentMessage.message()
                         .color(ChatColor.DARK_RED)
                         .text("You need to have permissions ")
@@ -243,9 +253,32 @@ public abstract class InventoryUI {
                         .send(player);
                 return false;
             }
-
         }
         return true;
+    }
+
+    private boolean shouldHaveOnePermissions(List<String> permissions) {
+        for (var permission : permissions) {
+            if (player.hasPermission(permission)) {
+                return true;
+            }
+        }
+
+        FluentMessage.message()
+                .color(ChatColor.DARK_RED)
+                .text("You need to have one of those permissions").send(player);
+
+        for (var permission : permissions) {
+            FluentMessage.message()
+                    .color(ChatColor.GRAY)
+                    .text(Emoticons.arrowRight)
+                    .space()
+                    .color(ChatColor.RED)
+                    .text(permission)
+                    .send(player);
+        }
+
+        return false;
     }
 
     private int calculateButtonSlotIndex(ButtonUI button) {

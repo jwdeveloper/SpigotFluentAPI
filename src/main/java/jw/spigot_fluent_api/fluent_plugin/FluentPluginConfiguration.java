@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class FluentPluginConfiguration implements PluginConfiguration {
     private PluginPipeline dataContext;
@@ -55,6 +56,13 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     @Override
     public PluginConfiguration useCustomAction(PluginPipeline pipeline) {
         customActions.add(pipeline);
+        return this;
+    }
+
+    @Override
+    public PluginConfiguration useMetrics(Supplier<Integer> metricsId)
+    {
+        metrics = new MetricsAction(metricsId);
         return this;
     }
 

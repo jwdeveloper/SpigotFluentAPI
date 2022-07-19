@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.Containe
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public interface PluginConfiguration {
 
@@ -18,6 +19,7 @@ public interface PluginConfiguration {
     PluginConfiguration useInfoMessage();
 
     PluginConfiguration useCustomAction(PluginPipeline pipeline);
+    PluginConfiguration useMetrics(Supplier<Integer> metricsId);
 
     PluginConfiguration useMetrics(int metricsId);
 

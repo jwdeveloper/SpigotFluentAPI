@@ -91,7 +91,7 @@ public class ChestUI extends InventoryUI {
             if (button == null || !button.isActive())
                 return;
 
-            if (!checkPermissions(button.getPermissions()))
+            if (!checkPermissions(button))
                 return;
 
             if (button.hasSound())
