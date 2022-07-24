@@ -2,13 +2,14 @@ package jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl;
 
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonNotifier;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverEvent;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
 
 public class EnumSelectorObserver <T extends Enum<T>> implements ButtonNotifier<T>
 {
     private final Class<T> _enumClass;
-    private int currentIndex =0;
+    private int currentIndex = Integer.MIN_VALUE;
     private T[] values;
     private String[] catchDescription;
 
@@ -34,6 +35,12 @@ public class EnumSelectorObserver <T extends Enum<T>> implements ButtonNotifier<
     @Override
     public void onValueChanged(ButtonObserverEvent<T> event)
     {
+
+        if(currentIndex == Integer.MIN_VALUE)
+        {
+            currentIndex = findIndex(event.getValue());
+        }
+
          final var button = event.getButton();
          final var descrition = new String[values.length];
          for (var i=0;i<values.length;i++)

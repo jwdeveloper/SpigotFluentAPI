@@ -1,15 +1,15 @@
 package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 
-public class InfoMessageAction implements PluginPipeline
-{
+public class InfoMessageAction implements PluginPipeline {
     @Override
     public void pluginEnable(FluentPlugin fluentPlugin) {
-        sendInfo(fluentPlugin,"Status","Enabled");
-        sendInfo(fluentPlugin,"Version",fluentPlugin.getDescription().getVersion());
+        sendInfo(fluentPlugin, "Status", "Enabled");
+        sendInfo(fluentPlugin, "Version", fluentPlugin.getDescription().getVersion());
 
     }
 
@@ -18,15 +18,14 @@ public class InfoMessageAction implements PluginPipeline
 
     }
 
-    protected void sendInfo(FluentPlugin fluentPlugin, String name, String value)
-    {
-        var message = new MessageBuilder()
+    protected void sendInfo(FluentPlugin fluentPlugin, String name, String value) {
+        new MessageBuilder()
                 .color(ChatColor.WHITE)
-                .withEndfix(name," ->")
+                .withEndfix(name, " ->")
                 .space()
                 .color(ChatColor.GREEN)
                 .inBrackets(value)
-                .color(ChatColor.WHITE).toString();
-        fluentPlugin.logSuccess(message);
+                .color(ChatColor.WHITE)
+                .sendToConsole();
     }
 }

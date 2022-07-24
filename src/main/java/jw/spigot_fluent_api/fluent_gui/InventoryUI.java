@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.fluent_gui;
 
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
@@ -192,7 +193,7 @@ public abstract class InventoryUI {
 
     public void displayLog(String message, ChatColor chatColor) {
         if (enableLogs)
-            FluentPlugin.logInfo(this + ": " + chatColor + message);
+            FluentLogger.info(this + ": " + chatColor + message);
     }
 
     public boolean isSlotEmpty(int slotIndex) {

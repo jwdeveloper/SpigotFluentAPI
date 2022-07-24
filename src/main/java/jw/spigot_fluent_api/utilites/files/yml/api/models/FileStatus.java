@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.utilites.files.yml.models;
+package jw.spigot_fluent_api.utilites.files.yml.api.models;
 
 import lombok.Data;
 

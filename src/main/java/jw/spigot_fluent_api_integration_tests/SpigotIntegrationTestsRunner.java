@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api_integration_tests;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class SpigotIntegrationTestsRunner {
 
     public static void loadTests(Collection<Class<?>> classes) {
-        FluentPlugin.logSuccess("Integration tests enabled");
+        FluentLogger.success("Integration tests enabled");
         var integrationTestsClasses = classes.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).toList();
         List<SpigotIntegrationTest> integrationTests = new ArrayList<SpigotIntegrationTest>();
         for (var integration : integrationTestsClasses) {
@@ -23,7 +24,7 @@ public class SpigotIntegrationTestsRunner {
                 object.loadTests();
                 integrationTests.add(object);
             } catch (Exception e) {
-                FluentPlugin.logError("Error while creating " + integration.getSimpleName() + " integration test");
+                FluentLogger.error("Error while creating " + integration.getSimpleName() + " integration test");
             }
         }
         integrationTests = integrationTests.stream().sorted((o1, o2) ->
@@ -37,7 +38,7 @@ public class SpigotIntegrationTestsRunner {
             }
             return 1;
         }).toList();
-        FluentPlugin.logSuccess("Integration tests run");
+        FluentLogger.success("Integration tests run");
         for (var integrationTest : integrationTests) {
             integrationTest.runTests();
         }

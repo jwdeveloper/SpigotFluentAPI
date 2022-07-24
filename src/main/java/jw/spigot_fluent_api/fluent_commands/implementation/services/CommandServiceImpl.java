@@ -7,7 +7,9 @@ import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.api.models.CommandTarget;
 import jw.spigot_fluent_api.fluent_commands.api.models.ValidationResult;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -77,15 +79,38 @@ public class CommandServiceImpl implements CommandService {
     }
     @Override
     public ValidationResult hasSenderPermissions(CommandSender commandSender, List<String> permissions) {
+
+        if(permissions.isEmpty())
+        {
+            return new ValidationResult(true, "");
+        }
+        if(commandSender instanceof ConsoleCommandSender)
+        {
+            return new ValidationResult(true, "");
+        }
+
         if (commandSender instanceof Player player)
         {
             for (var permission : permissions) {
-                if (!player.hasPermission(permission)) {
-                    return new ValidationResult(false, permission);
+                if (player.hasPermission(permission)) {
+                    return new ValidationResult(true, "");
                 }
             }
         }
-        return new ValidationResult(true, "");
+        FluentMessage.message()
+                .color(ChatColor.DARK_RED)
+                .text("You need to have one of those permissions").send(commandSender);
+
+        for (var permission : permissions) {
+            FluentMessage.message()
+                    .color(ChatColor.GRAY)
+                    .text(Emoticons.arrowRight)
+                    .space()
+                    .color(ChatColor.RED)
+                    .text(permission)
+                    .send(commandSender);
+        }
+        return new ValidationResult(false, "");
     }
 
     public Object[] getArgumentValues(String[] args, List<CommandArgument> commandArguments) {

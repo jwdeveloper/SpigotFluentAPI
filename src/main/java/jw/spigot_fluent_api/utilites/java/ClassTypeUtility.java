@@ -99,8 +99,7 @@ public class ClassTypeUtility {
             return Class.forName(packageName + "."
                     + className.substring(0, className.lastIndexOf('.')));
         } catch (ClassNotFoundException e) {
-            FluentPlugin.logError("Could not load class");
-            FluentPlugin.logError(e.getMessage());
+            FluentLogger.error("Could not load class", e);
         }
         return null;
     }

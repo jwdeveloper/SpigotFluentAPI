@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
 import jw.spigot_fluent_api.data.implementation.DataContext;
 import jw.spigot_fluent_api.data.interfaces.CustomFile;
 import jw.spigot_fluent_api.data.implementation.annotation.files.JsonFile;
-import jw.spigot_fluent_api.data.implementation.annotation.files.YmlFile;
+import jw.spigot_fluent_api.utilites.files.yml.api.annotations.YmlFile;
 import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;

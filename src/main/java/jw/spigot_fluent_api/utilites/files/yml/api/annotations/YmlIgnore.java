@@ -1,4 +1,4 @@
-package jw.spigot_fluent_api.utilites.files.yml.annotations;
+package jw.spigot_fluent_api.utilites.files.yml.api.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

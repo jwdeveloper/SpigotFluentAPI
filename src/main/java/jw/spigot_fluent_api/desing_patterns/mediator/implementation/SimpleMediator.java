@@ -27,7 +27,7 @@ public class SimpleMediator implements Mediator {
             var pair = new KeySet(inputClass, outputClass);
             var mediator = handlers.get(pair);
             if (mediator == null) {
-                FluentPlugin.logError(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
+                FluentLogger.info(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
                 return null;
             }
         try {
@@ -56,7 +56,7 @@ public class SimpleMediator implements Mediator {
         var pair = new KeySet(inputClass, outputClass);
         if (handlers.containsKey(pair)) {
             var mediator1 = handlers.get(pair);
-            FluentPlugin.logError(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
+            FluentLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
             return;
         }
         handlers.put(pair, mediator);

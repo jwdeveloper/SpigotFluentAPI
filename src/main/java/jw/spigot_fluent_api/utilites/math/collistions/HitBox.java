@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.math.collistions;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_particle.implementation.ParticleDisplayMode;
 import jw.spigot_fluent_api.fluent_particle.implementation.SimpleParticle;
 import jw.spigot_fluent_api.fluent_particle.FluentParticle;
@@ -21,6 +22,7 @@ public class HitBox {
     public HitBox(Location a, Location b) {
         max = MathUtility.max(a, b);
         min = MathUtility.min(a, b);
+
     }
 
     public boolean isCollider(Location rayOrigin, float length) {
@@ -50,19 +52,19 @@ public class HitBox {
     private SimpleParticle getHitboxDisplay()
     {
         float size = 0.6F;
-        Color color = Color.fromRGB(255, 0, 0);
+        Color color = Color.fromRGB(92, 225, 230);
         Particle.DustOptions options = new Particle.DustOptions(color, size);
        return FluentParticle.create()
                 .startAfterTicks(1)
                 .triggerEveryTicks(10)
                 .nextStep()
-                .withColor(Color.RED)
                 .withParticleCount(2)
                 .withFixedLocation(min)
                 .withDisplayMode(ParticleDisplayMode.ALL_AT_ONCE)
                 .nextStep()
                 .onParticle((particle, particleInvoker) ->
                 {
+
                     particleInvoker.spawnParticle(max,Particle.REDSTONE,1,options);
                     particleInvoker.spawnParticle(min,Particle.REDSTONE,1,options);
                 })

@@ -6,6 +6,8 @@ import jw.spigot_fluent_api.data.implementation.file_handlers.YamlFilesHandler;
 import jw.spigot_fluent_api.data.interfaces.FileHandler;
 import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.data.interfaces.CustomFile;
+import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.util.Collection;
@@ -57,7 +59,8 @@ public class DataContext implements FluentDataContext {
     @Override
     public void registerFileHandler(FileHandler fileHandler) {
         if (fileHandlers.containsKey(fileHandler.getClass())) {
-            FluentPlugin.logError("DataContext already contains file handler of type " + fileHandler.getClass().getSimpleName());
+
+            FluentLogger.info("DataContext already contains file handler of type " + fileHandler.getClass().getSimpleName());
             return;
         }
 

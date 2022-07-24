@@ -194,7 +194,7 @@ public class SimpleCommand extends Command {
 
     private void displayLog(String log) {
         if (logs) {
-            FluentPlugin.logInfo("Command " + this.getName() + " " + log);
+            FluentLogger.info("Command " + this.getName() + " " + log);
         }
     }
 

@@ -21,6 +21,7 @@ public class GameObject implements GameComponent {
         this.parent = parent;
     }
 
+
     @Override
     public final GameComponent addGameComponent(GameComponent gameComponent) {
         var class_ = gameComponent.getClass();

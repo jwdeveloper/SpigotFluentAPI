@@ -27,7 +27,7 @@ public abstract class SpigotIntegrationTest {
     }
 
     public final void loadTests() {
-        FluentPlugin.logSuccess("Test: " + this.getClass().getSimpleName() + " loaded");
+        FluentLogger.success("Test: " + this.getClass().getSimpleName() + " loaded");
         try {
             var methods = this.getClass().getDeclaredMethods();
             for (var m : methods) {

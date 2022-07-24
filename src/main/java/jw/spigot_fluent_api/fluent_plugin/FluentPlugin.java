@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
+import com.google.common.collect.ImmutableList;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
@@ -11,11 +12,13 @@ import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
 import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FluentPlugin extends JavaPlugin {
@@ -110,6 +113,36 @@ public abstract class FluentPlugin extends JavaPlugin {
         return null;
     }
 
+    public static void addPermissions(List<Permission> permissions)
+    {
+        addPermissions(permissions.toArray(new Permission[permissions.size()]));
+    }
+
+    public static void addPermissions(Permission... permissions)
+    {
+        try {
+            var description = getPlugin().getDescription();
+            var permissionsField = PluginDescriptionFile.class.getDeclaredField("permissions");
+            permissionsField.setAccessible(true);
+
+            var newPermissions = new ArrayList<Permission>();
+            var currentPermission = description.getPermissions();
+            for(var p : currentPermission)
+            {
+                newPermissions.add(p);
+            }
+            for(var p : permissions)
+            {
+                newPermissions.add(p);
+            }
+
+            var result  = ImmutableList.copyOf(newPermissions);
+            permissionsField.set(description, result);
+        } catch (Exception e) {
+            FluentLogger.error("Can not add permission", e);
+        }
+    }
+
     public TypeManager getTypeManager() {
         return typeManager;
     }
@@ -117,36 +150,4 @@ public abstract class FluentPlugin extends JavaPlugin {
     public static String getPath() {
         return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
     }
-
-    public static MessageBuilder log(String message) {
-        return logFormat(LogUtility.info(), message);
-    }
-
-    public static void logInfo(String message) {
-        logFormat(LogUtility.info(), message).sendToConsole();
-    }
-
-    public static void logError(String message) {
-
-        logFormat(LogUtility.error(), message).sendToConsole();
-    }
-
-
-    public static void logSuccess(String message) {
-        logFormat(LogUtility.success(), message).sendToConsole();
-    }
-
-    private static MessageBuilder logFormat(MessageBuilder messageBuilder, String message) {
-
-        var name = getPlugin() == null?"Plugin":getPlugin().getName();
-        return new MessageBuilder()
-                .color(ChatColor.WHITE)
-                .inBrackets(name)
-                .space()
-                .text(messageBuilder.toString())
-                .color(ChatColor.RESET)
-                .text(message);
-    }
-
-
 }

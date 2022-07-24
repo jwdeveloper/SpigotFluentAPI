@@ -5,6 +5,11 @@ import org.bukkit.ChatColor;
 
 public class LogUtility
 {
+    public static MessageBuilder warning()
+    {
+        return getLog(ChatColor.YELLOW,"Warning");
+    }
+
     public static MessageBuilder error()
     {
         return getLog(ChatColor.DARK_RED,"Error");

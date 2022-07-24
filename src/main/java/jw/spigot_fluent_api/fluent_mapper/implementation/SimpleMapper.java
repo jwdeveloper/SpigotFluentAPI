@@ -75,7 +75,7 @@ public class SimpleMapper implements Mapper {
         var pair = new KeySet(inputClass, outputClass);
         if (mappingProfiles.containsKey(pair)) {
             var mediator1 = mappingProfiles.get(pair);
-            FluentPlugin.logError(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
+            FluentLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
             return;
         }
         FluentInjection.getInjectionContainer().register(mappingProfileClass, LifeTime.SINGLETON);

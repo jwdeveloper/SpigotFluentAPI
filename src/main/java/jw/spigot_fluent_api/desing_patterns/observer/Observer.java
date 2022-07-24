@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.desing_patterns.observer;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 
@@ -81,7 +82,7 @@ public class Observer<T> implements Observable<T> {
                 onChangeEvent.accept(value);          //trigger all OnValueChange events
             }
         } catch (Exception e) {
-            FluentPlugin.logError("Set binding field: " + e.getMessage());
+            FluentLogger.error("Set binding field: " ,e);
         }
     }
     public boolean bind(Class _class, String filedName) {
@@ -92,7 +93,7 @@ public class Observer<T> implements Observable<T> {
             isBinded = true;
             return true;
         } catch (NoSuchFieldException e) {
-            FluentPlugin.logError("Binding error:" + e.getMessage() + " Field: " + filedName);
+            FluentLogger.error("Binding error:" + e.getMessage() + " Field: " + filedName ,e);
             return false;
         }
     }

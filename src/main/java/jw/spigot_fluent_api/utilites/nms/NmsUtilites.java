@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.nms;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -71,18 +72,10 @@ public final class NmsUtilites
             }
             player_sendPacket.invoke(player_connection.get(NmsUtilites.getHandle(p)), packet);
         }
-        catch (IllegalAccessException ex){
-            FluentPlugin.logError("Nms Exception");
-            ex.printStackTrace();
+        catch (Exception ex){
+            FluentLogger.error("Nms Exception", ex);
         }
-        catch (InvocationTargetException ex){
-            FluentPlugin.logError("Nms Exception");
-            ex.printStackTrace();
-        }
-        catch (NoSuchFieldException ex){
-            FluentPlugin.logError("Nms Exception");
-            ex.printStackTrace();
-        }
+
     }
     public static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
 
@@ -156,8 +149,7 @@ public final class NmsUtilites
     public static Object getHandle(Object Object) {
         try { return getMethod("getHandle", Object.getClass()).invoke(Object); }
         catch (Exception e) {
-            FluentPlugin.logError("Nms Exception");
-            e.printStackTrace();
+            FluentLogger.error("Nms Exception", e);
             return null;
         }
     }
@@ -170,8 +162,7 @@ public final class NmsUtilites
     public static Object invokeMethod(String MethodName, Object Parameter) {
         try { return getMethod(MethodName, Parameter.getClass()).invoke(Parameter); }
         catch (Exception e) {
-            FluentPlugin.logError("Nms Exception");
-            e.printStackTrace();
+            FluentLogger.error("Nms Exception", e);
             return null;
         }
     }
@@ -179,8 +170,7 @@ public final class NmsUtilites
     public static Object invokeMethodWithArgs(String MethodName, Object Object, Object... Parameters) {
         try { return getMethod(MethodName, Object.getClass()).invoke(Object, Parameters); }
         catch (Exception e) {
-            FluentPlugin.logError("Nms Exception");
-            e.printStackTrace();
+            FluentLogger.error("Nms Exception", e);
             return null;
         }
     }

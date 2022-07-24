@@ -1,6 +1,8 @@
 package jw.spigot_fluent_api.fluent_logger.implementation;
 
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import org.bukkit.ChatColor;
 
 import java.util.logging.Logger;
@@ -12,24 +14,47 @@ public class SimpleLogger {
         ERROR_BAR = new MessageBuilder().newLine().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).newLine().build();
     }
 
+   public enum LogType
+    {
+        SUCCESS,INFO,WARNING
+    }
+
+
     private Logger logger;
 
 
     public void warning(String message, String... params) {
-        log(message, params);
+        log(message, LogType.WARNING, params);
     }
 
     public void success(String message, String... params) {
-        log(message, params);
+        log(message, LogType.SUCCESS, params);
     }
 
     public void info(String message, String... params) {
-        log(message, params);
+        log(message, LogType.INFO, params);
     }
 
-    public void log(String message, String... params)
+    public void log(String message, LogType logType, String... params)
     {
         var msg = new MessageBuilder();
+
+        if(FluentPlugin.getPlugin() != null)
+        {
+            msg.inBrackets(FluentPlugin.getPlugin().getName()).space();
+        }
+        else
+        {
+            msg.inBrackets("plugin").space();
+        }
+
+        var format =switch (logType)
+        {
+            case INFO -> LogUtility.info();
+            case SUCCESS -> LogUtility.success();
+            case WARNING -> LogUtility.warning();
+        };
+        msg.text(format);
         if(params.length == 0)
         {
             msg.text(message).sendToConsole();

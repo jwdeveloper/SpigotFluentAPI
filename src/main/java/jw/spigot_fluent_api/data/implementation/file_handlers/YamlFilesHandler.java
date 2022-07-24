@@ -18,7 +18,6 @@ public class YamlFilesHandler implements FileHandler {
         {
             var data = YmlFileUtility.load(file.getClass().getSimpleName(), file);
             if (data == null) {
-                FluentPlugin.logSuccess("Siema siema");
                 YmlFileUtility.save(file.getClass().getSimpleName(), file);
                 return;
             }

@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_gui;
 
 import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -93,17 +94,20 @@ public class EventsListenerInventoryUI extends EventBase {
 
         Inventory inventory;
         ItemStack selectedItem;
+
         for (InventoryUI inventoryUI : inventoriesGui) {
+
             inventory = inventoryUI.getInventory();
             if (inventory == null || !inventoryUI.isOpen())
                 continue;
 
-            if (event.getInventory() == inventory)
-            {
+            if (event.getInventory() == inventory) {
+
                 event.setCancelled(true);
                 selectedItem = event.getCurrentItem();
                 if (selectedItem == null || selectedItem.getType() == Material.AIR)
                     return;
+
                 inventoryUI.doClick((Player) event.getWhoClicked(),
                         event.getRawSlot(),
                         selectedItem,
@@ -112,15 +116,14 @@ public class EventsListenerInventoryUI extends EventBase {
             }
         }
     }
+
     @EventHandler(priority = EventPriority.LOWEST)
-    private void onDrag(InventoryDragEvent event)
-    {
-        if(event.getInventorySlots().size() > 2)
+    private void onDrag(InventoryDragEvent event) {
+        if (event.getInventorySlots().size() > 2)
             return;
 
-        for(var slot: event.getInventorySlots())
-        {
-            if(slot == -999)
+        for (var slot : event.getInventorySlots()) {
+            if (slot == -999)
                 return;
         }
 
@@ -130,8 +133,7 @@ public class EventsListenerInventoryUI extends EventBase {
             if (inventory == null || !inventoryUI.isOpen())
                 continue;
 
-            if (event.getInventory() == inventory)
-            {
+            if (event.getInventory() == inventory) {
 
                 break;
             }

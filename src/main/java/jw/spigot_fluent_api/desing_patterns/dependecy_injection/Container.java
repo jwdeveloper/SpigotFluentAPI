@@ -82,7 +82,7 @@ public class Container {
         }
     }
 
-    public boolean register(Object _object) {
+    public boolean register(Object _object, LifeTime lifeTime) {
         if(_object == null)
         {
             FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, "default injection object can not be null"));
@@ -95,7 +95,7 @@ public class Container {
             return false;
         }
         try {
-            var injection = InjectedClassFactory.getFromClass(_class, LifeTime.SINGLETON);
+            var injection = InjectedClassFactory.getFromClass(_class, lifeTime);
             injection.instnace = _object;
             injections.put(_class, injection);
             return true;
@@ -103,6 +103,11 @@ public class Container {
             FluentLogger.error("Error while register class", e);
             return false;
         }
+    }
+
+    public boolean register(Object _object) {
+       return register(_object,LifeTime.SINGLETON);
+
     }
 
     public void register(HashMap<Class<?>, LifeTime> _classes) {

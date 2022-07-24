@@ -1,8 +1,10 @@
 package jw.spigot_fluent_api.fluent_gui.button;
 
+import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
 import jw.spigot_fluent_api.fluent_gui.enums.PermissionType;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.*;
@@ -162,7 +164,7 @@ public class ButtonUI {
         try {
             return (T) dataContext;
         } catch (Exception e) {
-            FluentPlugin.logError("Can not cast DataContext value " + dataContext.toString() + " in button " + title);
+            FluentLogger.error("Can not cast DataContext value " + dataContext.toString() + " in button " + title, e);
         }
         return null;
     }

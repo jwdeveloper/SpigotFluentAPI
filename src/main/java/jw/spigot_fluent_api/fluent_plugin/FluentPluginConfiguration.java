@@ -4,8 +4,11 @@ import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.*;
+import jw.spigot_fluent_api.fluent_plugin.updates.SimpleUpdateAction;
+import jw.spigot_fluent_api.fluent_plugin.updates.api.data.UpdateDto;
 import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     private PluginPipeline integrationTests;
     private PluginPipeline infoMessage;
     private PluginPipeline metrics;
+    private PluginPipeline updates;
     private final List<PluginPipeline> configurationActions;
     private final List<PluginPipeline> customActions;
     private DependecyInjectionContainerBuilder dependecyInjectionContainerBuilder;
@@ -60,6 +64,14 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     @Override
+    public PluginConfiguration useUpdates(Consumer<UpdateDto> consumer)
+    {
+        updates = new SimpleUpdateAction(consumer);
+        return this;
+    }
+
+
+    @Override
     public PluginConfiguration useMetrics(Supplier<Integer> metricsId)
     {
         metrics = new MetricsAction(metricsId);
@@ -88,8 +100,9 @@ public class FluentPluginConfiguration implements PluginConfiguration {
                 .nextStep()
                 .onConsoleExecute(consoleCommandEvent ->
                 {
+                    FluentLogger.info("Plugins disabled");
                     Bukkit.getPluginManager().disablePlugins();
-                    FluentPlugin.logInfo("Plugins disabled");
+
                 })
                 .nextStep()
                 .buildAndRegister();
@@ -103,6 +116,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
 
     public List<PluginPipeline> getConfigurationActions() {
         addIfNotNull(new DependecyInjectionAction(dependecyInjectionContainerBuilder));
+        addIfNotNull(updates);
         addIfNotNull(dataContext);
         addIfNotNull(new MediatorAction());
         addIfNotNull(new MapperAction());

@@ -14,6 +14,7 @@ public class MessageBuilder
 {
 
     private final StringBuilder stringBuilder;
+    private ChatColor lastColor;
 
     public MessageBuilder() {
         stringBuilder = new StringBuilder();

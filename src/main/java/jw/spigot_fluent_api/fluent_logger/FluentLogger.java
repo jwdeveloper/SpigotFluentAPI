@@ -46,7 +46,7 @@ public class FluentLogger
 
     public static void log(String message, String... params)
     {
-        instance.simpleLogger.log(message,params);
+        instance.simpleLogger.log(message, SimpleLogger.LogType.INFO,params);
     }
 
 }

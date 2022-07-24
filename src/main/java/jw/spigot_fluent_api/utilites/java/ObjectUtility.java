@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.java;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Material;
 
@@ -23,7 +24,7 @@ public class ObjectUtility {
             try {
                 return Enum.valueOf(c, string.trim().toUpperCase());
             } catch (IllegalArgumentException ex) {
-                FluentPlugin.logError("Unable parse enum " + c + " from " + string);
+                FluentLogger.error("Unable parse enum " + c + " from " + string, ex);
             }
         }
         return null;
@@ -58,7 +59,7 @@ public class ObjectUtility {
                 file.setAccessible(true);
                 file.set(desination, file.get(obj));
             } catch (Exception ignored) {
-                FluentPlugin.logError("Unable copy object" + obj + " to " + desination);
+                FluentLogger.error("Unable copy object" + obj + " to " + desination, ignored);
                 return false;
             }
         }
@@ -80,7 +81,7 @@ public class ObjectUtility {
             field.setAccessible(true);
             field.set(obj, value);
         } catch (Exception e) {
-            FluentPlugin.logError("Unable to set value");
+            FluentLogger.error("Unable to set value", e);
         }
     }
 
@@ -93,7 +94,7 @@ public class ObjectUtility {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            FluentPlugin.logError("Unable to get value");
+            FluentLogger.error("Unable to get value", e);
         }
         return result;
     }
