@@ -17,7 +17,10 @@ public class YmlConfigurationImpl implements YmlConfiguration
             var value = content.getValue();
             configuration.set(content.getFullPath(),value);
         }
-        configuration.options().header(model.getDescription());
+        if(model.getDescription().length() != 0)
+        {
+            configuration.options().header(model.getDescription());
+        }
         return configuration;
     }
 
