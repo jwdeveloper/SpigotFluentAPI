@@ -2,6 +2,7 @@ package jw.spigot_fluent_api.data.implementation.file_handlers;
 
 import jw.spigot_fluent_api.data.interfaces.FileHandler;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.config.config_sections.FluentConfigSection;
 import jw.spigot_fluent_api.utilites.java.ObjectUtility;
 import jw.spigot_fluent_api.utilites.files.yml.YmlFileUtility;
 
@@ -11,11 +12,14 @@ import java.util.List;
 public class YamlFilesHandler implements FileHandler {
 
     private final List<Object> files = new ArrayList<>();
-    private boolean notSave = true;
     @Override
     public void load() {
         for (var file: files)
         {
+            if(file instanceof FluentConfigSection)
+            {
+                continue;
+            }
             var data = YmlFileUtility.load(file.getClass().getSimpleName(), file);
             if (data == null) {
                 YmlFileUtility.save(file.getClass().getSimpleName(), file);
@@ -28,13 +32,12 @@ public class YamlFilesHandler implements FileHandler {
     @Override
     public void save() {
 
-        if(notSave)
-        {
-            return;
-        }
-
         for (var file: files)
         {
+            if(file instanceof FluentConfigSection)
+            {
+                continue;
+            }
             YmlFileUtility.save(file.getClass().getSimpleName(), file);
         }
     }

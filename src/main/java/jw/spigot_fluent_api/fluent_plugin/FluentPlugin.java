@@ -1,17 +1,16 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
 import com.google.common.collect.ImmutableList;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_message.FluentMessage;
+import jw.spigot_fluent_api.fluent_plugin.config.PluginConfigFactory;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.CommandOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
-import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
-import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFileImpl;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
 import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
-import jw.spigot_fluent_api.utilites.messages.LogUtility;
-import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
-import org.bukkit.ChatColor;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +24,6 @@ public abstract class FluentPlugin extends JavaPlugin {
 
     private TypeManager typeManager;
     private FluentPluginConfiguration configuration;
-    private static FluentPlugin instance;
     private static JavaPlugin plugin;
     private static boolean isInitialized;
     private List<PluginPipeline> pluginPipeline;
@@ -46,7 +44,6 @@ public abstract class FluentPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        instance = this;
         plugin = this;
         typeManager = new TypeManager(ClassTypeUtility.findClassesInPlugin(this));
         configuration = new FluentPluginConfiguration();
@@ -55,18 +52,31 @@ public abstract class FluentPlugin extends JavaPlugin {
     @Override
     public final void onEnable() {
         try {
-            OnConfiguration(configuration, new ConfigFileImpl(getConfig()));
+            var config =  new PluginConfigFactory().create(this);
+            OnConfiguration(configuration, config);
             pluginPipeline = configuration.getConfigurationActions();
+
+            var defaultCommandDto = configuration.getDefaultCommand();
+            var defaultPermissonDto = configuration.getDefaultPermissionsDto();
+            var cmd = FluentCommand.create(defaultCommandDto.getName());
+
+            var options = new PipelineOptions(this,
+                    new CommandOptions(defaultCommandDto.getName(),cmd),
+                    defaultPermissonDto,
+                    config);
             for (var action : pluginPipeline) {
                 try {
-                    action.pluginEnable(this);
+                    action.pluginEnable(options);
                 } catch (Exception e) {
                     isInitialized = false;
                     FluentLogger.error("Plugin can not be loaded since ", e);
                     return;
                 }
             }
+            defaultCommandDto.getConsumer().accept(cmd);
+            cmd.build();
             OnFluentPluginEnable();
+
             isInitialized = true;
         } catch (Exception e) {
             FluentLogger.error("Error while loading FluentPlugin ", e);
@@ -147,7 +157,18 @@ public abstract class FluentPlugin extends JavaPlugin {
         return typeManager;
     }
 
+    public ClassLoader getPluginClassLoader()
+    {
+        return getClassLoader();
+    }
+
     public static String getPath() {
+
+        if(FluentPlugin.getPlugin()== null)
+        {
+            return "D:\\tmp";
+        }
+
         return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
     }
 }

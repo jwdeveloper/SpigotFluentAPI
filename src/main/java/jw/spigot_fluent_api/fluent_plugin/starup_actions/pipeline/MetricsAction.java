@@ -1,12 +1,12 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
+package jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline;
 
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 import jw.spigot_fluent_api.utilites.metricts.MetricsLite;
 
 import java.util.function.Supplier;
 
-public class MetricsAction extends InfoMessageAction {
+public class MetricsAction implements PluginPipeline {
 
     private Supplier<Integer> supplier;
     private int metricsKey =-1;
@@ -21,13 +21,13 @@ public class MetricsAction extends InfoMessageAction {
     }
 
     @Override
-    public void pluginEnable(FluentPlugin fluentPlugin)
+    public void pluginEnable(PipelineOptions options)
     {
         if(supplier != null)
         {
             metricsKey = supplier.get();
         }
-        new MetricsLite(fluentPlugin,metricsKey);
+        new MetricsLite(options.getPlugin(),metricsKey);
     }
 
     @Override

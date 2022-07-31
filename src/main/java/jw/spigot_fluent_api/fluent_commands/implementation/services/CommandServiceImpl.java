@@ -9,6 +9,7 @@ import jw.spigot_fluent_api.fluent_commands.api.models.ValidationResult;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -99,7 +100,7 @@ public class CommandServiceImpl implements CommandService {
         }
         FluentMessage.message()
                 .color(ChatColor.DARK_RED)
-                .text("You need to have one of those permissions").send(commandSender);
+                .text(Lang.get("permissions.one-required")).send(commandSender);
 
         for (var permission : permissions) {
             FluentMessage.message()
@@ -141,7 +142,7 @@ public class CommandServiceImpl implements CommandService {
         }
 
         if (args.length != commandArguments.size()) {
-            return new ValidationResult(false, "Incorrect number of arguments, should be " + commandArguments.size());
+            return new ValidationResult(false, Lang.get("permissions.incorrect-number-of-arguments") + commandArguments.size());
         }
 
         for (int i = 0; i < args.length; i++) {

@@ -2,13 +2,24 @@ package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIFactory;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.EnumSelectorObserver;
+import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.TextListSelectorObserver;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
 import jw.spigot_fluent_api.desing_patterns.observer.Observer;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+
+import java.util.List;
 
 public class ButtonObserverUIFactory extends ButtonUIFactory {
+
+
+    public <T extends Enum<T>> ButtonObserverUIBuilder textListSelectorObserver(Observer<Integer> indexObserver, List<String> values) {
+        return ButtonObserverUI.builder()
+                .addObserver(indexObserver, new TextListSelectorObserver(values));
+    }
 
 
     public <T extends Enum<T>> ButtonObserverUIBuilder enumSelectorObserver(Observer<T> observable) {
@@ -32,10 +43,12 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         {
                             if (event.getValue()) {
                                 event.getButton().setHighlighted(true);
-                                event.getButton().setDescription(new MessageBuilder().field("State", "Enable"));
+                                event.getButton().setMaterial(Material.LIME_CONCRETE);
+                                event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.state"), Lang.get("gui.base.active")));
                             } else {
                                 event.getButton().setHighlighted(false);
-                                event.getButton().setDescription(new MessageBuilder().field("State", "Disable"));
+                                event.getButton().setMaterial(Material.RED_CONCRETE);
+                                event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.state"), Lang.get("gui.base.inactive")));
                             }
                         })
                 );
@@ -61,7 +74,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.value"), event.getValue()));
                         })
                 );
     }
@@ -88,10 +101,12 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.value"), event.getValue()));
                         })
                 );
     }
+
+
 
     public ButtonObserverUIBuilder intSelectObserver(Observer<Integer> observable, int min, int max, int yield) {
         return ButtonObserverUI.builder()
@@ -108,19 +123,19 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.value"), event.getValue()));
                         })
                 );
     }
 
-    public ButtonObserverUIBuilder objectObserver(Observer<Integer> observable, ChestUI chestUI) {
+    public <T> ButtonObserverUIBuilder defaultObserver(Observer<T> observable) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
-                .addObserver(new ButtonObserverBuilder<Integer>()
+                .addObserver(new ButtonObserverBuilder<T>()
                         .withObserver(observable)
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field("Value", event.getValue()));
+                           event.getButton().setDescription(new MessageBuilder().field(Lang.get("gui.base.value"), event.getValue()));
                         })
                 );
     }

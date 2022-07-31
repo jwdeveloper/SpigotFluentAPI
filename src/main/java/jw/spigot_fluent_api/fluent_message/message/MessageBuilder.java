@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_message.message;
 
+import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 public class MessageBuilder
 {
@@ -202,6 +204,16 @@ public class MessageBuilder
         }
         Bukkit.getConsoleSender().sendMessage(toString());
     }
+
+    public void sendLog() {
+        if(Bukkit.getServer()==null)
+        {
+            System.out.println(stringBuilder.toString());
+            return;
+        }
+        FluentPlugin.getPlugin().getLogger().log(Level.INFO,stringBuilder.toString());
+    }
+
 
     public void sendToAllPlayer()
     {

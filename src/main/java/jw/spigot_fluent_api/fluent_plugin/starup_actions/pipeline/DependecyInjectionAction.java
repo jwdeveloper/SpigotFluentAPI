@@ -1,9 +1,10 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
+package jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline;
 
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.annotations.Injection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 
 import java.util.ArrayList;
 
@@ -16,13 +17,13 @@ public class DependecyInjectionAction implements PluginPipeline {
     }
 
     @Override
-    public void pluginEnable(FluentPlugin fluentPlugin) throws Exception
+    public void pluginEnable(PipelineOptions options) throws Exception
     {
         FluentInjection.setInjectionContainer(builder.build());
         if(!builder.isAutoRegistration())
             return;
 
-       var _classes = fluentPlugin.getTypeManager().getByAnnotation(Injection.class);
+       var _classes = options.getPlugin().getTypeManager().getByAnnotation(Injection.class);
        var registeredClasses = builder.getRegistered();
        var toInitializeClasses = new ArrayList<Class<?>>();
        for(var _class : _classes)

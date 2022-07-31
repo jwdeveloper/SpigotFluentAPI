@@ -127,6 +127,11 @@ public class ButtonUI {
         setDisplayedName(title);
     }
 
+    public void setTitlePrimary(String title, String description)
+    {
+        setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).space().text(description).build());
+    }
+
     public void setTitlePrimary(String title)
     {
       setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).build());

@@ -1,9 +1,9 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration;
+package jw.spigot_fluent_api.fluent_plugin.starup_actions;
 
-import jw.spigot_fluent_api.data.interfaces.FileHandler;
 import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_commands.api.builder.CommandBuilder;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
 import jw.spigot_fluent_api.fluent_plugin.updates.api.data.UpdateDto;
 
 import java.util.function.Consumer;
@@ -16,8 +16,6 @@ public interface PluginConfiguration {
     PluginConfiguration useFilesHandler(Consumer<FluentDataContext> configuration);
 
     PluginConfiguration useFilesHandler();
-
-    PluginConfiguration useInfoMessage();
 
     PluginConfiguration useCustomAction(PluginPipeline pipeline);
 
@@ -32,4 +30,8 @@ public interface PluginConfiguration {
     PluginConfiguration configureLogs();
 
     PluginConfiguration useUpdates(Consumer<UpdateDto> dto);
+
+    PluginConfiguration useDefaultCommand(String name, Consumer<CommandBuilder> consumer);
+
+    PluginConfiguration userDefaultPermission(String name);
 }

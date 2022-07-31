@@ -4,9 +4,14 @@ import jw.spigot_fluent_api.data.interfaces.FluentDataContext;
 import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.ContainerBuilder;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.builder.DependecyInjectionContainerBuilder;
+import jw.spigot_fluent_api.fluent_commands.api.builder.CommandBuilder;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.*;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.*;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.DefaultCommandDto;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.DefaultPermissionsDto;
+import jw.spigot_fluent_api.fluent_plugin.languages.SimpleLangAction;
+import jw.spigot_fluent_api.fluent_plugin.languages.api.models.LangOptions;
 import jw.spigot_fluent_api.fluent_plugin.updates.SimpleUpdateAction;
 import jw.spigot_fluent_api.fluent_plugin.updates.api.data.UpdateDto;
 import org.bukkit.Bukkit;
@@ -24,6 +29,9 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     private final List<PluginPipeline> configurationActions;
     private final List<PluginPipeline> customActions;
     private DependecyInjectionContainerBuilder dependecyInjectionContainerBuilder;
+    private Consumer<LangOptions> langOptionsConsumer;
+    private DefaultCommandDto defaultCommandDto;
+    private DefaultPermissionsDto defaultPermissionsDto;
 
     public FluentPluginConfiguration() {
         this.configurationActions = new ArrayList<>();
@@ -51,11 +59,6 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         return this;
     }
 
-    @Override
-    public PluginConfiguration useInfoMessage() {
-        infoMessage = new InfoMessageAction();
-        return this;
-    }
 
     @Override
     public PluginConfiguration useCustomAction(PluginPipeline pipeline) {
@@ -70,6 +73,24 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         return this;
     }
 
+
+    public PluginConfiguration useDefaultCommand(String name, Consumer<CommandBuilder> consumer)
+    {
+        defaultCommandDto = new DefaultCommandDto(name,consumer);
+        return this;
+    }
+
+    @Override
+    public PluginConfiguration userDefaultPermission(String name) {
+        defaultPermissionsDto = new DefaultPermissionsDto(name);
+        return this;
+    }
+
+    public PluginConfiguration configureLanguages(Consumer<LangOptions> langConfig)
+    {
+        langOptionsConsumer =langConfig;
+        return this;
+    }
 
     @Override
     public PluginConfiguration useMetrics(Supplier<Integer> metricsId)
@@ -109,13 +130,25 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         return this;
     }
 
+    public DefaultCommandDto getDefaultCommand()
+    {
+        return defaultCommandDto;
+    }
+
+    public DefaultPermissionsDto getDefaultPermissionsDto()
+    {
+        return defaultPermissionsDto;
+    }
+
     @Override
     public PluginConfiguration configureLogs() {
         return null;
     }
 
     public List<PluginPipeline> getConfigurationActions() {
+
         addIfNotNull(new DependecyInjectionAction(dependecyInjectionContainerBuilder));
+        addIfNotNull(new SimpleLangAction(langOptionsConsumer));
         addIfNotNull(updates);
         addIfNotNull(dataContext);
         addIfNotNull(new MediatorAction());
@@ -127,6 +160,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
         addIfNotNull(infoMessage);
         return configurationActions;
     }
+
 
 
     private void addIfNotNull(PluginPipeline action) {

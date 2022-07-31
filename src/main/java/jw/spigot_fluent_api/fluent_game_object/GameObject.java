@@ -2,7 +2,7 @@ package jw.spigot_fluent_api.fluent_game_object;
 
 import java.util.*;
 
-public class GameObject implements GameComponent {
+public abstract class GameObject implements GameComponent {
 
     private GameComponent parent;
     private HashMap<Class<?>, Set<GameObject>> childs;
@@ -20,6 +20,8 @@ public class GameObject implements GameComponent {
     public final void setParent(GameComponent parent) {
         this.parent = parent;
     }
+
+    public abstract void destroy();
 
 
     @Override

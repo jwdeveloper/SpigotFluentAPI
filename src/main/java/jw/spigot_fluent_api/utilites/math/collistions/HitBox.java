@@ -36,13 +36,13 @@ public class HitBox {
         this.origin = location;
     }
 
-    public void showHitBox() {
+    public void show() {
         if(display == null)
             display = getHitboxDisplay();
         display.start();
     }
 
-    public void hideHitbox() {
+    public void hide() {
 
         if(display == null)
            return;

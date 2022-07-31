@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.files.yml.implementation;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.files.yml.api.ModelFactory;
@@ -30,7 +31,7 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
             content.setObject(object);
             if(!globalPath.isEmpty())
             {
-                content.setPath(globalPath + "." + content.getPath());
+                content.setPath(globalPath  + content.getPath());
             }
             else
             {
@@ -39,7 +40,6 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
             result.addContent(content);
         }
         result.setDescription(generateDescription(result.getContents()));
-        System.out.println(result.getDescription());
         return result;
     }
 
@@ -49,16 +49,17 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
             return JavaUtils.EMPTY_STRING;
 
         var description = FluentMessage.message();
-        description.bar("*", 40).newLine();
+        var maxDesc = Integer.MIN_VALUE;
         for (int i = 0; i < content.size(); i++) {
+            var desc  = content.get(i).getDescription();
             description.text(content.get(i).getFullPath()).newLine()
-                    .text("-> ").text(content.get(i).getDescription()).newLine();
-            if (i < content.size() - 1) {
-                description.bar("*", 40).newLine();
+                    .text("-> ").text(desc).newLine().newLine();
+            if(desc.length() > maxDesc)
+            {
+                maxDesc = desc.length();
             }
-
         }
-        description.bar("*", 40).newLine();
+       // var bar = FluentMessage.message().bar("#",maxDesc).newLine();
         return description.toString();
     }
 
@@ -88,6 +89,10 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
         var result = new YmlContent();
         result.setField(field);
         result.setName(field.getName());
+
+
+
+
 
         var annotation = field.getAnnotation(YmlProperty.class);
         if (annotation == null) {

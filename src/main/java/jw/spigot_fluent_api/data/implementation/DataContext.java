@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.data.implementation;
 
+import jw.spigot_fluent_api.data.implementation.file_handlers.ConfigFileHandler;
 import jw.spigot_fluent_api.data.implementation.file_handlers.CustomFilesHandler;
 import jw.spigot_fluent_api.data.implementation.file_handlers.JsonFilesHandler;
 import jw.spigot_fluent_api.data.implementation.file_handlers.YamlFilesHandler;
@@ -9,7 +10,9 @@ import jw.spigot_fluent_api.data.interfaces.CustomFile;
 import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -43,8 +46,8 @@ public class DataContext implements FluentDataContext {
 
     @Override
     public void addJsonObject(Object object) {
-       final var handler = fileHandlers.get(JsonFilesHandler.class);
-       handler.addObject(object);
+        final var handler = fileHandlers.get(JsonFilesHandler.class);
+        handler.addObject(object);
     }
 
     @Override
@@ -55,6 +58,9 @@ public class DataContext implements FluentDataContext {
         var handler = fileHandlers.get(handlerType);
         handler.addObject(object);
     }
+
+
+
 
     @Override
     public void registerFileHandler(FileHandler fileHandler) {
@@ -67,7 +73,7 @@ public class DataContext implements FluentDataContext {
         fileHandlers.put(fileHandler.getClass(), fileHandler);
     }
 
-    public void load() {
+    public void load() throws IllegalAccessException, InstantiationException, IOException {
         for (var filesHandler : fileHandlers.values()) {
             filesHandler.load();
         }

@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -209,7 +210,7 @@ public abstract class InventoryUI {
             case CHEST:
                 return Bukkit.createInventory(player, slots, title);
             default:
-                new Exception("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
+                FluentLogger.warning("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
         }
         return Bukkit.createInventory(player, inventoryType, title);
     }
@@ -245,7 +246,7 @@ public abstract class InventoryUI {
             if (!player.hasPermission(permission)) {
                 FluentMessage.message()
                         .color(ChatColor.DARK_RED)
-                        .text("You need to have permissions ")
+                        .text(Lang.get("permissions.all-required"))
                         .color(ChatColor.GRAY)
                         .text(Emoticons.arrowRight)
                         .space()
@@ -267,7 +268,7 @@ public abstract class InventoryUI {
 
         FluentMessage.message()
                 .color(ChatColor.DARK_RED)
-                .text("You need to have one of those permissions").send(player);
+                .text(Lang.get("permissions.one-required")).send(player);
 
         for (var permission : permissions) {
             FluentMessage.message()

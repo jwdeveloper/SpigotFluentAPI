@@ -1,15 +1,14 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.pipeline;
-
+package jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline;
 import jw.spigot_fluent_api.fluent_mapper.FluentMapper;
 import jw.spigot_fluent_api.fluent_mapper.api.MapperProfile;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_validator.api.ValidatorProfile;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 
-public class ValidatorAction  implements PluginPipeline{
+public class MapperAction implements PluginPipeline{
     @Override
-    public void pluginEnable(FluentPlugin fluentPlugin) throws Exception {
+    public void pluginEnable(PipelineOptions options) throws Exception {
 
-        var mappingProfiles = fluentPlugin.getTypeManager().getByInterface(ValidatorProfile.class);
+        var mappingProfiles = options.getPlugin().getTypeManager().getByInterface(MapperProfile.class);
         for(var profile: mappingProfiles)
         {
             FluentMapper.registerMappingProfile((Class<MapperProfile>)profile);

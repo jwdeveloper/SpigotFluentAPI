@@ -1,4 +1,6 @@
-package jw.spigot_fluent_api.fluent_plugin.configuration.config;
+package jw.spigot_fluent_api.fluent_plugin.config;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 public interface ConfigFile
 {
@@ -7,4 +9,8 @@ public interface ConfigFile
     public <T> T get(String name);
 
     public <T> T toObject(Class<T> clazz);
+
+    public void save();
+
+    public FileConfiguration config();
 }

@@ -1,0 +1,27 @@
+gui:
+  base:
+    insert:
+      title: Insert
+    delete:
+      title: Delete
+    edit:
+      title: Edit
+    search:
+      title: Search
+    page-up:
+      title: Page up
+    page-down:
+      title: Page down
+    exit:
+      title: Exit
+    back:
+      title: Go back
+    value: value
+    active: active
+    inactive: inactive
+    state: state
+
+permissions:
+      one-required: You need to have one of those permissions
+      all-required: You need to have permissions
+      incorrect-number-of-arguments: Incorrect number of arguments, should be

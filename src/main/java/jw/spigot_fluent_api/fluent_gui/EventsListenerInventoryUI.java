@@ -1,8 +1,10 @@
 package jw.spigot_fluent_api.fluent_gui;
 
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_events.EventBase;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,6 +35,28 @@ public class EventsListenerInventoryUI extends EventBase {
         }
         return instance;
     }
+
+    public static <T extends InventoryUI> void refreshAll(Class<T> _class, InventoryUI ignore)
+    {
+        for (var inventory : getInstance().inventoriesGui) {
+            if (!inventory.getClass().isAssignableFrom(_class))
+                continue;
+            if(inventory.equals(ignore))
+                continue;
+            inventory.refresh();
+        }
+    }
+
+    public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class) {
+        refreshAllAsync(_class);
+    }
+    public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class, InventoryUI ignore) {
+        FluentTasks.task(unused ->
+        {
+            refreshAll(_class,ignore);
+        });
+    }
+
 
     public static void registerTextInput(Player player, Consumer<String> event) {
         var instance = getInstance();

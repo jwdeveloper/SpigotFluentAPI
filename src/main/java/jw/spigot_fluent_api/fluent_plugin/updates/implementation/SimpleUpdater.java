@@ -6,6 +6,7 @@ import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_plugin.updates.api.data.UpdateDto;
 import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
+import jw.spigot_fluent_api.utilites.messages.LogUtility;
 import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -31,8 +32,7 @@ public class SimpleUpdater {
     }
 
 
-    public void checkUpdate(Consumer<Boolean> consumer)
-    {
+    public void checkUpdate(Consumer<Boolean> consumer) {
         var currentVersion = plugin.getDescription().getVersion();
         var releaseUrl = github + "/releases/latest";
         FluentTasks.taskAsync(unused ->
@@ -52,27 +52,24 @@ public class SimpleUpdater {
         });
     }
 
-    public void checkUpdate(ConsoleCommandSender commandSender)
-    {
+    public void checkUpdate(ConsoleCommandSender commandSender) {
         sender = commandSender;
         checkUpdate(aBoolean ->
         {
-            if(aBoolean == true)
-            {
-                message().text( "New version available, use "+ ChatColor.AQUA+"/"+command+ChatColor.RESET+ " to download").send(sender);
-                message().text( "Check out changes ").text(github + "/releases/latest",ChatColor.AQUA).send(sender);
+            if (aBoolean == true) {
+                message().text("New version available, use " + ChatColor.AQUA + "/" + command + " update"+ ChatColor.RESET + " to download").send(sender);
+                message().text("Check out changes ").text(github + "/releases/latest", ChatColor.AQUA).send(sender);
             }
         });
     }
 
     public void downloadUpdate(CommandSender commandSender) {
 
-        this.sender  = commandSender;
+        this.sender = commandSender;
         message().text("Checking version...").send(sender);
         checkUpdate(aBoolean ->
         {
-            if(aBoolean == false)
-            {
+            if (aBoolean == false) {
                 message().text("Latest version is already downloaded").send(sender);
                 return;
             }
@@ -82,9 +79,9 @@ public class SimpleUpdater {
 
     }
 
-    private MessageBuilder message()
-    {
-       return FluentMessage.message().color(ChatColor.AQUA).inBrackets("Update info").color(ChatColor.GRAY).space();
+    private MessageBuilder message() {
+        var msg = FluentMessage.message().inBrackets(FluentPlugin.getPlugin().getName());
+        return msg.space().color(ChatColor.AQUA).inBrackets("Update info").color(ChatColor.GRAY).space();
     }
 
     private String getUpdatesFolder() {
@@ -94,8 +91,8 @@ public class SimpleUpdater {
     private String getLatestVersion(String html) {
 
         var comIndex = github.indexOf("com");
-        var repoName = github.substring(comIndex+3);
-        var startIndex = html.indexOf("ref_page:"+repoName);
+        var repoName = github.substring(comIndex + 3);
+        var startIndex = html.indexOf("ref_page:" + repoName);
         var endIndex = html.indexOf(";", startIndex);
 
         var all = html.substring(startIndex, endIndex);
@@ -137,7 +134,7 @@ public class SimpleUpdater {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
             message().text("New version downloaded! use ")
-                    .text("/reload",ChatColor.AQUA).color(ChatColor.GRAY)
+                    .text("/reload", ChatColor.AQUA).color(ChatColor.GRAY)
                     .text(" to apply changes")
                     .send(sender);
         } catch (Exception e) {

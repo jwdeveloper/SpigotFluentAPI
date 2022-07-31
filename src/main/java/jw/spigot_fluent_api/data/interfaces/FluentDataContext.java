@@ -11,4 +11,6 @@ public interface FluentDataContext
     void addObject(Class<? extends FileHandler> handlerType, Object object);
 
     void registerFileHandler(FileHandler fileHandler);
+
+    void save();
 }

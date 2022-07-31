@@ -4,6 +4,7 @@ import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +33,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonDelete = ButtonObserverUI
                 .builder()
                 .setLocation(0, 7)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets("Delete"))
+                .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets(Lang.get("gui.base.delete.title")))
                 .setMaterial(Material.BARRIER)
                 .addObserver(listViewModel.deleteObserver())
                 .buildAndAdd(this);
@@ -40,7 +41,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonEdit = ButtonObserverUI
                 .builder()
                 .setLocation(0, 6)
-                .setTitle(new MessageBuilder().color(ChatColor.YELLOW).inBrackets("Edit"))
+                .setTitle(new MessageBuilder().color(ChatColor.YELLOW).inBrackets(Lang.get("gui.base.edit.title")))
                 .setMaterial(Material.WRITABLE_BOOK)
                 .addObserver(listViewModel.editObserver())
                 .buildAndAdd(this);
@@ -48,7 +49,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonInsert = ButtonObserverUI
                 .builder()
                 .setLocation(0, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_GREEN).inBrackets("Insert"))
+                .setTitle(new MessageBuilder().color(ChatColor.DARK_GREEN).inBrackets(Lang.get("gui.base.insert.title")))
                 .setMaterial(Material.CRAFTING_TABLE)
                 .addObserver(listViewModel.insertObserver())
                 .buildAndAdd(this);

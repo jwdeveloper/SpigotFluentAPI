@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 
@@ -54,10 +55,14 @@ public class ObjectUtility {
     }
 
     public static boolean copyToObject(Object obj, Object desination, Class type) {
-        for (var file : type.getDeclaredFields()) {
+        for (var field : type.getDeclaredFields()) {
             try {
-                file.setAccessible(true);
-                file.set(desination, file.get(obj));
+                if(Modifier.isStatic(field.getModifiers()))
+                {
+                    continue;
+                }
+                field.setAccessible(true);
+                field.set(desination, field.get(obj));
             } catch (Exception ignored) {
                 FluentLogger.error("Unable copy object" + obj + " to " + desination, ignored);
                 return false;

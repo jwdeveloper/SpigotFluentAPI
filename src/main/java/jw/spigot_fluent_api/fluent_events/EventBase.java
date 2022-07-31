@@ -14,6 +14,13 @@ public abstract class EventBase implements Listener
         Bukkit.getPluginManager().registerEvents(this, FluentPlugin.getPlugin());
     }
 
+    private boolean pluginDisabled = false;
+
+    public boolean isPluginDisabled()
+    {
+        return pluginDisabled;
+    }
+
     public void onPluginStart(PluginEnableEvent event)
     {
 
@@ -33,6 +40,7 @@ public abstract class EventBase implements Listener
     @EventHandler
     public final void onPluginStopEvent(PluginDisableEvent pluginDisableEvent)
     {
+        pluginDisabled = true;
         if(pluginDisableEvent.getPlugin() == FluentPlugin.getPlugin())
         {
             onPluginStop(pluginDisableEvent);

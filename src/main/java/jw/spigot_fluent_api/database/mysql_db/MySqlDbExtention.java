@@ -6,7 +6,8 @@ import jw.spigot_fluent_api.database.mysql_db.models.SqlConnection;
 import jw.spigot_fluent_api.database.mysql_db.models.SqlDbContext;
 import jw.spigot_fluent_api.database.mysql_db.models.SqlTable;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 
 import java.sql.Connection;
 
@@ -23,7 +24,7 @@ public class MySqlDbExtention<T> implements PluginPipeline {
     }
 
     @Override
-    public void pluginEnable(FluentPlugin fluentPlugin) throws Exception {
+    public void pluginEnable(PipelineOptions options) throws Exception {
         var conn = new SqlConnectionFactory().getConnection(connectionDto);
         if (conn.isEmpty()) {
             throw new Exception("Can not establish connection");

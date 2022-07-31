@@ -8,14 +8,12 @@ import org.bukkit.ChatColor;
 
 public class EnumSelectorObserver <T extends Enum<T>> implements ButtonNotifier<T>
 {
-    private final Class<T> _enumClass;
     private int currentIndex = Integer.MIN_VALUE;
     private T[] values;
     private String[] catchDescription;
 
     public EnumSelectorObserver(Class<T> _enumClass)
     {
-        this._enumClass = _enumClass;
         values = _enumClass.getEnumConstants();
         catchDescription = new String[values.length];
         for(var i =0;i<values.length;i++)
@@ -35,12 +33,7 @@ public class EnumSelectorObserver <T extends Enum<T>> implements ButtonNotifier<
     @Override
     public void onValueChanged(ButtonObserverEvent<T> event)
     {
-
-        if(currentIndex == Integer.MIN_VALUE)
-        {
-            currentIndex = findIndex(event.getValue());
-        }
-
+         currentIndex = findIndex(event.getValue());
          final var button = event.getButton();
          final var descrition = new String[values.length];
          for (var i=0;i<values.length;i++)

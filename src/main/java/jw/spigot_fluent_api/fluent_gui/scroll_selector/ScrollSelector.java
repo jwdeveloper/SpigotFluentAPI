@@ -9,38 +9,42 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
-@Getter
-@Setter
+
 @Builder
 @AllArgsConstructor
 public class ScrollSelector
 {
     public static int startScrollIndex = 36;
     public static int endScrollIndex = 44;
-
+    @Getter
     private boolean isOpen;
+    @Getter
     private Player player;
     private final ItemStack[] playerRealInventory;
 
     private final ButtonUI[] playerFakeInventory;
+    @Setter
     private Consumer<Player> onOpen;
+    @Setter
     private Consumer<Player> onClose;
+    @Setter
     private Consumer<ScrollSelectorEvent> onScroll;
+    @Setter
     private Consumer<ButtonUI> onClickItem;
     private String onOpenMessage = "press Q to exit";
 
     public ScrollSelector()
     {
-        playerRealInventory = new ItemStack[8];
-        playerFakeInventory = new ButtonUI[8];
+        playerRealInventory = new ItemStack[7];
+        playerFakeInventory = new ButtonUI[7];
     }
-    public final void onSlotIndexChanged(ScrollSelectorEvent event) {
+     final void onSlotIndexChanged(ScrollSelectorEvent event) {
         if (onScroll == null)
             return;
         onScroll.accept(event);
     }
 
-    public final void onClick(ScrollSelectorEvent event)
+     final void onClick(ScrollSelectorEvent event)
     {
         var button = playerFakeInventory[event.getCurrentIndex()];
         if(onClickItem != null)
@@ -59,8 +63,8 @@ public class ScrollSelector
         manager.register(this);
 
         this.player = player;
-        getPlayerRealInventory(player);
-        setPlayerFakeInventory(player,playerFakeInventory);
+      //  getPlayerRealInventory(player);
+      //  setPlayerFakeInventory(player,playerFakeInventory);
         this.isOpen = true;
         if (onOpen == null)
             return;
@@ -73,7 +77,7 @@ public class ScrollSelector
         manager.unregister(this);
 
         this.isOpen = false;
-        setPlayerInventory(player,playerRealInventory);
+      //  setPlayerInventory(player,playerRealInventory);
         if (onClose == null || player == null)
             return;
 

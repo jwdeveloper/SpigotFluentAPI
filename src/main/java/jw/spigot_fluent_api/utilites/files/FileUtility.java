@@ -5,11 +5,12 @@ import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public interface FileUtility {
@@ -99,7 +100,19 @@ public interface FileUtility {
         return filesName;
     }
 
-    public static void ensureDirectory(String path) {
-        new File(path).mkdirs();
+
+    static boolean pathExists(String path)
+    {
+        var directory = new File(path);
+       return directory.exists();
+    }
+
+     static File ensurePath(String path) {
+        var directory = new File(path);
+        if (directory.exists()) {
+            return directory;
+        }
+        directory.mkdir();
+        return directory;
     }
 }

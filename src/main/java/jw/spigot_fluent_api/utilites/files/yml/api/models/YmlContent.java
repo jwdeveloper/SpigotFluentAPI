@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.utilites.files.yml.api.models;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.java.JavaUtils;
 import lombok.Data;
 import org.bukkit.ChatColor;
@@ -8,6 +9,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class YmlContent
@@ -49,9 +54,39 @@ public class YmlContent
      }
 
      public void setValue(ConfigurationSection section) throws IllegalAccessException {
+
+          if (field.getType().isAssignableFrom(List.class))
+          {
+               try
+               {
+                    ParameterizedType arrayType = (ParameterizedType) field.getGenericType();
+                    FluentLogger.info("List",  arrayType.getRawType().getTypeName());
+
+                    var memberType = arrayType.getActualTypeArguments()[0];
+                    FluentLogger.info("ListGeneric",arrayType.getActualTypeArguments()[0].getTypeName());
+
+                  //  new ArrayList();
+                    Object list =  new ArrayList();
+                //   var value =section.getList(getFullPath(), inst);
+                    field.setAccessible(true);
+                    field.set(object, list);
+                    field.setAccessible(false);
+
+
+                    var obj = Class.forName( memberType.getTypeName()).newInstance();
+
+                    Method add = List.class.getDeclaredMethod("add",Object.class);
+                   // add.invoke(list, obj);
+
+                    return;
+               }
+               catch (Exception e)
+               {
+                    FluentLogger.error("Could not load list section",e);
+               }
+          }
+
           var value = section.get(getFullPath());
-
-
           if (field.getType().equals(Material.class)) {
                value = Material.valueOf((String) value);
           }
