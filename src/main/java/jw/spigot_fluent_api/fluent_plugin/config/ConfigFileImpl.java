@@ -1,12 +1,7 @@
 package jw.spigot_fluent_api.fluent_plugin.config;
-
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
-
-import java.io.File;
-
-public record ConfigFileImpl(FileConfiguration fileConfiguration, String path) implements ConfigFile {
+public record ConfigFileImpl(FileConfiguration fileConfiguration, String path,  boolean updated, boolean created) implements ConfigFile {
 
     public <T> T get(String name) {
         return (T) fileConfiguration.get(name);
@@ -16,6 +11,7 @@ public record ConfigFileImpl(FileConfiguration fileConfiguration, String path) i
     {
         return fileConfiguration;
     }
+
 
     @Override
     public <T> T toObject(Class<T> clazz)

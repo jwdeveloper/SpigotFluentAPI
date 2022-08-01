@@ -79,7 +79,7 @@ public abstract class FluentPlugin extends JavaPlugin {
 
             isInitialized = true;
         } catch (Exception e) {
-            FluentLogger.error("Error while loading FluentPlugin ", e);
+            FluentLogger.error("Unable to load plugin ", e);
         }
     }
 

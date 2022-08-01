@@ -30,6 +30,14 @@ public class DataContext implements FluentDataContext {
         this.registerFileHandler(new JsonFilesHandler(path));
         this.registerFileHandler(new YamlFilesHandler());
         this.registerFileHandler(new CustomFilesHandler());
+        this.registerFileHandler(new ConfigFileHandler());
+    }
+
+
+
+    public void addConfigFileObject(Object object) {
+        final var handler = fileHandlers.get(ConfigFileHandler.class);
+        handler.addObject(object);
     }
 
     @Override

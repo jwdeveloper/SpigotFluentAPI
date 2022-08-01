@@ -10,7 +10,7 @@ import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.*;
 import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.DefaultCommandDto;
 import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.DefaultPermissionsDto;
-import jw.spigot_fluent_api.fluent_plugin.languages.SimpleLangAction;
+import jw.spigot_fluent_api.fluent_plugin.languages.LangAction;
 import jw.spigot_fluent_api.fluent_plugin.languages.api.models.LangOptions;
 import jw.spigot_fluent_api.fluent_plugin.updates.SimpleUpdateAction;
 import jw.spigot_fluent_api.fluent_plugin.updates.api.data.UpdateDto;
@@ -148,7 +148,7 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     public List<PluginPipeline> getConfigurationActions() {
 
         addIfNotNull(new DependecyInjectionAction(dependecyInjectionContainerBuilder));
-        addIfNotNull(new SimpleLangAction(langOptionsConsumer));
+        addIfNotNull(new LangAction(langOptionsConsumer));
         addIfNotNull(updates);
         addIfNotNull(dataContext);
         addIfNotNull(new MediatorAction());

@@ -17,19 +17,16 @@ import org.bukkit.ChatColor;
 import java.io.File;
 import java.util.function.Consumer;
 
-public class SimpleLangAction implements PluginPipeline {
+public class LangAction implements PluginPipeline {
     private Consumer<LangOptions> consumer;
+    private final String CONFIG_LANG_PATH = "plugin.language";
 
-    public SimpleLangAction(Consumer<LangOptions> consumer) {
+    public LangAction(Consumer<LangOptions> consumer) {
         this.consumer = consumer;
-        if (this.consumer == null) {
-            this.consumer = new Consumer<LangOptions>() {
-                @Override
-                public void accept(LangOptions langOptions) {
-
-                }
+        if (this.consumer == null)
+            this.consumer = (e) -> {
             };
-        }
+
     }
 
     @Override
@@ -37,24 +34,21 @@ public class SimpleLangAction implements PluginPipeline {
 
         var dto = new LangOptions();
         consumer.accept(dto);
-
         var basePath = FluentPlugin.getPath() + File.separator + "languages";
         var loader = new SimpleLangLoader();
         FileUtility.ensurePath(basePath);
         loader.generateFiles(basePath);
-        var lang = getConfigLanguage(options.getConfigFile());
-        var pluginLangs = loader.load(basePath,lang);
-        Lang.setLanguages(pluginLangs);
+        var langName = getPluginLanguage(options.getConfigFile());
+        var langDatas = loader.load(basePath, langName);
+        Lang.setLanguages(langDatas, langName);
         registerCommand(options);
     }
 
-    public String getConfigLanguage(ConfigFile configFile)
-    {
-        if(configFile.config().isString("plugin.language"))
-        {
-            return configFile.config().getString("plugin.language");
+    public String getPluginLanguage(ConfigFile configFile) {
+        if (configFile.config().isString(CONFIG_LANG_PATH)) {
+            return configFile.config().getString(CONFIG_LANG_PATH);
         }
-        FluentLogger.warning("Unable to load `plugin.language` from config");
+        FluentLogger.warning("Unable to load `"+CONFIG_LANG_PATH+"` from config");
         return "en";
     }
 
@@ -69,16 +63,17 @@ public class SimpleLangAction implements PluginPipeline {
         var permission = options.getDefaultPermissions().getName();
         options.getDefaultCommand().getBuilder().subCommandsConfig(subCommandConfig ->
         {
-           subCommandConfig.addSubCommand(langCommand(permission));
+            subCommandConfig.addSubCommand(langCommand(permission, options.getConfigFile()));
         });
     }
 
-    private CommandBuilder langCommand(String permission) {
+    private CommandBuilder langCommand(String permission, ConfigFile configFile) {
         return FluentCommand.create("lang")
                 .propertiesConfig(propertiesConfig ->
                 {
                     propertiesConfig.addPermissions(permission);
-                    propertiesConfig.addPermissions(permission+".language");
+                    propertiesConfig.addPermissions(permission + ".language");
+                    propertiesConfig.setShortDescription("set the plugin name");
                 })
                 .argumentsConfig(argumentConfig ->
                 {
@@ -86,6 +81,7 @@ public class SimpleLangAction implements PluginPipeline {
                     {
                         argumentBuilder.setTabComplete(Lang.getLanguagesName());
                         argumentBuilder.setArgumentDisplay(ArgumentDisplay.TAB_COMPLETE);
+                        argumentBuilder.setDescription("change the language of plugin");
                     });
                 })
                 .eventsConfig(eventConfig ->
@@ -93,9 +89,7 @@ public class SimpleLangAction implements PluginPipeline {
                     eventConfig.onExecute(commandEvent ->
                     {
                         var languageName = commandEvent.getCommandArgs()[0];
-                        var result = Lang.setLanguage(languageName);
-                        if(!result)
-                        {
+                        if (!Lang.langAvaliable(languageName)) {
                             FluentMessage.message()
                                     .color(ChatColor.RED)
                                     .inBrackets("info")
@@ -105,7 +99,8 @@ public class SimpleLangAction implements PluginPipeline {
                                     .send(commandEvent.getSender());
                             return;
                         }
-
+                        configFile.config().set(CONFIG_LANG_PATH, languageName);
+                        configFile.save();
                         FluentMessage.message()
                                 .color(ChatColor.AQUA)
                                 .inBrackets("info")

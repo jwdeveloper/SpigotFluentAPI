@@ -13,4 +13,8 @@ public interface ConfigFile
     public void save();
 
     public FileConfiguration config();
+
+    public boolean created();
+
+    public boolean updated();
 }

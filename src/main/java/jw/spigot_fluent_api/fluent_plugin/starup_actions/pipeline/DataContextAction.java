@@ -42,7 +42,7 @@ public class DataContextAction implements PluginPipeline
         var customFiles = container.getAllByInterface(CustomFile.class);
         var ymlFiles = container.getAllByAnnotation(YmlFile.class);
         var jsonFiles =  container.getAllByAnnotation(JsonFile.class);
-
+        var configSections =  container.getAllByInterface(FluentConfigSection.class);
         for (var file: customFiles)
         {
           dataContext.addCustomFileObject(file);
@@ -54,6 +54,10 @@ public class DataContextAction implements PluginPipeline
         for (var file: jsonFiles)
         {
             dataContext.addJsonObject(file);
+        }
+        for(var file : configSections)
+        {
+            dataContext.addConfigFileObject(file);
         }
         configure.accept(dataContext);
 

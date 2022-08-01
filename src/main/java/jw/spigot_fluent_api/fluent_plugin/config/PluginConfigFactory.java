@@ -23,11 +23,10 @@ public class PluginConfigFactory {
     {
         ymlConfiguration =  new YmlConfigurationImpl();
     }
+    private boolean isUpdated;
+    private boolean isCreated;
 
     public ConfigFile create(FluentPlugin plugin) throws Exception {
-
-        try
-        {
             var sections = plugin.getTypeManager().getByInterface(FluentConfigSection.class);
             var tempObj = new ArrayList<FluentConfigSection>();
             for(var section : sections)
@@ -38,15 +37,10 @@ public class PluginConfigFactory {
             var path = FluentPlugin.getPath() + File.separator + "config.yml";
             if (!FileUtility.pathExists(path)) {
                 createConfig(path, tempObj);
+                isCreated = true;
             }
             var config = loadConfig(path,tempObj);
-            return new ConfigFileImpl(config, path);
-        }
-        catch (Exception e)
-        {
-            FluentLogger.error("error while loading config",e);
-        }
-        return null;
+            return new ConfigFileImpl(config, path,isUpdated,isCreated);
     }
 
     public YamlConfiguration loadConfig(String path, List<FluentConfigSection> configSections) throws IllegalAccessException, InstantiationException, IOException {
@@ -65,6 +59,7 @@ public class PluginConfigFactory {
                 ymlConfiguration.toConfiguration(configSection,output);
             }
             output.save(path);
+            isUpdated = true;
         }
 
         return yamlConfig;

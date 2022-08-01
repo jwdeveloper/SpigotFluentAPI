@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 public class SimpleLang {
     private final List<LangData> languages;
-    private LangData defaultLang;
     private LangData currentLang;
+    private LangData defaultLang;
     private String NOT_FOUND = ChatColor.RED+"TRANSLATION NOT FOUND";
 
-    public SimpleLang(List<LangData> languages) {
+    public SimpleLang(List<LangData> languages)
+    {
         this.languages = languages;
-        currentLang = defaultLang = languages.get(1);
     }
 
     public String get(String key) {
@@ -30,6 +30,26 @@ public class SimpleLang {
 
         FluentLogger.warning(NOT_FOUND+": "+key);
         return NOT_FOUND;
+    }
+
+
+    public boolean setDefaultLang(String name)
+    {
+        for(var language : languages)
+        {
+            if(language.getCountry().equals(name))
+            {
+                defaultLang = language;
+                return true;
+            }
+        }
+        FluentLogger.warning("Language not found: "+name);
+        return false;
+    }
+
+    public boolean langExists(String  name)
+    {
+        return languages.stream().anyMatch(c -> c.getCountry().equals(name));
     }
 
     public boolean setLanguage(String name)
