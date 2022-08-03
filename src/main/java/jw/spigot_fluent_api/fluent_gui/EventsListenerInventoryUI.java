@@ -41,14 +41,14 @@ public class EventsListenerInventoryUI extends EventBase {
         for (var inventory : getInstance().inventoriesGui) {
             if (!inventory.getClass().isAssignableFrom(_class))
                 continue;
-            if(inventory.equals(ignore))
+            if(ignore != null && inventory.equals(ignore))
                 continue;
             inventory.refresh();
         }
     }
 
     public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class) {
-        refreshAllAsync(_class);
+        refreshAllAsync(_class, null);
     }
     public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class, InventoryUI ignore) {
         FluentTasks.task(unused ->
