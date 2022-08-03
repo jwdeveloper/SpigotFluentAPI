@@ -15,7 +15,7 @@ import java.util.Optional;
 public class InjectedClassFactory {
     public static InjectedClass getFromClass(Class _class, LifeTime lifeTime) throws Exception {
         if (Modifier.isAbstract(_class.getModifiers())) {
-            throw new Exception("Abstract class can't be register to Injection");
+            throw new Exception("Abstract class can't be register to Injection "+_class.getName());
         }
         if (Modifier.isInterface(_class.getModifiers())) {
             throw new Exception("Interface can't be register to Injection");

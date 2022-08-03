@@ -2,7 +2,8 @@ package jw.spigot_fluent_api.fluent_gui.button;
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -59,9 +60,15 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
         return self();
     }
 
+    public SELF setTitlePrimary(String title)
+    {
+        this.button.setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).build());
+        return self();
+    }
+
     public SELF setTitleHeader(String title)
     {
-        this.button.setTitle(new MessageBuilder().color(ChatColor.WHITE).inBrackets(title).get());
+        this.button.setTitle(new MessageBuilder().color(ChatColor.WHITE).inBrackets(title).build());
         return self();
     }
 

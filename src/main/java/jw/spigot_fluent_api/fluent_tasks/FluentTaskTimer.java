@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_tasks;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,7 +38,7 @@ public class FluentTaskTimer {
             }
             catch (Exception e)
             {
-                FluentPlugin.logException("Task error",e);
+                FluentLogger.error("FluentTask error",e);
                 stop();
             }
 

@@ -6,7 +6,8 @@ import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.FilterContentEvent;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -49,7 +50,7 @@ public class ListUI<T> extends ChestUI {
         buttonSearch = ButtonObserverUI
                 .builder()
                 .setLocation(0, 0)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Search"))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(Lang.get("gui.base.search.title")))
                 .setMaterial(Material.SPYGLASS)
                 .setOnClick((player, button) ->
                 {
@@ -60,7 +61,7 @@ public class ListUI<T> extends ChestUI {
         buttonPageDown = ButtonObserverUI
                 .builder()
                 .setLocation(getHeight() - 1, 3)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Page down"))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(Lang.get("gui.base.page-down.title")))
                 .setMaterial(Material.ARROW)
                 .setOnClick((player, button) ->
                 {
@@ -71,7 +72,7 @@ public class ListUI<T> extends ChestUI {
         buttonPageUp = ButtonObserverUI
                 .builder()
                 .setLocation(getHeight() - 1, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets("Page up"))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(Lang.get("gui.base.page-up.title")))
                 .setMaterial(Material.ARROW)
                 .setOnClick((player, button) ->
                 {
@@ -143,15 +144,15 @@ public class ListUI<T> extends ChestUI {
         refreshButtons();
     }
 
-    public void onListOpen(Consumer<Player> event) {
+    public final void onListOpen(Consumer<Player> event) {
         onListOpen.add(event);
     }
 
-    public void onContentClick(ButtonUIEvent event) {
+    public final void onContentClick(ButtonUIEvent event) {
         onClickContent.add(event);
     }
 
-    public void onListClose(Consumer<Player> event) {
+    public final void onListClose(Consumer<Player> event) {
         onListClose.add(event);
     }
 }

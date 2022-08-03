@@ -1,43 +1,41 @@
 package fluent_commands;
 
-import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
-import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
-import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
-import jw.spigot_fluent_api.fluent_commands.services.SimpleCommandService;
+import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
+import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommand;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
+import jw.spigot_fluent_api.fluent_commands.api.enums.ArgumentType;
 import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SimpleCommandServiceSubCommandTests {
-    SimpleCommandService simpleCommandService;
+    CommandServiceImpl simpleCommandService;
     SimpleCommand rootCommand;
     SimpleCommand subCommand;
     SimpleCommand subSubCommand;
     @Before
     public void beforeTests() {
-        simpleCommandService = new SimpleCommandService();
+        simpleCommandService = new CommandServiceImpl();
         rootCommand = FluentCommand
-                .create("root")
+                .create_OLDWAY("root")
                 .nextStep()
                 .withArgument("textArg")
                 .build()
                 .nextStep()
                 .nextStep().buildAndRegister();
         subCommand = FluentCommand
-                .create("subcommand")
+                .create_OLDWAY("subcommand")
                 .nextStep()
                 .withArgument("amount",ArgumentType.INT)
-                .build()
                 .withArgument("textArg")
                 .build()
                 .nextStep()
                 .nextStep().build();
         subSubCommand = FluentCommand
-                .create("subsubCommand")
+                .create_OLDWAY("subsubCommand")
                 .nextStep()
                 .withArgument("color",ArgumentType.COLOR)
-                .build()
                 .nextStep()
                 .nextStep().build();
 

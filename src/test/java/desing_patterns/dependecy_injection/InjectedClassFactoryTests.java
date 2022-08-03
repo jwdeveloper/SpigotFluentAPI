@@ -1,10 +1,7 @@
 package desing_patterns.dependecy_injection;
 
-import example_classes.BaseClassTesting;
-import example_classes.PlayerStats;
-import example_classes.SomeRepo;
-import example_classes.SuperInventory;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.Container;
+import assets.BaseClassTesting;
+import assets.SuperInventory;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.factory.InjectedClassFactory;
 import org.junit.Before;

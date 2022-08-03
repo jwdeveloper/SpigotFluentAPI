@@ -1,7 +1,7 @@
 package jw.spigot_fluent_api.utilites.code_generator;
 
 import jw.spigot_fluent_api.utilites.files.FileUtility;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 
 public class ObserverClassGenerator {
 
@@ -21,6 +21,7 @@ public class ObserverClassGenerator {
         var methodName = "setObject";
         var offset =3;
 
+        outPut.text("@Data").newLine();
         //open class
         outPut.text("public class ").text(className)
                 .newLine()
@@ -30,13 +31,13 @@ public class ObserverClassGenerator {
         //fields definition
         for (var field : fields) {
             outPut.space(offset)
-                    .text("private Observable<")
+                    .text("private Observer<")
                     .text(field.getType().getSimpleName())
                     .text(">")
                     .space()
                     .text(field.getName() + "Observer")
                     .space()
-                    .text("= new Observable<>();")
+                    .text("= new Observer<>();")
                     .newLine();
         }
         outPut.newLine();
@@ -81,11 +82,11 @@ public class ObserverClassGenerator {
 /*example output
 public class PlayerStatsObserver
 {
-   private Observable<Integer> scoreObserver = new Observable<>();
-   private Observable<String> playerNameObserver = new Observable<>();
-   private Observable<Boolean> isActiveObserver = new Observable<>();
-   private Observable<Number> pointsObserver = new Observable<>();
-   private Observable<List> permissionsObserver = new Observable<>();
+   private Observer<Integer> scoreObserver = new Observer<>();
+   private Observer<String> playerNameObserver = new Observer<>();
+   private Observer<Boolean> isActiveObserver = new Observer<>();
+   private Observer<Number> pointsObserver = new Observer<>();
+   private Observer<List> permissionsObserver = new Observer<>();
 
 public PlayerStatsObserver()
 {

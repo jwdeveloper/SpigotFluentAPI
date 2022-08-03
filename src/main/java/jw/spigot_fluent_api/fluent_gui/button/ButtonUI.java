@@ -1,9 +1,12 @@
 package jw.spigot_fluent_api.fluent_gui.button;
 
+import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
+import jw.spigot_fluent_api.fluent_gui.enums.PermissionType;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -49,6 +53,8 @@ public class ButtonUI {
 
     protected ArrayList<String> permissions;
 
+    protected PermissionType permissionType;
+
     private ButtonUIEvent onClick = (player, button) -> {
     };
 
@@ -61,6 +67,7 @@ public class ButtonUI {
         location = new Vector(0, 0, 0);
         description = new ArrayList<>();
         permissions = new ArrayList<>();
+        permissionType = PermissionType.ONE_OF;
         hideAttributes();
     }
 
@@ -69,8 +76,32 @@ public class ButtonUI {
         setMaterial(material);
     }
 
+    public void setPermissions(List<String> permissions)
+    {
+        for(var p : permissions)
+        {
+            this.permissions.add(p);
+        }
+    }
+
+    public void setPermissions(String ... permissions)
+    {
+        for(var p : permissions)
+        {
+            this.permissions.add(p);
+        }
+    }
+
     public void setMaterial(Material material) {
         itemStack.setType(material);
+    }
+
+    public void setCustomMaterial(Material material, int id)
+    {
+        itemStack.setType(material);
+        final var meta = itemStack.getItemMeta();
+        meta.setCustomModelData(id);
+        itemStack.setItemMeta(meta);
     }
 
     public void setDescription(MessageBuilder messageBuilder) {
@@ -94,6 +125,16 @@ public class ButtonUI {
     public void setTitle(String title) {
         this.title = title;
         setDisplayedName(title);
+    }
+
+    public void setTitlePrimary(String title, String description)
+    {
+        setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).space().text(description).build());
+    }
+
+    public void setTitlePrimary(String title)
+    {
+      setTitle(new MessageBuilder().color(org.bukkit.ChatColor.AQUA).inBrackets(title).build());
     }
 
     public int getHeight() {
@@ -128,7 +169,7 @@ public class ButtonUI {
         try {
             return (T) dataContext;
         } catch (Exception e) {
-            FluentPlugin.logError("Can not cast DataContext value " + dataContext.toString() + " in button " + title);
+            FluentLogger.error("Can not cast DataContext value " + dataContext.toString() + " in button " + title, e);
         }
         return null;
     }

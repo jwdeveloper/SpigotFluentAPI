@@ -1,6 +1,7 @@
 package jw.spigot_fluent_api.fluent_message;
 
 import jw.spigot_fluent_api.fluent_message.boss_bar.BossBarBuilder;
+import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import jw.spigot_fluent_api.fluent_message.title.SimpleTitleBuilder;
 
 public class FluentMessage

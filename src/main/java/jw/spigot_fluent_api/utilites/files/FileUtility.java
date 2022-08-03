@@ -1,14 +1,16 @@
 package jw.spigot_fluent_api.utilites.files;
 
 import com.google.gson.Gson;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public interface FileUtility {
@@ -38,7 +40,7 @@ public interface FileUtility {
                     else if (!childFile.delete()) {
 
                     }
-                    FluentPlugin.logError("Could not delete file: " + childFile.getName());
+                    FluentLogger.info("Could not delete file: " + childFile.getName());
                 }
             }
         }
@@ -46,7 +48,7 @@ public interface FileUtility {
         if (!file.delete()) {
 
         }
-        FluentPlugin.logError("Could not delete file: " + file.getName());
+        FluentLogger.info("Could not delete file: " + file.getName());
     }
 
     static String combinePath(String... paths) {
@@ -57,13 +59,13 @@ public interface FileUtility {
         return res;
     }
 
-    public static boolean save(String content, String path, String fileName) {
+     static boolean save(String content, String path, String fileName) {
         try (FileWriter file = new FileWriter(path+File.separator+fileName))
         {
             file.write(content);
             return true;
         } catch (IOException e) {
-            FluentPlugin.logException("Save File: " + fileName,e);
+            FluentLogger.error("Save File: " + fileName,e);
             e.printStackTrace();
         }
         return false;
@@ -71,7 +73,7 @@ public interface FileUtility {
     static ArrayList<String> getFolderFilesName(String path, String... extensions) {
         final ArrayList<String> filesName = new ArrayList<>();
         if (!isPathValid(path)) {
-            FluentPlugin.logError("Files count not be loaded since path " + path + " not exists!");
+            FluentLogger.info("Files count not be loaded since path " + path + " not exists!");
             return filesName;
         }
         final File folder = new File(path);
@@ -98,7 +100,19 @@ public interface FileUtility {
         return filesName;
     }
 
-    public static void ensureDirectory(String path) {
-        new File(path).mkdirs();
+
+    static boolean pathExists(String path)
+    {
+        var directory = new File(path);
+       return directory.exists();
+    }
+
+     static File ensurePath(String path) {
+        var directory = new File(path);
+        if (directory.exists()) {
+            return directory;
+        }
+        directory.mkdir();
+        return directory;
     }
 }

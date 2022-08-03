@@ -1,7 +1,10 @@
 package jw.spigot_fluent_api.fluent_gui;
 
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.spigot_fluent_api.fluent_events.EventBase;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
+import jw.spigot_fluent_api.fluent_tasks.FluentTasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,6 +35,28 @@ public class EventsListenerInventoryUI extends EventBase {
         }
         return instance;
     }
+
+    public static <T extends InventoryUI> void refreshAll(Class<T> _class, InventoryUI ignore)
+    {
+        for (var inventory : getInstance().inventoriesGui) {
+            if (!inventory.getClass().isAssignableFrom(_class))
+                continue;
+            if(ignore != null && inventory.equals(ignore))
+                continue;
+            inventory.refresh();
+        }
+    }
+
+    public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class) {
+        refreshAllAsync(_class, null);
+    }
+    public static <T extends InventoryUI> void refreshAllAsync(Class<T> _class, InventoryUI ignore) {
+        FluentTasks.task(unused ->
+        {
+            refreshAll(_class,ignore);
+        });
+    }
+
 
     public static void registerTextInput(Player player, Consumer<String> event) {
         var instance = getInstance();
@@ -74,13 +99,13 @@ public class EventsListenerInventoryUI extends EventBase {
 
     @EventHandler
     private void onInventoryClose(InventoryCloseEvent event) {
-        Inventory inventory;
-        for (InventoryUI InventoryUI : inventoriesGui) {
-            inventory = InventoryUI.getInventory();
-            if (inventory == null || !InventoryUI.isOpen()) continue;
+        Inventory spigotInventory;
+        for (InventoryUI inventoryUI : inventoriesGui) {
+            spigotInventory = inventoryUI.getInventory();
+            if (spigotInventory == null || !inventoryUI.isOpen()) continue;
 
-            if (event.getInventory() == inventory) {
-                InventoryUI.close();
+            if (event.getInventory() == spigotInventory) {
+                inventoryUI.close();
                 break;
             }
         }
@@ -93,17 +118,20 @@ public class EventsListenerInventoryUI extends EventBase {
 
         Inventory inventory;
         ItemStack selectedItem;
+
         for (InventoryUI inventoryUI : inventoriesGui) {
+
             inventory = inventoryUI.getInventory();
             if (inventory == null || !inventoryUI.isOpen())
                 continue;
 
-            if (event.getInventory() == inventory)
-            {
+            if (event.getInventory() == inventory) {
+
                 event.setCancelled(true);
                 selectedItem = event.getCurrentItem();
                 if (selectedItem == null || selectedItem.getType() == Material.AIR)
                     return;
+
                 inventoryUI.doClick((Player) event.getWhoClicked(),
                         event.getRawSlot(),
                         selectedItem,
@@ -112,15 +140,14 @@ public class EventsListenerInventoryUI extends EventBase {
             }
         }
     }
+
     @EventHandler(priority = EventPriority.LOWEST)
-    private void onDrag(InventoryDragEvent event)
-    {
-        if(event.getInventorySlots().size() > 2)
+    private void onDrag(InventoryDragEvent event) {
+        if (event.getInventorySlots().size() > 2)
             return;
 
-        for(var slot: event.getInventorySlots())
-        {
-            if(slot == -999)
+        for (var slot : event.getInventorySlots()) {
+            if (slot == -999)
                 return;
         }
 
@@ -130,8 +157,7 @@ public class EventsListenerInventoryUI extends EventBase {
             if (inventory == null || !inventoryUI.isOpen())
                 continue;
 
-            if (event.getInventory() == inventory)
-            {
+            if (event.getInventory() == inventory) {
 
                 break;
             }

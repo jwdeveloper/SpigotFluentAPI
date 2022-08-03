@@ -3,9 +3,11 @@ package jw.spigot_fluent_api.desing_patterns.dependecy_injection;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.factory.InjectedClassFactory;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.utilites.Messages;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,13 +21,15 @@ public class Container {
 
     public <T> T get(Class<T> _injection) {
         if (!injections.containsKey(_injection)) {
-            FluentPlugin.logError(String.format(Messages.INJECTION_NOT_FOUND, _injection.getSimpleName()));
+            FluentLogger.error(String.format(Messages.INJECTION_NOT_FOUND, _injection.getSimpleName()));
             return null;
         }
         try {
             return (T) injections.get(_injection).getInstnace(injections);
-        } catch (Exception e) {
-            FluentPlugin.logException(String.format(Messages.INJECTION_CANT_CREATE, _injection.getSimpleName()), e);
+
+        } catch (Exception e)
+        {
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _injection.getSimpleName()), e);
         }
         return null;
     }
@@ -65,7 +69,7 @@ public class Container {
     public boolean register(Class<?> _class, LifeTime lifeTime) {
 
         if (injections.containsKey(_class)) {
-            FluentPlugin.logError(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
             return false;
         }
         try {
@@ -73,9 +77,37 @@ public class Container {
             injections.put(_class, injection);
             return true;
         } catch (Exception e) {
-            FluentPlugin.logException("Error while register class", e);
+            FluentLogger.error("Error while register class", e);
             return false;
         }
+    }
+
+    public boolean register(Object _object, LifeTime lifeTime) {
+        if(_object == null)
+        {
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, "default injection object can not be null"));
+            return false;
+        }
+
+        var _class = _object.getClass();
+        if (injections.containsKey(_class)) {
+            FluentLogger.error(String.format(Messages.INJECTION_CANT_CREATE, _class.getSimpleName()));
+            return false;
+        }
+        try {
+            var injection = InjectedClassFactory.getFromClass(_class, lifeTime);
+            injection.instnace = _object;
+            injections.put(_class, injection);
+            return true;
+        } catch (Exception e) {
+            FluentLogger.error("Error while register class", e);
+            return false;
+        }
+    }
+
+    public boolean register(Object _object) {
+       return register(_object,LifeTime.SINGLETON);
+
     }
 
     public void register(HashMap<Class<?>, LifeTime> _classes) {

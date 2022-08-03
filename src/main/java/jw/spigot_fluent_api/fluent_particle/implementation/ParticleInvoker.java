@@ -16,6 +16,11 @@ public class ParticleInvoker
         location.getWorld().spawnParticle(particle,location,1);
     }
 
+    public void spawnParticle(Location location, Particle particle, int amount, Particle.DustOptions dustOptions)
+    {
+        location.getWorld().spawnParticle(particle,location,amount, dustOptions);
+    }
+
     public void spawnDustParticle(ParticleEvent particleEvent)
     {
 

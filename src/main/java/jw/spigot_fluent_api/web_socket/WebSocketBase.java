@@ -1,17 +1,16 @@
 package jw.spigot_fluent_api.web_socket;
 
 
-import jw.spigot_fluent_api.dependency_injection.InjectionManager;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
-import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WebSocketBase extends WebSocketServer {
@@ -32,12 +31,12 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
+      //  FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " leave the room!");
+       // FluentPlugin.logInfo(webSocket.getRemoteSocketAddress().getAddress().getHostAddress() + " leave the room!");
     }
 
     @Override
@@ -47,14 +46,12 @@ public class WebSocketBase extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
-        int id = buffer.getInt(0);
-        if (!webSocketEvents.containsKey(id)) {
+        var packetId = buffer.getInt(0);
+        var webSocketEvent = webSocketEvents.get(packetId);
+        if(webSocketEvent == null)
             return;
-        }
-        WebSocketPacket webSocketEvent = webSocketEvents.get(id);
-        if (!webSocketEvent.resolvePacket(buffer)) {
+        if (!webSocketEvent.resolvePacket(buffer))
             return;
-        }
         webSocketEvent.onPacketTriggered(webSocket);
     }
 
@@ -66,13 +63,13 @@ public class WebSocketBase extends WebSocketServer {
     @Override
     public void onError(WebSocket webSocket, Exception e) {
         if(webSocket == null)
-        FluentPlugin.logException("Web socket error ", e);
+            FluentLogger.error("Web socket error ", e);
         else
-       FluentPlugin.logException("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
+            FluentLogger.error("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
     }
 
     @Override
     public void onStart() {
-        FluentPlugin.logInfo("Web socket started");
+        //FluentPlugin.logSuccess("Hello world from socket");
     }
 }

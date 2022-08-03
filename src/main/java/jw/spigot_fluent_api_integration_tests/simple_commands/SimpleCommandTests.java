@@ -1,16 +1,17 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
 
-import jw.spigot_fluent_api.fluent_commands.builders.FluentCommand;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_commands.SimpleCommand;
-import jw.spigot_fluent_api.fluent_commands.enums.AccessType;
-import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
-import jw.spigot_fluent_api.fluent_commands.events.CommandEvent;
-import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
-import jw.spigot_fluent_api.fluent_commands.models.CommandTarget;
-import jw.spigot_fluent_api.fluent_commands.models.ValidationResult;
-import jw.spigot_fluent_api.fluent_commands.services.CommandService;
-import jw.spigot_fluent_api.fluent_commands.services.SimpleCommandService;
+import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommand;
+import jw.spigot_fluent_api.fluent_commands.api.enums.AccessType;
+import jw.spigot_fluent_api.fluent_commands.api.enums.ArgumentType;
+import jw.spigot_fluent_api.fluent_commands.implementation.events.CommandEvent;
+import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
+import jw.spigot_fluent_api.fluent_commands.api.models.CommandTarget;
+import jw.spigot_fluent_api.fluent_commands.api.models.ValidationResult;
+import jw.spigot_fluent_api.fluent_commands.api.services.CommandService;
+import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import jw.spigot_fluent_api_integration_tests.SpigotTest;
 import jw.spigot_fluent_api_integration_tests.spigotAssertions.SpigotAssertion;
@@ -32,7 +33,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
     public void beforeTests()
     {
         simpleCommand = FluentCommand
-                .create("example-command")
+                .create_OLDWAY("example-command")
                 .setDescription("full description")
                 .setShortDescription("short description")
                 .addPermissions("test-permissions")
@@ -120,7 +121,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
 
     public CommandService getCommandServiceMock()
     {
-        return new SimpleCommandService() {
+        return new CommandServiceImpl() {
 
             @Override
             public Object[] getArgumentValues(String[] args, List<CommandArgument> commandArguments)
@@ -130,7 +131,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                FluentPlugin.logInfo("Perparing arguments "+" in time: "+inMS);
+                FluentLogger.success("Perparing arguments "+" in time: "+inMS);
                 return res;
             }
 
@@ -142,7 +143,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                FluentPlugin.logInfo("Checking access for "+commandSender.getName()+" in time: "+inMS);
+                FluentLogger.success("Checking access for "+commandSender.getName()+" in time: "+inMS);
                 return res;
             }
             @Override
@@ -157,7 +158,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                FluentPlugin.logInfo("Looking for sub Command "+command.getName()+" in time: "+inMS);
+                FluentLogger.success("Looking for sub Command "+command.getName()+" in time: "+inMS);
                 return res;
             }
 
@@ -169,7 +170,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                FluentPlugin.logInfo("Checking permissions for "+commandSender.getName()+" in time: "+inMS+ " result "+ res.result());
+                FluentLogger.success("Checking permissions for "+commandSender.getName()+" in time: "+inMS+ " result "+ res.isSuccess());
                 return res;
             }
 
@@ -180,7 +181,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                FluentPlugin.logInfo("Validating arguments"+" in time: "+inMS);
+                FluentLogger.success("Validating arguments"+" in time: "+inMS);
                 return res;
             }
         };

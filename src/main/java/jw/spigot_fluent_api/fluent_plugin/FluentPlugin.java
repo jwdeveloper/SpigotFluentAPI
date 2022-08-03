@@ -1,26 +1,29 @@
 package jw.spigot_fluent_api.fluent_plugin;
 
+import com.google.common.collect.ImmutableList;
+import jw.spigot_fluent_api.fluent_commands.FluentCommand;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.spigot_fluent_api.fluent_plugin.config.PluginConfigFactory;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.CommandOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
-import jw.spigot_fluent_api.fluent_plugin.configuration.PluginConfiguration;
-import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFile;
-import jw.spigot_fluent_api.fluent_plugin.configuration.config.ConfigFileImpl;
-import jw.spigot_fluent_api.fluent_plugin.configuration.pipeline.PluginPipeline;
-import jw.spigot_fluent_api.utilites.ClassTypeUtility;
-import jw.spigot_fluent_api.utilites.messages.LogUtility;
-import jw.spigot_fluent_api.fluent_message.MessageBuilder;
-import org.bukkit.ChatColor;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FluentPlugin extends JavaPlugin {
 
     private TypeManager typeManager;
     private FluentPluginConfiguration configuration;
-    private static FluentPlugin instance;
     private static JavaPlugin plugin;
     private static boolean isInitialized;
     private List<PluginPipeline> pluginPipeline;
@@ -41,7 +44,6 @@ public abstract class FluentPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        instance = this;
         plugin = this;
         typeManager = new TypeManager(ClassTypeUtility.findClassesInPlugin(this));
         configuration = new FluentPluginConfiguration();
@@ -50,23 +52,34 @@ public abstract class FluentPlugin extends JavaPlugin {
     @Override
     public final void onEnable() {
         try {
-            OnConfiguration(configuration, new ConfigFileImpl(getConfig()));
+            var config =  new PluginConfigFactory().create(this);
+            OnConfiguration(configuration, config);
             pluginPipeline = configuration.getConfigurationActions();
+
+            var defaultCommandDto = configuration.getDefaultCommand();
+            var defaultPermissonDto = configuration.getDefaultPermissionsDto();
+            var cmd = FluentCommand.create(defaultCommandDto.getName());
+
+            var options = new PipelineOptions(this,
+                    new CommandOptions(defaultCommandDto.getName(),cmd),
+                    defaultPermissonDto,
+                    config);
             for (var action : pluginPipeline) {
                 try {
-                    action.pluginEnable(this);
+                    action.pluginEnable(options);
                 } catch (Exception e) {
                     isInitialized = false;
-                    FluentPlugin.logException("Plugin can not be loaded since ", e);
+                    FluentLogger.error("Plugin can not be loaded since ", e);
                     return;
                 }
             }
+            defaultCommandDto.getConsumer().accept(cmd);
+            cmd.build();
             OnFluentPluginEnable();
+
             isInitialized = true;
-        }
-        catch (Exception e)
-        {
-            FluentPlugin.logException("Error while loading FluentPlugin ", e);
+        } catch (Exception e) {
+            FluentLogger.error("Unable to load plugin ", e);
         }
     }
 
@@ -80,7 +93,7 @@ public abstract class FluentPlugin extends JavaPlugin {
                 action.pluginDisable(this);
             } catch (Exception e) {
                 isInitialized = false;
-                FluentPlugin.logException("Error while plugin disable ", e);
+                FluentLogger.error("Error while plugin disable ", e);
                 return;
             }
         }
@@ -105,90 +118,57 @@ public abstract class FluentPlugin extends JavaPlugin {
             fileField.setAccessible(true);
             return (File) fileField.get(plugin);
         } catch (Exception e) {
-            FluentPlugin.logException("Can not load plugin file", e);
+            FluentLogger.error("Can not load plugin file", e);
         }
         return null;
+    }
+
+    public static void addPermissions(List<Permission> permissions)
+    {
+        addPermissions(permissions.toArray(new Permission[permissions.size()]));
+    }
+
+    public static void addPermissions(Permission... permissions)
+    {
+        try {
+            var description = getPlugin().getDescription();
+            var permissionsField = PluginDescriptionFile.class.getDeclaredField("permissions");
+            permissionsField.setAccessible(true);
+
+            var newPermissions = new ArrayList<Permission>();
+            var currentPermission = description.getPermissions();
+            for(var p : currentPermission)
+            {
+                newPermissions.add(p);
+            }
+            for(var p : permissions)
+            {
+                newPermissions.add(p);
+            }
+
+            var result  = ImmutableList.copyOf(newPermissions);
+            permissionsField.set(description, result);
+        } catch (Exception e) {
+            FluentLogger.error("Can not add permission", e);
+        }
     }
 
     public TypeManager getTypeManager() {
         return typeManager;
     }
 
+    public ClassLoader getPluginClassLoader()
+    {
+        return getClassLoader();
+    }
+
     public static String getPath() {
+
+        if(FluentPlugin.getPlugin()== null)
+        {
+            return "D:\\tmp";
+        }
+
         return FluentPlugin.getPlugin().getDataFolder().getAbsoluteFile().toString();
     }
-
-    public static MessageBuilder log(String message) {
-        return logFormat(LogUtility.info(), message);
-    }
-
-    public static void logInfo(String message) {
-        logFormat(LogUtility.info(), message).send();
-    }
-
-    public static void logError(String message) {
-
-        logFormat(LogUtility.error(), message).send();
-    }
-
-    public static void logException(String message, Exception e) {
-        //This mess need to be clean up
-        var cause = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
-
-        logFormat(LogUtility.exception(), ChatColor.RED + message + ChatColor.RESET)
-                .newLine()
-                .color(ChatColor.DARK_RED)
-                .inBrackets("Reason")
-                .color(ChatColor.YELLOW)
-                .space()
-                .text(cause)
-                .color(ChatColor.RESET)
-                .newLine()
-                .color(ChatColor.DARK_RED)
-                .inBrackets("Exception type")
-                .color(ChatColor.YELLOW)
-                .space()
-                .text(e.getClass().getSimpleName())
-                .color(ChatColor.RESET)
-                .send();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
-        var stackTrace = new MessageBuilder();
-        stackTrace.color(ChatColor.WHITE);
-        for (var trace : e.getStackTrace()) {
-            int offset = 6;
-            offset = offset - (trace.getLineNumber() + "").length();
-            stackTrace
-                    .newLine()
-                    .color(ChatColor.WHITE)
-                    .text("at line", ChatColor.WHITE)
-                    .space(2)
-                    .text(trace.getLineNumber(), ChatColor.AQUA)
-                    .space(offset)
-                    .text("in", ChatColor.WHITE)
-                    .space()
-                    .text(trace.getClassName(), ChatColor.GRAY)
-                    .text("." + trace.getMethodName() + "()", ChatColor.AQUA)
-                    .space()
-
-                    .color(ChatColor.RESET);
-        }
-        stackTrace.send();
-        new MessageBuilder().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).send();
-    }
-
-    public static void logSuccess(String message) {
-        logFormat(LogUtility.success(), message).send();
-    }
-
-    private static MessageBuilder logFormat(MessageBuilder messageBuilder, String message) {
-        return new MessageBuilder()
-                .color(ChatColor.WHITE)
-                .inBrackets(getPlugin().getName())
-                .space()
-                .text(messageBuilder.toString())
-                .color(ChatColor.RESET)
-                .text(message);
-    }
-
-
 }

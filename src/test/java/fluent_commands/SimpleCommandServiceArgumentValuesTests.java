@@ -1,8 +1,8 @@
 package fluent_commands;
 
-import jw.spigot_fluent_api.fluent_commands.enums.ArgumentType;
-import jw.spigot_fluent_api.fluent_commands.models.CommandArgument;
-import jw.spigot_fluent_api.fluent_commands.services.SimpleCommandService;
+import jw.spigot_fluent_api.fluent_commands.api.enums.ArgumentType;
+import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
+import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
 import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 public class SimpleCommandServiceArgumentValuesTests
 {
-    SimpleCommandService simpleCommandService;
+    CommandServiceImpl simpleCommandService;
 
     @Before
     public void beforeTests() {
-        simpleCommandService = new SimpleCommandService();
+        simpleCommandService = new CommandServiceImpl();
     }
 
     @Test

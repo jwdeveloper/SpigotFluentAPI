@@ -7,6 +7,8 @@ public interface ContainerBuilder
 
     public ContainerBuilder registerSigleton(Class _class);
 
+    public ContainerBuilder registerSigleton(Object instance);
+
     public ContainerBuilder registerTransient(Class _class);
 
     public ContainerBuilder disableAutoRegistration();
