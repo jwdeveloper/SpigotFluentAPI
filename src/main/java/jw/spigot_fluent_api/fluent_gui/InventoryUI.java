@@ -24,8 +24,8 @@ import java.util.List;
 @Getter
 @Setter
 public abstract class InventoryUI {
-    protected static final int MAX_TITLE_LENGTH = 38;
-    protected static final int INVENTORY_WIDTH = 9;
+    public static final int MAX_TITLE_LENGTH = 38;
+    public static final int INVENTORY_WIDTH = 9;
 
     @Setter(value = AccessLevel.NONE)
     private Inventory inventory;

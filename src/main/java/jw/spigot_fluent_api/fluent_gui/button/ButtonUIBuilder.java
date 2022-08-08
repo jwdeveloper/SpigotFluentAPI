@@ -82,6 +82,16 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
         this.button.setOnClick(onClick);
         return self();
     }
+    public SELF setOnShiftClick(ButtonUIEvent onClick)
+    {
+        this.button.setOnShiftClick(onClick);
+        return self();
+    }
+    public SELF setOnRightClick(ButtonUIEvent onClick)
+    {
+        this.button.setOnRightClick(onClick);
+        return self();
+    }
     public SELF setButtonType(ButtonType buttonType)
     {
         this.button.setButtonType(buttonType);

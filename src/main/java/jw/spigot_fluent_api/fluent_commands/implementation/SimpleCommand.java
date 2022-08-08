@@ -104,7 +104,7 @@ public class SimpleCommand extends Command {
         if (!permissionResult.isSuccess())
         {
             displayLog(sender.getName() + " has no permissions "+permissionResult.getMessage());
-            sender.sendMessage(messagesService.noPermission(sender,permissionResult.getMessage()));
+            //sender.sendMessage(messagesService.noPermission(sender,permissionResult.getMessage()));
             return false;
         }
 
@@ -146,7 +146,7 @@ public class SimpleCommand extends Command {
         }
 
         var argIndex = commandArgs.length - 1;
-        argIndex = argIndex < 0 ? 0 : argIndex;
+        argIndex = Math.max(argIndex, 0);
         var argument = arguments.get(argIndex);
         switch (argument.getArgumentDisplayMode()) {
             case TAB_COMPLETE -> {

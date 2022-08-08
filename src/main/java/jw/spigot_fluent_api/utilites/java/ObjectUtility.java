@@ -31,8 +31,7 @@ public class ObjectUtility {
         return null;
     }
 
-    public static Object castStringToPrimitiveType(String value, Class<?> type)
-    {
+    public static Object castStringToPrimitiveType(String value, Class<?> type) {
         return switch (type.getName()) {
             case "java.lang.String" -> value;
             case "org.bukkit.Material" -> Material.valueOf(value);
@@ -44,7 +43,7 @@ public class ObjectUtility {
         };
     }
 
-    public static Object getPrivateField(Object object, String field)throws SecurityException,
+    public static Object getPrivateField(Object object, String field) throws SecurityException,
             NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> clazz = object.getClass();
         Field objectField = clazz.getDeclaredField(field);
@@ -57,8 +56,7 @@ public class ObjectUtility {
     public static boolean copyToObject(Object obj, Object desination, Class type) {
         for (var field : type.getDeclaredFields()) {
             try {
-                if(Modifier.isStatic(field.getModifiers()))
-                {
+                if (Modifier.isStatic(field.getModifiers())) {
                     continue;
                 }
                 field.setAccessible(true);
@@ -71,10 +69,37 @@ public class ObjectUtility {
         return true;
     }
 
+    public static <T> boolean copyToObjectDeep(T obj, T destination) {
+        if (!obj.getClass().equals(destination.getClass())) {
+            FluentLogger.error("Unable deep copy object" + obj.getClass() + " to " + destination.getClass() + " this are different classes");
+            return false;
+        }
+
+        var currentClass = obj.getClass();
+        while (true) {
+            var result = copyToObject(obj, destination, currentClass);
+            if (!result) {
+                break;
+            }
+            if (currentClass.getSuperclass().equals(Object.class)) {
+                break;
+            }
+            currentClass = currentClass.getSuperclass();
+        }
+        return true;
+    }
+
+    public static Object copyObjectDeep(Object obj, Class type) throws InstantiationException, IllegalAccessException {
+        var result = type.newInstance();
+        if (!copyToObjectDeep(obj, result)) {
+            return null;
+        }
+        return result;
+    }
+
     public static Object copyObject(Object obj, Class type) throws InstantiationException, IllegalAccessException {
-        var result= type.newInstance();
-        if(!copyToObject(obj,result,type))
-        {
+        var result = type.newInstance();
+        if (!copyToObject(obj, result, type)) {
             return null;
         }
         return result;

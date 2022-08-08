@@ -51,6 +51,13 @@ public class Pagination<T> {
         return getPageContent(currentPage);
     }
 
+    public Collection<T> setPage(int page)
+    {
+        page =  Math.min(currentPage , getPagesCount()-1);
+        page = Math.max(page,0);
+        currentPage = page;
+        return getPageContent(page);
+    }
 
     public List<T> getCurrentPageContent() {
         return getPageContent(currentPage);

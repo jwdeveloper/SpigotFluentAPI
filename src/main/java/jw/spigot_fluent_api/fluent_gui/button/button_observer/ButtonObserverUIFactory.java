@@ -1,8 +1,12 @@
 package jw.spigot_fluent_api.fluent_gui.button.button_observer;
 
+import com.google.common.base.Function;
+import jw.spigot_fluent_api.desing_patterns.observer.ObserverBag;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUIFactory;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.EnumSelectorObserver;
+import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.ListSelectorObserver;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.TextListSelectorObserver;
+import jw.spigot_fluent_api.fluent_gui.button.button_observer.observer_impl.events.onSelectEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import jw.spigot_fluent_api.fluent_text_input.FluentTextInput;
@@ -12,11 +16,39 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ButtonObserverUIFactory extends ButtonUIFactory {
 
 
-    public <T extends Enum<T>> ButtonObserverUIBuilder textListSelectorObserver(Observer<Integer> indexObserver, List<String> values) {
+
+    public <T> ButtonObserverUIBuilder listSelectorObserver(Observer<Integer> indexObserver,
+                                                                List<T> values,
+                                                                Function<T,String> mapping) {
+        return ButtonObserverUI.<T>builder()
+                .addObserver(indexObserver, new ListSelectorObserver<T>(values, mapping));
+    }
+
+    public <T> ButtonObserverUIBuilder listSelectorObserver(Observer<Integer> indexObserver,
+                                                            List<T> values,
+                                                            Function<T,String> mapping,
+                                                            Consumer<onSelectEvent<T>> event) {
+        return ButtonObserverUI.<T>builder()
+                .addObserver(indexObserver, new ListSelectorObserver<T>(values, mapping,event));
+    }
+
+
+    public <T> ButtonObserverUIBuilder listSelectorObserver(List<T> values,
+                                                            Function<T,String> mapping,
+                                                            Consumer<onSelectEvent<T>> event)
+                                                             {
+        return ButtonObserverUI.<T>builder()
+                .addObserver(new ObserverBag<Integer>(0).getObserver(),
+                        new ListSelectorObserver<T>(values, mapping,event));
+    }
+
+
+    public ButtonObserverUIBuilder textListSelectorObserver(Observer<Integer> indexObserver, List<String> values) {
         return ButtonObserverUI.builder()
                 .addObserver(indexObserver, new TextListSelectorObserver(values));
     }

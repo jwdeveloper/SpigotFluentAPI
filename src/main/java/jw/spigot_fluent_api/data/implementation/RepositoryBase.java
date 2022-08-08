@@ -73,13 +73,11 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
 
     @Override
     public boolean insert(T data) {
-        return false;
+        return insertOne(data);
     }
 
-    @Override
-    public boolean update(UUID id, T data) {
-        return false;
-    }
+
+
 
     public boolean insertOne(T data) {
         if (data == null) {
@@ -92,9 +90,9 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
 
     }
 
-    public boolean insertMany(List<T> data) {
-        data.forEach(this::insertOne);
-        return true;
+    @Override
+    public boolean update(UUID id, T data) {
+        return updateOne(id,data);
     }
 
     public boolean updateOne(UUID id, T data) {
@@ -102,8 +100,14 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
         if (optional.isEmpty())
             return false;
 
-        return ObjectUtility.copyToObject(data, optional.get(), entityClass);
+        return ObjectUtility.copyToObjectDeep(data, optional.get());
     }
+
+    public boolean insertMany(List<T> data) {
+        data.forEach(this::insertOne);
+        return true;
+    }
+
 
     public boolean updateMany(HashMap<UUID, T> data) {
         data.forEach(this::updateOne);

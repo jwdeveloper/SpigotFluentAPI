@@ -40,10 +40,12 @@ public class SimpleCommandManger extends EventBase {
     public static boolean register(SimpleCommand command) {
         var instance = getInstance();
         if (instance.commands.containsKey(command.getName())) {
+            FluentLogger.warning("command already exists",command.getName());
             return false;
         }
         if(! instance.registerBukkitCommand(command))
         {
+            FluentLogger.warning("unable to register command ",command.getName());
             return false;
         }
         instance.commands.put(command.getName(), command);
@@ -62,9 +64,9 @@ public class SimpleCommandManger extends EventBase {
 
     private boolean registerBukkitCommand(SimpleCommand simpleCommand) {
         try {
-            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            var bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            var commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
            return commandMap.register(FluentPlugin.getPlugin().getName(), simpleCommand);
         } catch (Exception e) {
             FluentLogger.error("Unable to register command " + simpleCommand.getName(), e);

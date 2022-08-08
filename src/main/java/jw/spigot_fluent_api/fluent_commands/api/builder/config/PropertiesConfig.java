@@ -13,7 +13,6 @@ public interface PropertiesConfig extends BuilderConfig {
 
     PropertiesConfig setDescription(String description);
 
-    PropertiesConfig addOpPermission();
 
     PropertiesConfig addPermissions(String... permissions);
 }

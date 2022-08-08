@@ -1,11 +1,16 @@
 package jw.spigot_fluent_api.fluent_gui.implementation.list_ui;
 
+import jw.spigot_fluent_api.fluent_gui.EventsListenerInventoryUI;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_gui.button.button_observer.ButtonObserverUI;
 import jw.spigot_fluent_api.fluent_gui.events.ButtonUIEvent;
+import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.search_manager.SearchManager;
+import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.search_manager.events.SearchEvent;
+import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.search_manager.events.SearchFilterEvent;
 import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.FilterContentEvent;
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
 import lombok.Getter;
@@ -21,6 +26,7 @@ import java.util.function.Consumer;
 @Getter
 public class ListUI<T> extends ChestUI {
     private final ListUIManager<T> listContentManager;
+    private final SearchManager<T> searchManager;
     private final List<Consumer<Player>> onListOpen;
     private final List<Consumer<Player>> onListClose;
     private final List<ButtonUIEvent> onClickContent;
@@ -40,6 +46,7 @@ public class ListUI<T> extends ChestUI {
         onListOpen = new ArrayList<>();
         onListClose = new ArrayList<>();
         onClickContent = new ArrayList<>();
+        searchManager = new SearchManager<>();
         listContentManager = new ListUIManager<>(this);
         loadSpecialButtons();
     }
@@ -47,14 +54,33 @@ public class ListUI<T> extends ChestUI {
     protected void loadSpecialButtons() {
 
         setBorderMaterial(Material.GRAY_STAINED_GLASS_PANE);
+
         buttonSearch = ButtonObserverUI
                 .builder()
+                .addObserver(searchManager.getObserver())
                 .setLocation(0, 0)
+                .setDescription(FluentMessage.message()
+                .inBrackets("info").newLine()
+                .text("Shift + Click to reset").toArray())
                 .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(Lang.get("gui.base.search.title")))
                 .setMaterial(Material.SPYGLASS)
-                .setOnClick((player, button) ->
+                .setOnRightClick((player, button) ->
                 {
-                    player.sendMessage("Not implemented yet...");
+                    close();
+                    FluentMessage.message().inBrackets("Enter search key", ChatColor.AQUA).send(player);
+                    EventsListenerInventoryUI.registerTextInput(player, searchedKey ->
+                    {
+                        addContentFilter(input ->
+                        {
+                            return searchManager.search(searchedKey,input,player);
+                        });
+                        applyFilters();
+                        open(player);
+                    });
+                })
+                .setOnShiftClick((player, button) ->
+                {
+                    resetFilter();
                 })
                 .buildAndAdd(this);
 
@@ -90,8 +116,8 @@ public class ListUI<T> extends ChestUI {
 
     @Override
     protected final void onOpen(Player player) {
-        for (var event : onListOpen) {
-            event.accept(player);
+        for (var listOpenEvent : onListOpen) {
+            listOpenEvent.accept(player);
         }
         this.setTitle(listContentManager.pageDescription());
     }
@@ -143,6 +169,12 @@ public class ListUI<T> extends ChestUI {
         addButtons(listContentManager.getButtons());
         refreshButtons();
     }
+
+    public final void addSearchStrategy(String name,SearchFilterEvent<T> event)
+    {
+        searchManager.addSearchProfile(name, event);
+    }
+
 
     public final void onListOpen(Consumer<Player> event) {
         onListOpen.add(event);

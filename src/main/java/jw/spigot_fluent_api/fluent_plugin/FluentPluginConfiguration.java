@@ -81,6 +81,11 @@ public class FluentPluginConfiguration implements PluginConfiguration {
     }
 
     @Override
+    public PluginConfiguration useDefaultCommand(String name) {
+        return useDefaultCommand(name,(a)->{});
+    }
+
+    @Override
     public PluginConfiguration userDefaultPermission(String name) {
         defaultPermissionsDto = new DefaultPermissionsDto(name);
         return this;

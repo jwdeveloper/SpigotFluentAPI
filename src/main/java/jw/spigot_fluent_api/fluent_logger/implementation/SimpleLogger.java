@@ -73,6 +73,13 @@ public class SimpleLogger {
         var description = getErrorDescription(message, exception);
         var stackTrace = getStackTrace(exception);
 
+        if(exception == null)
+        {
+            errorMessage
+                    .merge(description)
+                    .sendToConsole();
+        }
+
         errorMessage
                 .merge(description)
                 .text(ERROR_BAR)

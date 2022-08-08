@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 public class PlayerCommandEvent  extends CommandEvent
 {
     @Getter
-    private Player playerSender;
+    private Player player;
 
     public PlayerCommandEvent(CommandSender sender, String[] commandArgs, String[] args, Object[] values, boolean result)
     {
         super(sender, commandArgs, args, values, result);
-        playerSender =  (Player) sender;
+        player =  (Player) sender;
     }
 }

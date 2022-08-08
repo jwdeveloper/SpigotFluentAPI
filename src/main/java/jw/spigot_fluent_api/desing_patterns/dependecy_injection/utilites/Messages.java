@@ -11,4 +11,6 @@ public class Messages
     public static final String INJECTION_ALREADY_EXISTS = "Class %s has been already register inside Dependency Injection container";
 
     public static final String INJECTION_CANT_CREATE = "Can not create injection of type type %s";
+
+    public static final String INJECTION_LIST_WITH_INTERFACE = "Only Interface can be use as List parameter %s";
 }

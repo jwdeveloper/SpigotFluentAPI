@@ -17,6 +17,7 @@ import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommand;
 import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommandManger;
 import jw.spigot_fluent_api.fluent_commands.api.models.CommandModel;
 import jw.spigot_fluent_api.fluent_commands.api.services.*;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;

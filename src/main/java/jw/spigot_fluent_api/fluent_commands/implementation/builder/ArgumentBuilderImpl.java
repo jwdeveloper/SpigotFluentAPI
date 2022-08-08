@@ -32,8 +32,11 @@ public class ArgumentBuilderImpl implements ArgumentBuilder {
                 argument.addValidator(new ColorValidator());
                 argument.setTabCompleter(Arrays.stream(ChatColor.values()).toList().stream().map(c -> c.name()).toList());
             }
+            case PLAYERS -> {
+                argument.setArgumentDisplayMode(ArgumentDisplay.TAB_COMPLETE);
+            }
         }
-
+        argument.setType(type);
         return this;
     }
 
@@ -75,8 +78,7 @@ public class ArgumentBuilderImpl implements ArgumentBuilder {
         return this;
     }
 
-    public CommandArgument build()
-    {
+    public CommandArgument build() {
         return argument;
     }
 }

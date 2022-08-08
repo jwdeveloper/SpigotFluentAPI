@@ -61,6 +61,9 @@ public class ButtonUI {
     private ButtonUIEvent onShiftClick = (player, button) -> {
     };
 
+    private ButtonUIEvent onRightClick = (player, button) -> {
+    };
+
     public ButtonUI() {
         buttonType = ButtonType.CLICKABLE;
         itemStack = new ItemStack(Material.DIRT);

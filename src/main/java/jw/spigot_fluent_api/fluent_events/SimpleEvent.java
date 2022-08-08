@@ -40,6 +40,7 @@ public class SimpleEvent<T extends Event> {
         if (permission != null && arg instanceof PlayerEvent playerEvent) {
             if (!playerEvent.getPlayer().hasPermission(permission)) {
                 return false;
+                //playerEvent.cancel();
             }
         }
 

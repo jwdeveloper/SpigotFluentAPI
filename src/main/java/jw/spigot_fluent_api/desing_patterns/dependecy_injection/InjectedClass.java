@@ -2,11 +2,13 @@ package jw.spigot_fluent_api.desing_patterns.dependecy_injection;
 
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.utilites.Messages;
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import lombok.Getter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -17,7 +19,7 @@ public class InjectedClass {
     private Field[] injectedFields;
 
     private Object[] constructorPayLoad;
-    private Type[] constructorTypes;
+    private Class<?>[] constructorTypes;
     private Constructor injectedConstructor;
 
     private Set<Class<?>> parentTypes;
@@ -39,11 +41,18 @@ public class InjectedClass {
         InjectedClass handler = null;
 
         if (hasInjectedConstructor()) {
-            int i = 0;
+            var i = 0;
             for (var parameter : constructorTypes) {
+                if (List.class.isAssignableFrom(parameter)) {
+                    constructorPayLoad[i] = handleList(injections, i);
+                    i++;
+                    continue;
+                }
+
                 if (!injections.containsKey(parameter)) {
                     throw new Exception(String.format(Messages.INJECTION_NOT_FOUND, parameter.getTypeName(), type.getSimpleName()));
                 }
+
                 handler = injections.get(parameter);
                 constructorPayLoad[i] = handler.getInstnace(injections);
                 i++;
@@ -67,6 +76,24 @@ public class InjectedClass {
         return instnace;
     }
 
+
+    private List handleList(HashMap<Class<?>, InjectedClass> injections, int constructorIndex) throws Exception {
+        var listArgumentType = (ParameterizedType) injectedConstructor.getGenericParameterTypes()[constructorIndex];
+        var genericType = (Class<?>) listArgumentType.getActualTypeArguments()[0];
+        if (!genericType.isInterface()) {
+            throw new Exception(String.format(
+                    Messages.INJECTION_LIST_WITH_INTERFACE,
+                    genericType.getName(),
+                    listArgumentType.getTypeName()));
+        }
+        var result = new ArrayList<>();
+        for (var injection : injections.values()) {
+            if (!injection.hasInterface(genericType))
+                continue;
+            result.add(injection.getInstnace(injections));
+        }
+        return result;
+    }
 
     public void setType(Class<?> type) {
         this.type = type;

@@ -10,6 +10,7 @@ import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
+import jw.spigot_fluent_api.utilites.PermissionsUtility;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -92,24 +93,10 @@ public class CommandServiceImpl implements CommandService {
 
         if (commandSender instanceof Player player)
         {
-            for (var permission : permissions) {
-                if (player.hasPermission(permission)) {
-                    return new ValidationResult(true, "");
-                }
-            }
-        }
-        FluentMessage.message()
-                .color(ChatColor.DARK_RED)
-                .text(Lang.get("permissions.one-required")).send(commandSender);
-
-        for (var permission : permissions) {
-            FluentMessage.message()
-                    .color(ChatColor.GRAY)
-                    .text(Emoticons.arrowRight)
-                    .space()
-                    .color(ChatColor.RED)
-                    .text(permission)
-                    .send(commandSender);
+           if(PermissionsUtility.hasOnePermission(player,permissions))
+           {
+               return new ValidationResult(true, "");
+           }
         }
         return new ValidationResult(false, "");
     }

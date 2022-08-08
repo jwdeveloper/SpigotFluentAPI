@@ -17,31 +17,41 @@ public class DependecyInjectionAction implements PluginPipeline {
     }
 
     @Override
-    public void pluginEnable(PipelineOptions options) throws Exception
-    {
+    public void pluginEnable(PipelineOptions options) throws Exception {
         FluentInjection.setInjectionContainer(builder.build());
-        if(!builder.isAutoRegistration())
+        if (!builder.isAutoRegistration())
             return;
 
-       var _classes = options.getPlugin().getTypeManager().getByAnnotation(Injection.class);
-       var registeredClasses = builder.getRegistered();
-       var toInitializeClasses = new ArrayList<Class<?>>();
-       for(var _class : _classes)
-       {
-           if(registeredClasses.contains(_class))
-               continue;
+        var _classes = options.getPlugin().getTypeManager().getByAnnotation(Injection.class);
+        var registeredClasses = builder.getRegistered();
+        var toInitializeClasses = new ArrayList<Class<?>>();
+        for (var _class : _classes) {
 
-           var injection = _class.getAnnotation(Injection.class);
-           builder.register(_class,injection.lifeTime());
 
-           if(!injection.lazyLoad())
-               toInitializeClasses.add(_class);
-       }
 
-       for(var toInitialize : toInitializeClasses)
-       {
-           FluentInjection.getInjection(toInitialize);
-       }
+            if (registeredClasses.contains(_class))
+                continue;
+            var injection = _class.getAnnotation(Injection.class);
+            if (_class.isInterface()) {
+                var subClasses = options.getPlugin().getTypeManager().getByInterface(_class);
+                for (var subClass : subClasses) {
+                    if (registeredClasses.contains(subClass))
+                        continue;
+                    builder.register(subClass, injection.lifeTime());
+                    if (!injection.lazyLoad())
+                        toInitializeClasses.add(subClass);
+                }
+                continue;
+            }
+
+            builder.register(_class, injection.lifeTime());
+            if (!injection.lazyLoad())
+                toInitializeClasses.add(_class);
+        }
+
+        for (var toInitialize : toInitializeClasses) {
+            FluentInjection.getInjection(toInitialize);
+        }
     }
 
     @Override

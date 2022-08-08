@@ -53,6 +53,4 @@ public class TextListSelectorObserver implements ButtonNotifier<Integer>
         }
         button.setDescription(description);
     }
-
-
 }

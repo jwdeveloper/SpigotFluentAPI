@@ -34,6 +34,8 @@ public class ListUIManager<T>
    {
        var filtered =  contentManager.applyFilters(realContent);
        contentManager.setContent(filtered);
+       contentManager.setPage(0);
+
    }
     public void addFilter(FilterContentEvent<T> filterContentEvent)
     {
@@ -60,7 +62,12 @@ public class ListUIManager<T>
     public String pageDescription()
     {
         var pages = contentManager.getPagesCount() == 0? 1 : contentManager.getPagesCount();
-        var page = (contentManager.getCurrentPage()+1)+"/"+(pages);
+        var currentPage = contentManager.getCurrentPage()+1;
+        if(currentPage > pages)
+        {
+            currentPage = pages;
+        }
+        var pageTitle = (currentPage)+"/"+(pages);
         var description  = new MessageBuilder();
         if(listUI.getListTitle().length() != 0)
         {
@@ -71,7 +78,7 @@ public class ListUIManager<T>
             description.inBrackets(listUI.getName());
         }
 
-        return description.space().color(ChatColor.WHITE).inBrackets(page).toString();
+        return description.space().color(ChatColor.WHITE).inBrackets(pageTitle).toString();
     }
 
     public void nextPage()

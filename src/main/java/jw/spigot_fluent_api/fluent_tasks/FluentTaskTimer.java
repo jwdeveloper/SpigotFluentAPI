@@ -53,14 +53,22 @@ public class FluentTaskTimer {
     public FluentTaskTimer run() {
         bukkitTask = Bukkit.getScheduler().runTaskTimer(FluentPlugin.getPlugin(), () ->
         {
-            if (time >= stopAfter || isCancel) {
-                if (onStop != null)
-                    onStop.accept(this);
-                stop();
-                return;
+            try
+            {
+                if (time >= stopAfter || isCancel) {
+                    if (onStop != null)
+                        onStop.accept(this);
+                    stop();
+                    return;
+                }
+                task.execute(time, this);
+                time++;
             }
-            task.execute(time, this);
-            time++;
+            catch (Exception e)
+            {
+                FluentLogger.error("FluentTask error",e);
+                stop();
+            }
         }, runAfter, speed);
         return this;
     }

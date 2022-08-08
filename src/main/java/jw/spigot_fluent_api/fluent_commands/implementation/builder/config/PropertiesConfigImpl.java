@@ -44,11 +44,6 @@ public class PropertiesConfigImpl implements PropertiesConfig {
         return this;
     }
 
-    @Override
-    public PropertiesConfig addOpPermission() {
-        model.getPermissions().add("op");
-        return this;
-    }
 
     @Override
     public PropertiesConfig addPermissions(String... permissions) {

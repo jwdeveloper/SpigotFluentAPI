@@ -44,9 +44,21 @@ public class FluentLogger
         instance.simpleLogger.info(message,params);
     }
 
-    public static void log(String message, String... params)
+    public static void log(String message, Object... params)
     {
-        instance.simpleLogger.log(message, SimpleLogger.LogType.INFO,params);
+        var res = new String[params.length];
+        for(var i =0;i<params.length;i++)
+        {
+            if(params[i] == null)
+            {
+                res[i] = "null";
+            }
+            else
+            {
+                res[i] = params[i].toString();
+            }
+        }
+        instance.simpleLogger.log(message, SimpleLogger.LogType.INFO,res);
     }
 
 }

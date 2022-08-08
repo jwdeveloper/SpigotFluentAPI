@@ -1,5 +1,7 @@
 package jw.spigot_fluent_api.utilites.files.json;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.gson.*;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.utilites.files.FileUtility;
@@ -11,10 +13,7 @@ import jw.spigot_fluent_api.utilites.files.json.execution.JsonIgnoreAnnotationSk
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
@@ -35,6 +34,19 @@ public final class JsonUtility implements FileUtility {
         return false;
     }
 
+
+    public static <T> T load(InputStream inputStream, Class<T> type) {
+        try {
+            var json = CharStreams.toString(new InputStreamReader(
+                    inputStream, Charsets.UTF_8));
+            var gson = getGson();
+            return gson.fromJson(json, type);
+        } catch (IOException e) {
+            FluentLogger.error("Load File: " + type.getSimpleName(), e);
+        }
+        return null;
+    }
+
     public static <T> T load(String path, String fileName, Class<T> type) {
         String fullPath = getFullPath(path, fileName);
         if (!FileUtility.isPathValid(path)) {
@@ -52,6 +64,23 @@ public final class JsonUtility implements FileUtility {
         return null;
     }
 
+    public static <T> ArrayList<T> loadList(InputStream inputStream, Class<T> type) {
+        ArrayList<T> result = new ArrayList<>();
+        try {
+            var json = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+            Gson gson = getGson();
+            JsonArray jsonArray = new JsonParser().parse(json).getAsJsonArray();
+            for (JsonElement jsonElement : jsonArray)
+                result.add(gson.fromJson(jsonElement, type));
+
+            inputStream.close();
+            return result;
+        } catch (IOException e) {
+            FluentLogger.error("Load File: " + type.getSimpleName(), e);
+        }
+        return result;
+    }
+
     public static <T> ArrayList<T> loadList(String path, String fileName, Class<T> type) {
         ArrayList<T> result = new ArrayList<>();
         String fullPath = getFullPath(path, fileName);
@@ -59,9 +88,9 @@ public final class JsonUtility implements FileUtility {
             ensureFile(path, fileName, "[]");
         }
         try (FileReader reader = new FileReader(fullPath)) {
-            Gson gson = getGson();
-            JsonArray jsonArray = new JsonParser().parse(reader).getAsJsonArray();
-            for (JsonElement jsonElement : jsonArray)
+            var gson = getGson();
+            var jsonArray = new JsonParser().parse(reader).getAsJsonArray();
+            for (var jsonElement : jsonArray)
                 result.add(gson.fromJson(jsonElement, type));
             reader.close();
             return result;

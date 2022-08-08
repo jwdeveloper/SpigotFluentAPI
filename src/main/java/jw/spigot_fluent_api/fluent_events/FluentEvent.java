@@ -1,5 +1,6 @@
 package jw.spigot_fluent_api.fluent_events;
 
+import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 
+import java.lang.invoke.TypeDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -71,7 +73,12 @@ public class FluentEvent implements Listener {
         Bukkit.getPluginManager().registerEvent(eventType, getInstnace(), EventPriority.NORMAL,
                 (listener, event) ->
                 {
-                    fluentEvent.invoke((T)event);
+                    FluentLogger.log(event.getEventName(),event.getClass().getSimpleName());
+                    if(!event.getClass().getSimpleName().equalsIgnoreCase(eventType.getSimpleName()))
+                    {
+                        return;
+                    }
+                    fluentEvent.invoke((T) event);
                 }, FluentPlugin.getPlugin());
         return fluentEvent;
     }

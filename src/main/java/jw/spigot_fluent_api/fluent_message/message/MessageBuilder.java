@@ -122,6 +122,11 @@ public class MessageBuilder
         return this;
     }
 
+    public MessageBuilder inBrackets(String message, ChatColor color) {
+        stringBuilder.append(color).append("[").append(message).append("]").append(ChatColor.RESET);
+        return this;
+    }
+
     public MessageBuilder withFix(String message, String fix) {
         stringBuilder.append(fix).append(message).append(fix);
         return this;
@@ -190,10 +195,13 @@ public class MessageBuilder
 
 
     public void send(CommandSender... receivers) {
-        var message = toString();
+        var messages = toArray();
         for (var receiver : receivers)
         {
-            receiver.sendMessage(message);
+            for(var message : messages)
+            {
+                receiver.sendMessage(message);
+            }
         }
     }
     public void sendToConsole() {
@@ -222,15 +230,9 @@ public class MessageBuilder
             System.out.println(stringBuilder.toString());
             return;
         }
-        var message = toString();
         for(var player : Bukkit.getOnlinePlayers())
         {
-            player.sendMessage(message);
+            send(player);
         }
-    }
-
-    public void sendToPlayersWithPermission(String permission, Player ... players)
-    {
-
     }
 }

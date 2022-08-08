@@ -24,11 +24,7 @@ public abstract class DataModel {
     public <T extends DataModel> Optional<T> copy() {
         try {
 
-            var result = (T) ObjectUtility.copyObject(this, this.getClass());
-            result.setUuid(getUuid());
-            result.setName(getName());
-            result.setDescription(getDescription());
-            result.setIcon(getIcon());
+            var result = (T) ObjectUtility.copyObjectDeep(this,getClass());
             return Optional.of(result);
         } catch (Exception e) {
             FluentLogger.error("Can not copy object for class " + this.getClass().getSimpleName(), e);

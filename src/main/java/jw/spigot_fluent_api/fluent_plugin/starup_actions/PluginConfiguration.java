@@ -33,5 +33,7 @@ public interface PluginConfiguration {
 
     PluginConfiguration useDefaultCommand(String name, Consumer<CommandBuilder> consumer);
 
+    PluginConfiguration useDefaultCommand(String name);
+
     PluginConfiguration userDefaultPermission(String name);
 }
