@@ -1,21 +1,21 @@
 package unit.desing_patterns.dependecy_injection;
 
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.event_handler.EventHandler;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.event_handler.events.OnInjectionEvent;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.event_handler.events.OnRegistrationEvent;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
-import jw.spigot_fluent_api.fluent_logger.api.SimpleLogger;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.events.EventHandler;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.events.events.OnInjectionEvent;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.events.events.OnRegistrationEvent;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
+import jw.fluent_api.minecraft.logger.api.SimpleLogger;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import jw.spigot_fluent_api.utilites.java.Pair;
+import jw.fluent_api.utilites.java.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -100,7 +100,7 @@ public class ContainerImplNewTests
         injections.put(type, injectionInfo);
 
         when(instanceProviderMock.getInstance(injectionInfo, injections)).thenReturn(instance);
-        when(eventHandlerMock.OnInjection(new OnInjectionEvent(type,injectionInfo,instance))).thenReturn(instance);
+        when(eventHandlerMock.OnInjection(new OnInjectionEvent(type,injectionInfo,instance, injections))).thenReturn(instance);
         //Act
         var result = sut.find(type);
 

@@ -1,6 +1,6 @@
 package unit.pagination;
 
-import jw.spigot_fluent_api.utilites.pagination.Pagination;
+import jw.fluent_api.utilites.pagination.Pagination;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

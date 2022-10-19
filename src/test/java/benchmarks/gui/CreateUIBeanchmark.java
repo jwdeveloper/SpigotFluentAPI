@@ -1,10 +1,10 @@
 package benchmarks.gui;
 
 import unit.desing_patterns.mediator.SpigotTestBase;
-import jw.spigot_fluent_api.fluent_gui.implementation.chest_ui.ChestUI;
-import jw.spigot_fluent_api.fluent_gui.implementation.crud_list_ui.CrudListUI;
-import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.ListUI;
-import jw.spigot_fluent_api.utilites.benchmark.Benchmarker;
+import jw.fluent_api.minecraft.gui.implementation.chest_ui.ChestUI;
+import jw.fluent_api.minecraft.gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent_api.minecraft.gui.implementation.list_ui.ListUI;
+import jw.fluent_api.utilites.benchmark.Benchmarker;
 import org.junit.Test;
 
 public class CreateUIBeanchmark extends SpigotTestBase

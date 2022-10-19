@@ -2,8 +2,8 @@ package integration.database.factories;
 
 import integration.database.example_data.ExampleContext;
 import integration.database.example_data.UserExampleModel;
-import jw.spigot_fluent_api.database.mysql_db.factories.SqlDbContextFactory;
-import jw.spigot_fluent_api.database.mysql_db.models.SqlTable;
+import jw.fluent_api.database.mysql.factories.SqlDbContextFactory;
+import jw.fluent_api.database.mysql.models.SqlTable;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 

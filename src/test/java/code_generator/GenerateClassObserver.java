@@ -1,7 +1,7 @@
 package code_generator;
 
 import unit.assets.PlayerStats;
-import jw.spigot_fluent_api.utilites.code_generator.ObserverClassGenerator;
+import jw.fluent_api.utilites.code_generator.ObserverClassGenerator;
 import org.junit.Before;
 import org.junit.Test;
 

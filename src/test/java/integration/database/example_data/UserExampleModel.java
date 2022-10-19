@@ -1,10 +1,10 @@
 package integration.database.example_data;
 
-import jw.spigot_fluent_api.database.api.database_table.annotations.Column;
-import jw.spigot_fluent_api.database.api.database_table.annotations.Key;
-import jw.spigot_fluent_api.database.api.database_table.annotations.Required;
-import jw.spigot_fluent_api.database.api.database_table.annotations.Table;
-import jw.spigot_fluent_api.database.mysql_db.utils.SqlTypes;
+import jw.fluent_api.database.api.database_table.annotations.Column;
+import jw.fluent_api.database.api.database_table.annotations.Key;
+import jw.fluent_api.database.api.database_table.annotations.Required;
+import jw.fluent_api.database.api.database_table.annotations.Table;
+import jw.fluent_api.database.mysql.utils.SqlTypes;
 import lombok.Data;
 
 import java.util.UUID;

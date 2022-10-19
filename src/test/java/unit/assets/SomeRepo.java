@@ -1,7 +1,7 @@
 package unit.assets;
 
 import unit.assets.interfaces.TestingInterface;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
 
 import java.util.List;
 

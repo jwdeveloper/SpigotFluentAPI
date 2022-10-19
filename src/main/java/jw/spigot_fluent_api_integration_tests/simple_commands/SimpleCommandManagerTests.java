@@ -1,9 +1,9 @@
 package jw.spigot_fluent_api_integration_tests.simple_commands;
 
-import jw.spigot_fluent_api.fluent_commands.FluentCommand;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommand;
-import jw.spigot_fluent_api.fluent_commands.implementation.SimpleCommandManger;
+import jw.fluent_api.minecraft.commands.FluentCommand;
+import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_api.minecraft.commands.implementation.SimpleCommand;
+import jw.fluent_api.minecraft.commands.implementation.SimpleCommandManger;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import jw.spigot_fluent_api_integration_tests.SpigotTest;
 import jw.spigot_fluent_api_integration_tests.spigotAssertions.SpigotAssertion;

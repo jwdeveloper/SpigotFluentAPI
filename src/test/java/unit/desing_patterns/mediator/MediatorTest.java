@@ -1,6 +1,6 @@
 package unit.desing_patterns.mediator;
-import jw.spigot_fluent_api.desing_patterns.mediator.implementation.SimpleMediator;
-import jw.spigot_fluent_api.desing_patterns.mediator.interfaces.MediatorHandler;
+import jw.fluent_api.desing_patterns.mediator.implementation.SimpleMediator;
+import jw.fluent_api.desing_patterns.mediator.api.MediatorHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

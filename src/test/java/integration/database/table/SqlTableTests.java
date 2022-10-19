@@ -3,7 +3,7 @@ package integration.database.table;
 import integration.database.assets.SqlTestBase;
 import integration.database.example_data.OrderExampleModel;
 import integration.database.example_data.UserExampleModel;
-import jw.spigot_fluent_api.database.mysql_db.models.SqlTable;
+import jw.fluent_api.database.mysql.models.SqlTable;
 import lombok.SneakyThrows;
 import org.junit.*;
 import org.junit.runners.MethodSorters;

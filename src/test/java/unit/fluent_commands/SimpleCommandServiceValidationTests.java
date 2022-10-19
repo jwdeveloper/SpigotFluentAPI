@@ -1,10 +1,10 @@
 package unit.fluent_commands;
 
-import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
-import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
-import jw.spigot_fluent_api.fluent_commands.implementation.validators.CommandArgumentValidator;
-import jw.spigot_fluent_api.fluent_commands.implementation.validators.BoolValidator;
-import jw.spigot_fluent_api.fluent_commands.implementation.validators.NumberValidator;
+import jw.fluent_api.minecraft.commands.api.models.CommandArgument;
+import jw.fluent_api.minecraft.commands.implementation.services.CommandServiceImpl;
+import jw.fluent_api.minecraft.commands.implementation.validators.CommandArgumentValidator;
+import jw.fluent_api.minecraft.commands.implementation.validators.BoolValidator;
+import jw.fluent_api.minecraft.commands.implementation.validators.NumberValidator;
 import jw.spigot_fluent_api_integration_tests.SpigotIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;

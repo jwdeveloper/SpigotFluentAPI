@@ -1,8 +1,8 @@
 package unit.fluent_commands;
 
-import jw.spigot_fluent_api.fluent_commands.api.enums.ArgumentType;
-import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
-import jw.spigot_fluent_api.fluent_commands.implementation.services.CommandServiceImpl;
+import jw.fluent_api.minecraft.commands.api.enums.ArgumentType;
+import jw.fluent_api.minecraft.commands.api.models.CommandArgument;
+import jw.fluent_api.minecraft.commands.implementation.services.CommandServiceImpl;
 import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,7 +1,7 @@
 package unit.assets;
 
-import jw.spigot_fluent_api.fluent_mapper.implementation.SimpleMapper;
-import jw.spigot_fluent_api.fluent_mapper.api.IMap;
+import jw.fluent_api.mapper.implementation.SimpleMapper;
+import jw.fluent_api.mapper.api.IMap;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package integration.database.builder;
 
-import jw.spigot_fluent_api.database.mysql_db.query_builder.SqlQueryBuilder;
+import jw.fluent_api.database.mysql.query_builder.SqlQueryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 

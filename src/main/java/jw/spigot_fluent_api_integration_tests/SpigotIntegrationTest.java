@@ -1,8 +1,7 @@
 package jw.spigot_fluent_api_integration_tests;
 
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.minecraft.messages.message.MessageBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

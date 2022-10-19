@@ -1,6 +1,6 @@
 package unit.files;
 
-import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent_api.utilites.files.json.JsonUtility;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

@@ -1,12 +1,11 @@
 package unit.desing_patterns.dependecy_injection;
 
 
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.implementation.containers.SearchContainerImpl;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
 import unit.assets.annotations.TestingAnnotation;
 import unit.assets.interfaces.TestingInterface;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

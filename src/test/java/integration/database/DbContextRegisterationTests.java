@@ -2,7 +2,7 @@ package integration.database;
 
 import integration.database.assets.SqlTestBase;
 import integration.database.example_data.ExampleContext;
-import jw.spigot_fluent_api.database.mysql_db.MySqlDbExtention;
+import jw.fluent_api.database.mysql.MySqlDbExtention;
 import lombok.SneakyThrows;
 import org.junit.Test;
 

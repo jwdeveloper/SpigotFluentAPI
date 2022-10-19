@@ -2,12 +2,12 @@ package integration.database.assets;
 
 import integration.database.example_data.OrderExampleModel;
 import integration.database.example_data.UserExampleModel;
-import jw.spigot_fluent_api.database.mysql_db.factories.SqlConnectionFactory;
-import jw.spigot_fluent_api.database.mysql_db.models.SqlConnection;
-import jw.spigot_fluent_api.database.mysql_db.models.SqlTable;
-import jw.spigot_fluent_api.fluent_logger.FluentLogger;
-import jw.spigot_fluent_api.utilites.files.FileUtility;
-import jw.spigot_fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent_api.database.mysql.factories.SqlConnectionFactory;
+import jw.fluent_api.database.mysql.models.SqlConnection;
+import jw.fluent_api.database.mysql.models.SqlTable;
+import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.utilites.files.FileUtility;
+import jw.fluent_api.utilites.files.json.JsonUtility;
 import lombok.SneakyThrows;
 import org.junit.AfterClass;
 import org.junit.Assert;

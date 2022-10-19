@@ -1,7 +1,6 @@
 package unit.pagination;
 
-import jw.spigot_fluent_api.fluent_gui.implementation.list_ui.content_manger.ContentManager;
-import org.bukkit.Bukkit;
+import jw.fluent_api.minecraft.gui.implementation.list_ui.content_manger.ContentManager;
 import org.junit.Test;
 
 import java.util.List;

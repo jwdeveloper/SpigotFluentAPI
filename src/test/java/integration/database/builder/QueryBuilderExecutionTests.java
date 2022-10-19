@@ -2,8 +2,8 @@ package integration.database.builder;
 
 import integration.database.assets.SqlTestBase;
 import integration.database.example_data.UserExampleModel;
-import jw.spigot_fluent_api.database.mysql_db.factories.SqlTableQueryFactory;
-import jw.spigot_fluent_api.database.mysql_db.query_builder.SqlQueryBuilder;
+import jw.fluent_api.database.mysql.factories.SqlTableQueryFactory;
+import jw.fluent_api.database.mysql.query_builder.SqlQueryBuilder;
 import lombok.SneakyThrows;
 import org.junit.*;
 import org.junit.runners.MethodSorters;

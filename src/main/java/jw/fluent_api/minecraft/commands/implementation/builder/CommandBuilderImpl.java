@@ -1,0 +1,90 @@
+package jw.fluent_api.minecraft.commands.implementation.builder;
+
+import jw.fluent_api.minecraft.commands.api.builder.BuilderConfig;
+import jw.fluent_api.minecraft.commands.api.builder.CommandBuilder;
+import jw.fluent_api.minecraft.commands.api.builder.config.ArgumentConfig;
+import jw.fluent_api.minecraft.commands.api.builder.config.EventConfig;
+import jw.fluent_api.minecraft.commands.api.builder.config.PropertiesConfig;
+import jw.fluent_api.minecraft.commands.api.builder.config.SubCommandConfig;
+import jw.fluent_api.minecraft.commands.api.services.CommandService;
+import jw.fluent_api.minecraft.commands.api.services.EventsService;
+import jw.fluent_api.minecraft.commands.api.services.MessagesService;
+import jw.fluent_api.minecraft.commands.implementation.builder.config.ArgumentConfigImpl;
+import jw.fluent_api.minecraft.commands.implementation.builder.config.EventConfigImpl;
+import jw.fluent_api.minecraft.commands.implementation.builder.config.PropertiesConfigImpl;
+import jw.fluent_api.minecraft.commands.implementation.builder.config.SubCommandConfigImpl;
+import jw.fluent_api.minecraft.commands.implementation.services.CommandServiceImpl;
+import jw.fluent_api.minecraft.commands.implementation.services.EventsServiceImpl;
+import jw.fluent_api.minecraft.commands.implementation.services.MessageServiceImpl;
+import jw.fluent_api.minecraft.commands.implementation.SimpleCommand;
+import jw.fluent_api.minecraft.commands.implementation.SimpleCommandManger;
+import jw.fluent_api.minecraft.commands.api.models.CommandModel;
+import jw.fluent_api.fluent_commands.api.services.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
+public class CommandBuilderImpl implements CommandBuilder {
+    private final EventsService eventsService;
+
+    private final CommandService commandService;
+
+    private final MessagesService messagesService;
+
+    private final List<SimpleCommand> subCommands;
+
+    private final CommandModel model;
+
+    private final Map<Consumer, BuilderConfig> configs;
+
+    public CommandBuilderImpl(String commandName) {
+        configs = new HashMap<>();
+        eventsService = new EventsServiceImpl();
+        commandService = new CommandServiceImpl();
+        messagesService = new MessageServiceImpl();
+        subCommands = new ArrayList<>();
+        model = new CommandModel();
+        model.setName(commandName);
+    }
+
+    @Override
+    public CommandBuilder propertiesConfig(Consumer<PropertiesConfig> config) {
+        configs.put(config, new PropertiesConfigImpl(model));
+        return this;
+    }
+
+    @Override
+    public CommandBuilder eventsConfig(Consumer<EventConfig> config) {
+        configs.put(config, new EventConfigImpl(eventsService));
+        return this;
+    }
+
+    @Override
+    public CommandBuilder argumentsConfig(Consumer<ArgumentConfig> config) {
+        configs.put(config, new ArgumentConfigImpl(model));
+        return this;
+    }
+
+    @Override
+    public CommandBuilder subCommandsConfig(Consumer<SubCommandConfig> config) {
+        configs.put(config, new SubCommandConfigImpl(subCommands));
+        return this;
+    }
+
+    @Override
+    public SimpleCommand buildSubCommand() {
+        for (var configurationSet : configs.entrySet()) {
+            configurationSet.getKey().accept(configurationSet.getValue());
+        }
+        return new SimpleCommand(model, subCommands, commandService, messagesService, eventsService);
+    }
+
+    public SimpleCommand build() {
+        var result = buildSubCommand();
+        SimpleCommandManger.register(result);
+        return result;
+    }
+}
