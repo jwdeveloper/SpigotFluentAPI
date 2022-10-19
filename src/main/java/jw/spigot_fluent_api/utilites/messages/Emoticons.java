@@ -36,6 +36,7 @@ public class Emoticons
     public static final String arrowRight = "→";
 
     public static String square = "■";
+    public static String square_not_filled = "□";
     public static String heart = "❤";
     public static String rotatedHeart = "❥";
     public static String man = "웃";

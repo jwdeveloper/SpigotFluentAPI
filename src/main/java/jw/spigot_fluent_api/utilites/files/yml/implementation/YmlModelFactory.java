@@ -90,10 +90,6 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
         result.setField(field);
         result.setName(field.getName());
 
-
-
-
-
         var annotation = field.getAnnotation(YmlProperty.class);
         if (annotation == null) {
             return result;

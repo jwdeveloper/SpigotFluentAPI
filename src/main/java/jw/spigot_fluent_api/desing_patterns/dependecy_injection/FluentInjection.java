@@ -1,8 +1,11 @@
 package jw.spigot_fluent_api.desing_patterns.dependecy_injection;
 
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.implementation.containers.SpigotPlayersContainer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FluentInjection {
 
@@ -12,39 +15,36 @@ public class FluentInjection {
     }
 
     private static FluentInjection instance;
-    private Container container;
-    private PlayerCatchConteiner catchConteiner;
+    private SearchContainer pluginContainer;
+    private SpigotPlayersContainer playerContainer;
 
-    public FluentInjection()
+
+    public static <T> T findInjection(Class<T> injectionType)
     {
-       container = new Container();
-       catchConteiner = new PlayerCatchConteiner();
+        return (T)instance.pluginContainer.find(injectionType);
     }
 
-    public static <T> T getInjection(Class<T> injectionType)
+    public static <T> T findPlayerInjection(Class<T> injectionType, UUID uuid)
     {
-        return instance.container.get(injectionType);
+        return instance.playerContainer.find(injectionType,uuid);
     }
 
-    public static <T> T getPlayerInjection(Class<T> injectionType, UUID uuid)
+    public static <T> T findPlayerInjection(Class<T> injectionType, Player player)
     {
-        return instance.catchConteiner.getPlayerCatchedObject(injectionType,uuid);
+        return instance.playerContainer.find(injectionType,player.getUniqueId());
     }
 
-    public static <T> T getPlayerInjection(Class<T> injectionType, Player player)
+    public static SearchContainer getContainer()
     {
-        return instance.catchConteiner.getPlayerCatchedObject(injectionType,player.getUniqueId());
+        return instance.pluginContainer;
     }
 
-    public static Container getInjectionContainer() {
-        return instance.container;
-    }
-
-    public static void setInjectionContainer(Container container) {
+    public static void setContainer(SearchContainer container)
+    {
         if(container == null)
             return;
 
-        instance.container = container;
-        instance.catchConteiner.setContainer(container);
+        instance.pluginContainer = container;
+        instance.playerContainer = new SpigotPlayersContainer(container, new ConcurrentHashMap<>());
     }
 }

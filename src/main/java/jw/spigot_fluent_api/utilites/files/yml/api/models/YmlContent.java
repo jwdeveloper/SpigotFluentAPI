@@ -1,6 +1,8 @@
 package jw.spigot_fluent_api.utilites.files.yml.api.models;
 
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
+import jw.spigot_fluent_api.fluent_message.FluentMessage;
+import jw.spigot_fluent_api.utilites.files.yml.implementation.YmlModelFactory;
 import jw.spigot_fluent_api.utilites.java.JavaUtils;
 import lombok.Data;
 import org.bukkit.ChatColor;
@@ -12,6 +14,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Data
@@ -57,33 +61,10 @@ public class YmlContent
 
           if (field.getType().isAssignableFrom(List.class))
           {
-               try
-               {
-                    ParameterizedType arrayType = (ParameterizedType) field.getGenericType();
-                    FluentLogger.info("List",  arrayType.getRawType().getTypeName());
-
-                    var memberType = arrayType.getActualTypeArguments()[0];
-                    FluentLogger.info("ListGeneric",arrayType.getActualTypeArguments()[0].getTypeName());
-
-                  //  new ArrayList();
-                    Object list =  new ArrayList();
-                //   var value =section.getList(getFullPath(), inst);
-                    field.setAccessible(true);
-                    field.set(object, list);
-                    field.setAccessible(false);
-
-
-                    var obj = Class.forName( memberType.getTypeName()).newInstance();
-
-                    Method add = List.class.getDeclaredMethod("add",Object.class);
-                   // add.invoke(list, obj);
-
-                    return;
-               }
-               catch (Exception e)
-               {
-                    FluentLogger.error("Could not load list section",e);
-               }
+               var value = getListContent(section);
+               field.setAccessible(true);
+               field.set(object, value);
+               field.setAccessible(false);
           }
 
           var value = section.get(getFullPath());
@@ -105,5 +86,75 @@ public class YmlContent
           field.setAccessible(true);
           field.set(object, value);
           field.setAccessible(false);
+     }
+
+//todo refactor
+     public Object getListContent(ConfigurationSection section)
+     {
+          List result = new ArrayList<>();
+          try
+          {
+               ParameterizedType arrayType = (ParameterizedType) field.getGenericType();
+             //  FluentLogger.info("List",  arrayType.getRawType().getTypeName());
+
+               var memberType = arrayType.getActualTypeArguments()[0];
+            //   FluentLogger.info("ListGeneric",arrayType.getActualTypeArguments()[0].getTypeName());
+
+               var membersYml =section.getConfigurationSection(getFullPath()).getKeys(false);
+
+               var memberClass =Class.forName(memberType.getTypeName());
+               var memberObject = memberClass.newInstance();
+               var contents = new YmlModelFactory()
+                       .createModel(memberObject)
+                       .getContents();
+
+               var methodAdd = result.getClass().getDeclaredMethod("add",Object.class);
+               for(var child : membersYml)
+               {
+                    if(child.contains("-"))
+                    {
+                         var msg =FluentMessage.message()
+                                 .text("Bad formatting of yaml section").space()
+                                 .text(getFullPath()+" "+child,ChatColor.WHITE).space()
+                                 .text("List members in config can not contains",ChatColor.YELLOW).space()
+                                 .text(" - ",ChatColor.WHITE).space()
+                                 .text("prefix, remove it and",ChatColor.YELLOW).space()
+                                 .text("reload",ChatColor.WHITE).space()
+                                 .text("server",ChatColor.YELLOW);
+                         throw new Exception(msg.toString());
+                    }
+                    var temp =memberClass.newInstance();
+                    var childPath =section
+                            .getConfigurationSection(getFullPath()+"."+child)
+                            .getKeys(false);
+                    if(childPath == null)
+                    {
+                         continue;
+                    }
+
+                    for(var content : contents)
+                    {
+                        // FluentLogger.success("Name",content.getName());
+                         if(!childPath.contains(content.getName()))
+                         {
+                              continue;
+                         }
+                         var path = getFullPath()+"."+child+"."+content.getName();
+                        // FluentLogger.success("fullpath",path);
+                         var value = section.get(path);
+
+                         content.getField().setAccessible(true);
+                         content.getField().set(temp,value);
+                    }
+
+                    methodAdd.invoke(result,temp);
+               }
+               return result;
+          }
+          catch (Exception e)
+          {
+               FluentLogger.error("Could not load list section",e);
+          }
+          return result;
      }
 }

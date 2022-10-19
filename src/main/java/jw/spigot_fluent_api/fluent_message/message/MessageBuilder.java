@@ -2,6 +2,8 @@ package jw.spigot_fluent_api.fluent_message.message;
 
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -204,6 +206,15 @@ public class MessageBuilder
             }
         }
     }
+
+
+    public void sendActionBar(Player player)
+    {
+        var tc = new TextComponent();
+        tc.setText(this.toString());
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, tc);
+    }
+
     public void sendToConsole() {
         if(Bukkit.getServer()==null)
         {

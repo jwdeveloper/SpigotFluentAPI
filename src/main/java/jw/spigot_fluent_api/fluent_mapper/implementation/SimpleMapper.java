@@ -1,13 +1,15 @@
 package jw.spigot_fluent_api.fluent_mapper.implementation;
 
 import jw.spigot_fluent_api.desing_patterns.dependecy_injection.FluentInjection;
-import jw.spigot_fluent_api.desing_patterns.dependecy_injection.enums.LifeTime;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.spigot_fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.spigot_fluent_api.desing_patterns.mediator.implementation.Messages;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_mapper.api.Mapper;
 import jw.spigot_fluent_api.fluent_mapper.api.MapperProfile;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.utilites.java.KeySet;
+import lombok.SneakyThrows;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class SimpleMapper implements Mapper {
             final var mappingProfileClass = mappingProfiles.get(keySet);
             if (mappingProfileClass == null)
                 return null;
-            final var mappingProfile = FluentInjection.getInjection(mappingProfileClass);
+            final var mappingProfile = FluentInjection.findInjection(mappingProfileClass);
             return (Output) mappingProfile.configureMapping(input);
         } catch (Exception e) {
             FluentLogger.error("Mapping exception", e);
@@ -44,7 +46,7 @@ public class SimpleMapper implements Mapper {
         final var mappingProfileClass = mappingProfiles.get(keySet);
         if (mappingProfileClass == null)
             return result;
-        final var mappingProfile = FluentInjection.getInjection(mappingProfileClass);
+        final var mappingProfile = FluentInjection.findInjection(mappingProfileClass);
         try {
             for (var input : inputs) {
                 var mapped = (Output) mappingProfile.configureMapping(input);
@@ -58,6 +60,7 @@ public class SimpleMapper implements Mapper {
     }
 
 
+    @SneakyThrows
     public void registerMappingProfile(Class<? extends MapperProfile> mappingProfileClass) {
         ParameterizedType mediatorInterface = null;
         for (var _interface : mappingProfileClass.getGenericInterfaces()) {
@@ -78,7 +81,8 @@ public class SimpleMapper implements Mapper {
             FluentLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
             return;
         }
-        FluentInjection.getInjectionContainer().register(mappingProfileClass, LifeTime.SINGLETON);
+        var registrationInfo = new RegistrationInfo(null,mappingProfileClass,null,LifeTime.SINGLETON, RegistrationType.OnlyImpl);
+        FluentInjection.getContainer().register(registrationInfo);
         mappingProfiles.put(pair, mappingProfileClass);
     }
 

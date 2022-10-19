@@ -4,13 +4,16 @@ import com.google.common.collect.ImmutableList;
 import jw.spigot_fluent_api.fluent_commands.FluentCommand;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_plugin.config.PluginConfigFactory;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.CommandOptions;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.CommandOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
 import jw.spigot_fluent_api.fluent_plugin.managers.TypeManager;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.PluginConfiguration;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginConfiguration;
 import jw.spigot_fluent_api.fluent_plugin.config.ConfigFile;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PluginOptionsImpl;
 import jw.spigot_fluent_api.utilites.java.ClassTypeUtility;
+import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,32 +57,32 @@ public abstract class FluentPlugin extends JavaPlugin {
         try {
             var config =  new PluginConfigFactory().create(this);
             OnConfiguration(configuration, config);
+
             pluginPipeline = configuration.getConfigurationActions();
 
-            var defaultCommandDto = configuration.getDefaultCommand();
-            var defaultPermissonDto = configuration.getDefaultPermissionsDto();
-            var cmd = FluentCommand.create(defaultCommandDto.getName());
+            var pluginOptions = configuration.getPluginOptions();
+            var commandOptions = createDefaultCommand(pluginOptions);
 
-            var options = new PipelineOptions(this,
-                    new CommandOptions(defaultCommandDto.getName(),cmd),
-                    defaultPermissonDto,
+            var options = new PipelineOptions(
+                    this,
+                    commandOptions,
+                    pluginOptions,
                     config);
             for (var action : pluginPipeline) {
                 try {
                     action.pluginEnable(options);
                 } catch (Exception e) {
                     isInitialized = false;
-                    FluentLogger.error("Plugin can not be loaded since ", e);
-                    return;
+                    throw e;
                 }
             }
-            defaultCommandDto.getConsumer().accept(cmd);
-            cmd.build();
+            commandOptions.getBuilder().build();
             OnFluentPluginEnable();
 
             isInitialized = true;
         } catch (Exception e) {
-            FluentLogger.error("Unable to load plugin ", e);
+            FluentLogger.error("Plugin can not be loaded since ", e);
+            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
@@ -97,6 +100,13 @@ public abstract class FluentPlugin extends JavaPlugin {
                 return;
             }
         }
+    }
+
+    private CommandOptions createDefaultCommand(PluginOptionsImpl pluginOptions)
+    {
+        var cmdName=pluginOptions.getCommandName();
+        var cmd = FluentCommand.create(cmdName);
+        return new CommandOptions(cmdName,cmd);
     }
 
     public FluentPluginConfiguration configuration() {

@@ -3,7 +3,7 @@ package jw.spigot_fluent_api.fluent_gui.button;
 import jw.spigot_fluent_api.fluent_gui.InventoryUI;
 import jw.spigot_fluent_api.fluent_gui.enums.ButtonType;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
-import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
+import jw.spigot_fluent_api.fluent_plugin.default_actions.implementation.languages.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 

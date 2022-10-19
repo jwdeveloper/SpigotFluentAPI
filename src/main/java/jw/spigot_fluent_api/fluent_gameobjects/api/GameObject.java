@@ -169,6 +169,20 @@ public class GameObject implements GameComponent {
     }
 
     @Override
+    public <T extends GameComponent> T addGameComponent(Class<T> tClass)
+    {
+        try {
+            var obj = tClass.newInstance();
+            return  addGameComponent(obj);
+        }
+        catch (Exception e)
+        {
+            FluentLogger.error("Unable to add gameobject "+tClass.getSimpleName(),e);
+            return null;
+        }
+    }
+
+    @Override
     public final void addGameComponent(GameComponent... gameComponents) {
         for (var component : gameComponents) {
             addGameComponent(component);

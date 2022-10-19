@@ -2,19 +2,22 @@ package jw.spigot_fluent_api.fluent_plugin.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-public interface ConfigFile
-{
-    public Object getRequired(String name) throws Exception;
+public interface ConfigFile {
+    Object getRequired(String name) throws Exception;
 
-    public <T> T get(String name);
+    <T> T getOrCreate(String path, T defaultValue, String... description);
 
-    public <T> T toObject(Class<T> clazz);
+    <T> T getOrCreate(ConfigProperty<T> configProperty);
 
-    public void save();
+    <T> T get(String name);
 
-    public FileConfiguration config();
+    <T> T toObject(Class<T> clazz);
 
-    public boolean created();
+    void save();
 
-    public boolean updated();
+    FileConfiguration config();
+
+    boolean created();
+
+    boolean updated();
 }

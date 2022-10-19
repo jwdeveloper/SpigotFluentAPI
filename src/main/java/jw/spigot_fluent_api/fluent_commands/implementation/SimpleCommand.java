@@ -12,12 +12,14 @@ import jw.spigot_fluent_api.fluent_commands.api.models.CommandArgument;
 import jw.spigot_fluent_api.fluent_commands.api.models.CommandModel;
 import jw.spigot_fluent_api.fluent_commands.api.services.*;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
+import jw.spigot_fluent_api.utilites.PermissionsUtility;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 
 import java.util.ArrayList;
@@ -38,11 +40,14 @@ public class SimpleCommand extends Command {
     @Setter
     private boolean active = true;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private EventsService eventsService;
-    @Getter @Setter
+    @Getter
+    @Setter
     private CommandService commandService;
-    @Getter @Setter
+    @Getter
+    @Setter
     private MessagesService messagesService;
 
     public SimpleCommand(CommandModel commandModel) {
@@ -52,6 +57,7 @@ public class SimpleCommand extends Command {
                 new MessageServiceImpl(),
                 new EventsServiceImpl());
     }
+
     public SimpleCommand(CommandModel commandModel, List<SimpleCommand> simpleCommands) {
         this(commandModel,
                 simpleCommands,
@@ -64,8 +70,7 @@ public class SimpleCommand extends Command {
                          List<SimpleCommand> simpleCommands,
                          CommandService commandService,
                          MessagesService messagesService,
-                         EventsService eventsService)
-    {
+                         EventsService eventsService) {
         super(commandModel.getName());
         this.commandModel = commandModel;
         this.subCommands = simpleCommands;
@@ -76,8 +81,12 @@ public class SimpleCommand extends Command {
         this.setDescription(commandModel.getDescription());
         this.setUsage(commandModel.getUsageMessage());
         this.setLabel(commandModel.getLabel());
-    }
+        if(commandModel.getPermissions().size() != 0)
+        {
+            this.setPermission(commandModel.getPermissions().get(0));
+        }
 
+    }
 
 
     @Override
@@ -88,7 +97,7 @@ public class SimpleCommand extends Command {
     }
 
     public boolean invokeCommand(CommandSender sender, String[] args, String[] commandArgs) {
-        if (!this.isActive()) {
+        if (!isActive()) {
             displayLog("inactive");
             sender.sendMessage(messagesService.inactiveCommand(this.getName()));
             return false;
@@ -101,9 +110,8 @@ public class SimpleCommand extends Command {
         }
 
         var permissionResult = commandService.hasSenderPermissions(sender, commandModel.getPermissions());
-        if (!permissionResult.isSuccess())
-        {
-            displayLog(sender.getName() + " has no permissions "+permissionResult.getMessage());
+        if (!permissionResult.isSuccess()) {
+            displayLog(sender.getName() + " has no permissions " + permissionResult.getMessage());
             //sender.sendMessage(messagesService.noPermission(sender,permissionResult.getMessage()));
             return false;
         }
@@ -116,7 +124,7 @@ public class SimpleCommand extends Command {
         }
 
         try {
-            var invokeStatus = eventsService.invokeEvent(sender,args,commandArgs);
+            var invokeStatus = eventsService.invokeEvent(sender, args, commandArgs);
             displayLog("command invoked with status " + invokeStatus);
             return invokeStatus;
         } catch (Exception exception) {
@@ -134,10 +142,18 @@ public class SimpleCommand extends Command {
 
     public List<String> displayTabComplete(CommandSender sender, String[] args, String[] commandArgs) {
         var arguments = this.getArguments();
-
         if (commandArgs.length > arguments.size()) {
             if (commandArgs.length == arguments.size() + 1) {
-                return subCommands.stream().map(c -> c.getName()).toList();
+
+                if (sender instanceof Player player) {
+                    List res = new ArrayList<>();
+                    for (var cmd : subCommands) {
+                        if (PermissionsUtility.hasOnePermission(player, cmd.getPermission())) {
+                            res.add(cmd.getName());
+                        }
+                    }
+                    return res;
+                }
             } else
                 return List.of();
         }
@@ -166,13 +182,12 @@ public class SimpleCommand extends Command {
     }
 
 
-
     public void addSubCommand(SimpleCommandConfig config) {
         this.addSubCommand(config.configureCommand());
     }
 
     public void addSubCommand(SimpleCommand command) {
-        if(command == this)
+        if (command == this)
             return;
         command.setParent(null);
         this.subCommands.add(command);
@@ -184,6 +199,7 @@ public class SimpleCommand extends Command {
         command.setParent(null);
         this.subCommands.remove(command);
     }
+
     public String getName() {
         return commandModel.getName();
     }
@@ -202,11 +218,10 @@ public class SimpleCommand extends Command {
         return !(parent == null);
     }
 
-    public void sendHelpMessage(CommandSender commandSender)
-    {
-        var messages =new MessageBuilder()
+    public void sendHelpMessage(CommandSender commandSender) {
+        var messages = new MessageBuilder()
                 .color(ChatColor.GRAY)
-                .bar("_",30)
+                .bar("_", 30)
                 .newLine()
                 .color(ChatColor.GRAY)
                 .text("Available commands")
@@ -214,19 +229,17 @@ public class SimpleCommand extends Command {
                 .newLine();
         Objective s;
 
-        for(var subCommand:subCommands)
-        {
+        for (var subCommand : subCommands) {
             messages.color(ChatColor.AQUA)
                     .text("/")
                     .text(subCommand.getName());
-            for(var argument : subCommand.getArguments())
-            {
+            for (var argument : subCommand.getArguments()) {
                 messages.space().inBrackets(argument.getName());
             }
             messages.newLine();
         }
-       var result = messages.color(ChatColor.GRAY)
-                .bar("_",30).toArray();
+        var result = messages.color(ChatColor.GRAY)
+                .bar("_", 30).toArray();
 
         commandSender.sendMessage(result);
     }

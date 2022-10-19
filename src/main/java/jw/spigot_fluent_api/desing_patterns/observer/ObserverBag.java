@@ -6,12 +6,12 @@ public class ObserverBag<T>
 {
     @Getter
     private Observer<T> observer;
-    private T field;
+    private T value;
     public ObserverBag(T initValue)
     {
-        field = initValue;
+        value = initValue;
         observer = new Observer<>();
-        observer.bind(this.getClass(),"field");
+        observer.bind(this.getClass(),"value");
         observer.setObject(this);
     }
 

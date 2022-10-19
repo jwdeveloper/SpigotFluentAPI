@@ -4,9 +4,8 @@ package jw.spigot_fluent_api.fluent_gui;
 import jw.spigot_fluent_api.fluent_gui.button.ButtonUI;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
-import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
-import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
+import jw.spigot_fluent_api.fluent_plugin.default_actions.implementation.languages.Lang;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -83,6 +82,7 @@ public abstract class InventoryUI {
 
         onOpen(player);
         refreshButtons();
+
         EventsListenerInventoryUI.registerUI(this);
         player.openInventory(getInventory());
         this.isOpen = true;
@@ -139,6 +139,7 @@ public abstract class InventoryUI {
     public void refreshButtons() {
         if (getInventory() == null)
             return;
+
         ButtonUI button = null;
         for (int i = 0; i < buttons.length; i++) {
             button = buttons[i];
@@ -209,6 +210,8 @@ public abstract class InventoryUI {
         switch (inventoryType) {
             case CHEST:
                 return Bukkit.createInventory(player, slots, title);
+            case WORKBENCH:
+                return Bukkit.createInventory(player, inventoryType, title);
             default:
                 FluentLogger.warning("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
         }
@@ -216,10 +219,16 @@ public abstract class InventoryUI {
     }
 
     protected int calculateSlots(int height) {
+        if (inventoryType == InventoryType.WORKBENCH) {
+            FluentLogger.log("default size",inventoryType.getDefaultSize());
+            return inventoryType.getDefaultSize();
+        }
+
         return Math.min(height, 6) * 9;
     }
 
     protected int calculateHeight(int height) {
+
         return Math.min(height, 6);
     }
 
@@ -230,7 +239,7 @@ public abstract class InventoryUI {
         if (player.isOp())
             return true;
 
-        if(buttonUI.getPermissions().size() == 0)
+        if (buttonUI.getPermissions().size() == 0)
             return true;
 
         var result = switch (buttonUI.getPermissionType()) {
@@ -283,7 +292,7 @@ public abstract class InventoryUI {
         return false;
     }
 
-    private int calculateButtonSlotIndex(ButtonUI button) {
+    protected int calculateButtonSlotIndex(ButtonUI button) {
         if (button.getHeight() > height - 1)
             return -1;
 

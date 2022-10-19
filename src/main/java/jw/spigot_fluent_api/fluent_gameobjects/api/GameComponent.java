@@ -12,6 +12,9 @@ public interface GameComponent {
 
       <T extends GameComponent> T addGameComponent(T gameComponent);
 
+    <T extends GameComponent> T addGameComponent(Class<T> tClass);
+
+
       String getName();
 
     Location getLocation();

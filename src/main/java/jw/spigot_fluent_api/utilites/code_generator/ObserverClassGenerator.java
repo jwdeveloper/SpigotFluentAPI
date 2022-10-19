@@ -4,8 +4,6 @@ import jw.spigot_fluent_api.utilites.files.FileUtility;
 import jw.spigot_fluent_api.fluent_message.message.MessageBuilder;
 
 public class ObserverClassGenerator {
-
-
     public static void generate(Class type, String outputPath) {
         var value = generateObserver(type);
         saveToFile(value, outputPath);

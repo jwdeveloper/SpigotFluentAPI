@@ -35,7 +35,7 @@ public class ButtonUI {
 
     protected String title;
 
-    protected ArrayList<String> description;
+    protected List<String> description;
 
     protected Material material;
 
@@ -51,7 +51,7 @@ public class ButtonUI {
 
     protected Sound sound;
 
-    protected ArrayList<String> permissions;
+    protected List<String> permissions;
 
     protected PermissionType permissionType;
 
@@ -115,7 +115,13 @@ public class ButtonUI {
         setDescription(new ArrayList(Arrays.asList(description)));
     }
 
-    public void setDescription(ArrayList<String> description) {
+    public void addDescription(String... description) {
+
+        this.description.addAll(Arrays.asList(description));
+        setDescription(description);
+    }
+
+    public void setDescription(List<String> description) {
         for (int i = 0; i < description.size(); i++) {
             description.set(i, ChatColor.WHITE + description.get(i));
         }

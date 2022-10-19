@@ -6,8 +6,8 @@ import jw.spigot_fluent_api.database.mysql_db.models.SqlConnection;
 import jw.spigot_fluent_api.database.mysql_db.models.SqlDbContext;
 import jw.spigot_fluent_api.database.mysql_db.models.SqlTable;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.PluginPipeline;
-import jw.spigot_fluent_api.fluent_plugin.starup_actions.pipeline.data.PipelineOptions;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.api.PluginPipeline;
+import jw.spigot_fluent_api.fluent_plugin.starup_actions.data.PipelineOptions;
 
 import java.sql.Connection;
 

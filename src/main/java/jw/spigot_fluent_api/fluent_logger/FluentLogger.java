@@ -1,24 +1,26 @@
 package jw.spigot_fluent_api.fluent_logger;
-import jw.spigot_fluent_api.fluent_logger.implementation.SimpleLogger;
+import jw.spigot_fluent_api.fluent_logger.api.SimpleLogger;
+import jw.spigot_fluent_api.fluent_logger.implementation.SimpleLoggerImpl;
 
 public class FluentLogger
 {
+
     private static final FluentLogger instance;
-    private SimpleLogger simpleLogger;
+    private SimpleLoggerImpl simpleLogger;
 
     static {
         instance = new FluentLogger();
     }
 
     FluentLogger() {
-        simpleLogger = new SimpleLogger();
+        simpleLogger = new SimpleLoggerImpl();
     }
 
-    public void active(boolean active)
+
+    public static SimpleLogger CreateLogger()
     {
-
+        return new SimpleLoggerImpl();
     }
-
     public static void error(String message)
     {
         error(message,null);
@@ -58,7 +60,7 @@ public class FluentLogger
                 res[i] = params[i].toString();
             }
         }
-        instance.simpleLogger.log(message, SimpleLogger.LogType.INFO,res);
+        instance.simpleLogger.log(message, SimpleLoggerImpl.LogType.INFO,res);
     }
 
 }

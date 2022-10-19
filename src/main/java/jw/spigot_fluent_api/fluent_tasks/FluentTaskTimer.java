@@ -22,6 +22,10 @@ public class FluentTaskTimer {
         this.task = action;
     }
 
+    public void setIteration(int iteration)
+    {
+        this.time  =iteration;
+    }
     public FluentTaskTimer runAsync() {
         bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentPlugin.getPlugin(), () ->
         {

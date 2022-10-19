@@ -3,7 +3,8 @@ package jw.spigot_fluent_api.utilites;
 import jw.spigot_fluent_api.fluent_logger.FluentLogger;
 import jw.spigot_fluent_api.fluent_message.FluentMessage;
 import jw.spigot_fluent_api.fluent_plugin.FluentPlugin;
-import jw.spigot_fluent_api.fluent_plugin.languages.Lang;
+import jw.spigot_fluent_api.fluent_plugin.default_actions.implementation.languages.Lang;
+import jw.spigot_fluent_api.utilites.java.JavaUtils;
 import jw.spigot_fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -24,17 +25,16 @@ public class PermissionsUtility {
     }
 
     public static boolean hasOnePermission(Player player, String... permissions) {
-
         if(player.isOp())
         {
             return true;
         }
 
         for (var permission : permissions) {
+            FluentLogger.log(permission);
             var subPermissions = permission.split("\\.");
             for(var subPermission : subPermissions)
             {
-                FluentLogger.log("sub permission ",subPermission);
                 if (player.hasPermission(subPermission)) {
                     return true;
                 }
@@ -55,7 +55,27 @@ public class PermissionsUtility {
                     .text(permission)
                     .send(player);
         }
+        return false;
+    }
 
+    public static boolean hasOnePermission(Player player, String permissions) {
+        if(player.isOp())
+        {
+            return true;
+        }
+        if(permissions == null || permissions.equals(JavaUtils.EMPTY_STRING))
+        {
+            return true;
+        }
+
+        FluentLogger.log(permissions);
+        var subPermissions = permissions.split("\\.");
+        for(var subPermission : subPermissions)
+        {
+            if (player.hasPermission(subPermission)) {
+                return true;
+            }
+        }
         return false;
     }
 

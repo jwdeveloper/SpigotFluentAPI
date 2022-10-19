@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 public class EventsListenerInventoryUI extends EventBase {
     private static EventsListenerInventoryUI instance;
     private final ArrayList<InventoryUI> inventoriesGui = new ArrayList();
-    private final HashMap<Player, Consumer<String>> textInputEvents = new HashMap<>();
+
 
     private static EventsListenerInventoryUI getInstance() {
         if (instance == null) {
@@ -35,6 +35,29 @@ public class EventsListenerInventoryUI extends EventBase {
         }
         return instance;
     }
+
+    @EventHandler
+    private void onInventoryClose(InventoryCloseEvent event) {
+        Inventory spigotInventory;
+        for (InventoryUI inventoryUI : inventoriesGui) {
+            spigotInventory = inventoryUI.getInventory();
+            if (spigotInventory == null || !inventoryUI.isOpen()) continue;
+
+            if (event.getInventory() == spigotInventory) {
+                inventoryUI.close();
+                break;
+            }
+        }
+    }
+
+    public static void registerUI(InventoryUI InventoryUIBase) {
+        var instance = getInstance();
+        if (!instance.inventoriesGui.contains(InventoryUIBase)) {
+            instance.inventoriesGui.add(InventoryUIBase);
+        }
+    }
+
+    private final HashMap<Player, Consumer<String>> textInputEvents = new HashMap<>();
 
     public static <T extends InventoryUI> void refreshAll(Class<T> _class, InventoryUI ignore)
     {
@@ -67,12 +90,7 @@ public class EventsListenerInventoryUI extends EventBase {
         }
     }
 
-    public static void registerUI(InventoryUI InventoryUIBase) {
-        var instance = getInstance();
-        if (!instance.inventoriesGui.contains(InventoryUIBase)) {
-            instance.inventoriesGui.add(InventoryUIBase);
-        }
-    }
+
 
     public static void unregisterUI(InventoryUI InventoryUIBase) {
         var instance = getInstance();
@@ -97,19 +115,7 @@ public class EventsListenerInventoryUI extends EventBase {
         }
     }
 
-    @EventHandler
-    private void onInventoryClose(InventoryCloseEvent event) {
-        Inventory spigotInventory;
-        for (InventoryUI inventoryUI : inventoriesGui) {
-            spigotInventory = inventoryUI.getInventory();
-            if (spigotInventory == null || !inventoryUI.isOpen()) continue;
 
-            if (event.getInventory() == spigotInventory) {
-                inventoryUI.close();
-                break;
-            }
-        }
-    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     private void onClick(InventoryClickEvent event) {
@@ -131,7 +137,6 @@ public class EventsListenerInventoryUI extends EventBase {
                 selectedItem = event.getCurrentItem();
                 if (selectedItem == null || selectedItem.getType() == Material.AIR)
                     return;
-
                 inventoryUI.doClick((Player) event.getWhoClicked(),
                         event.getRawSlot(),
                         selectedItem,

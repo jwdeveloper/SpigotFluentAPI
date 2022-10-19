@@ -1,6 +1,6 @@
 package code_generator;
 
-import assets.PlayerStats;
+import unit.assets.PlayerStats;
 import jw.spigot_fluent_api.utilites.code_generator.ObserverClassGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +16,8 @@ public class GenerateClassObserver
     @Before
     public void init()
     {
-       path = Paths.get("").toAbsolutePath().toString()+ File.separator+"out"+File.separator+"code_generator";
+       path = Paths.get("").toAbsolutePath().toString()+ File.separator+"out"+File.separator+ "code_generator";
     }
-
 
     @Test
     public void shouldGenerateObserverClass()
