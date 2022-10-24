@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class SimpleMediator implements Mediator {
-    private final HashMap<KeySet, MediatorHandler> handlers;
+    private final HashMap<Pair, MediatorHandler> handlers;
     private static final String MEDIATOR_CLASS_NAME = MediatorHandler.class.getTypeName();
 
     public SimpleMediator() {
@@ -53,7 +53,7 @@ public class SimpleMediator implements Mediator {
 
         var inputClass = (Class<?>) mediatorInterface.getActualTypeArguments()[0];
         var outputClass = (Class<?>) mediatorInterface.getActualTypeArguments()[1];
-        var pair = new KeySet(inputClass, outputClass);
+        var pair = new Pair(inputClass, outputClass);
         if (handlers.containsKey(pair)) {
             var mediator1 = handlers.get(pair);
             OldLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
@@ -67,7 +67,7 @@ public class SimpleMediator implements Mediator {
         return handlers.containsKey(pair);
     }
 
-    public Set<KeySet> getRegisteredTypes() {
+    public Set<Pair> getRegisteredTypes() {
         return handlers.keySet();
     }
 }

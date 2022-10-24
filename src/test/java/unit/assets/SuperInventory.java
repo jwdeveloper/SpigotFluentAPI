@@ -13,15 +13,16 @@ import org.bukkit.ChatColor;
 @Getter
 public class SuperInventory
 {
-    @Inject
+
     private SomeRepo someRepo;
 
     private final PlayerStats playerStats;
 
     @Inject
-    public SuperInventory(PlayerStats playerStats)
+    public SuperInventory(PlayerStats playerStats, SomeRepo someRepo)
     {
         this.playerStats = playerStats;
+        this.someRepo = someRepo;
     }
 
     @Setter

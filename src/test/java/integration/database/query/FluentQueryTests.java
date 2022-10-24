@@ -4,7 +4,9 @@ import integration.database.assets.SqlTestBase;
 import integration.database.example_data.UserExampleModel;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runners.MethodSorters;
 
 import java.util.UUID;
@@ -12,6 +14,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class FluentQueryTests extends SqlTestBase
 {
 
@@ -23,7 +26,7 @@ public class FluentQueryTests extends SqlTestBase
 
         userTable.insert(mike);
         userTable.insert(john);
-        assertDoesNotThrow(() -> userTable.saveChanges());
+        Assertions.assertDoesNotThrow(() -> userTable.saveChanges());
         var result = userTable.select().toList();
         Assert.assertEquals(2,result.size());
     }
@@ -34,7 +37,7 @@ public class FluentQueryTests extends SqlTestBase
         var adam = prepareModel("Adam");
         adam.setOnline(true);
         userTable.insert(adam);
-        assertDoesNotThrow(() -> userTable.saveChanges());
+        Assertions.assertDoesNotThrow(() -> userTable.saveChanges());
 
         var result = userTable
                 .select()

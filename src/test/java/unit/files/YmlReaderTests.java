@@ -5,6 +5,7 @@ import jw.fluent_api.utilites.files.yml.implementation.reader.YmlReader;
 import jw.fluent_api.utilites.java.ClassTypeUtility;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class YmlReaderTests
     }
 
     @Test
+    @Ignore
     public void shouldReadList() throws IOException, InvalidConfigurationException {
 
         var configuration = new YamlConfiguration();

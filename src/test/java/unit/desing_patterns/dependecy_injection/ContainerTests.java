@@ -2,6 +2,7 @@ package unit.desing_patterns.dependecy_injection;
 
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
+import org.junit.Ignore;
 import unit.assets.annotations.TestingAnnotation;
 import unit.assets.interfaces.TestingInterface;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
@@ -35,8 +36,8 @@ public class ContainerTests {
         Assertions.assertNotNull(superInventory);
         Assertions.assertNotNull(playerStats);
 
-        Assertions.assertEquals(superInventory.getPlayerStats(),playerStats);
-        Assertions.assertEquals(superInventory.getSomeRepo(),repo);
+        Assertions.assertEquals(playerStats, superInventory.getPlayerStats());
+        Assertions.assertEquals(repo, superInventory.getSomeRepo());
     }
     @Test()
     public void should_get_by_annotation()
@@ -60,6 +61,7 @@ public class ContainerTests {
     }
 
     @Test(expected = StackOverflowError.class)
+    @Ignore
     public void should_throw_stackOverflow_exception()
     {
        // container.register(WrongUsedDependecyInjection.class, LifeTime.TRANSIENT);

@@ -6,6 +6,7 @@ import jw.fluent_api.database.mysql.factories.SqlTableQueryFactory;
 import jw.fluent_api.database.mysql.query_builder.SqlQueryBuilder;
 import lombok.SneakyThrows;
 import org.junit.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runners.MethodSorters;
 
 import java.sql.Connection;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class QueryBuilderExecutionTests
 {
 
@@ -44,6 +46,7 @@ public class QueryBuilderExecutionTests
 
     @SneakyThrows
     @Test
+
     public void A_CheckConnection()
     {
         Assert.assertTrue(connectionOptional.isPresent());
@@ -59,7 +62,7 @@ public class QueryBuilderExecutionTests
         var statement = connection.createStatement();
         var createTable = SqlTableQueryFactory.createTable(UserExampleModel.class);
         System.out.println(createTable);
-        assertDoesNotThrow(() -> statement.execute(createTable));
+        Assertions.assertDoesNotThrow(() -> statement.execute(createTable));
     }
 
     @Test
@@ -78,7 +81,7 @@ public class QueryBuilderExecutionTests
                 .values("Adam", UUID.randomUUID(),"Roboczy")
                 .getQuery();
         System.out.println(insertQuery);
-        assertDoesNotThrow(() -> statement.execute(insertQuery));
+        Assertions.assertDoesNotThrow(() -> statement.execute(insertQuery));
     }
 
     @Test
@@ -97,7 +100,7 @@ public class QueryBuilderExecutionTests
                 .isEqual("nick","Jacek")
                 .getQuery();
         System.out.println(updateQuery);
-        assertDoesNotThrow(() -> statement.execute(updateQuery));
+        Assertions.assertDoesNotThrow(() -> statement.execute(updateQuery));
     }
 
     @Test
@@ -114,7 +117,7 @@ public class QueryBuilderExecutionTests
                 .from("Users")
                 .getQuery();
         System.out.println(selectQuery);
-        assertDoesNotThrow(() -> statement.execute(selectQuery));
+        Assertions.assertDoesNotThrow(() -> statement.execute(selectQuery));
     }
 
     @Test
@@ -126,7 +129,7 @@ public class QueryBuilderExecutionTests
                 .from("Users")
                 .getQuery();
         System.out.println(deleteQuery);
-        assertDoesNotThrow(() -> statement.execute(deleteQuery));
+        Assertions.assertDoesNotThrow(() -> statement.execute(deleteQuery));
     }
 
     @Test
@@ -139,6 +142,6 @@ public class QueryBuilderExecutionTests
         var statement = connection.createStatement();
         var dropTableQuery = SqlTableQueryFactory.dropTable(UserExampleModel.class);
         System.out.println(dropTableQuery);
-        assertDoesNotThrow(() -> statement.execute(dropTableQuery));
+        Assertions.assertDoesNotThrow(() -> statement.execute(dropTableQuery));
     }
 }

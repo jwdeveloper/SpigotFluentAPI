@@ -7,7 +7,7 @@ public class PlayerMediator implements MediatorHandler<PlayerStats,SuperInventor
     @Override
     public SuperInventory handle(PlayerStats object)
     {
-        var result = new SuperInventory(null);
+        var result = new SuperInventory(null, null);
         result.setName(object.getPlayerName());
         return result;
     }

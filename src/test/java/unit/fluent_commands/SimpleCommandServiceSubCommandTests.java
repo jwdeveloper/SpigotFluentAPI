@@ -7,8 +7,10 @@ import jw.fluent_api.spigot.commands.api.enums.ArgumentType;
 import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class SimpleCommandServiceSubCommandTests {
     CommandServiceImpl simpleCommandService;
     SimpleCommand rootCommand;

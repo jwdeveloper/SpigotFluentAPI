@@ -1,5 +1,6 @@
 package benchmarks.gui;
 
+import org.junit.Ignore;
 import unit.desing_patterns.mediator.SpigotTestBase;
 import jw.fluent_api.spigot.gui.implementation.chest_ui.ChestUI;
 import jw.fluent_api.spigot.gui.implementation.crud_list_ui.CrudListUI;
@@ -11,6 +12,7 @@ public class CreateUIBeanchmark extends SpigotTestBase
 {
 
     @Test
+    @Ignore
     public void testContentManager() {
         Benchmarker.run(10000,o ->
         {

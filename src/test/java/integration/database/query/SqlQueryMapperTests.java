@@ -4,14 +4,15 @@ import integration.database.assets.SqlTestBase;
 import integration.database.example_data.OrderExampleModel;
 import integration.database.example_data.UserExampleModel;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.UUID;
 
+@Ignore
 public class SqlQueryMapperTests extends SqlTestBase
 {
-
     @Test
     public void ShouldGetJoinedData() throws SQLException
     {

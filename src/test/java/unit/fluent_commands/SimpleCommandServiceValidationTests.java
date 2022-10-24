@@ -8,6 +8,7 @@ import jw.fluent_api.spigot.commands.implementation.validators.NumberValidator;
 import jw.fluent_api_tests_smoke.api.SpigotIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
     }
 
     @Test
+    @Ignore
     public void shouldReturnFalseWhenHasArguments()  {
         var arguments = new String[3];
         var commandArguments = new ArrayList<CommandArgument>();

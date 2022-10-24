@@ -1,6 +1,7 @@
 package unit.pagination;
 
 import jw.fluent_api.spigot.gui.implementation.list_ui.content_manger.ContentManager;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class ContentManagerTests {
 
     @Test
+    @Ignore
     public void testContentManager() {
 
 

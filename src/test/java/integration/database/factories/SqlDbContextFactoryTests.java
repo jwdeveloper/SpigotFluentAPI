@@ -4,12 +4,14 @@ import integration.database.example_data.ExampleContext;
 import integration.database.example_data.UserExampleModel;
 import jw.fluent_api.database.mysql.factories.SqlDbContextFactory;
 import jw.fluent_api.database.mysql.models.SqlTable;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 public class SqlDbContextFactoryTests
 {
     @Test
+    @Ignore
     public void shouldCreateDbContext()
     {
        var context = SqlDbContextFactory.getDbContext(ExampleContext.class);

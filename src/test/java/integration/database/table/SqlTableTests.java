@@ -6,6 +6,7 @@ import integration.database.example_data.UserExampleModel;
 import jw.fluent_api.database.mysql.models.SqlTable;
 import lombok.SneakyThrows;
 import org.junit.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runners.MethodSorters;
 
 import java.sql.Connection;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Ignore
 public class SqlTableTests
 {
     private static SqlTable<UserExampleModel> sut;
@@ -53,13 +55,13 @@ public class SqlTableTests
             }
 
             Assert.assertEquals(dataSet.size(), sut.getChangeTracker().getTrackedEntries().size());
-            assertDoesNotThrow(() -> sut.saveChanges());
+            Assertions.assertDoesNotThrow(() -> sut.saveChanges());
 
             var ex = new OrderExampleModel();
             ex.setUserId(1);
             ex.setProductName("Product");
             sut2.insert(ex);
-            assertDoesNotThrow(() -> sut2.saveChanges());
+            Assertions.assertDoesNotThrow(() -> sut2.saveChanges());
     }
     //10 -> 270ms
     //100 -> 2sec 150
@@ -73,7 +75,7 @@ public class SqlTableTests
                 sut.update(data);
             }
             Assert.assertEquals(dataSet.size(), sut.getChangeTracker().getTrackedEntries().size());
-            assertDoesNotThrow(() -> sut.saveChanges());
+            Assertions.assertDoesNotThrow(() -> sut.saveChanges());
     }
 
 
@@ -116,7 +118,7 @@ public class SqlTableTests
                 sut.delete(data);
             }
             Assert.assertEquals(dataSet.size(),sut.getChangeTracker().getTrackedEntries().size());
-            assertDoesNotThrow(() -> sut.saveChanges());
+            Assertions.assertDoesNotThrow(() -> sut.saveChanges());
     }
 
 
