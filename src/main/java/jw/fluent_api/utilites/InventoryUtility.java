@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites;
 
-import jw.fluent_api.minecraft.gui.InventoryUI;
+import jw.fluent_api.spigot.gui.InventoryUI;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 

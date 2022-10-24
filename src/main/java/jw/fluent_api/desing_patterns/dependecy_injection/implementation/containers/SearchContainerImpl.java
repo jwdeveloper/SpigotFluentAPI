@@ -5,7 +5,7 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.provider.InstancePr
 import jw.fluent_api.desing_patterns.dependecy_injection.api.events.EventHandler;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
-import jw.fluent_api.minecraft.logger.api.SimpleLogger;
+import jw.fluent_api.logger.api.SimpleLogger;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

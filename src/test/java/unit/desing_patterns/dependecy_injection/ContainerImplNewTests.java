@@ -9,7 +9,7 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.models.Registration
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
-import jw.fluent_api.minecraft.logger.api.SimpleLogger;
+import jw.fluent_api.logger.api.SimpleLogger;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
 
 import java.util.HashMap;

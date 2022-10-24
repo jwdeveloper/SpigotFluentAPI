@@ -1,7 +1,7 @@
 package jw.fluent_api.utilites.files.yml;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.yml.api.models.FileStatus;
 import jw.fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
@@ -19,7 +19,7 @@ public class YmlFileUtility implements FileUtility {
             config.save(file);
             return true;
         } catch (Exception e) {
-            FluentLogger.error("Could not save YML " + fileName + " file", e);
+            OldLogger.error("Could not save YML " + fileName + " file", e);
             return false;
         }
     }
@@ -32,7 +32,7 @@ public class YmlFileUtility implements FileUtility {
             }
             return new YmlConfigurationImpl().fromConfiguration(fileStatus.getFile(), (Class<T>) type.getClass());
         } catch (Exception e) {
-            FluentLogger.error("Error while load YML ", e);
+            OldLogger.error("Error while load YML ", e);
         }
         return null;
     }
@@ -44,7 +44,7 @@ public class YmlFileUtility implements FileUtility {
                 FileConfiguration configuration = new YamlConfiguration();
                 configuration.save(file);
             } catch (IOException exception) {
-                FluentLogger.error("YML error", exception);
+                OldLogger.error("YML error", exception);
             }
         }
         return file;
@@ -62,7 +62,7 @@ public class YmlFileUtility implements FileUtility {
             configuration.save(file);
             return result;
         } catch (IOException exception) {
-            FluentLogger.error("YML error", exception);
+            OldLogger.error("YML error", exception);
         }
         return result;
     }

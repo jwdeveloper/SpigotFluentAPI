@@ -2,8 +2,8 @@ package jw.fluent_api.web_socket;
 
 
 import com.google.gson.Gson;
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_api.minecraft.tasks.FluentTaskTimer;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_api.spigot.tasks.FluentTaskTimer;
 import jw.fluent_api.desing_patterns.observer.implementation.Observer;
 import jw.fluent_api.utilites.files.json.JsonUtility;
 import jw.fluent_api.web_socket.annotations.PacketProperty;
@@ -92,7 +92,7 @@ public abstract class WebSocketPacket implements PacketInvokeEvent {
                 packetField.getObserver().set(result);
             }
         } catch (Exception e) {
-            FluentLogger.error("Packet resolver error " + this.getClass().getSimpleName(), e);
+            OldLogger.error("Packet resolver error " + this.getClass().getSimpleName(), e);
             return false;
         }
         return true;

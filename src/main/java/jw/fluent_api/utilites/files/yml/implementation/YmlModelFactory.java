@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.files.yml.implementation;
 
-import jw.fluent_api.minecraft.messages.FluentMessage;
+import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.files.yml.api.ModelFactory;
 import jw.fluent_api.utilites.files.yml.api.annotations.YmlFile;
 import jw.fluent_api.utilites.files.yml.api.annotations.YmlIgnore;

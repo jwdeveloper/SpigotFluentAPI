@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 
 public class Stopper
 {
@@ -18,7 +18,7 @@ public class Stopper
         stopTime = System.nanoTime();
         var time =  stopTime - startTime;
         var inMs = time/Math.pow(10,6);
-        FluentLogger.success(message+" Executed in "+inMs+"ms");
+        OldLogger.success(message+" Executed in "+inMs+"ms");
         return inMs;
     }
 }

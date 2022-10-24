@@ -1,9 +1,9 @@
 package jw.fluent_api.utilites;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_api.minecraft.messages.FluentMessage;
-import jw.fluent_plugin.FluentPlugin;
-import jw.fluent_plugin.default_actions.implementation.languages.Lang;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_api.spigot.messages.FluentMessage;
+import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.java.JavaUtils;
 import jw.fluent_api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
@@ -31,7 +31,7 @@ public class PermissionsUtility {
         }
 
         for (var permission : permissions) {
-            FluentLogger.log(permission);
+            OldLogger.log(permission);
             var subPermissions = permission.split("\\.");
             for(var subPermission : subPermissions)
             {
@@ -44,7 +44,7 @@ public class PermissionsUtility {
 
         FluentMessage.message()
                 .color(ChatColor.DARK_RED)
-                .text(Lang.get("permissions.one-required")).send(player);
+                .text(FluentAPI.lang().get("permissions.one-required")).send(player);
 
         for (var permission : permissions) {
             FluentMessage.message()
@@ -68,7 +68,7 @@ public class PermissionsUtility {
             return true;
         }
 
-        FluentLogger.log(permissions);
+        OldLogger.log(permissions);
         var subPermissions = permissions.split("\\.");
         for(var subPermission : subPermissions)
         {
@@ -84,7 +84,7 @@ public class PermissionsUtility {
             if (!player.hasPermission(permission)) {
                 FluentMessage.message()
                         .color(ChatColor.DARK_RED)
-                        .text(Lang.get("permissions.all-required"))
+                        .text(FluentAPI.lang().get("permissions.all-required"))
                         .color(ChatColor.GRAY)
                         .text(Emoticons.arrowRight)
                         .space()

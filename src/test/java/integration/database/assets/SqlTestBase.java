@@ -5,7 +5,7 @@ import integration.database.example_data.UserExampleModel;
 import jw.fluent_api.database.mysql.factories.SqlConnectionFactory;
 import jw.fluent_api.database.mysql.models.SqlConnection;
 import jw.fluent_api.database.mysql.models.SqlTable;
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.json.JsonUtility;
 import lombok.SneakyThrows;
@@ -37,7 +37,7 @@ public class SqlTestBase
         orderTable.setConnection(connection);
         orderTable.dropTable();
         orderTable.createTable();
-        FluentLogger.success("Database created");
+        OldLogger.success("Database created");
     }
 
 
@@ -46,7 +46,7 @@ public class SqlTestBase
     public static void after()
     {
         connection.close();
-        FluentLogger.success("Database closed");
+        OldLogger.success("Database closed");
     }
 
     public static Optional<Connection> getConnection()

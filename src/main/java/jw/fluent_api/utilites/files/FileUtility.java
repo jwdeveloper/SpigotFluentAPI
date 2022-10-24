@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.files;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -34,7 +34,7 @@ public interface FileUtility {
                     else if (!childFile.delete()) {
 
                     }
-                    FluentLogger.info("Could not delete file: " + childFile.getName());
+                    OldLogger.info("Could not delete file: " + childFile.getName());
                 }
             }
         }
@@ -42,7 +42,7 @@ public interface FileUtility {
         if (!file.delete()) {
 
         }
-        FluentLogger.info("Could not delete file: " + file.getName());
+        OldLogger.info("Could not delete file: " + file.getName());
     }
 
     static String combinePath(String... paths) {
@@ -59,7 +59,7 @@ public interface FileUtility {
             file.write(content);
             return true;
         } catch (IOException e) {
-            FluentLogger.error("Save File: " + fileName,e);
+            OldLogger.error("Save File: " + fileName,e);
             e.printStackTrace();
         }
         return false;
@@ -67,7 +67,7 @@ public interface FileUtility {
     static ArrayList<String> getFolderFilesName(String path, String... extensions) {
         final ArrayList<String> filesName = new ArrayList<>();
         if (!isPathValid(path)) {
-            FluentLogger.info("Files count not be loaded since path " + path + " not exists!");
+            OldLogger.info("Files count not be loaded since path " + path + " not exists!");
             return filesName;
         }
         final File folder = new File(path);

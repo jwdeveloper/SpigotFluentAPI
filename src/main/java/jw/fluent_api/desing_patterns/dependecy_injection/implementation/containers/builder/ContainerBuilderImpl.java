@@ -12,11 +12,11 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.SearchContainerImpl;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.SpigotPlayersContainer;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.modules.player_context.SpigotPlayerContainer;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.provider.InstanceProviderImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.events.EventHandlerImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.factory.InjectionInfoFactoryImpl;
-import jw.fluent_api.minecraft.logger.FluentLogger;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
@@ -124,7 +124,7 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
         var eventHandler = new EventHandlerImpl(config.getEvents());
         var instanceProvider = new InstanceProviderImpl();
         var injectionInfoFactory = new InjectionInfoFactoryImpl();
-        var logger = FluentLogger.CreateLogger();
+        var logger = OldLogger.CreateLogger();
 
         var injections = new HashMap<Class<?>, InjectionInfo>();
         for (var registration : config.getRegistrations()) {
@@ -143,7 +143,7 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
         var eventHandler = new EventHandlerImpl(config.getEvents());
         var instanceProvider = new InstanceProviderImpl();
         var injectionInfoFactory = new InjectionInfoFactoryImpl();
-        var logger = FluentLogger.CreateLogger();
+        var logger = OldLogger.CreateLogger();
 
         var injections = new HashMap<Class<?>, InjectionInfo>();
         for (var registration : config.getRegistrations()) {
@@ -160,6 +160,6 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
 
     public PlayersContainer buildPlayer() throws Exception {
         var container = buildDefault();
-        return new SpigotPlayersContainer(container, new ConcurrentHashMap<>());
+        return new SpigotPlayerContainer(container, new ConcurrentHashMap<>());
     }
 }

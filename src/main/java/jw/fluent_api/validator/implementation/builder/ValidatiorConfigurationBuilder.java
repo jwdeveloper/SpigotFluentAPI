@@ -1,6 +1,6 @@
 package jw.fluent_api.validator.implementation.builder;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.validator.api.builder.PropertyValidator;
 import jw.fluent_api.validator.api.builder.ValidatorConfiguration;
 import jw.fluent_api.validator.implementation.ValidationDto;
@@ -23,7 +23,7 @@ public class ValidatiorConfigurationBuilder<T> implements ValidatorConfiguration
             return new PropertyValidatorBuilder(this,field,validationDto);
         } catch (NoSuchFieldException e)
         {
-            FluentLogger.error("Validator exception",e);
+            OldLogger.error("Validator exception",e);
             return null;
         }
     }

@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.files.yml.api.annotations;
 
-import jw.fluent_api.desing_patterns.unit_of_work.api.annotation.files.TextFile;
+import jw.fluent_api.files.api.annotation.files.TextFile;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

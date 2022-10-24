@@ -1,7 +1,7 @@
 package jw.fluent_api.utilites.java;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentPlugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -63,12 +63,12 @@ public class ClassTypeUtility {
 
                     }
                 } catch (Exception ex) {
-                    FluentLogger.error("Could not load class", ex);
+                    OldLogger.error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            FluentLogger.error("Could not load class", ex);
+            OldLogger.error("Could not load class", ex);
         }
         return result;
     }
@@ -86,12 +86,12 @@ public class ClassTypeUtility {
                     }
                     result.add(name);
                 } catch (Exception ex) {
-                    FluentLogger.error("Could not load class", ex);
+                    OldLogger.error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            FluentLogger.error("Could not load class", ex);
+            OldLogger.error("Could not load class", ex);
         }
         return result;
     }
@@ -118,7 +118,7 @@ public class ClassTypeUtility {
             return Class.forName(packageName + "."
                     + className.substring(0, className.lastIndexOf('.')));
         } catch (ClassNotFoundException e) {
-            FluentLogger.error("Could not load class", e);
+            OldLogger.error("Could not load class", e);
         }
         return null;
     }

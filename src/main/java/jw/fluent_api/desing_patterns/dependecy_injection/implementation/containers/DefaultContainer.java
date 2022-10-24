@@ -9,7 +9,7 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionIn
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.utilites.Messages;
-import jw.fluent_api.minecraft.logger.api.SimpleLogger;
+import jw.fluent_api.logger.api.SimpleLogger;
 import jw.fluent_api.utilites.java.ObjectUtility;
 import lombok.SneakyThrows;
 

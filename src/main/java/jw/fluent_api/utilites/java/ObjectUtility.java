@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.java;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import org.bukkit.Material;
 
 import java.lang.annotation.Annotation;
@@ -24,7 +24,7 @@ public class ObjectUtility {
             try {
                 return Enum.valueOf(c, string.trim().toUpperCase());
             } catch (IllegalArgumentException ex) {
-                FluentLogger.error("Unable parse enum " + c + " from " + string, ex);
+                OldLogger.error("Unable parse enum " + c + " from " + string, ex);
             }
         }
         return null;
@@ -61,7 +61,7 @@ public class ObjectUtility {
                 field.setAccessible(true);
                 field.set(desination, field.get(obj));
             } catch (Exception ignored) {
-                FluentLogger.error("Unable copy object" + obj + " to " + desination, ignored);
+                OldLogger.error("Unable copy object" + obj + " to " + desination, ignored);
                 return false;
             }
         }
@@ -70,7 +70,7 @@ public class ObjectUtility {
 
     public static <T> boolean copyToObjectDeep(T obj, T destination) {
         if (!obj.getClass().equals(destination.getClass())) {
-            FluentLogger.error("Unable deep copy object" + obj.getClass() + " to " + destination.getClass() + " this are different classes");
+            OldLogger.error("Unable deep copy object" + obj.getClass() + " to " + destination.getClass() + " this are different classes");
             return false;
         }
 
@@ -110,7 +110,7 @@ public class ObjectUtility {
             field.setAccessible(true);
             field.set(obj, value);
         } catch (Exception e) {
-            FluentLogger.error("Unable to set value", e);
+            OldLogger.error("Unable to set value", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class ObjectUtility {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            FluentLogger.error("Unable to get value", e);
+            OldLogger.error("Unable to get value", e);
         }
         return result;
     }

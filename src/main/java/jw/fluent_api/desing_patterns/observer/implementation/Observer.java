@@ -1,8 +1,8 @@
 package jw.fluent_api.desing_patterns.observer.implementation;
 
 import jw.fluent_api.desing_patterns.observer.api.Observable;
-import jw.fluent_api.minecraft.logger.FluentLogger;
-import jw.fluent_plugin.FluentPlugin;
+import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentPlugin;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -83,7 +83,7 @@ public class Observer<T> implements Observable<T> {
                 onChangeEvent.accept(value);          //trigger all OnValueChange events
             }
         } catch (Exception e) {
-            FluentLogger.error("Set binding field: " ,e);
+            OldLogger.error("Set binding field: " ,e);
         }
     }
     public boolean bind(Class _class, String filedName) {
@@ -94,7 +94,7 @@ public class Observer<T> implements Observable<T> {
             isBinded = true;
             return true;
         } catch (NoSuchFieldException e) {
-            FluentLogger.error("Binding error:" + e.getMessage() + " Field: " + filedName ,e);
+            OldLogger.error("Binding error:" + e.getMessage() + " Field: " + filedName ,e);
             return false;
         }
     }

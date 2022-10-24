@@ -1,7 +1,7 @@
 package jw.fluent_api.utilites.code_generator;
 
 import jw.fluent_api.utilites.files.FileUtility;
-import jw.fluent_api.minecraft.messages.message.MessageBuilder;
+import jw.fluent_api.spigot.messages.message.MessageBuilder;
 
 public class ObserverClassGenerator {
     public static void generate(Class type, String outputPath) {

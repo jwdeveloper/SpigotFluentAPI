@@ -5,13 +5,13 @@ import jw.fluent_api.database.mysql.factories.SqlDbContextFactory;
 import jw.fluent_api.database.mysql.models.SqlConnection;
 import jw.fluent_api.database.mysql.models.SqlDbContext;
 import jw.fluent_api.database.mysql.models.SqlTable;
-import jw.fluent_plugin.FluentPlugin;
-import jw.fluent_plugin.starup_actions.api.PluginPipeline;
-import jw.fluent_plugin.starup_actions.data.PipelineOptions;
+import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.api.PluginAction;
+import jw.fluent_plugin.api.options.PipelineOptions;
 
 import java.sql.Connection;
 
-public class MySqlDbExtention<T> implements PluginPipeline {
+public class MySqlDbExtention<T> implements PluginAction {
     private final Class contextType;
     private final SqlConnection connectionDto;
     private Connection connection;

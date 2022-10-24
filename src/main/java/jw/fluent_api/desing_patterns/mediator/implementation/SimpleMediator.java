@@ -2,7 +2,7 @@ package jw.fluent_api.desing_patterns.mediator.implementation;
 
 import jw.fluent_api.desing_patterns.mediator.api.Mediator;
 import jw.fluent_api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.java.KeySet;
 import jw.fluent_api.utilites.java.Pair;
 
@@ -27,13 +27,13 @@ public class SimpleMediator implements Mediator {
             var pair = new Pair(inputClass, outputClass);
             var mediator = handlers.get(pair);
             if (mediator == null) {
-                FluentLogger.info(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
+                OldLogger.info(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
                 return null;
             }
         try {
             return (Output) mediator.handle(input);
         } catch (Exception e) {
-            FluentLogger.error("Error while executing mediator " + mediator.getClass().getSimpleName(), e);
+            OldLogger.error("Error while executing mediator " + mediator.getClass().getSimpleName(), e);
             return null;
         }
     }
@@ -56,7 +56,7 @@ public class SimpleMediator implements Mediator {
         var pair = new KeySet(inputClass, outputClass);
         if (handlers.containsKey(pair)) {
             var mediator1 = handlers.get(pair);
-            FluentLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
+            OldLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
             return;
         }
         handlers.put(pair, mediator);

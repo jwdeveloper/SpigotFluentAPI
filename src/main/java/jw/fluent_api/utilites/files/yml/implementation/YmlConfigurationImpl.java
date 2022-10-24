@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.files.yml.implementation;
 
-import jw.fluent_api.minecraft.messages.FluentMessage;
+import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.files.yml.api.YmlConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

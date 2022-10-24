@@ -8,7 +8,7 @@ import jw.fluent_api.database.mysql.query_fluent.SqlSelect;
 import jw.fluent_api.database.mysql.change_tacker.SqlChangeTracker;
 import jw.fluent_api.database.api.database_table.models.TableModel;
 import jw.fluent_api.database.mysql.factories.SqlTableModelFactory;
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -52,7 +52,7 @@ public class SqlTable<T> implements DbTable<T> {
     {
         var statement = connection.createStatement();
         var createTableQuery = SqlTableQueryFactory.createTable(tableModel);
-        FluentLogger.success(createTableQuery);
+        OldLogger.success(createTableQuery);
         statement.execute(createTableQuery);
     }
 

@@ -1,11 +1,12 @@
 package jw.fluent_api.utilites.math.collistions;
 
-import jw.fluent_api.minecraft.messages.FluentMessage;
-import jw.fluent_api.minecraft.particles.api.enums.ParticleDisplayMode;
-import jw.fluent_api.minecraft.particles.implementation.SimpleParticle;
-import jw.fluent_api.minecraft.particles.FluentParticle;
+import jw.fluent_api.spigot.messages.FluentMessage;
+import jw.fluent_api.spigot.particles.api.enums.ParticleDisplayMode;
+import jw.fluent_api.spigot.particles.implementation.SimpleParticle;
+import jw.fluent_api.spigot.particles.FluentParticle;
 
 import jw.fluent_api.utilites.math.MathUtility;
+import jw.fluent_plugin.implementation.FluentAPI;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -99,7 +100,7 @@ public class HitBox {
 
 
         List<Location> finalLines = lines;
-        return FluentParticle.create()
+        return FluentAPI.spigot().particles().create()
                 .startAfterTicks(1)
                 .triggerEveryTicks(2)
                 .nextStep()

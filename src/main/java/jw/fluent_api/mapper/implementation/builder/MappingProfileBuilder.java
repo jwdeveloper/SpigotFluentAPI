@@ -5,11 +5,11 @@ import jw.fluent_api.mapper.api.Mapper;
 import jw.fluent_api.mapper.api.MapperProfile;
 
 public class MappingProfileBuilder implements FinishBuilder<MapperProfile> {
-    private final Mapper mapper;
     private MapperProfile mappingProfile;
 
-    public MappingProfileBuilder(Mapper mapper) {
-        this.mapper = mapper;
+    public MappingProfileBuilder()
+    {
+
     }
 
     public <Input, Output> MappingProfileBuilder setMapping(MapperProfile<Input, Output> mappingProfile) {

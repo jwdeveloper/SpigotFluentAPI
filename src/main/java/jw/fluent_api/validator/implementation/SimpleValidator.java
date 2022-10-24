@@ -1,6 +1,5 @@
 package jw.fluent_api.validator.implementation;
 
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
@@ -39,7 +38,12 @@ public class SimpleValidator implements Validator {
         return result;
     }
 
-    @SneakyThrows
+    @Override
+    public void registerValidatorProfile(Class<ValidatorProfile> validationProfile) {
+
+    }
+
+  /*  @SneakyThrows
     @Override
     public void registerValidatorProfile(Class<ValidatorProfile> validationProfileClass) {
         ParameterizedType validator = null;
@@ -61,12 +65,12 @@ public class SimpleValidator implements Validator {
                 null,
                 LifeTime.SINGLETON,
                 RegistrationType.OnlyImpl);
-        FluentInjection.getContainer().register(registrationInfo);
+       /* FluentInjection.getContainer().register(registrationInfo);
 
         var validationProfile = FluentInjection.findInjection(validationProfileClass);
         var builder = new ValidatiorConfigurationBuilder(inputClass);
         validationProfile.configure(builder);
         var result = builder.build();
         validationProfiles.put(inputClass, result);
-    }
+    }*/
 }

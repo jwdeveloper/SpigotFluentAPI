@@ -2,10 +2,11 @@ package jw.fluent_api.database.mysql.factories;
 
 import jw.fluent_api.database.mysql.models.SqlDbContext;
 import jw.fluent_api.database.mysql.models.SqlTable;
-import jw.fluent_api.desing_patterns.dependecy_injection.FluentInjection;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjectionImpl;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.ParameterizedType;
@@ -20,8 +21,9 @@ public class SqlDbContextFactory
                 null,
                 LifeTime.SINGLETON,
                 RegistrationType.OnlyImpl);
-        FluentInjection.getContainer().register(registrationInfo);
-        var context = (SqlDbContext)FluentInjection.findInjection(contextType);
+        var injection = (FluentInjectionImpl)FluentAPI.injection();
+        injection.getContainer().register(registrationInfo);
+        var context = (SqlDbContext)injection.findInjection(contextType);
         for (var field : contextType.getDeclaredFields()) {
             field.setAccessible(true);
             var value = field.get(context);

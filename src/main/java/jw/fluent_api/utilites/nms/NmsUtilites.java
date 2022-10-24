@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.nms;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -72,7 +72,7 @@ public final class NmsUtilites
             player_sendPacket.invoke(player_connection.get(NmsUtilites.getHandle(p)), packet);
         }
         catch (Exception ex){
-            FluentLogger.error("Nms Exception", ex);
+            OldLogger.error("Nms Exception", ex);
         }
 
     }
@@ -148,7 +148,7 @@ public final class NmsUtilites
     public static Object getHandle(Object Object) {
         try { return getMethod("getHandle", Object.getClass()).invoke(Object); }
         catch (Exception e) {
-            FluentLogger.error("Nms Exception", e);
+            OldLogger.error("Nms Exception", e);
             return null;
         }
     }
@@ -161,7 +161,7 @@ public final class NmsUtilites
     public static Object invokeMethod(String MethodName, Object Parameter) {
         try { return getMethod(MethodName, Parameter.getClass()).invoke(Parameter); }
         catch (Exception e) {
-            FluentLogger.error("Nms Exception", e);
+            OldLogger.error("Nms Exception", e);
             return null;
         }
     }
@@ -169,7 +169,7 @@ public final class NmsUtilites
     public static Object invokeMethodWithArgs(String MethodName, Object Object, Object... Parameters) {
         try { return getMethod(MethodName, Object.getClass()).invoke(Object, Parameters); }
         catch (Exception e) {
-            FluentLogger.error("Nms Exception", e);
+            OldLogger.error("Nms Exception", e);
             return null;
         }
     }

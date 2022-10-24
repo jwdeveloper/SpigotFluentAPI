@@ -1,6 +1,6 @@
 package unit.files;
 
-import jw.fluent_api.minecraft.logger.FluentLogger;
+import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.files.yml.implementation.reader.YmlReader;
 import jw.fluent_api.utilites.java.ClassTypeUtility;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -24,10 +24,10 @@ public class YmlReaderTests
 
         var def = new ArrayList<ArrayList<Integer>>();
         var a = configuration.getList("rising-sun.time-line",def);
-        FluentLogger.log("result");
+        OldLogger.log("result");
         for(var x : a)
         {
-            FluentLogger.log("Data",x);
+            OldLogger.log("Data",x);
         }
     }
 
@@ -42,12 +42,12 @@ public class YmlReaderTests
         var result = configuration.getConfigurationSection("skins").getKeys(false);
         for(var key : result)
         {
-            FluentLogger.log(key);
+            OldLogger.log(key);
             var subObjects = configuration.getConfigurationSection("skins."+key);
             for(var sub : subObjects.getKeys(false))
             {
                 var vakye = configuration.get("skins."+key+"."+sub);
-                FluentLogger.log("sub object ",sub,vakye);
+                OldLogger.log("sub object ",sub,vakye);
             }
         }
     }
@@ -58,7 +58,7 @@ public class YmlReaderTests
         var result= reader.read("D:\\tmp\\test.yml");
         for(var k : result.entrySet())
         {
-            FluentLogger.info("Key "+k.getKey(),"value "+k.getValue());
+            OldLogger.info("Key "+k.getKey(),"value "+k.getValue());
         }
     }
     @Test
@@ -68,7 +68,7 @@ public class YmlReaderTests
         var result =  ClassTypeUtility.findAllYmlFiles(file);
         for(var k :result)
         {
-            FluentLogger.info("Name "+k);
+            OldLogger.info("Name "+k);
         }
     }
 }
