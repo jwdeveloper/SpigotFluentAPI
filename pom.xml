@@ -6,7 +6,7 @@
 
     <groupId>jw</groupId>
     <artifactId>SpigotFluentApi</artifactId>
-    <version>1.0.0</version>
+    <version>${project.version}</version>
     <packaging>jar</packaging>
     <name>SpigotFluentApi</name>
 
@@ -14,6 +14,7 @@
         <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <minecraft.version>1.17</minecraft.version>
+        <project.version>1.0.0</project.version>
     </properties>
 
     <build>
