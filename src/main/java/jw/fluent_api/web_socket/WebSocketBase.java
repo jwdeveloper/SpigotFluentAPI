@@ -1,7 +1,7 @@
 package jw.fluent_api.web_socket;
 
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -62,9 +62,9 @@ public class WebSocketBase extends WebSocketServer {
     @Override
     public void onError(WebSocket webSocket, Exception e) {
         if(webSocket == null)
-            OldLogger.error("Web socket error ", e);
+            FluentLogger.LOGGER.error("Web socket error ", e);
         else
-            OldLogger.error("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
+            FluentLogger.LOGGER.error("Web socket error "+webSocket.getRemoteSocketAddress().getAddress().toString(), e);
     }
 
     @Override

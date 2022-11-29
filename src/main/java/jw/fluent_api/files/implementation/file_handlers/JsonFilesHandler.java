@@ -1,9 +1,9 @@
 package jw.fluent_api.files.implementation.file_handlers;
 
 import jw.fluent_api.files.api.FileHandler;
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.java.ObjectUtility;
 import jw.fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class JsonFilesHandler implements FileHandler {
                 }
 
             } catch (Exception e) {
-                OldLogger.error("Loading file data error", e);
+                FluentApi.logger().error("Loading file data error", e);
             }
         }
     }

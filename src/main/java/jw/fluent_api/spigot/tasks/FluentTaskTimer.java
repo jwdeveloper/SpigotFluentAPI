@@ -1,7 +1,6 @@
 package jw.fluent_api.spigot.tasks;
 
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -10,6 +9,8 @@ import java.util.function.Consumer;
 public class FluentTaskTimer {
     private final TaskAction task;
     private Consumer<FluentTaskTimer> onStop;
+
+    private Consumer<FluentTaskTimer> onStart;
     private int speed = 20;
     private int time = 0;
     private int runAfter = 0;
@@ -27,7 +28,10 @@ public class FluentTaskTimer {
         this.time  =iteration;
     }
     public FluentTaskTimer runAsync() {
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentPlugin.getPlugin(), () ->
+
+        if (onStart != null)
+            onStart.accept(this);
+        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentApi.plugin(), () ->
         {
             try
             {
@@ -42,10 +46,9 @@ public class FluentTaskTimer {
             }
             catch (Exception e)
             {
-                OldLogger.error("FluentTask error",e);
+                FluentApi.logger().error("FluentTask error",e);
                 stop();
             }
-
         }, runAfter, speed);
         return this;
     }
@@ -55,7 +58,10 @@ public class FluentTaskTimer {
     }
 
     public FluentTaskTimer run() {
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(FluentPlugin.getPlugin(), () ->
+
+        if (onStart != null)
+            onStart.accept(this);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(FluentApi.plugin(), () ->
         {
             try
             {
@@ -70,7 +76,7 @@ public class FluentTaskTimer {
             }
             catch (Exception e)
             {
-                OldLogger.error("FluentTask error",e);
+                FluentApi.logger().error("FluentTask error",e);
                 stop();
             }
         }, runAfter, speed);
@@ -104,8 +110,13 @@ public class FluentTaskTimer {
         return this;
     }
 
-    public FluentTaskTimer onStop(Consumer<FluentTaskTimer> nextTask) {
-        this.onStop = nextTask;
+    public FluentTaskTimer onStop(Consumer<FluentTaskTimer> event) {
+        this.onStop = event;
+        return this;
+    }
+
+    public FluentTaskTimer onStart(Consumer<FluentTaskTimer> event) {
+        this.onStart = event;
         return this;
     }
 

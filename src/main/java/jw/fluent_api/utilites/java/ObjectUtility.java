@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.java;
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Material;
 
 import java.lang.annotation.Annotation;
@@ -24,7 +24,7 @@ public class ObjectUtility {
             try {
                 return Enum.valueOf(c, string.trim().toUpperCase());
             } catch (IllegalArgumentException ex) {
-                OldLogger.error("Unable parse enum " + c + " from " + string, ex);
+                FluentApi.logger().error("Unable parse enum " + c + " from " + string, ex);
             }
         }
         return null;
@@ -61,7 +61,7 @@ public class ObjectUtility {
                 field.setAccessible(true);
                 field.set(desination, field.get(obj));
             } catch (Exception ignored) {
-                OldLogger.error("Unable copy object" + obj + " to " + desination, ignored);
+                FluentApi.logger().error("Unable copy object" + obj + " to " + desination, ignored);
                 return false;
             }
         }
@@ -70,7 +70,7 @@ public class ObjectUtility {
 
     public static <T> boolean copyToObjectDeep(T obj, T destination) {
         if (!obj.getClass().equals(destination.getClass())) {
-            OldLogger.error("Unable deep copy object" + obj.getClass() + " to " + destination.getClass() + " this are different classes");
+            FluentApi.logger().error("Unable deep copy object" + obj.getClass() + " to " + destination.getClass() + " this are different classes");
             return false;
         }
 
@@ -110,7 +110,7 @@ public class ObjectUtility {
             field.setAccessible(true);
             field.set(obj, value);
         } catch (Exception e) {
-            OldLogger.error("Unable to set value", e);
+            FluentApi.logger().error("Unable to set value", e);
         }
     }
 
@@ -123,7 +123,7 @@ public class ObjectUtility {
             field.setAccessible(false);
 
         } catch (Exception e) {
-            OldLogger.error("Unable to get value", e);
+            FluentApi.logger().error("Unable to get value", e);
         }
         return result;
     }

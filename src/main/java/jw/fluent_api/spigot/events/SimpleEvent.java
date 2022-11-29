@@ -1,6 +1,6 @@
 package jw.fluent_api.spigot.events;
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerEvent;
@@ -55,7 +55,7 @@ public class SimpleEvent<T extends Event> {
             return true;
         } catch (Exception exception)
         {
-            OldLogger.error("SimpleEvent exception",exception);
+            FluentApi.logger().error("SimpleEvent exception",exception);
             if (onError != null)
                 onError.accept(exception);
             return false;

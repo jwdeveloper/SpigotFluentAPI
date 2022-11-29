@@ -1,6 +1,6 @@
 package jw.fluent_api.spigot.gameobjects.api;
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -92,7 +92,7 @@ public class GameObject implements GameComponent {
                 child.destory();
             }
         }
-        OldLogger.log("Gameobject destroyed",name);
+        FluentApi.logger().log("Gameobject destroyed",name);
         onDestroy();
     }
 
@@ -117,7 +117,7 @@ public class GameObject implements GameComponent {
     }
     public void create(Location location)
     {
-        OldLogger.log("Gameobject create",name);
+        FluentApi.logger().log("Gameobject create",name);
         onCreated();
         for (var childSet : childs.values()) {
 
@@ -177,7 +177,7 @@ public class GameObject implements GameComponent {
         }
         catch (Exception e)
         {
-            OldLogger.error("Unable to add gameobject "+tClass.getSimpleName(),e);
+            FluentApi.logger().error("Unable to add gameobject "+tClass.getSimpleName(),e);
             return null;
         }
     }

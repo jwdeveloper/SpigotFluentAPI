@@ -1,9 +1,9 @@
 package jw.fluent_api.validator.implementation.builder;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.validator.api.builder.PropertyValidator;
 import jw.fluent_api.validator.api.builder.ValidatorConfiguration;
 import jw.fluent_api.validator.implementation.ValidationDto;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 
 public class ValidatiorConfigurationBuilder<T> implements ValidatorConfiguration<T>
 {
@@ -23,7 +23,7 @@ public class ValidatiorConfigurationBuilder<T> implements ValidatorConfiguration
             return new PropertyValidatorBuilder(this,field,validationDto);
         } catch (NoSuchFieldException e)
         {
-            OldLogger.error("Validator exception",e);
+            FluentLogger.LOGGER.error("Validator exception",e);
             return null;
         }
     }

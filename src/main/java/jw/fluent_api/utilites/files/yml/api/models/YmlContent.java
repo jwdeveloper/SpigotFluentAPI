@@ -1,9 +1,9 @@
 package jw.fluent_api.utilites.files.yml.api.models;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.files.yml.implementation.YmlModelFactory;
 import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Data;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -150,7 +150,7 @@ public class YmlContent
           }
           catch (Exception e)
           {
-               OldLogger.error("Could not load list section",e);
+               FluentApi.logger().error("Could not load list section",e);
           }
           return result;
      }

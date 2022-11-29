@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -16,7 +17,7 @@ public class InjectionInfo
      private Constructor<?> injectedConstructor;
      private Set<Class<?>> superClasses;
      private Set<Class<?>> interfaces;
-     private Set<Class<? extends Annotation>> annotations;
+     private Set<Class<? extends Annotation>> annotations = new HashSet<>();
 
      private Object[] constructorPayLoadTemp;
 
@@ -43,6 +44,10 @@ public class InjectionInfo
 
      public boolean hasInterface(Class<?> parent)
      {
+          if(interfaces == null)
+          {
+               return false;
+          }
           return interfaces.contains(parent);
      }
 

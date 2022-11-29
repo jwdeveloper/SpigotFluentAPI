@@ -1,9 +1,9 @@
 package jw.fluent_api.files.implementation.file_handlers;
 
 import jw.fluent_api.files.api.FileHandler;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
 import jw.fluent_api.utilites.java.ObjectUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,13 +16,13 @@ public class ConfigFileHandler implements FileHandler {
     public void load() throws IllegalAccessException, InstantiationException, IOException {
 
         var yalConfig  = new YmlConfigurationImpl();
-        var pluginConfig =  FluentPlugin.getPlugin().getConfig();
+        var pluginConfig =  FluentApi.plugin().getConfig();
         for (var file: files)
         {
             var data = yalConfig.fromConfiguration(pluginConfig,file.getClass());
             ObjectUtility.copyToObject(data, file, data.getClass());
         }
-        pluginConfig.save(FluentPlugin.getPath()+ File.separator+"config.yml");
+        pluginConfig.save(FluentApi.plugin()+ File.separator+"config.yml");
     }
 
 

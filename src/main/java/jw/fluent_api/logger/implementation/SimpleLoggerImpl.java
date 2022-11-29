@@ -2,17 +2,25 @@ package jw.fluent_api.logger.implementation;
 
 import jw.fluent_api.logger.api.SimpleLogger;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.messages.LogUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class SimpleLoggerImpl implements SimpleLogger {
     private static final String ERROR_BAR;
 
     static {
         ERROR_BAR = new MessageBuilder().newLine().color(ChatColor.BOLD).color(ChatColor.DARK_RED).bar("-", 100).newLine().build();
+    }
+
+    private Logger logger;
+
+    public SimpleLoggerImpl(Logger logger)
+    {
+        this.logger = logger;
     }
 
     @Override
@@ -70,9 +78,9 @@ public class SimpleLoggerImpl implements SimpleLogger {
     {
         var msg = new MessageBuilder();
 
-        if(FluentPlugin.getPlugin() != null)
+        if(FluentApi.plugin() != null)
         {
-            msg.inBrackets(FluentPlugin.getPlugin().getName()).space();
+            msg.inBrackets(FluentApi.plugin().getName()).space();
         }
         else
         {

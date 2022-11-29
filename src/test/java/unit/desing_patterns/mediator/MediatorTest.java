@@ -5,36 +5,54 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-public class MediatorTest extends SpigotTestBase implements MediatorHandler<Integer,String>
+import java.util.function.Function;
+
+public class MediatorTest extends SpigotTestBase
 {
-    SimpleMediator mediator;
+    private SimpleMediator mediator;
 
     @Before
     public void init()
     {
-        super.init();
-        mediator = new SimpleMediator();
-        mediator.register(this);
+        var exampleMediatorClass = new MediatorClassExample();
+        Function<Class<?>,Object> containerResolver = (e) ->
+        {
+            if(e == exampleMediatorClass.getClass())
+            {
+                return exampleMediatorClass;
+            }
+            return null;
+        };
+
+        mediator = new SimpleMediator(containerResolver);
+        mediator.register(exampleMediatorClass.getClass());
+
+        var result = mediator.getRegisteredTypes();
+        Assertions.assertEquals(1, result.size());
     }
 
     @Test()
     public void should_not_resolve()
     {
-        String s = "some value";
-        var result  = mediator.resolve(s,String.class);
+        String input = "VALUE THAT IS NOT AN INTEGER";
+        String result  = mediator.resolve(input, String.class);
         Assertions.assertNull(result);
+    }
+
+    @Test()
+    public void shoud_not_register_twice()
+    {
+        var instance = new MediatorClassExample();
+        mediator.register(instance.getClass());
+        var result = mediator.getRegisteredTypes();
+        Assertions.assertEquals(1, result.size());
     }
 
     @Test
     public void should_resolve()
     {
-        Integer i = 12;
-        String result  = mediator.resolve(i,String.class);
-        Assertions.assertEquals("THIS TEST IS WORKING "+i.toString(),result);
-    }
-
-    @Override
-    public String handle(Integer object) {
-        return "THIS TEST IS WORKING "+object.toString();
+        Integer input = 2137;
+        String result  = mediator.resolve(input, String.class);
+        Assertions.assertEquals(MediatorClassExample.TESTOUTPUT,result);
     }
 }

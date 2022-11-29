@@ -1,9 +1,9 @@
 package jw.fluent_api.spigot.gameobjects.implementation;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.events.EventBase;
 import jw.fluent_api.spigot.gameobjects.api.GameComponent;
 import jw.fluent_api.spigot.gameobjects.api.GameObject;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Location;
 import org.bukkit.event.server.PluginDisableEvent;
 
@@ -31,7 +31,7 @@ public class GameObjectManager extends EventBase {
             gameObject.create(location);
             return true;
         } catch (Exception e) {
-            OldLogger.error("unable to create gameobject" + gameObject.getClass().getSimpleName(), e);
+            FluentApi.logger().error("unable to create gameobject" + gameObject.getClass().getSimpleName(), e);
         }
         return false;
     }
@@ -45,7 +45,7 @@ public class GameObjectManager extends EventBase {
         try {
             gameObject.destory();
         } catch (Exception e) {
-            OldLogger.error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
+            FluentApi.logger().error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
         }
     }
 
@@ -55,7 +55,7 @@ public class GameObjectManager extends EventBase {
             try {
                 gameObject.destory();
             } catch (Exception e) {
-                OldLogger.error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
+                FluentApi.logger().error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
             }
         }
     }

@@ -1,8 +1,7 @@
 package jw.fluent_api.desing_patterns.observer.implementation;
 
 import jw.fluent_api.desing_patterns.observer.api.Observable;
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -56,7 +55,7 @@ public class Observer<T> implements Observable<T> {
 
 
     public void setAsync(T value) {
-        Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(), () ->
+        Bukkit.getScheduler().runTask(FluentApi.plugin(), () ->
         {
             set(value);
         });
@@ -83,7 +82,7 @@ public class Observer<T> implements Observable<T> {
                 onChangeEvent.accept(value);          //trigger all OnValueChange events
             }
         } catch (Exception e) {
-            OldLogger.error("Set binding field: " ,e);
+            FluentApi.logger().error("Set binding field: " ,e);
         }
     }
     public boolean bind(Class _class, String filedName) {
@@ -94,7 +93,7 @@ public class Observer<T> implements Observable<T> {
             isBinded = true;
             return true;
         } catch (NoSuchFieldException e) {
-            OldLogger.error("Binding error:" + e.getMessage() + " Field: " + filedName ,e);
+            FluentApi.logger().error("Binding error:" + e.getMessage() + " Field: " + filedName ,e);
             return false;
         }
     }

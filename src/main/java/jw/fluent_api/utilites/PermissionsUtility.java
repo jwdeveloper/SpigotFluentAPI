@@ -1,11 +1,10 @@
 package jw.fluent_api.utilites;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.messages.FluentMessage;
-import jw.fluent_plugin.implementation.FluentAPI;
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_api.utilites.java.JavaUtils;
 import jw.fluent_api.utilites.messages.Emoticons;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
@@ -31,7 +30,7 @@ public class PermissionsUtility {
         }
 
         for (var permission : permissions) {
-            OldLogger.log(permission);
+            FluentLogger.LOGGER.log(permission);
             var subPermissions = permission.split("\\.");
             for(var subPermission : subPermissions)
             {
@@ -44,7 +43,7 @@ public class PermissionsUtility {
 
         FluentMessage.message()
                 .color(ChatColor.DARK_RED)
-                .text(FluentAPI.lang().get("permissions.one-required")).send(player);
+                .text(FluentApi.translator().get("permissions.one-required")).send(player);
 
         for (var permission : permissions) {
             FluentMessage.message()
@@ -68,7 +67,6 @@ public class PermissionsUtility {
             return true;
         }
 
-        OldLogger.log(permissions);
         var subPermissions = permissions.split("\\.");
         for(var subPermission : subPermissions)
         {
@@ -84,7 +82,7 @@ public class PermissionsUtility {
             if (!player.hasPermission(permission)) {
                 FluentMessage.message()
                         .color(ChatColor.DARK_RED)
-                        .text(FluentAPI.lang().get("permissions.all-required"))
+                        .text(FluentApi.translator().get("permissions.all-required"))
                         .color(ChatColor.GRAY)
                         .text(Emoticons.arrowRight)
                         .space()
@@ -107,7 +105,7 @@ public class PermissionsUtility {
     }
 
     public static void givePermission(Player player, String permission) {
-        var attachment = player.addAttachment(FluentPlugin.getPlugin());
+        var attachment = player.addAttachment(FluentApi.plugin());
         attachment.setPermission(permission, true);
     }
 

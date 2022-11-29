@@ -3,9 +3,10 @@ package jw.fluent_api.files.implementation;
 import jw.fluent_api.files.api.CustomFile;
 import jw.fluent_api.files.api.Repository;
 import jw.fluent_api.files.api.models.DataModel;
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.java.ObjectUtility;
 import jw.fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.FluentPlugin;
 import org.bukkit.ChatColor;
 
@@ -33,7 +34,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
     }
 
     public RepositoryBase(Class<T> entityClass) {
-        this(FluentPlugin.getPath(), entityClass, entityClass.getSimpleName());
+        this(FileUtility.pluginPath(FluentApi.plugin()), entityClass, entityClass.getSimpleName());
     }
 
     public Stream<T> query() {
@@ -157,7 +158,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             content = JsonUtility.loadList(path, fileName, entityClass);
             return true;
         } catch (Exception e) {
-            OldLogger.error("Repository load error "+fileName + " " + entityClass.getName(), e);
+            FluentApi.logger().error("Repository load error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }
@@ -168,7 +169,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             JsonUtility.save(content, path, fileName);
             return true;
         } catch (Exception e) {
-            OldLogger.error("Repository save error "+fileName + " " + entityClass.getName(), e);
+            FluentApi.logger().error("Repository save error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }

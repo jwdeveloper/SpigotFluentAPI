@@ -1,13 +1,14 @@
 package jw.fluent_api.translator.implementation;
 
 import jw.fluent_api.translator.api.models.LangData;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.yml.implementation.reader.YmlReader;
 import jw.fluent_api.utilites.java.ClassTypeUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,13 @@ public class SimpleLangLoader {
 
     private final String languagePath = "languages";
     private final String baseTranslation = "en";
+
+    private final JavaPlugin plugin;
+    public SimpleLangLoader(JavaPlugin plugin)
+    {
+        this.plugin =  plugin;
+    }
+
 
     public List<LangData> load(String folderPath, String languageName) throws IOException, InvalidConfigurationException {
 
@@ -45,7 +53,7 @@ public class SimpleLangLoader {
 
 
     public void generateFiles(String outputPath) throws IOException, InvalidConfigurationException {
-        var file = FluentPlugin.getPluginFile();
+        var file = FileUtility.pluginFile(plugin);
         var langPaths = ClassTypeUtility.findAllYmlFiles(file);
         var reader = new YmlReader();
         var results = new HashMap<String, YamlConfiguration>();
@@ -54,7 +62,7 @@ public class SimpleLangLoader {
                 continue;
             }
             var fileName = getPathName(path);
-            var resource = FluentPlugin.getPlugin().getResource(path);
+            var resource = plugin.getResource(path);
             var generated = reader.read(resource);
 
             var configuration = new YamlConfiguration();

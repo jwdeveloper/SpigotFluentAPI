@@ -5,14 +5,15 @@ import jw.fluent_api.mapper.implementation.SimpleMapper;
 import jw.fluent_api.mapper.implementation.builder.MappingProfileBuilder;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class FluentMapperImpl implements FluentMapper
 {
     private SimpleMapper simpleMapper;
 
 
-    public FluentMapperImpl() {
-        simpleMapper = new SimpleMapper();
+    public FluentMapperImpl(Function<Class<?>,Object> typeResolver) {
+        simpleMapper = new SimpleMapper(typeResolver);
     }
 
 

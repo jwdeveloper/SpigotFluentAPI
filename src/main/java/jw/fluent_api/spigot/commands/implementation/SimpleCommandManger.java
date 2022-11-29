@@ -1,9 +1,8 @@
 package jw.fluent_api.spigot.commands.implementation;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.events.EventBase;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.java.ObjectUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -39,12 +38,12 @@ public class SimpleCommandManger extends EventBase {
     public static boolean register(SimpleCommand command) {
         var instance = getInstance();
         if (instance.commands.containsKey(command.getName())) {
-            OldLogger.warning("command already exists",command.getName());
+            FluentApi.logger().warning("command already exists",command.getName());
             return false;
         }
         if(! instance.registerBukkitCommand(command))
         {
-            OldLogger.warning("unable to register command ",command.getName());
+            FluentApi.logger().warning("unable to register command ",command.getName());
             return false;
         }
         instance.commands.put(command.getName(), command);
@@ -66,9 +65,9 @@ public class SimpleCommandManger extends EventBase {
             var bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
             var commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-           return commandMap.register(FluentPlugin.getPlugin().getName(), simpleCommand);
+           return commandMap.register(FluentApi.plugin().getName(), simpleCommand);
         } catch (Exception e) {
-            OldLogger.error("Unable to register command " + simpleCommand.getName(), e);
+            FluentApi.logger().error("Unable to register command " + simpleCommand.getName(), e);
             return false;
         }
     }
@@ -84,7 +83,7 @@ public class SimpleCommandManger extends EventBase {
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             command.unregister(commandMap);
             knownCommands.remove(command.getName(),command);
-            knownCommands.remove(FluentPlugin.getPlugin().getName()+":"+command.getName(),command);
+            knownCommands.remove(FluentApi.plugin().getName()+":"+command.getName(),command);
             for (String alias : command.getAliases()) {
                 if (!knownCommands.containsKey(alias))
                     continue;
@@ -96,7 +95,7 @@ public class SimpleCommandManger extends EventBase {
             }
             return true;
         } catch (Exception e) {
-            OldLogger.error("Unable to unregister command " + command.getName(), e);
+            FluentApi.logger().error("Unable to unregister command " + command.getName(), e);
             return false;
         }
     }
@@ -109,7 +108,7 @@ public class SimpleCommandManger extends EventBase {
             SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
             return simpleCommandMap.getCommands().stream().map(c -> c.getName()).toList();
         } catch (Exception e) {
-            OldLogger.error("can't get all commands names", e);
+            FluentApi.logger().error("can't get all commands names", e);
         }
         return result;
     }
@@ -120,7 +119,7 @@ public class SimpleCommandManger extends EventBase {
             SimpleCommandMap simpleCommandMap = (SimpleCommandMap) commandMap;
             return simpleCommandMap.getCommands().stream().toList();
         } catch (Exception e) {
-            OldLogger.error("can't get all commands", e);
+            FluentApi.logger().error("can't get all commands", e);
         }
         return new ArrayList<>();
     }

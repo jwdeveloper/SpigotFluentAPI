@@ -5,7 +5,7 @@ import java.io.IOException;
 public interface FluentFiles {
 
      void load() throws Exception;
-
      void save();
+
 
 }

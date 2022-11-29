@@ -20,6 +20,7 @@ public class InjectionInfoFactoryImpl implements InjectionInfoFactory {
             case InterfaceAndIml -> InterfaceAndImlStrategy(info);
             case OnlyImpl -> OnlyImplStrategy(info);
             case InterfaceAndProvider -> InterfaceAndProviderStrategy(info);
+            case List -> ListStrategy(info);
         };
 
     }
@@ -84,6 +85,17 @@ public class InjectionInfoFactoryImpl implements InjectionInfoFactory {
         return new Pair<>(_interface,result);
     }
 
+    private Pair<Class<?>,InjectionInfo> ListStrategy(RegistrationInfo info) throws Exception {
+        var _interface = info._interface();
+        if (!Modifier.isInterface(_interface.getModifiers()) || !Modifier.isAbstract(_interface.getModifiers())) {
+            throw new Exception("Implementation must be an Interface or Abtract class");
+        }
+
+        var result = new InjectionInfo();
+        result.setRegistrationInfo(info);
+        result.setInjectionKeyType(_interface);
+        return new Pair<>(_interface,result);
+    }
 
     private static Set<Class<?>> getImplementedTypes(Class<?> type, Set<Class<?>> parentTypes) {
         var interfaces = new HashSet<>(Arrays.stream(type.getInterfaces()).toList());

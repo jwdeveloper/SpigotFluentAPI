@@ -1,13 +1,13 @@
 package jw.fluent_plugin.implementation.modules.logger;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.logger.api.SimpleLogger;
 import jw.fluent_api.logger.implementation.SimpleLoggerImpl;
 
 public class FluentLoggerImpl implements FluentLogger {
     private SimpleLogger simpleLogger;
+    private FluentLogger instance;
 
-    FluentLoggerImpl(SimpleLogger simpleLogger)
+    public FluentLoggerImpl(SimpleLogger simpleLogger)
     {
        this.simpleLogger = simpleLogger;
     }
@@ -59,4 +59,5 @@ public class FluentLoggerImpl implements FluentLogger {
         }
         simpleLogger.log(message, SimpleLoggerImpl.LogType.INFO,res);
     }
+
 }

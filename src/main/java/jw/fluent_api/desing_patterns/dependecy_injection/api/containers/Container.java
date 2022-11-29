@@ -7,6 +7,4 @@ public interface Container extends Cloneable
      boolean register(RegistrationInfo registrationInfo) throws Exception;
 
      Object find(Class<?> type);
-
-     Container clone();
 }

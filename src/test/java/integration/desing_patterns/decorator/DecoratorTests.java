@@ -15,7 +15,7 @@ public class DecoratorTests
     @Test
     public void Should_DecoratorWork() throws Exception {
         //Arrange
-        var containerBuilder = new ContainerBuilderImpl();
+        var containerBuilder = new BuilderTemp();
         containerBuilder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
 
         var decoratorBuilder = FluentDecorator.CreateDecorator();
@@ -35,4 +35,10 @@ public class DecoratorTests
         Assert.assertEquals(exampleInterface.getClass(), ExampleDecorator2.class);
         Assert.assertEquals("ExampleDecorator2 ExampleDecorator ExampleClass ",result);
     }
+
+    public class BuilderTemp extends ContainerBuilderImpl<BuilderTemp>
+    {
+
+    }
+
 }

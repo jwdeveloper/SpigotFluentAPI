@@ -3,7 +3,7 @@ package jw.fluent_api.spigot.gui.button;
 import jw.fluent_api.spigot.gui.InventoryUI;
 import jw.fluent_api.spigot.gui.enums.ButtonType;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -20,9 +20,9 @@ public class ButtonUIFactory {
                 .setLocation(inventory.getHeight() - 1, inventory.getWidth() - 1);
 
         if (parent == null)
-            result.setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentAPI.lang().get("gui.base.exit.title")));
+            result.setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.exit.title")));
         else
-            result.setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentAPI.lang().get("gui.base.back.title")));
+            result.setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.back.title")));
         return result;
     }
 

@@ -1,7 +1,7 @@
 package jw.fluent_api.files.api.models;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.java.ObjectUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Data;
 import org.bukkit.Material;
 
@@ -26,7 +26,7 @@ public abstract class DataModel {
             var result = (T) ObjectUtility.copyObjectDeep(this,getClass());
             return Optional.of(result);
         } catch (Exception e) {
-            OldLogger.error("Can not copy object for class " + this.getClass().getSimpleName(), e);
+            FluentApi.logger().error("Can not copy object for class " + this.getClass().getSimpleName(), e);
         }
         return Optional.empty();
     }

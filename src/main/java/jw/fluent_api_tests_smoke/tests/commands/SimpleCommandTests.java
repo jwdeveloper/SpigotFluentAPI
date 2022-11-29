@@ -1,6 +1,5 @@
 package jw.fluent_api_tests_smoke.tests.commands;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.commands.FluentCommand;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent_api.spigot.commands.api.enums.AccessType;
@@ -14,6 +13,7 @@ import jw.fluent_api.spigot.commands.implementation.services.CommandServiceImpl;
 import jw.fluent_api_tests_smoke.api.SpigotIntegrationTest;
 import jw.fluent_api_tests_smoke.api.SpigotTest;
 import jw.fluent_api_tests_smoke.api.spigotAssertions.SpigotAssertion;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -130,7 +130,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                OldLogger.success("Perparing arguments "+" in time: "+inMS);
+                FluentLogger.LOGGER.success("Perparing arguments "+" in time: "+inMS);
                 return res;
             }
 
@@ -142,7 +142,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                OldLogger.success("Checking access for "+commandSender.getName()+" in time: "+inMS);
+                FluentLogger.LOGGER.success("Checking access for "+commandSender.getName()+" in time: "+inMS);
                 return res;
             }
             @Override
@@ -157,7 +157,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                OldLogger.success("Looking for sub Command "+command.getName()+" in time: "+inMS);
+                FluentLogger.LOGGER.success("Looking for sub Command "+command.getName()+" in time: "+inMS);
                 return res;
             }
 
@@ -169,7 +169,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                OldLogger.success("Checking permissions for "+commandSender.getName()+" in time: "+inMS+ " result "+ res.isSuccess());
+                FluentLogger.LOGGER.success("Checking permissions for "+commandSender.getName()+" in time: "+inMS+ " result "+ res.isSuccess());
                 return res;
             }
 
@@ -180,7 +180,7 @@ public class SimpleCommandTests extends SpigotIntegrationTest
                 var finish = System.nanoTime();
                 var result = finish - start;
                 var inMS = result / Math.pow(10, 6);
-                OldLogger.success("Validating arguments"+" in time: "+inMS);
+                FluentLogger.LOGGER.success("Validating arguments"+" in time: "+inMS);
                 return res;
             }
         };

@@ -1,10 +1,9 @@
 package jw.fluent_api.utilites.files.yml;
 
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.yml.api.models.FileStatus;
 import jw.fluent_api.utilites.files.yml.implementation.YmlConfigurationImpl;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -19,7 +18,7 @@ public class YmlFileUtility implements FileUtility {
             config.save(file);
             return true;
         } catch (Exception e) {
-            OldLogger.error("Could not save YML " + fileName + " file", e);
+            FluentApi.logger().error("Could not save YML " + fileName + " file", e);
             return false;
         }
     }
@@ -32,26 +31,26 @@ public class YmlFileUtility implements FileUtility {
             }
             return new YmlConfigurationImpl().fromConfiguration(fileStatus.getFile(), (Class<T>) type.getClass());
         } catch (Exception e) {
-            OldLogger.error("Error while load YML ", e);
+            FluentApi.logger().error("Error while load YML ", e);
         }
         return null;
     }
 
     private static File ensureFile(String name) {
-        File file = new File(FluentPlugin.getPath(), File.separator + name + ".yml");
+        File file = new File(FluentApi.path(), File.separator + name + ".yml");
         if (!file.exists()) {
             try {
                 FileConfiguration configuration = new YamlConfiguration();
                 configuration.save(file);
             } catch (IOException exception) {
-                OldLogger.error("YML error", exception);
+                FluentApi.logger().error("YML error", exception);
             }
         }
         return file;
     }
 
     private static FileStatus checkFile(String name) {
-        File file = new File(FluentPlugin.getPath(), File.separator + name + ".yml");
+        File file = new File(FluentApi.path(), File.separator + name + ".yml");
         var result = new FileStatus(file);
         if (file.exists()) {
             return result;
@@ -62,7 +61,7 @@ public class YmlFileUtility implements FileUtility {
             configuration.save(file);
             return result;
         } catch (IOException exception) {
-            OldLogger.error("YML error", exception);
+            FluentApi.logger().error("YML error", exception);
         }
         return result;
     }

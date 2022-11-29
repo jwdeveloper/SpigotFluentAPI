@@ -11,7 +11,7 @@ import jw.fluent_api.spigot.gui.implementation.chest_ui.ChestUI;
 import jw.fluent_api.spigot.text_input.FluentTextInput;
 import jw.fluent_api.desing_patterns.observer.implementation.Observer;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -76,11 +76,11 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                             if (event.getValue()) {
                                 event.getButton().setHighlighted(true);
                                 event.getButton().setMaterial(Material.LIME_CONCRETE);
-                                event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.state"), FluentAPI.lang().get("gui.base.active")));
+                                event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.state"), FluentApi.translator().get("gui.base.active")));
                             } else {
                                 event.getButton().setHighlighted(false);
                                 event.getButton().setMaterial(Material.RED_CONCRETE);
-                                event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.state"), FluentAPI.lang().get("gui.base.inactive")));
+                                event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.state"), FluentApi.translator().get("gui.base.inactive")));
                             }
                         })
                 );
@@ -106,7 +106,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.value"), event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.value"), event.getValue()));
                         })
                 );
     }
@@ -133,7 +133,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.value"), event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.value"), event.getValue()));
                         })
                 );
     }
@@ -155,7 +155,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         })
                         .onValueChange(event ->
                         {
-                            event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.value"), event.getValue()));
+                            event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.value"), event.getValue()));
                         })
                 );
     }
@@ -167,7 +167,7 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         .withObserver(observable)
                         .onValueChange(event ->
                         {
-                           event.getButton().setDescription(new MessageBuilder().field(FluentAPI.lang().get("gui.base.value"), event.getValue()));
+                           event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.value"), event.getValue()));
                         })
                 );
     }

@@ -1,7 +1,6 @@
 package jw.fluent_api.spigot.events;
 
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -23,7 +22,7 @@ public class FluentEvent implements Listener {
         if(instnace == null)
         {
             instnace = new FluentEvent();
-            Bukkit.getPluginManager().registerEvents(instnace, FluentPlugin.getPlugin());
+            Bukkit.getPluginManager().registerEvents(instnace, FluentApi.plugin());
             onPluginDisableEvents = new ArrayList<>();
             onPluginEnableEvents = new ArrayList<>();
         }
@@ -33,7 +32,7 @@ public class FluentEvent implements Listener {
     @EventHandler
     public final void onPluginStart(PluginEnableEvent pluginEnableEvent)
     {
-        if(pluginEnableEvent.getPlugin() == FluentPlugin.getPlugin())
+        if(pluginEnableEvent.getPlugin() == FluentApi.plugin())
         {
             for(var fluentEvent :onPluginEnableEvents)
             {
@@ -45,7 +44,7 @@ public class FluentEvent implements Listener {
     @EventHandler
     public final void onPluginStopEvent(PluginDisableEvent pluginDisableEvent)
     {
-        if(pluginDisableEvent.getPlugin() == FluentPlugin.getPlugin())
+        if(pluginDisableEvent.getPlugin() == FluentApi.plugin())
         {
             for(var fluentEvent :onPluginDisableEvents)
             {
@@ -72,13 +71,13 @@ public class FluentEvent implements Listener {
         Bukkit.getPluginManager().registerEvent(eventType, getInstnace(), EventPriority.NORMAL,
                 (listener, event) ->
                 {
-                    OldLogger.log(event.getEventName(),event.getClass().getSimpleName());
+                    FluentApi.logger().log(event.getEventName(),event.getClass().getSimpleName());
                     if(!event.getClass().getSimpleName().equalsIgnoreCase(eventType.getSimpleName()))
                     {
                         return;
                     }
                     fluentEvent.invoke((T) event);
-                }, FluentPlugin.getPlugin());
+                }, FluentApi.plugin());
         return fluentEvent;
     }
 
@@ -89,11 +88,11 @@ public class FluentEvent implements Listener {
         Bukkit.getPluginManager().registerEvent(tClass, getInstnace(), EventPriority.NORMAL,
                 (listener, event) ->
                 {
-                    Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(),()->
+                    Bukkit.getScheduler().runTask(FluentApi.plugin(),()->
                     {
                         fluentEvent.invoke((T)event);
                     });
-                }, FluentPlugin.getPlugin());
+                }, FluentApi.plugin());
         return fluentEvent;
     }
 }

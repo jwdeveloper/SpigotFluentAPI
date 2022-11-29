@@ -1,12 +1,12 @@
 package jw.fluent_api_tests_smoke.tests.commands;
 
 import jw.fluent_api.spigot.commands.FluentCommand;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommandManger;
 import jw.fluent_api_tests_smoke.api.SpigotIntegrationTest;
 import jw.fluent_api_tests_smoke.api.SpigotTest;
 import jw.fluent_api_tests_smoke.api.spigotAssertions.SpigotAssertion;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.PluginDisableEvent;
 
@@ -58,7 +58,7 @@ public class SimpleCommandManagerTests extends SpigotIntegrationTest {
         var resultRegister1 = SimpleCommandManger.register(command1);
         var resultRegister2 = SimpleCommandManger.register(command2);
 
-        Bukkit.getServer().getPluginManager().callEvent(new PluginDisableEvent(FluentPlugin.getPlugin()));
+        Bukkit.getServer().getPluginManager().callEvent(new PluginDisableEvent(FluentApi.plugin()));
 
         var allSpigotCommands = SimpleCommandManger.getAllServerCommands();
         var cmd1 = allSpigotCommands.stream()

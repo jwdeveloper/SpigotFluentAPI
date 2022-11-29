@@ -1,7 +1,7 @@
 package jw.fluent_api.utilites.java;
 
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_api.utilites.files.FileUtility;
+import jw.fluent_plugin.implementation.FluentApi;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,10 +46,14 @@ public class ClassTypeUtility {
 
     public static List<Class<?>> findClassesInPlugin(JavaPlugin plugin) {
         List<Class<?>> result = new ArrayList<>();
-        var pluginFile = FluentPlugin.getPluginFile();
+        var file = FileUtility.pluginFile(plugin);
+        if(file == null)
+        {
+            return result;
+        }
         var packageName = plugin.getClass().getPackageName();
         try {
-            JarInputStream is = new JarInputStream(new FileInputStream(pluginFile));
+            JarInputStream is = new JarInputStream(new FileInputStream(file));
             JarEntry entry;
             while ((entry = is.getNextJarEntry()) != null) {
                 try {
@@ -63,12 +67,12 @@ public class ClassTypeUtility {
 
                     }
                 } catch (Exception ex) {
-                    OldLogger.error("Could not load class", ex);
+                    FluentApi.logger().error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            OldLogger.error("Could not load class", ex);
+            FluentApi.logger().error("Could not load class", ex);
         }
         return result;
     }
@@ -82,23 +86,22 @@ public class ClassTypeUtility {
                 try {
                     String name = entry.getName();
                     if (!name.endsWith(".yml")) {
-                       continue;
+                        continue;
                     }
                     result.add(name);
                 } catch (Exception ex) {
-                    OldLogger.error("Could not load class", ex);
+                    FluentApi.logger().error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            OldLogger.error("Could not load class", ex);
+            FluentApi.logger().error("Could not load class", ex);
         }
         return result;
     }
 
 
-    private static Type[] getInterfaceGenericTypes(Class<?> _class, Class<?> _interface)
-    {
+    private static Type[] getInterfaceGenericTypes(Class<?> _class, Class<?> _interface) {
         ParameterizedType validator = null;
         for (var classInterface : _class.getGenericInterfaces()) {
             var name = classInterface.getTypeName();
@@ -118,7 +121,7 @@ public class ClassTypeUtility {
             return Class.forName(packageName + "."
                     + className.substring(0, className.lastIndexOf('.')));
         } catch (ClassNotFoundException e) {
-            OldLogger.error("Could not load class", e);
+            FluentApi.logger().error("Could not load class", e);
         }
         return null;
     }

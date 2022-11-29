@@ -1,7 +1,7 @@
 package jw.fluent_api_tests_smoke.api;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public abstract class SpigotIntegrationTest {
     }
 
     public final void loadTests() {
-        OldLogger.success("Test: " + this.getClass().getSimpleName() + " loaded");
+        FluentLogger.LOGGER.success("Test: " + this.getClass().getSimpleName() + " loaded");
         try {
             var methods = this.getClass().getDeclaredMethods();
             for (var m : methods) {
@@ -36,7 +36,7 @@ public abstract class SpigotIntegrationTest {
             }
         } catch (Exception e) {
 
-            OldLogger.error("Test: " + this.getClass().getSimpleName() + " not loaded", e);
+            FluentLogger.LOGGER.error("Test: " + this.getClass().getSimpleName() + " not loaded", e);
         }
     }
 
@@ -45,7 +45,7 @@ public abstract class SpigotIntegrationTest {
         try {
             beforeTests();
         } catch (Exception e) {
-            OldLogger.error("can lunch beforeRun method", e);
+            FluentLogger.LOGGER.error("can lunch beforeRun method", e);
         }
         for (var test : tests) {
             try {
@@ -62,7 +62,7 @@ public abstract class SpigotIntegrationTest {
         try {
             afterTests();
         } catch (Exception e) {
-            OldLogger.error("can afterTests  method", e);
+            FluentLogger.LOGGER.error("can afterTests  method", e);
         }
     }
 

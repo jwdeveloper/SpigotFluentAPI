@@ -11,7 +11,7 @@ public class TestMap implements IMap<TestMap, PlayerStats>
 
     public void test()
     {
-        var mapper = new SimpleMapper();
+        var mapper = new SimpleMapper(null);
         List<TestMap> sa = new ArrayList<>();
         var a = mapper.map(sa,PlayerStats.class);
     }

@@ -1,6 +1,6 @@
 package jw.fluent_api.spigot.tasks;
 
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -13,14 +13,14 @@ public class FluentTaskFasade
     }
 
     public BukkitTask task(Consumer<Void> action) {
-        return Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(), () ->
+        return Bukkit.getScheduler().runTask(FluentApi.plugin(), () ->
         {
             action.accept(null);
         });
     }
 
     public BukkitTask taskAsync(Consumer<Void> action) {
-        return Bukkit.getScheduler().runTaskAsynchronously(FluentPlugin.getPlugin(), () ->
+        return Bukkit.getScheduler().runTaskAsynchronously(FluentApi.plugin(), () ->
         {
             action.accept(null);
         });

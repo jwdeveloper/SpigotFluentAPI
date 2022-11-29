@@ -19,6 +19,9 @@ import jw.fluent_api.spigot.commands.implementation.services.MessageServiceImpl;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommandManger;
 import jw.fluent_api.spigot.commands.api.models.CommandModel;
+import jw.fluent_plugin.implementation.FluentApi;
+import org.bukkit.Bukkit;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +49,10 @@ public class CommandBuilderImpl implements CommandBuilder {
         subCommands = new ArrayList<>();
         model = new CommandModel();
         model.setName(commandName);
+    }
+
+    public CommandBuilderImpl() {
+        this(FluentApi.plugin().getName());
     }
 
     @Override

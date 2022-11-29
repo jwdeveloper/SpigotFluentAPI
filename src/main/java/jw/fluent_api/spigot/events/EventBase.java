@@ -1,6 +1,6 @@
 package jw.fluent_api.spigot.events;
 
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +11,7 @@ public abstract class EventBase implements Listener
 {
     public EventBase()
     {
-        Bukkit.getPluginManager().registerEvents(this, FluentPlugin.getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, FluentApi.plugin());
     }
 
     private boolean pluginDisabled = false;
@@ -32,7 +32,7 @@ public abstract class EventBase implements Listener
     @EventHandler
     public final void onPluginStartEvent(PluginEnableEvent pluginEnableEvent)
     {
-          if(pluginEnableEvent.getPlugin() == FluentPlugin.getPlugin())
+          if(pluginEnableEvent.getPlugin() == FluentApi.plugin())
           {
               onPluginStart(pluginEnableEvent);
           }
@@ -41,7 +41,7 @@ public abstract class EventBase implements Listener
     public final void onPluginStopEvent(PluginDisableEvent pluginDisableEvent)
     {
         pluginDisabled = true;
-        if(pluginDisableEvent.getPlugin() == FluentPlugin.getPlugin())
+        if(pluginDisableEvent.getPlugin() == FluentApi.plugin())
         {
             onPluginStop(pluginDisableEvent);
         }

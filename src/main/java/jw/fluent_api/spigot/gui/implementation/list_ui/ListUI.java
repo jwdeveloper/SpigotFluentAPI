@@ -11,7 +11,7 @@ import jw.fluent_api.spigot.gui.implementation.list_ui.content_manger.ButtonUIMa
 import jw.fluent_api.spigot.gui.implementation.list_ui.content_manger.FilterContentEvent;
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -61,7 +61,7 @@ public class ListUI<T> extends ChestUI {
                 .setDescription(FluentMessage.message()
                 .inBrackets("info").newLine()
                 .text("Shift + Click to reset").toArray())
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentAPI.lang().get("gui.base.search.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.search.title")))
                 .setMaterial(Material.SPYGLASS)
                 .setOnRightClick((player, button) ->
                 {
@@ -86,7 +86,7 @@ public class ListUI<T> extends ChestUI {
         buttonPageDown = ButtonObserverUI
                 .builder()
                 .setLocation(getHeight() - 1, 3)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentAPI.lang().get("gui.base.page-down.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.page-down.title")))
                 .setMaterial(Material.ARROW)
                 .setOnClick((player, button) ->
                 {
@@ -97,7 +97,7 @@ public class ListUI<T> extends ChestUI {
         buttonPageUp = ButtonObserverUI
                 .builder()
                 .setLocation(getHeight() - 1, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentAPI.lang().get("gui.base.page-up.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.page-up.title")))
                 .setMaterial(Material.ARROW)
                 .setOnClick((player, button) ->
                 {

@@ -1,12 +1,11 @@
 package jw.fluent_api.spigot.gui;
 
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.gui.button.ButtonUI;
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
 import jw.fluent_api.utilites.messages.Emoticons;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -195,7 +194,7 @@ public abstract class InventoryUI {
 
     public void displayLog(String message, ChatColor chatColor) {
         if (enableLogs)
-            OldLogger.info(this + ": " + chatColor + message);
+            FluentApi.logger().info(this + ": " + chatColor + message);
     }
 
     public boolean isSlotEmpty(int slotIndex) {
@@ -213,14 +212,14 @@ public abstract class InventoryUI {
             case WORKBENCH:
                 return Bukkit.createInventory(player, inventoryType, title);
             default:
-                OldLogger.warning("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
+                FluentApi.logger().warning("Sorry UI for " + inventoryType.name() + " not implemented yet ;<");
         }
         return Bukkit.createInventory(player, inventoryType, title);
     }
 
     protected int calculateSlots(int height) {
         if (inventoryType == InventoryType.WORKBENCH) {
-            OldLogger.log("default size",inventoryType.getDefaultSize());
+            FluentApi.logger().log("default size",inventoryType.getDefaultSize());
             return inventoryType.getDefaultSize();
         }
 
@@ -255,7 +254,7 @@ public abstract class InventoryUI {
             if (!player.hasPermission(permission)) {
                 FluentMessage.message()
                         .color(ChatColor.DARK_RED)
-                        .text(FluentAPI.lang().get("permissions.all-required"))
+                        .text(FluentApi.translator().get("permissions.all-required"))
                         .color(ChatColor.GRAY)
                         .text(Emoticons.arrowRight)
                         .space()
@@ -277,7 +276,7 @@ public abstract class InventoryUI {
 
         FluentMessage.message()
                 .color(ChatColor.DARK_RED)
-                .text(FluentAPI.lang().get("permissions.one-required")).send(player);
+                .text(FluentApi.translator().get("permissions.one-required")).send(player);
 
         for (var permission : permissions) {
             FluentMessage.message()

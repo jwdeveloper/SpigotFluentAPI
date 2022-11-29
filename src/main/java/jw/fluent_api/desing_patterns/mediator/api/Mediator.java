@@ -6,7 +6,7 @@ public interface Mediator
 {
     <Output> Output resolve(Object input,Class<Output> outputClass);
 
-    <T extends MediatorHandler<?, ?>> void register(T mediator);
+     <T extends MediatorHandler<?, ?>> void register(Class<T> mediator);
 
-    boolean containsPair(KeySet pair);
+    boolean containerClass(Class pair);
 }

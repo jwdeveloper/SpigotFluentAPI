@@ -3,7 +3,7 @@ package jw.fluent_api.database.mysql.query_fluent;
 import jw.fluent_api.database.api.database_table.models.ColumnModel;
 import jw.fluent_api.database.api.database_table.models.TableModel;
 import jw.fluent_api.database.mysql.factories.SqlTableModelFactory;
-import jw.fluent_api.utilites.Stopper;
+import jw.fluent_api.utilites.Stopwatch;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
@@ -38,7 +38,7 @@ public class SqlQueryExecutor<T> {
 
     @SneakyThrows
     public List<T> toList() {
-        var stopper = new Stopper();
+        var stopper = new Stopwatch();
         stopper.start();
         var tables = getModelConfig();
         stopper.stop("Get columns info ");

@@ -1,7 +1,7 @@
 package jw.fluent_api.spigot.messages.message;
 
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.utilites.messages.Emoticons;
+import jw.fluent_plugin.implementation.FluentApi;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -214,6 +214,7 @@ public class MessageBuilder
     public void sendToConsole() {
         if(Bukkit.getServer()==null)
         {
+
             System.out.println(stringBuilder.toString());
             return;
         }
@@ -226,7 +227,8 @@ public class MessageBuilder
             System.out.println(stringBuilder.toString());
             return;
         }
-        FluentPlugin.getPlugin().getLogger().log(Level.INFO,stringBuilder.toString());
+        FluentApi.logger().log(stringBuilder.toString());
+
     }
 
 

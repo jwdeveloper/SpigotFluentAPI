@@ -2,7 +2,7 @@ package jw.fluent_api.database.mysql.factories;
 
 import jw.fluent_api.database.api.conncetion.DbConnectionFactory;
 import jw.fluent_api.database.mysql.models.SqlConnection;
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.FluentApi;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +20,7 @@ public class SqlConnectionFactory implements DbConnectionFactory<Connection, Sql
             }
             return Optional.of(connection);
         } catch (SQLException e) {
-            OldLogger.error("Connecting to SQL error", e);
+            FluentApi.logger().error("Connecting to SQL error", e);
             return Optional.empty();
         }
     }

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class SearchContainerTests
 {
-    @Test
+  /*  @Test
     public void Should_Find_By_Interface() throws Exception {
         //Arrange
         var builder = new ContainerBuilderImpl();
@@ -49,5 +49,5 @@ public class SearchContainerTests
 
         //Assert
         Assert.assertEquals(2, instances.size());
-    }
+    }*/
 }

@@ -5,9 +5,9 @@ import integration.database.example_data.UserExampleModel;
 import jw.fluent_api.database.mysql.factories.SqlConnectionFactory;
 import jw.fluent_api.database.mysql.models.SqlConnection;
 import jw.fluent_api.database.mysql.models.SqlTable;
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.json.JsonUtility;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import lombok.SneakyThrows;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -37,7 +37,7 @@ public class SqlTestBase
         orderTable.setConnection(connection);
         orderTable.dropTable();
         orderTable.createTable();
-        OldLogger.success("Database created");
+        FluentLogger.LOGGER.success("Database created");
     }
 
 
@@ -46,7 +46,7 @@ public class SqlTestBase
     public static void after()
     {
         connection.close();
-        OldLogger.success("Database closed");
+        FluentLogger.LOGGER.success("Database closed");
     }
 
     public static Optional<Connection> getConnection()

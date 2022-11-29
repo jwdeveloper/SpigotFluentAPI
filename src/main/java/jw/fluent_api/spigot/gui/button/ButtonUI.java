@@ -1,10 +1,10 @@
 package jw.fluent_api.spigot.gui.button;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.gui.enums.ButtonType;
 import jw.fluent_api.spigot.gui.enums.PermissionType;
 import jw.fluent_api.spigot.gui.events.ButtonUIEvent;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -176,7 +176,7 @@ public class ButtonUI {
         try {
             return (T) dataContext;
         } catch (Exception e) {
-            OldLogger.error("Can not cast DataContext value " + dataContext.toString() + " in button " + title, e);
+            FluentApi.logger().error("Can not cast DataContext value " + dataContext.toString() + " in button " + title, e);
         }
         return null;
     }

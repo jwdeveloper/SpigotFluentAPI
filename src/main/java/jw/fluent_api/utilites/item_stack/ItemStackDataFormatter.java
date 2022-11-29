@@ -1,6 +1,6 @@
 package jw.fluent_api.utilites.item_stack;
 
-import jw.fluent_plugin.implementation.FluentPlugin;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -32,7 +32,7 @@ public class ItemStackDataFormatter
 
     public static <T extends Serializable> T getData(Class<T> _class, ItemStack itemStack)
     {
-        return getData(FluentPlugin.getPlugin(),_class,itemStack);
+        return getData(FluentApi.plugin(),_class,itemStack);
     }
 
     public static <T extends Serializable> boolean saveData(JavaPlugin javaPlugin, T _object, ItemStack itemStack)
@@ -61,7 +61,7 @@ public class ItemStackDataFormatter
 
     public static <T extends Serializable> boolean saveData(T _object, ItemStack itemStack)
     {
-        return saveData(FluentPlugin.getPlugin(), _object,  itemStack);
+        return saveData(FluentApi.plugin(), _object,  itemStack);
     }
 
     public static <T extends Serializable> boolean containsObject(JavaPlugin plugin,Class<T> _class, ItemStack itemStack)
@@ -74,6 +74,6 @@ public class ItemStackDataFormatter
 
     public static <T extends Serializable> boolean containsObject(Class<T> _class, ItemStack itemStack)
     {
-        return containsObject(FluentPlugin.getPlugin(),_class,itemStack);
+        return containsObject(FluentApi.plugin(),_class,itemStack);
     }
 }

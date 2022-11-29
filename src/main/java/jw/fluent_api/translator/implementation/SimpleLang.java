@@ -1,7 +1,7 @@
 package jw.fluent_api.translator.implementation;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.translator.api.models.LangData;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 
@@ -28,7 +28,7 @@ public class SimpleLang {
             return defaultLang.getTranslations().get(key);
         }
 
-        OldLogger.warning(NOT_FOUND+": "+key);
+        FluentApi.logger().warning(NOT_FOUND+": "+key);
         return NOT_FOUND;
     }
 
@@ -43,7 +43,7 @@ public class SimpleLang {
                 return true;
             }
         }
-        OldLogger.warning("Language not found: "+name);
+        FluentApi.logger().warning("Language not found: "+name);
         return false;
     }
 
@@ -62,7 +62,7 @@ public class SimpleLang {
                 return true;
             }
         }
-        OldLogger.warning("Language not found: "+name);
+        FluentApi.logger().warning("Language not found: "+name);
         return false;
     }
 

@@ -1,8 +1,8 @@
 package jw.fluent_api.spigot.gui;
 
 import jw.fluent_api.spigot.events.EventBase;
-import jw.fluent_plugin.implementation.FluentPlugin;
 import jw.fluent_api.spigot.tasks.FluentTasks;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -188,7 +188,7 @@ public class EventsListenerInventoryUI extends EventBase {
     @EventHandler
     private void onChatEvent(AsyncPlayerChatEvent event) {
         if (textInputEvents.containsKey(event.getPlayer())) {
-            Bukkit.getScheduler().runTask(FluentPlugin.getPlugin(), () ->
+            Bukkit.getScheduler().runTask(FluentApi.plugin(), () ->
             {
                 textInputEvents.get(event.getPlayer()).accept(event.getMessage());
                 textInputEvents.remove(event.getPlayer());

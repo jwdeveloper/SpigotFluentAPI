@@ -14,91 +14,71 @@ import jw.fluent_api.utilites.java.ObjectUtility;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DefaultContainer implements Container {
-    private final EventHandler eventHandler;
-    private final InstanceProvider instaneProvider;
-    private final SimpleLogger logger;
-
+    protected final EventHandler eventHandler;
+    protected final InstanceProvider instaneProvider;
+    protected final SimpleLogger logger;
     protected final Map<Class<?>, InjectionInfo> injections;
-    private final InjectionInfoFactory injectionInfoFactory;
+    protected final InjectionInfoFactory injectionInfoFactory;
 
     public DefaultContainer(InstanceProvider instaneProvider,
                             EventHandler eventHandler,
                             SimpleLogger logger,
                             InjectionInfoFactory injectionInfoFactory,
-                            Map<Class<?>, InjectionInfo> injections) {
-        this.injections = injections;
+                            List<RegistrationInfo> registrationInfos) {
+        this.injections = new HashMap<>();
         this.instaneProvider = instaneProvider;
         this.eventHandler = eventHandler;
         this.logger = logger;
         this.injectionInfoFactory = injectionInfoFactory;
+
+        for (var registration : registrationInfos) {
+            register(registration);
+        }
     }
 
     @Override
-    public boolean register(RegistrationInfo registrationInfo)  {
+    public boolean register(RegistrationInfo registrationInfo) {
         Class<?> clazz = switch (registrationInfo.registrationType()) {
-            case InterfaceAndIml, InterfaceAndProvider -> registrationInfo._interface();
+            case InterfaceAndIml, InterfaceAndProvider, List -> registrationInfo._interface();
             case OnlyImpl -> registrationInfo.implementation();
         };
-        if(injections.containsKey(clazz))
-        {
+        if (injections.containsKey(clazz)) {
             logger.error(String.format(Messages.INJECTION_ALREADY_EXISTS, clazz.getSimpleName()));
             return false;
         }
-        try
-        {
+        try {
             var pair = injectionInfoFactory.create(registrationInfo);
-            var regisrationResult = eventHandler.OnRegistration(new OnRegistrationEvent(pair.key(),pair.value(),registrationInfo));
-            if(!regisrationResult)
-            {
-                logger.info(String.format(Messages.INJECTION_CANT_REGISTER, clazz.getSimpleName()));
+            var regisrationResult = eventHandler.OnRegistration(new OnRegistrationEvent(pair.key(), pair.value(), registrationInfo));
+            if (!regisrationResult) {
                 return false;
             }
-            injections.put(pair.key(),pair.value());
-        }
-        catch (Exception e)
-        {
+            injections.put(pair.key(), pair.value());
+        } catch (Exception e) {
             logger.error(String.format(Messages.INJECTION_CANT_REGISTER, clazz.getSimpleName()));
             return false;
         }
         return true;
     }
 
+    @SneakyThrows
     @Override
     public Object find(Class<?> _injection) {
         var injectionInfo = injections.get(_injection);
         if (injectionInfo == null) {
             logger.error(String.format(Messages.INJECTION_NOT_FOUND, _injection.getSimpleName()));
-            return null;
+            return eventHandler.OnInjection(new OnInjectionEvent(_injection, injectionInfo, null, injections, this));
         }
         try {
-            var result = instaneProvider.getInstance(injectionInfo, injections);
-            return eventHandler.OnInjection(new OnInjectionEvent(_injection, injectionInfo, result, injections));
+            var result = instaneProvider.getInstance(injectionInfo, injections, this);
+            return eventHandler.OnInjection(new OnInjectionEvent(_injection, injectionInfo, result, injections, this));
         } catch (Exception e) {
             logger.error(String.format(Messages.INJECTION_CANT_CREATE, _injection.getSimpleName()), e);
         }
-        return null;
+        return eventHandler.OnInjection(new OnInjectionEvent(_injection, injectionInfo, null, injections, this));
     }
-
-    @SneakyThrows
-    @Override
-    public Container clone()
-    {
-       var clonedInjections = new HashMap<Class<?>, InjectionInfo>();
-       for(var injection : injections.entrySet())
-       {
-           var value = (InjectionInfo)ObjectUtility.copyObject(injection.getValue(),InjectionInfo.class);
-           value.setInstnace(null);
-           clonedInjections.put(injection.getKey(), value);
-       }
-       return new DefaultContainer(instaneProvider,
-               eventHandler,
-               logger,
-               injectionInfoFactory,
-               clonedInjections);
-    }
-
 
 }

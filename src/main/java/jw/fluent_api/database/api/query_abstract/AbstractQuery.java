@@ -6,5 +6,4 @@ public interface AbstractQuery
 
      String getQuery();
 
-
 }

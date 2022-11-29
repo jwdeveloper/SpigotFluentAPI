@@ -4,7 +4,7 @@ import jw.fluent_api.spigot.gui.button.button_observer.ButtonObserverUI;
 import jw.fluent_api.spigot.gui.events.ButtonUIEvent;
 import jw.fluent_api.spigot.gui.implementation.list_ui.ListUI;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,7 +33,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonDelete = ButtonObserverUI
                 .builder()
                 .setLocation(0, 7)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets(FluentAPI.lang().get("gui.base.delete.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets(FluentApi.translator().get("gui.base.delete.title")))
                 .setMaterial(Material.BARRIER)
                 .addObserver(listViewModel.deleteObserver())
                 .buildAndAdd(this);
@@ -41,7 +41,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonEdit = ButtonObserverUI
                 .builder()
                 .setLocation(0, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.YELLOW).inBrackets(FluentAPI.lang().get("gui.base.edit.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.YELLOW).inBrackets(FluentApi.translator().get("gui.base.edit.title")))
                 .setMaterial(Material.WRITABLE_BOOK)
                 .addObserver(listViewModel.editObserver())
                 .buildAndAdd(this);
@@ -49,7 +49,7 @@ public class CrudListUI<T> extends ListUI<T>
         buttonInsert = ButtonObserverUI
                 .builder()
                 .setLocation(0, 6)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_GREEN).inBrackets(FluentAPI.lang().get("gui.base.insert.title")))
+                .setTitle(new MessageBuilder().color(ChatColor.DARK_GREEN).inBrackets(FluentApi.translator().get("gui.base.insert.title")))
                 .setMaterial(Material.CRAFTING_TABLE)
                 .addObserver(listViewModel.insertObserver())
                 .buildAndAdd(this);

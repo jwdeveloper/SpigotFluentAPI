@@ -1,31 +1,42 @@
 package jw.fluent_api.desing_patterns.dependecy_injection.implementation.provider;
 
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.Container;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.utilites.Messages;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.Map;
 
 public class InstanceProviderImpl implements InstanceProvider
 {
     @Override
-    public Object getInstance(InjectionInfo info, Map<Class<?>, InjectionInfo> injections) throws Exception {
+    public Object getInstance(InjectionInfo info, Map<Class<?>, InjectionInfo> injections, Container container) throws Exception {
         if (info.getLifeTime() == LifeTime.SINGLETON && info.getInstnace() != null)
             return info.getInstnace();
 
         Object result = null;
         InjectionInfo handler = null;
+        Class<?> parameterClass = null;
         if (info.hasInjectedConstructor()) {
             var i = 0;
-            for (var parameter : info.getConstructorTypes())
+            for (var parameterType : info.getConstructorTypes())
             {
-                if (!injections.containsKey(parameter))
+                parameterClass = parameterType;
+                if(parameterClass.isAssignableFrom(List.class))
                 {
-                    throw new Exception(String.format(Messages.INJECTION_NOT_FOUND, parameter.getTypeName(), info.getInjectionKeyType()));
+                    var parameterizedType = (ParameterizedType)info.getInjectedConstructor().getGenericParameterTypes()[i];
+                    parameterClass =  (Class<?>)parameterizedType.getActualTypeArguments()[0];
                 }
-                handler = injections.get(parameter);
-                info.getConstructorPayLoadTemp()[i] = getInstance(handler, injections);
+                if (!injections.containsKey(parameterClass))
+                {
+                    throw new Exception(String.format(Messages.INJECTION_NOT_FOUND, parameterClass.getTypeName(), info.getInjectionKeyType()));
+                }
+                handler = injections.get(parameterClass);
+                info.getConstructorPayLoadTemp()[i] = getInstance(handler, injections, container);
                 i++;
             }
             result = info.getInjectedConstructor().newInstance(info.getConstructorPayLoadTemp());
@@ -36,7 +47,7 @@ public class InstanceProviderImpl implements InstanceProvider
         result = switch (info.getRegistrationInfo().registrationType())
         {
             case InterfaceAndIml, OnlyImpl -> info.getRegistrationInfo().implementation().newInstance();
-            case InterfaceAndProvider -> info.getRegistrationInfo().provider().apply(injections);
+            case InterfaceAndProvider, List -> info.getRegistrationInfo().provider().apply(container);
         };
         info.setInstnace(result);
         return result;

@@ -1,7 +1,7 @@
 package unit.desing_patterns.dependecy_injection;
 
 
-import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
 import org.junit.Ignore;
 import unit.assets.annotations.TestingAnnotation;
 import unit.assets.interfaces.TestingInterface;
@@ -14,7 +14,7 @@ import unit.assets.*;
 
 public class ContainerTests {
 
-    private  SearchContainer container;
+    private FluentContainer container;
     @Before
     public void init() throws Exception {
 
@@ -22,7 +22,7 @@ public class ContainerTests {
         builder.register(SomeRepo.class, LifeTime.SINGLETON);
         builder.register(SuperInventory.class, LifeTime.SINGLETON);
         builder.register(PlayerStats.class, LifeTime.SINGLETON);
-        container = builder.buildSearch();
+       // container = builder.buildSearch();
     }
 
     @Test

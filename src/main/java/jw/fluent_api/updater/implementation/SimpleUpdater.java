@@ -1,14 +1,15 @@
 package jw.fluent_api.updater.implementation;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_api.updater.api.UpdateDto;
-import jw.fluent_plugin.implementation.FluentPlugin;
-import jw.fluent_api.spigot.tasks.FluentTasks;
+import jw.fluent_api.updater.api.UpdaterOptions;
+import jw.fluent_api.utilites.files.FileUtility;
+import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -19,20 +20,24 @@ import java.util.function.Consumer;
 public class SimpleUpdater {
     private String github;
     private String command;
-    private FluentPlugin plugin;
+    private JavaPlugin plugin;
     private CommandSender sender;
 
-    public SimpleUpdater(UpdateDto dto, FluentPlugin plugin) {
+    public SimpleUpdater(UpdaterOptions dto, JavaPlugin plugin) {
         this.github = dto.getGithub();
-        this.command = dto.getUpdateCommandName();
+        this.command = "update";
         this.plugin = plugin;
     }
 
 
     public void checkUpdate(Consumer<Boolean> consumer) {
+        if (github.equals(JavaUtils.EMPTY_STRING)) {
+            FluentApi.logger().warning("Updater", "Download url could not be empty");
+            return;
+        }
         var currentVersion = plugin.getDescription().getVersion();
         var releaseUrl = github + "/releases/latest";
-        FluentTasks.taskAsync(unused ->
+        FluentApi.spigot().tasks().taskAsync(unused ->
         {
             try {
                 var html = getHTML(releaseUrl);
@@ -44,7 +49,7 @@ public class SimpleUpdater {
                 consumer.accept(true);
 
             } catch (Exception e) {
-                OldLogger.error("Checking for update error", e);
+                FluentApi.logger().error("Checking for update error", e);
             }
         });
     }
@@ -76,12 +81,12 @@ public class SimpleUpdater {
     }
 
     private MessageBuilder message() {
-        var msg = FluentMessage.message().inBrackets(FluentPlugin.getPlugin().getName());
+        var msg = FluentMessage.message().inBrackets(FluentApi.plugin().getName());
         return msg.space().color(ChatColor.AQUA).inBrackets("Update info").color(ChatColor.GRAY).space();
     }
 
     private String getUpdatesFolder() {
-        return FluentPlugin.getPluginFile().getParentFile().getAbsolutePath() + File.separator + "update" + File.separator;
+        return FileUtility.pluginPath(FluentApi.plugin()) + File.separator + "update" + File.separator;
     }
 
     private String getLatestVersion(String html) {
@@ -99,17 +104,17 @@ public class SimpleUpdater {
     }
 
     private String getHTML(String urlToRead) throws Exception {
-        StringBuilder result = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(conn.getInputStream()))) {
             for (String line; (line = reader.readLine()) != null; ) {
-                result.append(line);
+                stringBuilder.append(line);
             }
         }
-        return result.toString();
+        return stringBuilder.toString();
     }
 
     private void downloadCurrentVersion(String pluginName) {
@@ -134,7 +139,7 @@ public class SimpleUpdater {
                     .text(" to apply changes")
                     .send(sender);
         } catch (Exception e) {
-            OldLogger.error("Update download error", e);
+            FluentApi.logger().error("Update download error", e);
         }
     }
 }

@@ -1,6 +1,6 @@
 package jw.fluent_api_tests_smoke.api;
 
-import jw.fluent_api.logger.OldLogger;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 public class SpigotIntegrationTestsRunner {
 
     public static void loadTests(Collection<Class<?>> classes) {
-        OldLogger.success("Integration tests enabled");
+        FluentLogger.LOGGER.success("Integration tests enabled");
         var integrationTestsClasses = classes.stream().filter(c -> !Modifier.isAbstract(c.getModifiers())).toList();
         List<SpigotIntegrationTest> integrationTests = new ArrayList<SpigotIntegrationTest>();
         for (var integration : integrationTestsClasses) {
@@ -22,7 +22,7 @@ public class SpigotIntegrationTestsRunner {
                 object.loadTests();
                 integrationTests.add(object);
             } catch (Exception e) {
-                OldLogger.error("Error while creating " + integration.getSimpleName() + " integration test");
+                FluentLogger.LOGGER.error("Error while creating " + integration.getSimpleName() + " integration test");
             }
         }
         integrationTests = integrationTests.stream().sorted((o1, o2) ->
@@ -36,7 +36,7 @@ public class SpigotIntegrationTestsRunner {
             }
             return 1;
         }).toList();
-        OldLogger.success("Integration tests run");
+        FluentLogger.LOGGER.success("Integration tests run");
         for (var integrationTest : integrationTests) {
             integrationTest.runTests();
         }

@@ -1,16 +1,16 @@
 package jw.fluent_plugin.implementation.modules.dependecy_injection;
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.Container;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 public class FluentInjectionImpl implements FluentInjection
 {
-    private SearchContainer pluginContainer;
+    private FluentContainer pluginContainer;
 
-    public FluentInjectionImpl(SearchContainer pluginContainer) {
+    public FluentInjectionImpl(FluentContainer pluginContainer) {
         this.pluginContainer = pluginContainer;
     }
 

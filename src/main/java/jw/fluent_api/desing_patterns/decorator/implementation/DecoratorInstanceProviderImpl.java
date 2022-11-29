@@ -1,6 +1,7 @@
 package jw.fluent_api.desing_patterns.decorator.implementation;
 
 import jw.fluent_api.desing_patterns.decorator.api.DecoratorInstanceProvider;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.Container;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.utilites.Messages;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class DecoratorInstanceProviderImpl implements DecoratorInstanceProvider
 {
     @Override
-    public Object getInstance(InjectionInfo info, Map<Class<?>, InjectionInfo> injections, Object toSwap) throws Exception {
+    public Object getInstance(InjectionInfo info, Map<Class<?>, InjectionInfo> injections, Object toSwap, Container container) throws Exception {
         if (info.getLifeTime() == LifeTime.SINGLETON && info.getInstnace() != null)
             return info.getInstnace();
 
@@ -31,7 +32,7 @@ public class DecoratorInstanceProviderImpl implements DecoratorInstanceProvider
                 }
                 else
                 {
-                    info.getConstructorPayLoadTemp()[i] = getInstance(handler, injections, toSwap);
+                    info.getConstructorPayLoadTemp()[i] = getInstance(handler, injections, toSwap, container);
                 }
 
                 i++;
@@ -44,7 +45,7 @@ public class DecoratorInstanceProviderImpl implements DecoratorInstanceProvider
         result = switch (info.getRegistrationInfo().registrationType())
                 {
                     case InterfaceAndIml, OnlyImpl -> info.getRegistrationInfo().implementation().newInstance();
-                    case InterfaceAndProvider -> info.getRegistrationInfo().provider().apply(injections);
+                    case InterfaceAndProvider, List -> info.getRegistrationInfo().provider().apply(container);
                 };
         info.setInstnace(result);
         return result;

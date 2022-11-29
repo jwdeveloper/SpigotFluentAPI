@@ -1,8 +1,8 @@
 package jw.fluent_api.spigot.gui.implementation.crafting_ui;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.gui.InventoryUI;
 import jw.fluent_api.spigot.gui.button.ButtonUI;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryInteractEvent;
@@ -57,7 +57,6 @@ public class CraftingUI extends InventoryUI
     @Override
     protected int calculateButtonSlotIndex(ButtonUI buttonUI)
     {
-        OldLogger.log("widht",buttonUI.getTitle());
         return buttonUI.getWidth();
     }
 
@@ -86,10 +85,8 @@ public class CraftingUI extends InventoryUI
     private void initialize() {
         if (!initialized) {
             initialized = true;
-            OldLogger.log("siema2");
             displayLog("Initialization", ChatColor.GREEN);
             onInitialize();
-            OldLogger.log("siema3");
         }
     }
 

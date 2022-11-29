@@ -2,20 +2,23 @@ package jw.fluent_api.desing_patterns.mediator.implementation;
 
 import jw.fluent_api.desing_patterns.mediator.api.Mediator;
 import jw.fluent_api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_api.utilites.java.KeySet;
 import jw.fluent_api.utilites.java.Pair;
+import jw.fluent_plugin.implementation.FluentApi;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.function.Function;
 
 public class SimpleMediator implements Mediator {
-    private final HashMap<Pair, MediatorHandler> handlers;
+    private final HashMap<Pair, Class> handlers;
     private static final String MEDIATOR_CLASS_NAME = MediatorHandler.class.getTypeName();
 
-    public SimpleMediator() {
+    private Function<Class<?>,Object> serviceResolver;
+
+    public SimpleMediator(Function<Class<?>,Object> serviceResolver)
+    {
         handlers = new HashMap<>();
+        this.serviceResolver = serviceResolver;
     }
 
     @Override
@@ -23,25 +26,26 @@ public class SimpleMediator implements Mediator {
         if (input == null)
             return null;
 
-            var inputClass = input.getClass();
-            var pair = new Pair(inputClass, outputClass);
-            var mediator = handlers.get(pair);
-            if (mediator == null) {
-                OldLogger.info(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
-                return null;
-            }
+        var inputClass = input.getClass();
+        var pair = new Pair<>(inputClass, outputClass);
+        var mediatorClass = handlers.get(pair);
+        var mediatorImpl = (MediatorHandler)serviceResolver.apply(mediatorClass);
+        if (mediatorClass == null) {
+            FluentApi.logger().info(String.format(Messages.MEDIATOR_NOT_REGISTERED, inputClass.getSimpleName()));
+            return null;
+        }
         try {
-            return (Output) mediator.handle(input);
+            return (Output) mediatorImpl.handle(input);
         } catch (Exception e) {
-            OldLogger.error("Error while executing mediator " + mediator.getClass().getSimpleName(), e);
+            FluentApi.logger().error("Error while executing mediator " + mediatorClass.getSimpleName(), e);
             return null;
         }
     }
 
     @Override
-    public <T extends MediatorHandler<?, ?>> void register(T mediator) {
+    public <T extends MediatorHandler<?, ?>> void register(Class<T> mediator) {
         ParameterizedType mediatorInterface = null;
-        for (var _interface : mediator.getClass().getGenericInterfaces()) {
+        for (var _interface : mediator.getGenericInterfaces()) {
             var name = _interface.getTypeName();
             if (name.contains(MEDIATOR_CLASS_NAME)) {
                 mediatorInterface = (ParameterizedType) _interface;
@@ -53,21 +57,21 @@ public class SimpleMediator implements Mediator {
 
         var inputClass = (Class<?>) mediatorInterface.getActualTypeArguments()[0];
         var outputClass = (Class<?>) mediatorInterface.getActualTypeArguments()[1];
-        var pair = new Pair(inputClass, outputClass);
-        if (handlers.containsKey(pair)) {
-            var mediator1 = handlers.get(pair);
-            OldLogger.info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, mediator1));
+        if (handlers.containsKey(inputClass)) {
+            var registerOutput = handlers.get(inputClass);
+            FluentApi.logger().info(String.format(Messages.MEDIATOR_ALREADY_REGISTERED, inputClass, registerOutput));
             return;
         }
-        handlers.put(pair, mediator);
+        handlers.put(new Pair(inputClass,outputClass), mediator);
     }
 
+
     @Override
-    public boolean containsPair(KeySet pair) {
+    public boolean containerClass(Class pair) {
         return handlers.containsKey(pair);
     }
 
-    public Set<Pair> getRegisteredTypes() {
-        return handlers.keySet();
+    public HashMap<Pair, Class> getRegisteredTypes() {
+        return handlers;
     }
 }

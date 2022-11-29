@@ -16,8 +16,8 @@ public class DbContextRegisterationTests
     {
         var connection = SqlTestBase.getConnectionDto();
         var extention = new MySqlDbExtention(ExampleContext.class, connection);
-        extention.pluginEnable(null);
-        extention.pluginDisable(null);
+        extention.onFluentApiEnable(null);
+        extention.onFluentApiEnable(null);
     }
 
 

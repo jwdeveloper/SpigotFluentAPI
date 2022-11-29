@@ -33,7 +33,6 @@ public class FluentTranslatorImpl implements FluentTranslator {
         return lang.langExists(name);
     }
 
-    @Override
     public void setLanguages(List<LangData> language, String name) {
         lang = new SimpleLang(language);
         lang.setDefaultLang("en");

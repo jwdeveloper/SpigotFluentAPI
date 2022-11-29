@@ -25,7 +25,6 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
        return (B)new ButtonUI();
     }
 
-
     protected SELF self()
     {
         return (SELF)this;

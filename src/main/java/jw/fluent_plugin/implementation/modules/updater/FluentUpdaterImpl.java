@@ -6,27 +6,25 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.function.Consumer;
 
-public class FluentUpdaterImpl implements FluentUpdater
-{
-    private SimpleUpdater simpleUpdater;
+public class FluentUpdaterImpl implements FluentUpdater {
+    private final SimpleUpdater simpleUpdater;
 
-    public FluentUpdaterImpl(SimpleUpdater simpleUpdater)
-    {
+    public FluentUpdaterImpl(SimpleUpdater simpleUpdater) {
         this.simpleUpdater = simpleUpdater;
     }
 
     @Override
     public void checkUpdate(Consumer<Boolean> consumer) {
-
+        simpleUpdater.checkUpdate(consumer);
     }
 
     @Override
     public void checkUpdate(ConsoleCommandSender commandSender) {
-
+        simpleUpdater.checkUpdate(commandSender);
     }
 
     @Override
     public void downloadUpdate(CommandSender commandSender) {
-
+        simpleUpdater.downloadUpdate(commandSender);
     }
 }

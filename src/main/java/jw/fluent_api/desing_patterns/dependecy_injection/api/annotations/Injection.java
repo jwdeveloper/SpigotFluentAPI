@@ -14,4 +14,6 @@ public @interface Injection
 {
     LifeTime lifeTime() default LifeTime.SINGLETON;
     boolean lazyLoad() default true;
+    boolean ignoreInterface() default true;
+    Class<?> toInterface() default Object.class;
 }

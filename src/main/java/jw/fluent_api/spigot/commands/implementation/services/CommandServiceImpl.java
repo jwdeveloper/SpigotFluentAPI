@@ -1,6 +1,5 @@
 package jw.fluent_api.spigot.commands.implementation.services;
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.commands.api.services.CommandService;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent_api.spigot.commands.api.enums.AccessType;
@@ -9,7 +8,7 @@ import jw.fluent_api.spigot.commands.api.models.CommandTarget;
 import jw.fluent_api.spigot.commands.api.models.ValidationResult;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
 import jw.fluent_api.utilites.PermissionsUtility;
-import jw.fluent_plugin.implementation.FluentAPI;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -113,7 +112,7 @@ public class CommandServiceImpl implements CommandService {
                     default -> result[i] = value;
                 }
             } catch (Exception e) {
-                OldLogger.error("Error while getting argument ",e);
+                FluentApi.logger().error("Error while getting argument ",e);
             }
         }
         return result;
@@ -127,7 +126,7 @@ public class CommandServiceImpl implements CommandService {
         }
 
         if (args.length != commandArguments.size()) {
-            return new ValidationResult(false, FluentAPI.lang().get("permissions.incorrect-number-of-arguments") + commandArguments.size());
+            return new ValidationResult(false, FluentApi.translator().get("permissions.incorrect-number-of-arguments") + commandArguments.size());
         }
 
         for (int i = 0; i < args.length; i++) {

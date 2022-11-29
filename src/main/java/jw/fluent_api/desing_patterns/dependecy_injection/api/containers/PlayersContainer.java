@@ -7,8 +7,5 @@ import java.util.UUID;
 
 public interface PlayersContainer extends Container
 {
-     <T> T find(Class<T> injectionType, UUID uuid);
-     <T> T find(Class<T> injectionType, Player player);
 
-     boolean register(RegistrationInfo registrationInfo, UUID uuid) throws Exception;
 }

@@ -37,7 +37,8 @@ public class DefaultDecorator implements Decorator
             var nextDecorator = decoratorInstanceProvider.getInstance(
                     injectionInfo,
                     event.injectionInfoMap(),
-                    result);
+                    result,
+                    event.container());
             result = nextDecorator;
         }
         return result;

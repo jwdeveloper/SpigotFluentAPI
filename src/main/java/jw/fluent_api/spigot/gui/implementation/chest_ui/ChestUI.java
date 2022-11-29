@@ -1,11 +1,11 @@
 package jw.fluent_api.spigot.gui.implementation.chest_ui;
 
 
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.spigot.gui.InventoryUI;
 import jw.fluent_api.spigot.gui.button.ButtonUI;
 import jw.fluent_api.spigot.gui.button.button_observer.ButtonObserverUI;
 import jw.fluent_api.spigot.gui.enums.ButtonType;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -109,7 +109,7 @@ public class ChestUI extends InventoryUI {
                 }
             }
         } catch (Exception e) {
-            OldLogger.error("Error onClick, inventory " + this.getName()+" by player "+player.getName(), e);
+            FluentApi.logger().error("Error onClick, inventory " + this.getName()+" by player "+player.getName(), e);
         }
     }
 

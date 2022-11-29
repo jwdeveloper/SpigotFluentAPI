@@ -1,8 +1,7 @@
 package jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder;
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.Container;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.PlayersContainer;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.SearchContainer;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.builders.ContainerBuilder;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.builders.ContainerBuilderConfiguration;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.ContainerConfiguration;
@@ -11,21 +10,20 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.models.Registration
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.SearchContainerImpl;
-import jw.fluent_api.logger.OldLogger;
-import jw.fluent_plugin.implementation.modules.player_context.SpigotPlayerContainer;
+import jw.fluent_api.logger.implementation.SimpleLoggerImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.provider.InstanceProviderImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.events.EventHandlerImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.factory.InjectionInfoFactoryImpl;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
-public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderConfiguration {
-    private final ContainerConfiguration config;
+public class ContainerBuilderImpl<Builder extends ContainerBuilder<Builder>> implements ContainerBuilder<Builder>, ContainerBuilderConfiguration {
+    protected final ContainerConfiguration config;
 
     public ContainerBuilderImpl() {
         config = new ContainerConfiguration();
@@ -36,7 +34,7 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
     }
 
     @SneakyThrows
-    public ContainerBuilder register(Class<?> implementation, LifeTime lifeTime) {
+    public Builder register(Class<?> implementation, LifeTime lifeTime) {
         config.addRegistration(new RegistrationInfo(
                 null,
                 implementation,
@@ -45,11 +43,11 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
                 RegistrationType.OnlyImpl
         ));
         addRegisterdType(implementation);
-        return this;
+        return builder();
     }
 
     @SneakyThrows
-    public <T> ContainerBuilder register(Class<T> _interface, Class<? extends T> implementation, LifeTime lifeTime) {
+    public <T> Builder register(Class<T> _interface, Class<? extends T> implementation, LifeTime lifeTime) {
         config.addRegistration(new RegistrationInfo(
                 _interface,
                 implementation,
@@ -58,12 +56,62 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
                 RegistrationType.InterfaceAndIml
         ));
         addRegisterdType(_interface);
-        return this;
+        return builder();
     }
 
     @SneakyThrows
     @Override
-    public <T> ContainerBuilder register(Class<T> _interface, LifeTime lifeTime, Function<Object, Object> provider) {
+    public <T> Builder registerList(Class<T> _interface, LifeTime lifeTime)
+    {
+        config.addRegistration(new RegistrationInfo(
+                _interface,
+                null,
+                (x)->
+                {
+                    var result = new ArrayList<T>();
+                    var container = (FluentContainer)x;
+                    var instances = container.findAllByInterface(_interface);
+                    for(var instance : instances)
+                    {
+                        result.add(instance);
+                    }
+                    return result;
+                },
+                lifeTime,
+                RegistrationType.List
+        ));
+        addRegisterdType(_interface);
+        return builder();
+    }
+
+    @SneakyThrows
+    @Override
+    public <T> Builder registerList(Class<T> _interface, LifeTime lifeTime, Function<Container, Object> provider)
+    {
+        config.addRegistration(new RegistrationInfo(
+                _interface,
+                null,
+                provider,
+                lifeTime,
+                RegistrationType.List
+        ));
+        addRegisterdType(_interface);
+        return builder();
+    }
+
+    @Override
+    public Builder registerSingletonList(Class<?> _interface) {
+        return registerList(_interface, LifeTime.SINGLETON);
+    }
+
+    @Override
+    public Builder registerTransientList(Class<?> _interface) {
+        return registerList(_interface, LifeTime.TRANSIENT);
+    }
+
+    @SneakyThrows
+    @Override
+    public <T> Builder register(Class<T> _interface, LifeTime lifeTime, Function<Container, Object> provider) {
         config.addRegistration(new RegistrationInfo(
                 _interface,
                 null,
@@ -72,7 +120,7 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
                 RegistrationType.InterfaceAndProvider
         ));
         addRegisterdType(_interface);
-        return this;
+        return builder();
     }
 
     private void addRegisterdType(Class<?> type) throws Exception {
@@ -83,31 +131,32 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
         config.getRegisterdTypes().add(type);
     }
 
-    public <T> ContainerBuilder registerSigleton(Class<T> _interface, Class<? extends T> implementation) {
+    public <T> Builder registerSigleton(Class<T> _interface, Class<? extends T> implementation) {
         return register(_interface, implementation, LifeTime.SINGLETON);
     }
 
-    public <T> ContainerBuilder registerTransient(Class<T> _interface, Class<? extends T> implementation) {
+
+    public <T> Builder registerTransient(Class<T> _interface, Class<? extends T> implementation) {
         return register(_interface, implementation, LifeTime.TRANSIENT);
     }
 
-    public ContainerBuilder registerSigleton(Class<?> implementation) {
+    public Builder registerSigleton(Class<?> implementation) {
         return register(implementation, LifeTime.SINGLETON);
     }
 
-    public ContainerBuilder registerTransient(Class<?> implementation) {
+    public Builder registerTransient(Class<?> implementation) {
         return register(implementation, LifeTime.TRANSIENT);
     }
 
 
-    public ContainerBuilder registerSigleton(Class<?> _interface, Object instance) {
+    public Builder registerSigleton(Class<?> _interface, Object instance) {
         return register(_interface, LifeTime.SINGLETON, (x) ->
         {
             return instance;
         });
     }
 
-    public ContainerBuilder registerTrasient(Class<?> _interface, Object instance) {
+    public Builder registerTrasient(Class<?> _interface, Object instance) {
         return register(_interface, LifeTime.TRANSIENT, (x) ->
         {
             return instance;
@@ -115,51 +164,28 @@ public class ContainerBuilderImpl implements ContainerBuilder, ContainerBuilderC
     }
 
     @Override
-    public ContainerBuilder configure(Consumer<ContainerConfiguration> configuration) {
+    public Builder configure(Consumer<ContainerConfiguration> configuration) {
         configuration.accept(config);
-        return this;
+        return builder();
+    }
+
+    private Builder builder()
+    {
+        return (Builder)this;
     }
 
     public Container buildDefault() throws Exception {
         var eventHandler = new EventHandlerImpl(config.getEvents());
         var instanceProvider = new InstanceProviderImpl();
         var injectionInfoFactory = new InjectionInfoFactoryImpl();
-        var logger = OldLogger.CreateLogger();
 
-        var injections = new HashMap<Class<?>, InjectionInfo>();
-        for (var registration : config.getRegistrations()) {
-            var pair = injectionInfoFactory.create(registration);
-            injections.put(pair.key(), pair.value());
-        }
         return new DefaultContainer(
                 instanceProvider,
                 eventHandler,
-                logger,
+                new SimpleLoggerImpl(Logger.getLogger("container")),
                 injectionInfoFactory,
-                injections);
+                config.getRegistrations());
     }
 
-    public SearchContainer buildSearch() throws Exception {
-        var eventHandler = new EventHandlerImpl(config.getEvents());
-        var instanceProvider = new InstanceProviderImpl();
-        var injectionInfoFactory = new InjectionInfoFactoryImpl();
-        var logger = OldLogger.CreateLogger();
 
-        var injections = new HashMap<Class<?>, InjectionInfo>();
-        for (var registration : config.getRegistrations()) {
-            var pair = injectionInfoFactory.create(registration);
-            injections.put(pair.key(), pair.value());
-        }
-        return new SearchContainerImpl(
-                instanceProvider,
-                eventHandler,
-                logger,
-                injectionInfoFactory,
-                injections);
-    }
-
-    public PlayersContainer buildPlayer() throws Exception {
-        var container = buildDefault();
-        return new SpigotPlayerContainer(container, new ConcurrentHashMap<>());
-    }
 }

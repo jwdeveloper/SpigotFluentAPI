@@ -4,7 +4,7 @@ import jw.fluent_api.database.api.database_table.models.ColumnModel;
 import jw.fluent_api.database.api.database_table.models.TableModel;
 import jw.fluent_api.database.api.query_fluent.QueryFluent;
 import jw.fluent_api.database.mysql.query_builder.SqlSyntaxUtils;
-import jw.fluent_api.utilites.Stopper;
+import jw.fluent_api.utilites.Stopwatch;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
@@ -17,14 +17,14 @@ public abstract class SqlQuery<T> implements QueryFluent<T> {
     protected Connection connection;
     protected TableModel tableModel;
     protected Set<ColumnModel> joinedColumns;
-    protected Stopper stopper;
+    protected Stopwatch stopper;
 
     public SqlQuery(StringBuilder query, Connection connection, TableModel tableModel) {
         this.connection = connection;
         this.tableModel = tableModel;
         this.query = query;
         joinedColumns = new HashSet<>();
-        stopper = new Stopper();
+        stopper = new Stopwatch();
     }
 
     public SqlQuery(Connection connection, TableModel tableModel) {

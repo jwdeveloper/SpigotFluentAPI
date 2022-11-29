@@ -3,13 +3,13 @@ package jw.fluent_api.utilites.files.json;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gson.*;
-import jw.fluent_api.logger.OldLogger;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.files.json.adapters.DateTimeOffsetAdapter;
 import jw.fluent_api.utilites.files.json.adapters.ItemStackAdapter;
 import jw.fluent_api.utilites.files.json.adapters.LocationAdapter;
 import jw.fluent_api.utilites.files.json.execution.BindingFieldSkip;
 import jw.fluent_api.utilites.files.json.execution.JsonIgnoreAnnotationSkip;
+import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +28,7 @@ public final class JsonUtility implements FileUtility {
             file.write(gson.toJson(data));
             return true;
         } catch (IOException e) {
-            OldLogger.error("Save File: " + fullPath, e);
+            FluentApi.logger().error("Save File: " + fullPath, e);
             e.printStackTrace();
         }
         return false;
@@ -42,7 +42,7 @@ public final class JsonUtility implements FileUtility {
             var gson = getGson();
             return gson.fromJson(json, type);
         } catch (IOException e) {
-            OldLogger.error("Load File: " + type.getSimpleName(), e);
+            FluentApi.logger().error("Load File: " + type.getSimpleName(), e);
         }
         return null;
     }
@@ -59,7 +59,7 @@ public final class JsonUtility implements FileUtility {
             reader.close();
             return res;
         } catch (IOException e) {
-            OldLogger.error("Load File: " + fullPath, e);
+            FluentApi.logger().error("Load File: " + fullPath, e);
         }
         return null;
     }
@@ -76,7 +76,7 @@ public final class JsonUtility implements FileUtility {
             inputStream.close();
             return result;
         } catch (IOException e) {
-            OldLogger.error("Load File: " + type.getSimpleName(), e);
+            FluentApi.logger().error("Load File: " + type.getSimpleName(), e);
         }
         return result;
     }
@@ -95,7 +95,7 @@ public final class JsonUtility implements FileUtility {
             reader.close();
             return result;
         } catch (IOException e) {
-            OldLogger.error("Load File: " + fullPath, e);
+            FluentApi.logger().error("Load File: " + fullPath, e);
         }
         return result;
     }
@@ -124,7 +124,7 @@ public final class JsonUtility implements FileUtility {
             fileWriter.write(content);
             fileWriter.flush();
         } catch (IOException exception) {
-            OldLogger.error("Creating file error " + exception.getMessage() + "  " + fullPath, exception);
+            FluentApi.logger().error("Creating file error " + exception.getMessage() + "  " + fullPath, exception);
         }
     }
 
