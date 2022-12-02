@@ -2,9 +2,9 @@ package benchmarks.gui;
 
 import org.junit.Ignore;
 import unit.desing_patterns.mediator.SpigotTestBase;
-import jw.fluent_api.spigot.gui.implementation.chest_ui.ChestUI;
-import jw.fluent_api.spigot.gui.implementation.crud_list_ui.CrudListUI;
-import jw.fluent_api.spigot.gui.implementation.list_ui.ListUI;
+import jw.fluent_api.spigot.inventory_gui.implementation.chest_ui.ChestUI;
+import jw.fluent_api.spigot.inventory_gui.implementation.crud_list_ui.CrudListUI;
+import jw.fluent_api.spigot.inventory_gui.implementation.list_ui.ListUI;
 import jw.fluent_api.utilites.benchmark.Benchmarker;
 import org.junit.Test;
 

@@ -30,7 +30,7 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
         }
         catch (Exception e)
         {
-            FluentApi.logger().error("Unable to save config file!",e);
+            FluentApi.logger().error("Unable to save config path!",e);
         }
 
     }

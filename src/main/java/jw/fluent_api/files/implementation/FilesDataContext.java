@@ -69,7 +69,7 @@ public class FilesDataContext implements DataContext {
     public void registerFileHandler(FileHandler fileHandler) {
         if (fileHandlers.containsKey(fileHandler.getClass())) {
 
-            FluentApi.logger().info("DataContext already contains file handler of type " + fileHandler.getClass().getSimpleName());
+            FluentApi.logger().info("DataContext already contains path handler of type " + fileHandler.getClass().getSimpleName());
             return;
         }
 

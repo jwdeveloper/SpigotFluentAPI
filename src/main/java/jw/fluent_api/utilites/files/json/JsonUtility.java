@@ -124,7 +124,7 @@ public final class JsonUtility implements FileUtility {
             fileWriter.write(content);
             fileWriter.flush();
         } catch (IOException exception) {
-            FluentApi.logger().error("Creating file error " + exception.getMessage() + "  " + fullPath, exception);
+            FluentApi.logger().error("Creating path error " + exception.getMessage() + "  " + fullPath, exception);
         }
     }
 

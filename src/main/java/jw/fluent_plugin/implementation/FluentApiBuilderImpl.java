@@ -16,7 +16,7 @@ import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_plugin.implementation.config.FluentConfigImpl;
 import jw.fluent_plugin.implementation.config.PluginConfigFactory;
 import jw.fluent_plugin.implementation.modules.commands.CommandExtention;
-import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjectionFactory;
+import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjectionExtention;
 import jw.fluent_plugin.implementation.modules.files.FluentFiles;
 import jw.fluent_plugin.implementation.modules.files.FluentFilesExtention;
 import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
@@ -25,7 +25,10 @@ import jw.fluent_plugin.implementation.modules.mapper.FluentMapper;
 import jw.fluent_plugin.implementation.modules.mapper.FluentMapperExtention;
 import jw.fluent_plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent_plugin.implementation.modules.mediator.FluentMediatorExtention;
-import jw.fluent_plugin.implementation.modules.player_context.PlayerContextExtention;
+import jw.fluent_plugin.implementation.modules.permissions.api.FluentPermission;
+import jw.fluent_plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
+import jw.fluent_plugin.implementation.modules.permissions.implementation.FluentPermissionBuilderImpl;
+import jw.fluent_plugin.implementation.modules.permissions.implementation.FluentPermissionExtention;
 import jw.fluent_plugin.implementation.modules.spigot.FluentApiSpigotExtention;
 import jw.fluent_plugin.implementation.modules.translator.FluentTranslationExtention;
 import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
@@ -34,7 +37,6 @@ import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.logging.Level;
 
 public class FluentApiBuilderImpl implements FluentApiBuilder {
     private final SimpleFileBuilderImpl simpleFilesBuilder;
@@ -42,9 +44,11 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
     private final SimpleLoggerBuilderImpl simpleLoggerBuilder;
     private final CommandBuilderImpl commandBuilder;
     private final FluentApiExtentionsManagerImpl extentionsManager;
+    private final FluentPermissionBuilderImpl fluentPermissionBuilder;
     private final FluentConfigImpl configFile;
     private final JavaPlugin plugin;
     private final ClassTypesManager typeManager;
+
 
     @SneakyThrows
     public FluentApiBuilderImpl(JavaPlugin plugin) {
@@ -56,6 +60,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         simpleFilesBuilder = new SimpleFileBuilderImpl();
         simpleLoggerBuilder = new SimpleLoggerBuilderImpl(plugin.getLogger());
         commandBuilder = new CommandBuilderImpl();
+        fluentPermissionBuilder = new FluentPermissionBuilderImpl(plugin);
         typeManager = new ClassTypesManager(ClassTypeUtility.findClassesInPlugin(plugin));
 
         var configPath = FileUtility.pluginPath(plugin) + File.separator + "config.yml";
@@ -89,6 +94,10 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         return configFile;
     }
 
+    public FluentPermissionBuilder permissions() {
+        return fluentPermissionBuilder;
+    }
+
     @Override
     public JavaPlugin plugin() {
         return plugin;
@@ -96,6 +105,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
 
     public FluentApi build() throws Exception {
         useExtention(new FluentLoggerExtention(simpleLoggerBuilder));
+        useExtention(new FluentPermissionExtention(fluentPermissionBuilder));
         useExtention(new FluentMediatorExtention(typeManager));
         useExtention(new FluentMapperExtention());
         useExtention(new FluentFilesExtention(simpleFilesBuilder));
@@ -106,7 +116,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         extentionsManager.onConfiguration(this);
 
         containerBuilder.registerSigleton(FluentConfig.class, configFile);
-        var injectionFactory = new FluentInjectionFactory(containerBuilder, typeManager);
+        var injectionFactory = new FluentInjectionExtention(containerBuilder, typeManager);
         var result = injectionFactory.create();
         useExtention(injectionFactory);
         useExtention(new CommandExtention(commandBuilder));
@@ -117,6 +127,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         var files =   injection.findInjection(FluentFiles.class);
         var translator = injection.findInjection(FluentTranslator.class);
         var _logger = injection.findInjection(FluentLogger.class);
+        var permissions = injection.findInjection(FluentPermission.class);
         var fluentAPISpigot = injection.findInjection(FluentApiSpigot.class);
 
         return new FluentApi(
@@ -129,6 +140,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
                 _logger,
                 fluentAPISpigot,
                 extentionsManager,
-                configFile);
+                configFile,
+                permissions);
     }
 }

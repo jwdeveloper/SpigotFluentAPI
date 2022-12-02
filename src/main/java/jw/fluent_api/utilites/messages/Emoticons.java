@@ -19,6 +19,7 @@ public class Emoticons
     public static final String star = "★";
     public static final String phone = "☎";
     public static final String skull = "☠";
+    public static final String line = "―";
     public static final String radioactive = "☢";
     public static final String biohazard = "☣";
     public static final String peace = "☮";

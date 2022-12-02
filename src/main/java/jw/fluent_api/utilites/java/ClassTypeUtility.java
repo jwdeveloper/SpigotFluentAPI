@@ -52,8 +52,7 @@ public class ClassTypeUtility {
             return result;
         }
         var packageName = plugin.getClass().getPackageName();
-        try {
-            JarInputStream is = new JarInputStream(new FileInputStream(file));
+        try(JarInputStream is = new JarInputStream(new FileInputStream(file))) {
             JarEntry entry;
             while ((entry = is.getNextJarEntry()) != null) {
                 try {
@@ -69,8 +68,8 @@ public class ClassTypeUtility {
                 } catch (Exception ex) {
                     FluentApi.logger().error("Could not load class", ex);
                 }
-
             }
+            is.closeEntry();
         } catch (Exception ex) {
             FluentApi.logger().error("Could not load class", ex);
         }

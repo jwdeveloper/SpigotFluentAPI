@@ -4,7 +4,7 @@ import integration.desing_patterns.decorator.example_classes.ExampleDecorator;
 import integration.desing_patterns.decorator.example_classes.ExampleDecorator2;
 import integration.desing_patterns.decorator.example_classes.ExampleInterface;
 import integration.desing_patterns.decorator.example_classes.ExampleClass;
-import jw.fluent_api.desing_patterns.decorator.FluentDecorator;
+import jw.fluent_plugin.implementation.modules.decorator.FluentDecorator;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
 import org.junit.Assert;
@@ -25,7 +25,7 @@ public class DecoratorTests
         var decorator = decoratorBuilder.build();
         containerBuilder.configure(c -> c.getEvents().add(decorator));
 
-        var container = containerBuilder.buildDefault();
+        var container = containerBuilder.build();
         var exampleInterface = (ExampleInterface)container.find(ExampleInterface.class);
 
         //Act

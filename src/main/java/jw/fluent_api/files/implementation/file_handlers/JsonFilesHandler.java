@@ -32,7 +32,7 @@ public class JsonFilesHandler implements FileHandler {
                 }
 
             } catch (Exception e) {
-                FluentApi.logger().error("Loading file data error", e);
+                FluentApi.logger().error("Loading path data error", e);
             }
         }
     }

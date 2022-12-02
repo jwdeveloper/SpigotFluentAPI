@@ -2,7 +2,7 @@ package jw.fluent_api.utilites.files.yml.api.models;
 
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.files.yml.implementation.YmlModelFactory;
-import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_api.utilites.java.StringUtils;
 import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Data;
 import org.bukkit.ChatColor;
@@ -18,14 +18,13 @@ import java.util.List;
 @Data
 public class YmlContent
 {
-     private String name= JavaUtils.EMPTY_STRING;
+     private String name= StringUtils.EMPTY_STRING;
 
-     private String path= JavaUtils.EMPTY_STRING;
+     private String path= StringUtils.EMPTY_STRING;
 
-     private String description = JavaUtils.EMPTY_STRING;
+     private String description = StringUtils.EMPTY_STRING;
 
      private Object object;
-
      private Field field;
 
      private boolean required;
@@ -42,6 +41,10 @@ public class YmlContent
      public Object getValue() throws IllegalAccessException {
           field.setAccessible(true);
           Object value = field.get(object);
+          if(value == null)
+          {
+               return null;
+          }
           field.setAccessible(false);
           if (value.getClass().equals(Material.class)) {
                var material = (Material) value;
@@ -92,12 +95,20 @@ public class YmlContent
           try
           {
                ParameterizedType arrayType = (ParameterizedType) field.getGenericType();
-             //  FluentLogger.info("List",  arrayType.getRawType().getTypeName());
+              //FluentLogger.LOGGER.info("List",  arrayType.getRawType().getTypeName());
 
                var memberType = arrayType.getActualTypeArguments()[0];
-            //   FluentLogger.info("ListGeneric",arrayType.getActualTypeArguments()[0].getTypeName());
-
-               var membersYml =section.getConfigurationSection(getFullPath()).getKeys(false);
+              // FluentLogger.LOGGER.info("ListGeneric",arrayType.getActualTypeArguments()[0].getTypeName());
+               var listSection =section.getConfigurationSection(getFullPath());
+               if(listSection == null)
+               {
+                    return result;
+               }
+               var membersYml =  listSection.getKeys(false);
+               if(membersYml == null)
+               {
+                    return result;
+               }
 
                var memberClass =Class.forName(memberType.getTypeName());
                var memberObject = memberClass.newInstance();

@@ -6,7 +6,7 @@ import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_api.spigot.commands.FluentCommand;
 import jw.fluent_api.spigot.events.FluentEvent;
 import jw.fluent_plugin.implementation.config.ConfigProperty;
-import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_api.utilites.java.StringUtils;
 import jw.fluent_plugin.implementation.config.FluentConfig;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -60,7 +60,7 @@ public class ResourcepackExtention implements FluentApiExtention {
     public String getCustomUrl(FluentConfig config)
     {
         var property = new ConfigProperty<String>("plugin.resourcepack.custom-url",
-                JavaUtils.EMPTY_STRING,
+                StringUtils.EMPTY_STRING,
                 "If you need to replace default resourcepack with your custom one",
                 "set this to link of you resourcepack",
                 "! after plugin update make sure your custom resourcepack is compatible !"

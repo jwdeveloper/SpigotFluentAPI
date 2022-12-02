@@ -20,7 +20,7 @@ public class ContainerConfiguration
    private List<ContainerEvents> events = new ArrayList<>();
    private List<RegistrationInfo> registerAsList = new ArrayList<>();
    @Setter
-   private boolean disableAutoRegistration;
+   private boolean enableAutoScan = true;
 
    public void addRegistration(RegistrationInfo info)
    {
@@ -31,6 +31,12 @@ public class ContainerConfiguration
    {
       registrations.addAll(info);
    }
+
+   public void onEvent(ContainerEvents event)
+   {
+      events.add(event);
+   }
+
 
    public void onInjection(Function<OnInjectionEvent,Object> event)
    {

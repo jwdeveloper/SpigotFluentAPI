@@ -18,7 +18,7 @@ public class YmlFileUtility implements FileUtility {
             config.save(file);
             return true;
         } catch (Exception e) {
-            FluentApi.logger().error("Could not save YML " + fileName + " file", e);
+            FluentApi.logger().error("Could not save YML " + fileName + " path", e);
             return false;
         }
     }

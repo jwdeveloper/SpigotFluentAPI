@@ -85,7 +85,15 @@ public class FluentFilesExtention implements FluentApiExtention {
 
     @Override
     public void onFluentApiDisabled(FluentApi fluentAPI) {
+        if(filesDataContext == null)
+        {
+            return;
+        }
         filesDataContext.save();
+        if(savingTask == null)
+        {
+            return;
+        }
         savingTask.cancel();
     }
 }

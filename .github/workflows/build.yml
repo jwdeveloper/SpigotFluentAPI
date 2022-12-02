@@ -33,4 +33,4 @@ jobs:
           bump_each_commit: false
 
       - name: Build and Test
-        run: mvn -B package -Dproject.version=${{steps.version.outputs.version_tag}} --file pom.xml
+        run: mvn -B package -Dproject.version=${{steps.version.outputs.version_tag}} --path pom.xml

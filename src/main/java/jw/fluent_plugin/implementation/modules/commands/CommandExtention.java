@@ -22,6 +22,7 @@ public class CommandExtention implements FluentApiExtention {
 
     @Override
     public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+
         commandBuilder.build();
     }
 

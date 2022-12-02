@@ -8,11 +8,11 @@ public interface FluentLogger {
 
     void error(String message, Exception ex);
 
-    void warning(String message, String... params);
+    void warning(String message, Object... params);
 
-    void success(String message, String... params);
+    void success(String message, Object... params);
 
-    void info(String message, String... params);
+    void info(String message, Object... params);
 
     void log(String message, Object... params);
 

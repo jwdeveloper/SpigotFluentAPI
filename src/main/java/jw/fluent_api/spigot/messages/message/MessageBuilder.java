@@ -2,6 +2,7 @@ package jw.fluent_api.spigot.messages.message;
 
 import jw.fluent_api.utilites.messages.Emoticons;
 import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.FluentPlugin;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -74,6 +75,10 @@ public class MessageBuilder
         return this;
     }
 
+    public MessageBuilder bar(String bar, int length, ChatColor color) {
+        return this.color(color).bar(bar,length).reset();
+    }
+
     public MessageBuilder text(Object text, ChatColor color) {
         stringBuilder.append(color).append(text);
         return this;
@@ -82,6 +87,18 @@ public class MessageBuilder
     public MessageBuilder color(ChatColor chatColor) {
         stringBuilder.append(chatColor);
         return this;
+    }
+
+    public MessageBuilder info() {
+        return inBrackets(FluentApi.plugin().getName()+" info", ChatColor.AQUA).space();
+    }
+
+    public MessageBuilder error() {
+        return inBrackets(FluentApi.plugin().getName()+" error", ChatColor.RED).space();
+    }
+
+    public MessageBuilder warning() {
+        return inBrackets(FluentApi.plugin().getName()+" warning", ChatColor.YELLOW).space();
     }
 
     public MessageBuilder color(int r, int g, int b) {

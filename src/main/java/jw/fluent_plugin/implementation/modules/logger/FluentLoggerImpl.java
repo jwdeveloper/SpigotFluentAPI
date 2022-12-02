@@ -25,19 +25,19 @@ public class FluentLoggerImpl implements FluentLogger {
     }
 
     @Override
-    public  void warning(String message, String... params)
+    public  void warning(String message, Object... params)
     {
         simpleLogger.warning(message,params);
     }
 
     @Override
-    public void success(String message, String... params)
+    public void success(String message, Object... params)
     {
         simpleLogger.success(message,params);
     }
 
     @Override
-    public  void info(String message, String... params)
+    public  void info(String message, Object... params)
     {
         simpleLogger.info(message,params);
     }

@@ -2,6 +2,7 @@ package jw.fluent_api.utilites.files.yml.implementation;
 
 import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.utilites.files.yml.api.YmlConfiguration;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,9 +14,9 @@ public class YmlConfigurationImpl implements YmlConfiguration {
         var model = new YmlModelFactory<T>().createModel(obj);
 
         for (var content : model.getContents()) {
+            FluentLogger.LOGGER.log("Contant",content.getFullPath());
             var value = content.getValue();
             configuration.set(content.getFullPath(), value);
-
         }
         if (model.getDescription().length() != 0) {
             var desc = FluentMessage.message()

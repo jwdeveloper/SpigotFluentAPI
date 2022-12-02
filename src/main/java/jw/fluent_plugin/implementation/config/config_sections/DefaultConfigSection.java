@@ -12,7 +12,7 @@ public class DefaultConfigSection
     private String version = FluentApi.plugin().getDescription().getVersion();
 
     @YmlProperty(description = "If you want add your language open `languages` folder copy `en.yml` call it as you want \n" +
-            "set `language` property to your file name and /reload server ")
+            "set `language` property to your path name and /reload server ")
     private String language = "en";
 
     @YmlProperty(description = "Determinate how frequent data is saved to files, value in minutes",

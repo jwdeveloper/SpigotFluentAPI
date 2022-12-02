@@ -29,23 +29,6 @@ public class PluginConfigFactory {
     private boolean isCreated;
 
 
-    public FluentConfig create() throws Exception {
-            var sections = typesManager.findByInterface(FluentConfigSection.class);
-            var tempObj = new ArrayList<FluentConfigSection>();
-            for(var section : sections)
-            {
-                tempObj.add((FluentConfigSection)section.newInstance());
-            }
-
-            var path = FileUtility.pluginPath(javaPlugin) + File.separator + "config.yml";
-            if (!FileUtility.pathExists(path)) {
-                createConfig(path, tempObj);
-                isCreated = true;
-            }
-            var config = loadConfig(path,tempObj);
-            return new FluentConfigImpl(config, path,isUpdated,isCreated);
-    }
-
     public FluentConfigImpl create(String path, ClassTypesManager typesManager) throws Exception {
         var sections = typesManager.findByInterface(FluentConfigSection.class);
         var tempObj = new ArrayList<FluentConfigSection>();

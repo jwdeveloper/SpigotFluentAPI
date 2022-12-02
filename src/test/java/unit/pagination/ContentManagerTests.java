@@ -1,6 +1,6 @@
 package unit.pagination;
 
-import jw.fluent_api.spigot.gui.implementation.list_ui.content_manger.ContentManager;
+import jw.fluent_api.spigot.inventory_gui.implementation.list_ui.content_manger.ContentManager;
 import org.junit.Ignore;
 import org.junit.Test;
 

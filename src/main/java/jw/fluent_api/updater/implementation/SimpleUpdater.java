@@ -4,7 +4,7 @@ import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
 import jw.fluent_api.updater.api.UpdaterOptions;
 import jw.fluent_api.utilites.files.FileUtility;
-import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_api.utilites.java.StringUtils;
 import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +31,7 @@ public class SimpleUpdater {
 
 
     public void checkUpdate(Consumer<Boolean> consumer) {
-        if (github.equals(JavaUtils.EMPTY_STRING)) {
+        if (github.equals(StringUtils.EMPTY_STRING)) {
             FluentApi.logger().warning("Updater", "Download url could not be empty");
             return;
         }
@@ -127,7 +127,7 @@ public class SimpleUpdater {
             var in = new BufferedInputStream(new URL(download).openStream());
             var yourFile = new File(output);
             yourFile.getParentFile().mkdirs();
-            yourFile.createNewFile(); // if file already exists will do nothing
+            yourFile.createNewFile(); // if path already exists will do nothing
             var fileOutputStream = new FileOutputStream(output, false);
             byte dataBuffer[] = new byte[1024];
             int bytesRead;

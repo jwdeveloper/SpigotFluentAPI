@@ -12,7 +12,7 @@ import jw.fluent_api.spigot.commands.api.enums.ArgumentType;
 import jw.fluent_api.spigot.commands.api.models.CommandArgument;
 import jw.fluent_api.spigot.commands.api.models.CommandModel;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_api.utilites.PermissionsUtility;
+import jw.fluent_api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent_plugin.implementation.FluentApi;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,7 +86,8 @@ public class SimpleCommand extends Command {
         {
             this.setPermission(commandModel.getPermissions().get(0));
         }
-
+        //TODO remove this
+         logs = true;
     }
 
 
@@ -149,7 +150,7 @@ public class SimpleCommand extends Command {
                 if (sender instanceof Player player) {
                     List res = new ArrayList<>();
                     for (var cmd : subCommands) {
-                        if (PermissionsUtility.hasOnePermission(player, cmd.getPermission())) {
+                        if (PermissionsUtility.hasOnePermissionWithoutMessage(player, cmd.getPermission())) {
                             res.add(cmd.getName());
                         }
                     }

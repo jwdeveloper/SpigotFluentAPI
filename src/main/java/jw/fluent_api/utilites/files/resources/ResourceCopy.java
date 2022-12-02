@@ -14,7 +14,7 @@ import java.util.jar.JarFile;
 
 public class ResourceCopy
 {
-    private static final String JAR_URI_PREFIX = "jar:file:";
+    private static final String JAR_URI_PREFIX = "jar:path:";
 
     /**
      * The default buffer size.

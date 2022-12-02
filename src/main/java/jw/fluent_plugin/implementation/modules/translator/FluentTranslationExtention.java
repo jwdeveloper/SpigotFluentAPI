@@ -1,6 +1,8 @@
 package jw.fluent_plugin.implementation.modules.translator;
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent_api.spigot.permissions.api.PermissionModel;
+import jw.fluent_api.spigot.permissions.api.enums.Visibility;
 import jw.fluent_plugin.api.FluentApiBuilder;
 import jw.fluent_plugin.api.FluentApiExtention;
 import jw.fluent_api.translator.implementation.SimpleLangLoader;
@@ -12,6 +14,7 @@ import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent_plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
 import org.bukkit.ChatColor;
 
 import java.io.File;
@@ -25,17 +28,20 @@ public class FluentTranslationExtention implements FluentApiExtention {
     public void onConfiguration(FluentApiBuilder builder) {
         fluentTranslator = new FluentTranslatorImpl();
         builder.container().register(FluentTranslator.class, LifeTime.SINGLETON,(x) -> fluentTranslator);
+
+        var permission = createPermission(builder.permissions());
+        builder.permissions().registerPermission(permission);
         builder.command().subCommandsConfig(subCommandConfig ->
         {
-            subCommandConfig.addSubCommand(langCommand("default", builder.config()));
+            subCommandConfig.addSubCommand(createCommand(permission, builder.config()));
         });
     }
 
     @Override
     public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
 
-        var basePath = FileUtility.pluginPath(fluentAPI.getPlugin()) + File.separator + "languages";
-        var loader = new SimpleLangLoader(fluentAPI.getPlugin());
+        var basePath = FluentApi.path() + File.separator + "languages";
+        var loader = new SimpleLangLoader(FluentApi.getPlugin());
         FileUtility.ensurePath(basePath);
         loader.generateFiles(basePath);
         var langName = getPluginLanguage(fluentAPI.getFluentConfig(),fluentAPI.getFluentLogger());
@@ -47,7 +53,7 @@ public class FluentTranslationExtention implements FluentApiExtention {
 
     }
 
-    public String getPluginLanguage(FluentConfig configFile, FluentLogger logger)
+    private String getPluginLanguage(FluentConfig configFile, FluentLogger logger)
     {
         if (configFile.config().isString(CONFIG_LANG_PATH)) {
             return configFile.config().getString(CONFIG_LANG_PATH);
@@ -56,14 +62,13 @@ public class FluentTranslationExtention implements FluentApiExtention {
         return "en";
     }
 
-
-    private CommandBuilder langCommand(String permission, FluentConfig configFile) {
+    private CommandBuilder createCommand(PermissionModel permission, FluentConfig configFile) {
         return FluentCommand.create("lang")
                 .propertiesConfig(propertiesConfig ->
                 {
 
-                    propertiesConfig.addPermissions(permission + "commands.language");
-                    propertiesConfig.setShortDescription("set the plugin name");
+                    propertiesConfig.addPermissions(permission.getName());
+                    propertiesConfig.setShortDescription(permission.getDescription());
                 })
                 .argumentsConfig(argumentConfig ->
                 {
@@ -81,8 +86,7 @@ public class FluentTranslationExtention implements FluentApiExtention {
                         var languageName = commandEvent.getCommandArgs()[0];
                         if (!FluentApi.translator().langAvaliable(languageName)) {
                             FluentMessage.message()
-                                    .color(ChatColor.RED)
-                                    .inBrackets("info")
+                                    .warning()
                                     .text(" Language ", ChatColor.GRAY)
                                     .text(languageName, ChatColor.RED)
                                     .text(" not found ", ChatColor.GRAY)
@@ -92,17 +96,23 @@ public class FluentTranslationExtention implements FluentApiExtention {
                         configFile.config().set(CONFIG_LANG_PATH, languageName);
                         configFile.save();
                         FluentMessage.message()
-                                .color(ChatColor.AQUA)
-                                .inBrackets("info")
+                                .info()
                                 .text(" Language has been changed to ", ChatColor.GRAY)
                                 .text(languageName, ChatColor.AQUA)
                                 .text(" use ", ChatColor.GRAY)
                                 .text("/reload", ChatColor.AQUA).color(ChatColor.GRAY)
                                 .text(" to apply changes").send(commandEvent.getSender());
-
                     });
                 });
     }
 
-
+    private PermissionModel createPermission(FluentPermissionBuilder builder) {
+        var permission = new PermissionModel();
+        var pluginName = builder.getBasePermission();
+        permission.setName(pluginName+".commands.lang");
+        permission.setDescription("/"+pluginName+" lang [en,pl,kr...]  (Change language of plugin)");
+        permission.setVisibility(Visibility.Op);
+        permission.getGroups().add(builder.defaultPermissionSections().commands().getParentGroup());
+        return permission;
+    }
 }

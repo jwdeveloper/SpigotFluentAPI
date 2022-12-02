@@ -9,11 +9,8 @@ import integration.desing_patterns.dependecy_injection.example_classes.ExampleIn
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_plugin.api.extention.FluentApiExtentionsManager;
-import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.FluentApiContainerBuilderImpl;
 import jw.fluent_plugin.implementation.modules.player_context.FluentPlayerContext;
-import jw.fluent_plugin.implementation.modules.player_context.PlayerContainerBuilderImpl;
-import jw.fluent_plugin.implementation.modules.player_context.PlayerContext;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -42,7 +39,7 @@ public class PlayerContainerTests {
         var builder = new FluentApiContainerBuilderImpl(extentionsManagerMock, plugin);
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
         builder.register(ExampleInterfaceV2.class, ExampleClassV2.class, LifeTime.TRANSIENT);
-        var container = builder.buildFluentContainer();
+        var container = builder.build();
 
         var playerContainer = new FluentPlayerContext(container, new ArrayList<>());
 
@@ -67,7 +64,7 @@ public class PlayerContainerTests {
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
 
 
-        var container = builder.buildFluentContainer();
+        var container = builder.build();
 
         var playerInjection = new RegistrationInfo(
                 ExampleInterfaceV2.class,

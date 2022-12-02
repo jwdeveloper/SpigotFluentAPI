@@ -7,7 +7,7 @@ import jw.fluent_api.utilites.files.yml.api.annotations.YmlIgnore;
 import jw.fluent_api.utilites.files.yml.api.annotations.YmlProperty;
 import jw.fluent_api.utilites.files.yml.api.models.YmlContent;
 import jw.fluent_api.utilites.files.yml.api.models.YmlModel;
-import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_api.utilites.java.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -44,7 +44,7 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
     private String generateDescription(List<YmlContent> contents) {
         var content = contents.stream().filter(c -> !c.getDescription().isEmpty()).toList();
         if(content.size() == 0)
-            return JavaUtils.EMPTY_STRING;
+            return StringUtils.EMPTY_STRING;
 
         var description = FluentMessage.message();
         var maxDesc = Integer.MIN_VALUE;
@@ -77,7 +77,7 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
     private String getGlobalPath(Class<T> clazz) {
         var ymlFileAnnotation = clazz.getAnnotation(YmlFile.class);
         if (ymlFileAnnotation == null) {
-            return JavaUtils.EMPTY_STRING;
+            return StringUtils.EMPTY_STRING;
         }
         return ymlFileAnnotation.globalPath();
     }

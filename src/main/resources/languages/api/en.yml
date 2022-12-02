@@ -8,6 +8,10 @@ gui:
       title: Edit
     search:
       title: Search
+      desc:
+        left-click: Change option
+        right-click: Search
+        shift-click: Reset
     page-up:
       title: Page up
     page-down:
@@ -20,6 +24,13 @@ gui:
     active: active
     inactive: inactive
     state: state
+    left-click: Left click
+    right-click: Right click
+    shift-click: Shift click
+    save: Save
+    cancel: Cancel
+    title: Title
+    icon: Icon
 
 permissions:
       one-required: You need to have one of those permissions

@@ -62,19 +62,19 @@ public class SimpleLoggerImpl implements SimpleLogger {
     }
 
 
-    public void warning(String message, String... params) {
+    public void warning(String message, Object... params) {
         log(message, LogType.WARNING, params);
     }
 
-    public void success(String message, String... params) {
+    public void success(String message, Object... params) {
         log(message, LogType.SUCCESS, params);
     }
 
-    public void info(String message, String... params) {
+    public void info(String message, Object... params) {
         log(message, LogType.INFO, params);
     }
 
-    public void log(String message, LogType logType, String... params)
+    public void log(String message, LogType logType, Object... params)
     {
         var msg = new MessageBuilder();
 

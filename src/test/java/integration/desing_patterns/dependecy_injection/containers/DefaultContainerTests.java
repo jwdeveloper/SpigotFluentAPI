@@ -8,9 +8,6 @@ import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containe
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DefaultContainerTests
 {
     @Test
@@ -20,7 +17,7 @@ public class DefaultContainerTests
         builder.register(ExampleClass.class, LifeTime.SINGLETON);
 
        //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleClass.class);
         var instance2 = container.find(ExampleClass.class);
 
@@ -36,7 +33,7 @@ public class DefaultContainerTests
         builder.register(ExampleClass.class, LifeTime.TRANSIENT);
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleClass.class);
         var instance2 = container.find(ExampleClass.class);
 
@@ -56,7 +53,7 @@ public class DefaultContainerTests
         });
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleInterface.class);
         var instance2 = container.find(ExampleInterface.class);
 
@@ -76,7 +73,7 @@ public class DefaultContainerTests
         });
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleInterface.class);
         var instance2 = container.find(ExampleInterface.class);
 
@@ -92,7 +89,7 @@ public class DefaultContainerTests
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleInterface.class);
         var instance2 = container.find(ExampleInterface.class);
 
@@ -108,7 +105,7 @@ public class DefaultContainerTests
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.TRANSIENT);
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = container.find(ExampleInterface.class);
         var instance2 = container.find(ExampleInterface.class);
 
@@ -127,7 +124,7 @@ public class DefaultContainerTests
         builder.register(ExampleWithList.class, LifeTime.TRANSIENT);
 
         //Act
-        var container = builder.buildDefault();
+        var container = builder.build();
         var instance = (ExampleWithList)container.find(ExampleWithList.class);
 
         //Assert

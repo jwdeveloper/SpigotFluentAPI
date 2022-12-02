@@ -5,11 +5,12 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentCo
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.builders.ContainerBuilder;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.builders.ContainerBuilderConfiguration;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.ContainerConfiguration;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.search.ContainerSearch;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
+import jw.fluent_api.desing_patterns.dependecy_injection.implementation.search.SearchAgentImpl;
 import jw.fluent_api.logger.implementation.SimpleLoggerImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.provider.InstanceProviderImpl;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.events.EventHandlerImpl;
@@ -17,14 +18,12 @@ import jw.fluent_api.desing_patterns.dependecy_injection.implementation.factory.
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
 public class ContainerBuilderImpl<Builder extends ContainerBuilder<Builder>> implements ContainerBuilder<Builder>, ContainerBuilderConfiguration {
     protected final ContainerConfiguration config;
-
     public ContainerBuilderImpl() {
         config = new ContainerConfiguration();
     }
@@ -68,14 +67,9 @@ public class ContainerBuilderImpl<Builder extends ContainerBuilder<Builder>> imp
                 null,
                 (x)->
                 {
-                    var result = new ArrayList<T>();
-                    var container = (FluentContainer)x;
+                    var container = (ContainerSearch)x;
                     var instances = container.findAllByInterface(_interface);
-                    for(var instance : instances)
-                    {
-                        result.add(instance);
-                    }
-                    return result;
+                    return new ArrayList(instances);
                 },
                 lifeTime,
                 RegistrationType.List
@@ -174,12 +168,14 @@ public class ContainerBuilderImpl<Builder extends ContainerBuilder<Builder>> imp
         return (Builder)this;
     }
 
-    public Container buildDefault() throws Exception {
+    public Container build() throws Exception {
         var eventHandler = new EventHandlerImpl(config.getEvents());
         var instanceProvider = new InstanceProviderImpl();
         var injectionInfoFactory = new InjectionInfoFactoryImpl();
+        var searchAgent = new SearchAgentImpl();
 
         return new DefaultContainer(
+                searchAgent,
                 instanceProvider,
                 eventHandler,
                 new SimpleLoggerImpl(Logger.getLogger("container")),

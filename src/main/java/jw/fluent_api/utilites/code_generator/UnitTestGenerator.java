@@ -2,7 +2,7 @@ package jw.fluent_api.utilites.code_generator;
 
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
 import jw.fluent_api.utilites.files.FileUtility;
-import jw.fluent_api.utilites.java.JavaUtils;
+import jw.fluent_api.utilites.java.StringUtils;
 
 public class UnitTestGenerator {
     public static void generate(Class<?> _interface, Class<?> _implementation, String outputPath) {
@@ -40,7 +40,7 @@ public class UnitTestGenerator {
         CreateProperty(outPut, "private final",
                 _interface.getSimpleName(),
                 sutName,
-                JavaUtils.EMPTY_STRING);
+                StringUtils.EMPTY_STRING);
 
         //mock definition
         for (var field : fields) {
@@ -97,7 +97,7 @@ public class UnitTestGenerator {
                 .text(typeName)
                 .space()
                 .text(methodName);
-                if(value.equals(JavaUtils.EMPTY_STRING))
+                if(value.equals(StringUtils.EMPTY_STRING))
                 {
                     outPut.text(";");
                 }

@@ -8,6 +8,7 @@ import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_plugin.implementation.modules.files.FluentFiles;
 import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import jw.fluent_plugin.implementation.modules.logger.FluentLoggerImpl;
+import jw.fluent_plugin.implementation.modules.permissions.api.FluentPermission;
 import jw.fluent_plugin.implementation.modules.translator.FluentTranslator;
 import jw.fluent_plugin.implementation.modules.mediator.FluentMediator;
 import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjection;
@@ -40,6 +41,9 @@ public final class FluentApi {
 
     @Getter
     private final FluentConfig fluentConfig;
+
+    @Getter
+    private final FluentPermission fluentPermission;
     @Getter
     private final FluentApiSpigot spigotFluentApi;
 
@@ -58,7 +62,8 @@ public final class FluentApi {
             FluentLogger logger,
             FluentApiSpigot fluentAPISpigot,
             FluentApiExtentionsManager extentionsManager,
-            FluentConfig fluentConfig) {
+            FluentConfig fluentConfig,
+            FluentPermission permission) {
         this.plugin = plugin;
         fluentInjection = injection;
         fluentMapper = mapper;
@@ -67,6 +72,7 @@ public final class FluentApi {
         fluentTranslator = translator;
         fluentLogger = logger;
         spigotFluentApi = fluentAPISpigot;
+        fluentPermission = permission;
         this.fluentConfig = fluentConfig;
         this.extentionsManager = extentionsManager;
     }
@@ -140,8 +146,6 @@ public final class FluentApi {
 
         return plugin;
     }
-
-
 
     public static FluentTranslator translator() {
         return getInstance().fluentTranslator;

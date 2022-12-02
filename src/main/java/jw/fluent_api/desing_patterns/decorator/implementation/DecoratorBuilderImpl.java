@@ -41,11 +41,11 @@ public class DecoratorBuilderImpl implements DecoratorBuilder {
     public Decorator build() throws Exception {
 
         var instanceProvider = new DecoratorInstanceProviderImpl();
-        var decorators = CreateDecoratorDto();
+        var decorators = createDecoratorDto();
         return new DefaultDecorator(instanceProvider, decorators);
     }
 
-    private Map<Class<?>, DecorationDto> CreateDecoratorDto() throws Exception {
+    private Map<Class<?>, DecorationDto> createDecoratorDto() throws Exception {
         var decorators = new HashMap<Class<?>, DecorationDto>();
         for(var pair : registeredTypes.entrySet())
         {

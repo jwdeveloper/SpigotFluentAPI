@@ -20,6 +20,7 @@ import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent_api.spigot.commands.implementation.SimpleCommandManger;
 import jw.fluent_api.spigot.commands.api.models.CommandModel;
 import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -56,6 +57,12 @@ public class CommandBuilderImpl implements CommandBuilder {
     }
 
     @Override
+    public CommandBuilder setName(String  commandName) {
+        model.setName(commandName);
+        return this;
+    }
+
+    @Override
     public CommandBuilder propertiesConfig(Consumer<PropertiesConfig> config) {
         configs.put(config, new PropertiesConfigImpl(model));
         return this;
@@ -89,6 +96,10 @@ public class CommandBuilderImpl implements CommandBuilder {
 
     public SimpleCommand build() {
         var result = buildSubCommand();
+        result.getCommandModel().getPermissions().forEach(c ->
+        {
+            FluentLogger.LOGGER.log("CMD permission",c);
+        });
         SimpleCommandManger.register(result);
         return result;
     }

@@ -7,7 +7,7 @@ import jw.fluent_api.spigot.commands.api.models.CommandArgument;
 import jw.fluent_api.spigot.commands.api.models.CommandTarget;
 import jw.fluent_api.spigot.commands.api.models.ValidationResult;
 import jw.fluent_api.spigot.messages.message.MessageBuilder;
-import jw.fluent_api.utilites.PermissionsUtility;
+import jw.fluent_api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent_plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

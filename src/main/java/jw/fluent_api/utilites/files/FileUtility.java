@@ -35,7 +35,7 @@ public interface FileUtility {
                     else if (!childFile.delete()) {
 
                     }
-                    FluentApi.logger().info("Could not delete file: " + childFile.getName());
+                    FluentApi.logger().info("Could not delete path: " + childFile.getName());
                 }
             }
         }
@@ -43,7 +43,7 @@ public interface FileUtility {
         if (!file.delete()) {
 
         }
-        FluentApi.logger().info("Could not delete file: " + file.getName());
+        FluentApi.logger().info("Could not delete path: " + file.getName());
     }
 
     static String pluginPath(JavaPlugin javaPlugin) {
@@ -57,7 +57,7 @@ public interface FileUtility {
             fileField.setAccessible(true);
             return (File) fileField.get(plugin);
         } catch (Exception e) {
-            FluentApi.logger().error("Can not load plugin file", e);
+            FluentApi.logger().error("Can not load plugin path", e);
             return null;
         }
     }

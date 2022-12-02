@@ -10,6 +10,7 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.server.PluginDisableEvent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -122,5 +123,9 @@ public class SimpleCommandManger extends EventBase {
             FluentApi.logger().error("can't get all commands", e);
         }
         return new ArrayList<>();
+    }
+
+    public static Collection<SimpleCommand> getRegisteredCommands() {
+       return getInstance().commands.values();
     }
 }

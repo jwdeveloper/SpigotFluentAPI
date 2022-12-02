@@ -9,6 +9,7 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInf
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.search.SearchAgent;
 import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
 import jw.fluent_api.logger.api.SimpleLogger;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
@@ -31,11 +32,13 @@ public class ContainerImplNewTests
     private final EventHandler eventHandlerMock = mock(EventHandler.class);
     private final SimpleLogger simpleLoggerMock = mock(SimpleLogger.class);
     private final InjectionInfoFactory injectionInfoFactoryMock = mock(InjectionInfoFactory.class);
+    private final SearchAgent searchAgentMock = mock(SearchAgent.class);
     private final List<RegistrationInfo> registrationInfos  = new ArrayList<>();
 
     public ContainerImplNewTests()
     {
         sut = new DefaultContainer(
+                searchAgentMock,
                 instanceProviderMock,
                 eventHandlerMock,
                 simpleLoggerMock,
