@@ -43,4 +43,9 @@ public abstract class DocumentationRenderer {
     {
         return builder.text("#").space().text(comment).newLine();
     }
+
+    protected MessageBuilder smallTitle(String title)
+    {
+        return builder.text("#").bar("=", 50).space().text(title).space().bar("=", 50-title.length()).newLine();
+    }
 }

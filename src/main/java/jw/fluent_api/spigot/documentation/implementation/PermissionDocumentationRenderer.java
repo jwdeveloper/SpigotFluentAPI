@@ -171,7 +171,7 @@ public class PermissionDocumentationRenderer extends DocumentationRenderer {
         builder.text("permissions:").newLine();
         for (var section : sections) {
             if (section.hasTitle()) {
-                builder.text("#").bar("=", 25).space().text(section.getModel().getTitle()).space().bar("=", 25).newLine();
+                smallTitle(section.getModel().getTitle());
             }
             var model = section.getModel();
             builder.space(defaultOffset).text(model.getName()).text(":").newLine();

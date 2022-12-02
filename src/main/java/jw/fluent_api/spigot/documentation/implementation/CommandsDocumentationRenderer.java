@@ -44,7 +44,7 @@ public class CommandsDocumentationRenderer extends DocumentationRenderer {
     private void renderCommandInfo(SimpleCommand command) {
         var model = command.getCommandModel();
 
-        builder.text("#").bar("=", 25).space().text(model.getName()).space().bar("=", 25).newLine();
+        smallTitle(model.getName());
         builder.space(defaultOffset).text(model.getName()).text(":").newLine();
 
         if (!command.getSubCommands().isEmpty()) {
