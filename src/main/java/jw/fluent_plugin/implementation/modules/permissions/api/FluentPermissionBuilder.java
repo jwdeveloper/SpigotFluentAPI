@@ -7,10 +7,10 @@ public interface FluentPermissionBuilder
 {
     public FluentPermissionBuilder registerPermission(PermissionModel model);
 
-    public FluentPermissionBuilder setBasePermission(String name);
+    public FluentPermissionBuilder setBasePermissionName(String name);
 
     public DefaultPermissions defaultPermissionSections();
 
-    public String getBasePermission();
+    public String getBasePermissionName();
 
 }

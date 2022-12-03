@@ -6,7 +6,7 @@ import jw.fluent_api.spigot.messages.FluentMessage;
 import jw.fluent_api.spigot.particles.FluentParticle;
 import jw.fluent_api.spigot.tasks.FluentTaskFasade;
 import jw.fluent_api.spigot.tasks.FluentTasks;
-import jw.fluent_plugin.implementation.modules.player_context.FluentPlayerContext;
+import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 
 public class FluentApiSpigot
 {
@@ -28,10 +28,7 @@ public class FluentApiSpigot
         this.fluentPlayerContext = fluentPlayerContext;
     }
 
-    public void init()
-    {
-        defaultCommand = commandBuilder.build();
-    }
+
 
     public FluentPlayerContext playerContext()
     {

@@ -5,7 +5,7 @@ import jw.fluent_plugin.api.FluentApiBuilder;
 import jw.fluent_plugin.api.FluentApiExtention;
 import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.FluentApiSpigot;
-import jw.fluent_plugin.implementation.modules.player_context.FluentPlayerContext;
+import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 
 public class FluentApiSpigotExtention implements FluentApiExtention {
 
@@ -22,10 +22,11 @@ public class FluentApiSpigotExtention implements FluentApiExtention {
         });
     }
 
+
     @Override
     public void onFluentApiEnable(FluentApi fluentAPI)
     {
-        spigot.init();
+
     }
 
     @Override

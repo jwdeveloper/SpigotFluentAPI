@@ -117,7 +117,6 @@ public class GameObject implements GameComponent {
     }
     public void create(Location location)
     {
-        FluentApi.logger().log("Gameobject create",name);
         onCreated();
         for (var childSet : childs.values()) {
 

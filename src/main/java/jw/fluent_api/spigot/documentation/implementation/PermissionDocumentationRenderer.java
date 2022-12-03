@@ -49,20 +49,10 @@ public class PermissionDocumentationRenderer extends DocumentationRenderer {
         }
 
 
-        FluentLogger.LOGGER.success("Found", models.size(), "Permissions");
+
         var sections = createSections(models);
         sections = sortSectionsByGroup(sections);
-        FluentLogger.LOGGER.success("Found", sections.stream().filter(PermissionSection::hasChildren).toList().size(), "Permission Sections");
-        sections.forEach(e ->
-        {
-            if (e.hasChildren() && e.getModel().isParent()) {
-                FluentLogger.LOGGER.success(e.getModel().getName(), e.getModel().getParentGroup());
-            }
-        });
         var content = createFileContent(sections);
-        var path = permissionGeneratorDto.path() + "\\permissions.yml";
-        // save(content, path);
-        FluentLogger.LOGGER.success("Permission generated to path", path);
         return content;
     }
 

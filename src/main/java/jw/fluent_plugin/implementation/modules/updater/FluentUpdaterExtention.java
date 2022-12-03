@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 public class FluentUpdaterExtention implements FluentApiExtention {
 
     private final Consumer<UpdaterOptions> consumer;
+    private final String commandName = "update";
     public FluentUpdaterExtention(Consumer<UpdaterOptions> consumer) {
         this.consumer = consumer;
     }
@@ -29,9 +30,8 @@ public class FluentUpdaterExtention implements FluentApiExtention {
         {
             var options = new UpdaterOptions();
             consumer.accept(options);
-            var simpleUpdater = new SimpleUpdater(options, builder.plugin());
-            var updater = new FluentUpdaterImpl(simpleUpdater);
-            return updater;
+            var simpleUpdater = new SimpleUpdater(options, builder.plugin(),builder.command().getName());
+            return new FluentUpdaterImpl(simpleUpdater);
         });
 
         var permission = createPermission(builder.permissions());
@@ -39,7 +39,7 @@ public class FluentUpdaterExtention implements FluentApiExtention {
         builder.command()
                 .subCommandsConfig(subCommandConfig ->
                 {
-                    subCommandConfig.addSubCommand(updatesCommand(permission));
+                    subCommandConfig.addSubCommand(updatesCommand(permission, builder.command().getName()));
                 });
     }
 
@@ -54,11 +54,13 @@ public class FluentUpdaterExtention implements FluentApiExtention {
 
     }
 
-    private CommandBuilder updatesCommand(PermissionModel permission) {
-        return FluentCommand.create("update")
+    private CommandBuilder updatesCommand(PermissionModel permission, String defaultCommandName) {
+        return FluentCommand.create(commandName)
                 .propertiesConfig(propertiesConfig ->
                 {
                     propertiesConfig.addPermissions(permission.getName());
+                    propertiesConfig.setDescription("download plugin latest version, can be trigger both by player or console");
+                    propertiesConfig.setUsageMessage("/"+defaultCommandName+" "+commandName);
                 })
                 .eventsConfig(eventConfig ->
                 {
@@ -77,11 +79,10 @@ public class FluentUpdaterExtention implements FluentApiExtention {
     private PermissionModel createPermission(FluentPermissionBuilder builder)
     {
         var permission = new PermissionModel();
-        var pluginName = builder.getBasePermission();
+        var pluginName = builder.getBasePermissionName();
         permission.setName(pluginName+".commands.update");
-        permission.setDescription("/"+pluginName+" update  (Updates plugin)");
+        permission.setDescription("players with this permission can update plugin");
         permission.setVisibility(Visibility.Op);
-        FluentLogger.LOGGER.success("COMMAND PARENT GROUP",builder.defaultPermissionSections().commands().getParentGroup());
         permission.getGroups().add(builder.defaultPermissionSections().commands().getParentGroup());
         return permission;
     }

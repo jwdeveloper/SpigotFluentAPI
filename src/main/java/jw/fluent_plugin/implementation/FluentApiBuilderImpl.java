@@ -16,6 +16,8 @@ import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_plugin.implementation.config.FluentConfigImpl;
 import jw.fluent_plugin.implementation.config.PluginConfigFactory;
 import jw.fluent_plugin.implementation.modules.commands.CommandExtention;
+import jw.fluent_plugin.implementation.modules.commands.FluentApiCommandBuilder;
+import jw.fluent_plugin.implementation.modules.commands.FluentApiDefaultCommandBuilder;
 import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjectionExtention;
 import jw.fluent_plugin.implementation.modules.files.FluentFiles;
 import jw.fluent_plugin.implementation.modules.files.FluentFilesExtention;
@@ -42,7 +44,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
     private final SimpleFileBuilderImpl simpleFilesBuilder;
     private final FluentApiContainerBuilderImpl containerBuilder;
     private final SimpleLoggerBuilderImpl simpleLoggerBuilder;
-    private final CommandBuilderImpl commandBuilder;
+    private final FluentApiDefaultCommandBuilder commandBuilder;
     private final FluentApiExtentionsManagerImpl extentionsManager;
     private final FluentPermissionBuilderImpl fluentPermissionBuilder;
     private final FluentConfigImpl configFile;
@@ -59,7 +61,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         containerBuilder = new FluentApiContainerBuilderImpl(extentionsManager, plugin);
         simpleFilesBuilder = new SimpleFileBuilderImpl();
         simpleLoggerBuilder = new SimpleLoggerBuilderImpl(plugin.getLogger());
-        commandBuilder = new CommandBuilderImpl();
+        commandBuilder = new FluentApiDefaultCommandBuilder();
         fluentPermissionBuilder = new FluentPermissionBuilderImpl(plugin);
         typeManager = new ClassTypesManager(ClassTypeUtility.findClassesInPlugin(plugin));
 
@@ -67,7 +69,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         configFile = new PluginConfigFactory(typeManager, plugin).create(configPath, typeManager);
     }
 
-    public CommandBuilder command() {
+    public FluentApiCommandBuilder command() {
         return commandBuilder;
     }
 

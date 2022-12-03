@@ -322,7 +322,6 @@ public abstract class InventoryUI {
             displayLog("Invalid player", ChatColor.RED);
             return false;
         }
-        FluentLogger.LOGGER.log("Siema z inv");
         if(!PermissionsUtility.hasOnePermission(player,permissions))
         {
             displayLog("No permissions to open", ChatColor.RED);

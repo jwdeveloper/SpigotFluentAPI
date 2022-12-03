@@ -11,14 +11,9 @@ import java.util.function.Consumer;
 
 public interface CommandBuilder extends FinishBuilder<SimpleCommand>
 {
-    CommandBuilder setName(String  commandName);
     CommandBuilder propertiesConfig(Consumer<PropertiesConfig> config);
-
     CommandBuilder eventsConfig(Consumer<EventConfig> config);
-
     CommandBuilder argumentsConfig(Consumer<ArgumentConfig> config);
-
     CommandBuilder subCommandsConfig(Consumer<SubCommandConfig> config);
-
     SimpleCommand buildSubCommand();
 }

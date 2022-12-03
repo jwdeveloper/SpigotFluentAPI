@@ -71,7 +71,6 @@ public class FluentEvent implements Listener {
         Bukkit.getPluginManager().registerEvent(eventType, getInstnace(), EventPriority.NORMAL,
                 (listener, event) ->
                 {
-                    FluentApi.logger().log(event.getEventName(),event.getClass().getSimpleName());
                     if(!event.getClass().getSimpleName().equalsIgnoreCase(eventType.getSimpleName()))
                     {
                         return;

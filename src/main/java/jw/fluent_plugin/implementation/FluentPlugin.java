@@ -46,8 +46,8 @@ public abstract class FluentPlugin extends JavaPlugin implements FluentApiExtent
 
     public void debugCommand() {
         FluentCommand.create_OLDWAY("disable")
-                .setDescription("disable all plugin without restarting server")
-                .setUsageMessage("Can be use only with Console")
+                .setDescription("Command only for plugin development purpose. Can be only trigger by Console. disables all plugins")
+                .setUsageMessage("/disable")
                 .nextStep()
                 .nextStep()
                 .onConsoleExecute(consoleCommandEvent ->

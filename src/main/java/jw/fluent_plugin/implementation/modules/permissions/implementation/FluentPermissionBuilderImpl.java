@@ -31,13 +31,13 @@ public class FluentPermissionBuilderImpl implements FluentPermissionBuilder {
     }
 
     @Override
-    public FluentPermissionBuilder setBasePermission(String name) {
+    public FluentPermissionBuilder setBasePermissionName(String name) {
         basePermission= name;
         return this;
     }
 
     @Override
-    public String getBasePermission() {
+    public String getBasePermissionName() {
 
         if(StringUtils.nullOrEmpty(basePermission))
         {
@@ -55,7 +55,7 @@ public class FluentPermissionBuilderImpl implements FluentPermissionBuilder {
     public FluentPermissionImpl build()
     {
         var pluginPermission = defaultPermissionBuilder.plugin();
-        pluginPermission.setName(getBasePermission());
+        pluginPermission.setName(getBasePermissionName());
 
         var command = defaultPermissionBuilder.commands();
         command.getGroups().add(pluginPermission.getParentGroup());

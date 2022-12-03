@@ -30,15 +30,15 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class CommandBuilderImpl implements CommandBuilder {
-    private final EventsService eventsService;
+    protected final EventsService eventsService;
 
-    private final CommandService commandService;
+    protected final CommandService commandService;
 
-    private final MessagesService messagesService;
+    protected final MessagesService messagesService;
 
-    private final List<SimpleCommand> subCommands;
+    protected final List<SimpleCommand> subCommands;
 
-    private final CommandModel model;
+    protected final CommandModel model;
 
     private final Map<Consumer, BuilderConfig> configs;
 
@@ -56,11 +56,7 @@ public class CommandBuilderImpl implements CommandBuilder {
         this(FluentApi.plugin().getName());
     }
 
-    @Override
-    public CommandBuilder setName(String  commandName) {
-        model.setName(commandName);
-        return this;
-    }
+
 
     @Override
     public CommandBuilder propertiesConfig(Consumer<PropertiesConfig> config) {
@@ -96,10 +92,6 @@ public class CommandBuilderImpl implements CommandBuilder {
 
     public SimpleCommand build() {
         var result = buildSubCommand();
-        result.getCommandModel().getPermissions().forEach(c ->
-        {
-            FluentLogger.LOGGER.log("CMD permission",c);
-        });
         SimpleCommandManger.register(result);
         return result;
     }

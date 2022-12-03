@@ -10,7 +10,8 @@ import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationT
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_plugin.api.extention.FluentApiExtentionsManager;
 import jw.fluent_plugin.implementation.FluentApiContainerBuilderImpl;
-import jw.fluent_plugin.implementation.modules.player_context.FluentPlayerContext;
+import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
+import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContextListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -41,7 +42,7 @@ public class PlayerContainerTests {
         builder.register(ExampleInterfaceV2.class, ExampleClassV2.class, LifeTime.TRANSIENT);
         var container = builder.build();
 
-        var playerContainer = new FluentPlayerContext(container, new ArrayList<>());
+        var playerContainer = new FluentPlayerContext(container, new ArrayList<>(), new FluentPlayerContextListener());
 
         //Act
         var instancesSingleTone = (ExampleInterface) playerContainer.find(ExampleInterface.class, playerUuid);
@@ -73,7 +74,7 @@ public class PlayerContainerTests {
                 LifeTime.SINGLETON,
                 RegistrationType.InterfaceAndIml);
 
-        var playerContainer = new FluentPlayerContext(container, Arrays.asList(playerInjection));
+        var playerContainer = new FluentPlayerContext(container, Arrays.asList(playerInjection), new FluentPlayerContextListener());
         //Act
         var player1Instance = (ExampleInterface) playerContainer.find(ExampleInterface.class, player1);
         var player2Instance = (ExampleInterface) playerContainer.find(ExampleInterface.class, player2);

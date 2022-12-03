@@ -3,6 +3,7 @@ package jw.fluent_api.spigot.commands.implementation;
 import jw.fluent_api.spigot.events.EventBase;
 import jw.fluent_api.utilites.java.ObjectUtility;
 import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;

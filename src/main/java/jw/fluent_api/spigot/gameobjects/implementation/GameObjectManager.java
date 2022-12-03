@@ -28,10 +28,10 @@ public class GameObjectManager extends EventBase {
         }
         getInstance().gameObjects.add(gameObject);
         try {
-            gameObject.create(location);
+            gameObject.create(location.clone());
             return true;
         } catch (Exception e) {
-            FluentApi.logger().error("unable to create gameobject" + gameObject.getClass().getSimpleName(), e);
+            FluentApi.logger().error("unable to create Gameobject" + gameObject.getClass().getSimpleName(), e);
         }
         return false;
     }
@@ -45,7 +45,7 @@ public class GameObjectManager extends EventBase {
         try {
             gameObject.destory();
         } catch (Exception e) {
-            FluentApi.logger().error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
+            FluentApi.logger().error("unable to destroy Gameobject" + gameObject.getClass().getSimpleName(), e);
         }
     }
 

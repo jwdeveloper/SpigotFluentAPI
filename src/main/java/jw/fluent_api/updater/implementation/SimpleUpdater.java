@@ -6,6 +6,7 @@ import jw.fluent_api.updater.api.UpdaterOptions;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.java.StringUtils;
 import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -14,6 +15,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 
@@ -22,11 +25,13 @@ public class SimpleUpdater {
     private String command;
     private JavaPlugin plugin;
     private CommandSender sender;
+    private String baseCommandName;
 
-    public SimpleUpdater(UpdaterOptions dto, JavaPlugin plugin) {
+    public SimpleUpdater(UpdaterOptions dto, JavaPlugin plugin, String baseCommmadName) {
         this.github = dto.getGithub();
         this.command = "update";
         this.plugin = plugin;
+        this.baseCommandName = baseCommmadName;
     }
 
 
@@ -59,7 +64,7 @@ public class SimpleUpdater {
         checkUpdate(aBoolean ->
         {
             if (aBoolean == true) {
-                message().text("New version available, use " + ChatColor.AQUA + "/" + command + " update"+ ChatColor.RESET + " to download").send(sender);
+                message().text("New version available, use " + ChatColor.AQUA + "/" + baseCommandName + " update" + ChatColor.RESET + " to download").send(sender);
                 message().text("Check out changes ").text(github + "/releases/latest", ChatColor.AQUA).send(sender);
             }
         });
@@ -104,15 +109,26 @@ public class SimpleUpdater {
     }
 
     private String getHTML(String urlToRead) throws Exception {
-        StringBuilder stringBuilder = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        var stringBuilder = new StringBuilder();
+        var url = new URL(urlToRead);
+        var conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()))) {
-            for (String line; (line = reader.readLine()) != null; ) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream())))
+        {
+            var line = StringUtils.EMPTY_STRING;
+            while (true)
+            {
+                line = reader.readLine();
+                if(line == null)
+                {
+                    break;
+                }
                 stringBuilder.append(line);
             }
+        }
+        catch (Exception e)
+        {
+            FluentLogger.LOGGER.error("Unable to get html",e);
         }
         return stringBuilder.toString();
     }

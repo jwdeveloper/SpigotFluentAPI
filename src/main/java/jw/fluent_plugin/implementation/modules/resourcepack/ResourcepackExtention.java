@@ -3,47 +3,50 @@ package jw.fluent_plugin.implementation.modules.resourcepack;
 import jw.fluent_plugin.api.FluentApiBuilder;
 import jw.fluent_plugin.api.FluentApiExtention;
 import jw.fluent_plugin.implementation.FluentApi;
-import jw.fluent_api.spigot.commands.FluentCommand;
 import jw.fluent_api.spigot.events.FluentEvent;
 import jw.fluent_plugin.implementation.config.ConfigProperty;
-import jw.fluent_api.utilites.java.StringUtils;
 import jw.fluent_plugin.implementation.config.FluentConfig;
+import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.function.Consumer;
 
 public class ResourcepackExtention implements FluentApiExtention {
 
-    private Consumer<ResourcepackOptions> options;
-    private String commandName = "resourcepack";
-    public ResourcepackExtention(Consumer<ResourcepackOptions> options)
-    {
-       this.options = options;
+    private final Consumer<ResourcepackOptions> consumer;
+    private final String commandName = "resourcepack";
+
+    public ResourcepackExtention(Consumer<ResourcepackOptions> options) {
+        this.consumer = options;
     }
 
     @Override
     public void onConfiguration(FluentApiBuilder builder) {
-        var config = builder.config();
-        var url = getCustomUrl(config);
-        var downloadOnJoin = getOnJoin(config);
-        if (downloadOnJoin) {
+        var options = loadOptions(builder.config());
+        if (options.isLoadOnJoin()) {
             FluentEvent.onEvent(PlayerJoinEvent.class, playerJoinEvent ->
             {
-                playerJoinEvent.getPlayer().setResourcePack(url);
+                playerJoinEvent.getPlayer().setResourcePack(options.getResourcepackUrl());
             });
         }
         builder.command()
                 .subCommandsConfig(subCommandConfig ->
                 {
-                    subCommandConfig.addSubCommand(FluentCommand
-                            .create(commandName)
-                            .eventsConfig(eventConfig ->
-                            {
-                                eventConfig.onPlayerExecute(event ->
+                    subCommandConfig.addSubCommand(commandName, commandBuilder ->
+                    {
+                        commandBuilder.propertiesConfig(propertiesConfig ->
                                 {
-                                    event.getPlayer().setResourcePack(url);
+                                    propertiesConfig.setDescription("downloads plugin resourcepack");
+                                    propertiesConfig.setUsageMessage("/"+builder.command().getName()+" "+commandName);
+                                })
+                                .eventsConfig(eventConfig ->
+                                {
+                                    eventConfig.onPlayerExecute(event ->
+                                    {
+                                        event.getPlayer().setResourcePack(options.getResourcepackUrl());
+                                    });
                                 });
-                            }));
+                    });
                 });
     }
 
@@ -57,10 +60,21 @@ public class ResourcepackExtention implements FluentApiExtention {
 
     }
 
-    public String getCustomUrl(FluentConfig config)
-    {
-        var property = new ConfigProperty<String>("plugin.resourcepack.custom-url",
-                StringUtils.EMPTY_STRING,
+    private ResourcepackOptions loadOptions(FluentConfig config) {
+        var options = new ResourcepackOptions();
+        consumer.accept(options);
+        var customUrl = getCustomUrl(config, options);
+        var loadOnJoin = getLoadOnJoin(config, options);
+
+        options.setResourcepackUrl(customUrl);
+        options.setLoadOnJoin(loadOnJoin);
+        return options;
+    }
+
+
+    private String getCustomUrl(FluentConfig config, ResourcepackOptions options) {
+        var property = new ConfigProperty<String>("plugin.resourcepack.url",
+                options.getResourcepackUrl(),
                 "If you need to replace default resourcepack with your custom one",
                 "set this to link of you resourcepack",
                 "! after plugin update make sure your custom resourcepack is compatible !"
@@ -68,9 +82,9 @@ public class ResourcepackExtention implements FluentApiExtention {
         return config.getOrCreate(property);
     }
 
-    public boolean getOnJoin(FluentConfig config) {
+    private boolean getLoadOnJoin(FluentConfig config, ResourcepackOptions options) {
         var property = new ConfigProperty<Boolean>("plugin.resourcepack.load-on-join",
-                true,
+                options.isLoadOnJoin(),
                 "Downloads resourcepack when player joins to server");
         return config.getOrCreate(property);
     }

@@ -86,8 +86,6 @@ public class SimpleCommand extends Command {
         {
             this.setPermission(commandModel.getPermissions().get(0));
         }
-        //TODO remove this
-         logs = true;
     }
 
 

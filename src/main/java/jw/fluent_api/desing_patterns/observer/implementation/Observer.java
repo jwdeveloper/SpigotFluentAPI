@@ -20,15 +20,15 @@ public class Observer<T> implements Observable<T> {
 
     }
 
-    public Observer(Object classObject, String filed) {
-        isBinded = bind(classObject.getClass(), filed);
+    public Observer(Object classObject, String field) {
+        isBinded = bind(classObject.getClass(), field);
         this.object = classObject;
     }
 
-    public Observer(Object classObject, Field filed) {
-        this.field = filed;
+    public Observer(Object classObject, Field field) {
+        this.field = field;
         this.object = classObject;
-        this.fieldType = field.getType();
+        this.fieldType = this.field.getType();
         isBinded = true;
     }
 

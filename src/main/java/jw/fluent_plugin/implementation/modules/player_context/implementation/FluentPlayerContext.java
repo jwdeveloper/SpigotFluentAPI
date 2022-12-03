@@ -1,10 +1,13 @@
-package jw.fluent_plugin.implementation.modules.player_context;
+package jw.fluent_plugin.implementation.modules.player_context.implementation;
 
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.Container;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
+import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent_api.player_context.implementation.PlayerContainerBuilderImpl;
 import jw.fluent_plugin.implementation.FluentApi;
+import jw.fluent_plugin.implementation.modules.player_context.api.FluentPlayer;
+import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerImpl;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -15,11 +18,15 @@ public class FluentPlayerContext {
     private final ConcurrentHashMap<UUID, Container> playerContainers;
     private final FluentContainer mainContainer;
     private final List<RegistrationInfo> registrationInfos;
+    private final FluentPlayerContextListener listener;
 
-    public FluentPlayerContext(FluentContainer mainContainer, List<RegistrationInfo> registrationInfos) {
+    public FluentPlayerContext(FluentContainer mainContainer,
+                               List<RegistrationInfo> registrationInfos,
+                               FluentPlayerContextListener listener) {
         this.mainContainer = mainContainer;
         this.registrationInfos = registrationInfos;
         playerContainers = new ConcurrentHashMap<>();
+        this.listener = listener;
     }
 
     public <T> T find(Class<T> injectionType, Player player) {
@@ -29,7 +36,7 @@ public class FluentPlayerContext {
 
         if (!playerContainers.containsKey(uuid)) {
             try {
-                playerContainers.put(uuid, CreateContainer());
+                playerContainers.put(uuid, CreateContainer(uuid));
             } catch (Exception e) {
                 FluentApi.logger().error("Unable register container for player " + uuid.toString(), e);
                 return null;
@@ -44,12 +51,19 @@ public class FluentPlayerContext {
         return null;
     }
 
-    private Container CreateContainer() throws Exception {
+    private Container CreateContainer(UUID uuid) throws Exception {
         return new PlayerContainerBuilderImpl()
                 .setParentContainer(mainContainer)
                 .configure(containerConfiguration ->
                 {
                     containerConfiguration.addRegistration(registrationInfos);
-                }).build();
+                })
+                .register(FluentPlayer.class,LifeTime.SINGLETON,container ->
+                {
+                    var fluentPlayer = new FluentPlayerImpl(uuid);
+                    listener.register(fluentPlayer);
+                    return fluentPlayer;
+                })
+                .build();
     }
 }

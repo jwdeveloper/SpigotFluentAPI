@@ -68,6 +68,17 @@ public class MessageBuilder
         return this;
     }
 
+    public MessageBuilder textPrimary(Object text) {
+        color(ChatColor.AQUA).text(text).reset();
+        return this;
+    }
+
+    public MessageBuilder textSecondary(Object text) {
+        color(ChatColor.GRAY).text(text).reset();
+        return this;
+    }
+
+
     public MessageBuilder bar(String bar, int length) {
         for (int i = 0; i < length; i++) {
             stringBuilder.append(bar);

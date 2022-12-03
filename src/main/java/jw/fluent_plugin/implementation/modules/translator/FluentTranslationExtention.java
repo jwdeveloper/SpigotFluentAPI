@@ -20,8 +20,8 @@ import org.bukkit.ChatColor;
 import java.io.File;
 
 public class FluentTranslationExtention implements FluentApiExtention {
-
     private final String CONFIG_LANG_PATH = "plugin.language";
+    private final String COMMAND_NAME = "lang";
     private FluentTranslatorImpl fluentTranslator;
 
     @Override
@@ -33,7 +33,7 @@ public class FluentTranslationExtention implements FluentApiExtention {
         builder.permissions().registerPermission(permission);
         builder.command().subCommandsConfig(subCommandConfig ->
         {
-            subCommandConfig.addSubCommand(createCommand(permission, builder.config()));
+            subCommandConfig.addSubCommand(createCommand(permission,builder.command().getName() ,builder.config()));
         });
     }
 
@@ -62,21 +62,21 @@ public class FluentTranslationExtention implements FluentApiExtention {
         return "en";
     }
 
-    private CommandBuilder createCommand(PermissionModel permission, FluentConfig configFile) {
-        return FluentCommand.create("lang")
+    private CommandBuilder createCommand(PermissionModel permission,String defaultPermissionName, FluentConfig configFile) {
+        return FluentCommand.create(COMMAND_NAME)
                 .propertiesConfig(propertiesConfig ->
                 {
-
                     propertiesConfig.addPermissions(permission.getName());
-                    propertiesConfig.setShortDescription(permission.getDescription());
+                    propertiesConfig.setDescription("Changes plugin languages, changes will be applied after server reload. Change be use both be player or console");
+                    propertiesConfig.setUsageMessage("/"+defaultPermissionName+" "+COMMAND_NAME+" <language>");
                 })
                 .argumentsConfig(argumentConfig ->
                 {
-                    argumentConfig.addArgument("nationality", argumentBuilder ->
+                    argumentConfig.addArgument("language", argumentBuilder ->
                     {
                         argumentBuilder.setTabComplete(FluentApi.translator().getLanguagesName());
                         argumentBuilder.setArgumentDisplay(ArgumentDisplay.TAB_COMPLETE);
-                        argumentBuilder.setDescription("change the language of plugin");
+                        argumentBuilder.setDescription("select language");
                     });
                 })
                 .eventsConfig(eventConfig ->
@@ -97,20 +97,21 @@ public class FluentTranslationExtention implements FluentApiExtention {
                         configFile.save();
                         FluentMessage.message()
                                 .info()
-                                .text(" Language has been changed to ", ChatColor.GRAY)
-                                .text(languageName, ChatColor.AQUA)
-                                .text(" use ", ChatColor.GRAY)
-                                .text("/reload", ChatColor.AQUA).color(ChatColor.GRAY)
-                                .text(" to apply changes").send(commandEvent.getSender());
+                                .textSecondary(" Language has been changed to ")
+                                .textPrimary(languageName)
+                                .textSecondary(" use ")
+                                .textPrimary("/reload")
+                                .textSecondary(" to apply changes")
+                                .send(commandEvent.getSender());
                     });
                 });
     }
 
     private PermissionModel createPermission(FluentPermissionBuilder builder) {
         var permission = new PermissionModel();
-        var pluginName = builder.getBasePermission();
+        var pluginName = builder.getBasePermissionName();
         permission.setName(pluginName+".commands.lang");
-        permission.setDescription("/"+pluginName+" lang [en,pl,kr...]  (Change language of plugin)");
+        permission.setDescription("Allow player to change plugin language");
         permission.setVisibility(Visibility.Op);
         permission.getGroups().add(builder.defaultPermissionSections().commands().getParentGroup());
         return permission;
