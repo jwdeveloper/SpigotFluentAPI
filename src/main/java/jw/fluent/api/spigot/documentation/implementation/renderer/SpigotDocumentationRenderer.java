@@ -19,6 +19,10 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
 
     @Override
     protected void onTitleSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.getId().equals("yml-title"))
+        {
+            return;
+        }
         builder.text("[B]").space().text(section.getContent()).text("[/B]").newLine();
     }
 

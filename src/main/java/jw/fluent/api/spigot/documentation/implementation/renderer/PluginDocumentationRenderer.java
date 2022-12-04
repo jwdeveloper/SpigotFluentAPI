@@ -20,6 +20,11 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
     }
 
     @Override
+    protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
+
+    }
+
+    @Override
     protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
         builder.text("#").space().text(section.getContent()).newLine();
     }

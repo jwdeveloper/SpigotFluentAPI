@@ -34,7 +34,8 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
         }
 
 
-        addTitle("Permissions",documentation);
+        addTitle("Permissions",documentation,"yml-title");
+        addImage("https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/banners/permissions.png",documentation);
 
         var defaultOffset = 2;
         var propertyOffset = 4;

@@ -5,11 +5,10 @@ import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
 import jw.fluent.api.spigot.documentation.api.DocumentationRenderer;
 import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.spigot.documentation.implementation.decorator.CommandsDocumentationDecorator;
-import jw.fluent.api.spigot.documentation.implementation.decorator.InformationDocumentationDecorator;
+import jw.fluent.api.spigot.documentation.implementation.decorator.ConfigDocumentationDecorator;
 import jw.fluent.api.spigot.documentation.implementation.renderer.GithubDocumentationRenderer;
 import jw.fluent.api.spigot.documentation.implementation.renderer.PluginDocumentationRenderer;
 import jw.fluent.api.spigot.documentation.implementation.renderer.SpigotDocumentationRenderer;
-import jw.fluent.api.spigot.messages.FluentMessage;
 import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDocumentationDecorator;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.spigot.permissions.api.PermissionGeneratorDto;
@@ -60,17 +59,16 @@ public class FluentDocumentationExtention implements FluentApiExtention {
 
     private List<DocumentationDecorator> getDecorator(DocumentationOptions options, List<PermissionModel> permissionModels) {
         var result = new ArrayList<DocumentationDecorator>();
-        var infoDocumentation = new InformationDocumentationDecorator();
-        result.add(infoDocumentation);
         result.addAll(options.getDecorators());
-        if (options.isRenderCommandsDocumentation()) {
-            var commandDocumentation = new CommandsDocumentationDecorator(SimpleCommandManger.getRegisteredCommands());
-            result.add(commandDocumentation);
-        }
-        if (options.isRenderCommandsDocumentation()) {
-            var permissionDocumentation = new PermissionDocumentationDecorator(new PermissionGeneratorDto(options.getPermissionModel(), permissionModels));
-            result.add(permissionDocumentation);
-        }
+
+        var config = new ConfigDocumentationDecorator();
+        result.add(config);
+
+        var commandDocumentation = new CommandsDocumentationDecorator(SimpleCommandManger.getRegisteredCommands());
+        result.add(commandDocumentation);
+
+        var permissionDocumentation = new PermissionDocumentationDecorator(new PermissionGeneratorDto(options.getPermissionModel(), permissionModels));
+        result.add(permissionDocumentation);
         return result;
     }
 

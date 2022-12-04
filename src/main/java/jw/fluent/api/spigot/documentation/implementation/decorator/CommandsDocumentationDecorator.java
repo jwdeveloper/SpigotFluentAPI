@@ -18,14 +18,10 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
 
     @Override
     public void decorate(Documentation documentation) {
-        addTitle("Commands",documentation);
-
+        addTitle("Commands",documentation,"yml-title");
+        addImage("https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/banners/commands.png",documentation);
 
         var builder = createYmlBuilder();
-        builder.addSection("commands-tree");
-        for (var command : commands) {
-            renderCommandTreeMember(builder, command,0);
-        }
         builder.newLine();
         builder.newLine();
         builder.addSection("commands");
@@ -42,13 +38,13 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
 
 
     private void renderCommandInfo(YmlBuilder builder, SimpleCommand command) {
-
+        var defaultOffset =2;
         var propertyOffset = 4;
         var listOffset = 6;
         var model = command.getCommandModel();
-        builder.addComment(model.getName());
-        builder.addSection(model.getName());
-
+        var title = StringUtils.nullOrEmpty(model.getUsageMessage())?model.getName():model.getUsageMessage();
+        builder.addComment(title);
+        builder.addSection(model.getName(), defaultOffset);
         if (!command.getSubCommands().isEmpty()) {
             builder.addSection("children",propertyOffset);
             for (var subCommand : command.getSubCommands()) {
