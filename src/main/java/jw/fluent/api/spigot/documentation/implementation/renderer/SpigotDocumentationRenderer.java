@@ -18,11 +18,21 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
 
 
     @Override
+    protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.hasAttribute("spigot-ignore"))
+        {
+            return;
+        }
+        super.onTextSection(builder, section);
+    }
+
+    @Override
     protected void onTitleSection(MessageBuilder builder, DocumentationSection section) {
         if(section.getId().equals("yml-title"))
         {
             return;
         }
+
         builder.text("[B]").space().text(section.getContent()).text("[/B]").newLine();
     }
 
@@ -35,7 +45,7 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
 
     @Override
     protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
-        builder.text("[IMG]").space().text(section.getContent()).text("[/IMG]").newLine();
+        builder.text("[CENTER]").text("[IMG]").space().text(section.getContent()).text("[/IMG]").text("[/CENTER]").newLine();
     }
 
     @Override
@@ -50,7 +60,7 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
         if(content.contains("youtube"))
         {
             var id = getYouTubeId(content);
-            builder.text("[MEDIA=youtube]").space().text(id).text("[/MEDIA]").newLine();
+            builder.text("[CENTER]").text("[MEDIA=youtube]").space().text(id).text("[/MEDIA]").text("[/CENTER]").newLine();
         }
     }
 

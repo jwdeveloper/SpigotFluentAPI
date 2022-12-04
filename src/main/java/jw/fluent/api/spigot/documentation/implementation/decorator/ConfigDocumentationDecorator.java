@@ -5,7 +5,6 @@ import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.utilites.files.FileUtility;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 
 import java.nio.file.Files;

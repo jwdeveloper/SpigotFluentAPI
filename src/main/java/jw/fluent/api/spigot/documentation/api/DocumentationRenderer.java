@@ -40,6 +40,12 @@ public abstract class DocumentationRenderer
         addByDefault(builder,section);
     }
 
+    protected void onLinkSection(MessageBuilder builder, DocumentationSection section)
+    {
+        addByDefault(builder,section);
+    }
+
+
     protected void onVideoSection(MessageBuilder builder, DocumentationSection section)
     {
         addByDefault(builder,section);
@@ -66,6 +72,7 @@ public abstract class DocumentationRenderer
             case HTML-> onHtmlSection(builder, section);
             case LIST-> onListSection(builder, section);
             case VIDEO-> onVideoSection(builder, section);
+            case LINK-> onLinkSection(builder, section);
         }
     }
 

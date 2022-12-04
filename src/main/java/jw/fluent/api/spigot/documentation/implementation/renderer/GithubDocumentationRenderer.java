@@ -15,10 +15,7 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
         return "documentation-github.md";
     }
 
-    @Override
-    protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
-        builder.text(">").space().text(section.getContent()).newLine();
-    }
+
 
     @Override
     protected void onTitleSection(MessageBuilder builder, DocumentationSection section) {
@@ -30,8 +27,13 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
     }
 
     @Override
+    protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
+        builder.newLine().text("!["+section.getId()+"]").text("(").text(section.getContent()).text(")").newLine().newLine();
+    }
+
+    @Override
     protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
-        builder.text("![alt text]").text("(").text(section.getContent()).text(")").newLine();
+       builder.newLine().text("![alt text]").text("(").text(section.getContent()).text(")").newLine().newLine();
     }
 
     @Override
@@ -53,8 +55,8 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
         {
             var id = getYouTubeId(content);
             var imageUrl = "https://img.youtube.com/vi/"+id+"/0.jpg";
-            builder.text("[![IMAGE ALT TEXT HERE]").text("(").text(imageUrl).text(")]")
-                    .text("(").text(section.getContent()).text(")").newLine();
+            builder.newLine().text("[![IMAGE ALT TEXT HERE]").text("(").text(imageUrl).text(")]")
+                    .text("(").text(section.getContent()).text(")").newLine().newLine();
         }
     }
 

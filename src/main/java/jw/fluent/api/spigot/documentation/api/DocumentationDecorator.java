@@ -7,6 +7,8 @@ import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
 import jw.fluent.api.spigot.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 
+import java.util.Arrays;
+
 public abstract class DocumentationDecorator {
     public abstract void decorate(Documentation documentation);
 
@@ -43,6 +45,11 @@ public abstract class DocumentationDecorator {
         return this;
     }
 
+    protected DocumentationDecorator addText(String text, Documentation documentation, String... arrtibutes) {
+        documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, text, Arrays.stream(arrtibutes).toList()));
+        return this;
+    }
+
     protected DocumentationDecorator addImage(String url, Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("image", SectionType.IMAGE, url));
         return this;
@@ -53,7 +60,10 @@ public abstract class DocumentationDecorator {
         return this;
     }
 
-
+    protected DocumentationDecorator addLink(String name, String url, Documentation documentation) {
+        documentation.getSections().add(new DocumentationSection(name, SectionType.LINK, url));
+        return this;
+    }
 
     protected DocumentationDecorator addHtml(String title, Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("html", SectionType.HTML, title));
