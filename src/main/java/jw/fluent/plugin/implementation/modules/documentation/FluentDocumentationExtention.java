@@ -77,9 +77,17 @@ public class FluentDocumentationExtention implements FluentApiExtention {
         var spigotDocumentationRenderer = new SpigotDocumentationRenderer();
         var pluginDocumentationRenderer = new PluginDocumentationRenderer();
         var githubRenderer = new GithubDocumentationRenderer();
-        result.add(spigotDocumentationRenderer);
+
+        if(options.isUseGithubDocumentation())
+        {
+            result.add(githubRenderer);
+        }
+        if(options.isUseSpigotDocumentation())
+        {
+            result.add(spigotDocumentationRenderer);
+        }
+
         result.add(pluginDocumentationRenderer);
-        result.add(githubRenderer);
         return result;
     }
 

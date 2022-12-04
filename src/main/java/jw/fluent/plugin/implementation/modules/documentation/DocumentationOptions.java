@@ -2,8 +2,6 @@ package jw.fluent.plugin.implementation.modules.documentation;
 
 import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
 import lombok.Data;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +15,9 @@ public class DocumentationOptions
 
     private boolean renderPermissionsDocumentation =true;
 
-    @Accessors(prefix = "use")
-    private boolean githubDocumentation =true;
+    private boolean useGithubDocumentation =false;
 
-    @Accessors(prefix = "use")
-    private boolean spigotDocumentation =true;
+    private boolean useSpigotDocumentation =false;
 
     private Class<?> permissionModel;
 
