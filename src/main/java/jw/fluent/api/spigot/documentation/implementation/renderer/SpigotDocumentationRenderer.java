@@ -45,6 +45,13 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
 
     @Override
     protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.hasAttribute("link"))
+        {
+            builder.text(" [URL='" + section.getId() + "']");
+            builder.text("[IMG]").text(section.getContent()).text("[/IMG]");
+            builder.text("[/URL]");
+            return;
+        }
         builder.text("[CENTER]").text("[IMG]").space().text(section.getContent()).text("[/IMG]").text("[/CENTER]").newLine();
     }
 

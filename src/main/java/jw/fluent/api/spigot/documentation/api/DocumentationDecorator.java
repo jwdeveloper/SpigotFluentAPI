@@ -7,7 +7,9 @@ import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
 import jw.fluent.api.spigot.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class DocumentationDecorator {
     public abstract void decorate(Documentation documentation);
@@ -52,6 +54,13 @@ public abstract class DocumentationDecorator {
 
     protected DocumentationDecorator addImage(String url, Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("image", SectionType.IMAGE, url));
+        return this;
+    }
+
+    protected DocumentationDecorator addImageWithLink(String url, String link, Documentation documentation) {
+        var att = new ArrayList<String>();
+        att.add("link");
+        documentation.getSections().add(new DocumentationSection(link, SectionType.IMAGE, url,att));
         return this;
     }
 
