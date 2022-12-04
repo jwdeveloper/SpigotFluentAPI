@@ -27,7 +27,17 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
     }
 
     @Override
+    protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.hasAttribute("github-ignore"))
+        {
+            return;
+        }
+        super.onTextSection(builder,section);
+    }
+
+    @Override
     protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
+
         builder.newLine().text("!["+section.getId()+"]").text("(").text(section.getContent()).text(")").newLine().newLine();
     }
 

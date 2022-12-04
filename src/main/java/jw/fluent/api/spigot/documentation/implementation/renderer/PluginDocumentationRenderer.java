@@ -11,6 +11,8 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
         return "documentation.yml";
     }
 
+
+
     @Override
     protected void onTitleSection(MessageBuilder builder, DocumentationSection section) {
         builder.newLine();
@@ -26,6 +28,11 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
 
     @Override
     protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.hasAttribute("plugin-ignore"))
+        {
+            return;
+        }
+
         builder.text("#").space().text(section.getContent()).newLine();
     }
 

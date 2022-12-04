@@ -47,7 +47,7 @@ public class YmlBuilder
 
     public YmlBuilder addComment(String comment)
     {
-        builder.text("#").text(comment).newLine();
+        builder.text("#").space().text(comment).newLine();
         return this;
     }
 
