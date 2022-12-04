@@ -54,6 +54,7 @@ public abstract class DocumentationDecorator {
     }
 
 
+
     protected DocumentationDecorator addHtml(String title, Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("html", SectionType.HTML, title));
         return this;

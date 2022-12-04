@@ -21,6 +21,7 @@ public abstract class DocumentationRenderer
         addByDefault(builder,section);
     }
 
+
     protected void onListSection(MessageBuilder builder, DocumentationSection section)
     {
         addByDefault(builder,section);
