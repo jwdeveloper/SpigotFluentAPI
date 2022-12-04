@@ -62,9 +62,9 @@ public class ListUI<T> extends ChestUI {
                 .setDescription(FluentMessage
                         .message()
                         .bar(Emoticons.line,20,ChatColor.GRAY).newLine()
-                        .field("Left click","Change option").newLine()
-                        .field("Right click",  "Search").newLine()
-                        .field("Shift click" ,"Reset").newLine()
+                        .field(FluentApi.translator().get("gui.base.left-click"),FluentApi.translator().get("gui.base.search.desc.left-click")).newLine()
+                        .field(FluentApi.translator().get("gui.base.right-click"),  FluentApi.translator().get("gui.base.search.desc.right-click")).newLine()
+                        .field(FluentApi.translator().get("gui.base.shift-click") ,FluentApi.translator().get("gui.base.search.desc.shift-click")).newLine()
                         .toArray()
                 )
                 .setTitlePrimary(FluentApi.translator().get("gui.base.search.title"))

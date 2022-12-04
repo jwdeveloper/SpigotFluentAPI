@@ -8,6 +8,10 @@ gui:
       title: Edytuj
     search:
       title: Szukaj
+      desc:
+        left-click: Zmień opcje
+        right-click: Szukaj
+        shift-click: Resetuj
     page-up:
       title: Następna strona
     page-down:
@@ -20,6 +24,13 @@ gui:
     active: aktywne
     inactive: nieaktywne
     state: stan
+    left-click: Kliknij lewy
+    right-click: Kliknij prawy
+    shift-click: Shift + Kliknięcie
+    save: Zapisz
+    cancel: Anuluj
+    title: Tytuł
+    icon: Ikonka
 
 permissions:
       one-required: Musisz posiadać jedną z tych permisji

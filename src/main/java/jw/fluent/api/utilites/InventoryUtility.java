@@ -1,11 +1,12 @@
 package jw.fluent.api.utilites;
 
 import jw.fluent.api.spigot.inventory_gui.InventoryUI;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryUtility {
-    public static boolean setToFreeSlot(ItemStack itemStack, Inventory inventory, boolean includeFirstRow) {
+    public static boolean giveToEmptySlot(ItemStack itemStack, Inventory inventory, boolean includeFirstRow) {
         var start = includeFirstRow ? 0 : InventoryUI.INVENTORY_WIDTH - 1;
         for (var i = start; i < inventory.getSize(); i++) {
             switch (i) {
@@ -28,5 +29,15 @@ public class InventoryUtility {
             return true;
         }
         return false;
+    }
+
+    public static void giveToEmptySlotOrDrop(Player player, ItemStack itemStack, boolean includeFirstRow) {
+       if(giveToEmptySlot(itemStack,player.getInventory(),includeFirstRow))
+       {
+          return;
+       }
+
+       var loc = player.getLocation();
+        loc.getWorld().dropItem(loc.clone().add(0,1,0),itemStack);
     }
 }
