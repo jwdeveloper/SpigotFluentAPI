@@ -87,24 +87,6 @@ public final class FluentApi {
         INSTANCE = null;
     }
 
-    public static FluentApiBuilderImpl createBuilder(JavaPlugin plugin) {
-        return new FluentApiBuilderImpl(plugin);
-    }
-
-    public static FluentApi init(JavaPlugin plugin) throws Exception {
-        var builder = createBuilder(plugin);
-        var api = builder.build();
-        FluentEvent.onEvent(PluginDisableEvent.class, (e) ->
-        {
-            if (!e.getPlugin().equals(plugin)) {
-                return;
-            }
-            api.disable();
-        });
-        api.enable();
-        return api;
-    }
-
     private static FluentApi getInstance() {
         if (INSTANCE == null) {
             return null;

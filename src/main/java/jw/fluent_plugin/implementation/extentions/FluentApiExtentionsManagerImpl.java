@@ -2,35 +2,54 @@ package jw.fluent_plugin.implementation.extentions;
 
 import jw.fluent_plugin.api.FluentApiBuilder;
 import jw.fluent_plugin.api.FluentApiExtention;
+import jw.fluent_plugin.api.extention.ExtentionModel;
+import jw.fluent_plugin.api.extention.ExtentionPiority;
 import jw.fluent_plugin.api.extention.FluentApiExtentionsManager;
 import jw.fluent_plugin.implementation.FluentApi;
 import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class FluentApiExtentionsManagerImpl implements FluentApiExtentionsManager {
-    private final Collection<FluentApiExtention> extentions = new ConcurrentLinkedDeque<>();
+    private final Collection<ExtentionModel> extentions = new ConcurrentLinkedDeque<>();
 
     @Override
     public void register(FluentApiExtention extention) {
-        extentions.add(extention);
+        register(extention, ExtentionPiority.MEDIUM);
     }
 
-    public void register(FluentApiExtention extention, int piority) {
-        extentions.add(extention);
+    @Override
+    public void register(FluentApiExtention extention, ExtentionPiority piority) {
+        extentions.add(new ExtentionModel(extention,piority));
     }
 
+    @Override
+    public void registerLow(FluentApiExtention extention) {
+        register(extention, ExtentionPiority.LOW);
+    }
+
+
+    @Override
+    public void onConfiguration(FluentApiBuilder builder) {
+        //FluentLogger.LOGGER.success("onConfiguration");
+        for(var extention : extentions)
+        {
+           // FluentLogger.LOGGER.log("Piority",extention.getPiority().name(),extention.getExtention().getClass().getSimpleName());
+            extention.getExtention().onConfiguration(builder);
+        }
+    }
 
     @Override
     public void onEnable(FluentApi fluentAPI) {
         try
         {
-            for(var extention : extentions)
+            var sorted = sortByPiority();
+           // FluentLogger.LOGGER.success("onEnable");
+            for(var extension : sorted)
             {
-                extention.onFluentApiEnable(fluentAPI);
+            //    FluentLogger.LOGGER.log("Piority",extension.getPiority().name(),extension.getExtention().getClass().getSimpleName());
+                extension.getExtention().onFluentApiEnable(fluentAPI);
             }
         }
         catch (Exception e)
@@ -41,11 +60,12 @@ public class FluentApiExtentionsManagerImpl implements FluentApiExtentionsManage
 
     @Override
     public void onDisable(FluentApi fluentAPI) {
-        for(var extention : extentions)
+        var sorted = sortByPiority();
+        for(var extention : sorted)
         {
             try
             {
-                extention.onFluentApiDisabled(fluentAPI);
+                extention.getExtention().onFluentApiDisabled(fluentAPI);
             }
             catch (Exception e)
             {
@@ -54,11 +74,10 @@ public class FluentApiExtentionsManagerImpl implements FluentApiExtentionsManage
         }
     }
 
-    @Override
-    public void onConfiguration(FluentApiBuilder builder) {
-        for(var extention : extentions)
-        {
-            extention.onConfiguration(builder);
-        }
+
+
+    private List<ExtentionModel> sortByPiority()
+    {
+        return extentions.stream().toList().stream().sorted(Comparator.comparing(item -> item.getPiority().getLevel())).toList();
     }
 }

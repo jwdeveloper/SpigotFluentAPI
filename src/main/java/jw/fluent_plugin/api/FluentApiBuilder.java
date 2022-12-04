@@ -2,9 +2,8 @@ package jw.fluent_plugin.api;
 
 import jw.fluent_api.files.api.SimpleFilesBuilder;
 import jw.fluent_api.logger.api.SimpleLoggerBuilder;
-import jw.fluent_api.spigot.commands.api.builder.CommandBuilder;
 import jw.fluent_plugin.implementation.config.FluentConfig;
-import jw.fluent_plugin.implementation.modules.commands.FluentApiCommandBuilder;
+import jw.fluent_plugin.implementation.modules.spigot.commands.FluentApiCommandBuilder;
 import jw.fluent_plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 

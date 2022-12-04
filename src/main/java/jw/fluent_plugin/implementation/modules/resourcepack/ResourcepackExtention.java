@@ -9,6 +9,8 @@ import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.function.Consumer;
 
 public class ResourcepackExtention implements FluentApiExtention {
@@ -48,6 +50,25 @@ public class ResourcepackExtention implements FluentApiExtention {
                                 });
                     });
                 });
+    }
+
+    public static byte[] toSHA1()
+    {
+        var version = FluentApi.plugin().getDescription().getVersion();
+        var bytes = version.getBytes();
+        var res = new byte[20];
+        for(var i=0;i<res.length;i++)
+        {
+            if(i < bytes.length-1)
+            {
+                res[i] = bytes[i];
+            }
+            else
+            {
+                res[i] = (byte)i;
+            }
+        }
+        return bytes;
     }
 
     @Override

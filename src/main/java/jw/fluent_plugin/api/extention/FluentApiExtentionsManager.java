@@ -6,7 +6,9 @@ import jw.fluent_plugin.implementation.FluentApi;
 
 public interface FluentApiExtentionsManager
 {
-    public void register(FluentApiExtention event);
+    public void register(FluentApiExtention extention);
+    public void register(FluentApiExtention extention, ExtentionPiority piority);
+    public void registerLow(FluentApiExtention extention);
 
     public void onEnable(FluentApi fluentAPI);
 

@@ -1,4 +1,4 @@
-package jw.fluent_plugin.implementation.modules.commands;
+package jw.fluent_plugin.implementation.modules.spigot.commands;
 
 import jw.fluent_api.spigot.commands.api.builder.CommandBuilder;
 import jw.fluent_api.spigot.commands.implementation.builder.CommandBuilderImpl;

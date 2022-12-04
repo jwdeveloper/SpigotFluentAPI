@@ -1,5 +1,6 @@
 package jw.fluent_plugin.implementation;
 
+import jw.fluent_plugin.api.extention.ExtentionPiority;
 import jw.fluent_plugin.implementation.modules.decorator.FluentDecorator;
 import jw.fluent_api.desing_patterns.decorator.api.builder.DecoratorBuilder;
 import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
@@ -56,7 +57,7 @@ public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentAp
 
     @Override
     public FluentApiContainerBuilder addDocumentation(Consumer<DocumentationOptions> options) {
-        extentionsManager.register(new FluentDocumentationExtention(options));
+        extentionsManager.register(new FluentDocumentationExtention(options), ExtentionPiority.HIGH);
         return this;
     }
     @Override

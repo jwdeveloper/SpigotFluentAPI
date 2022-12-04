@@ -4,20 +4,18 @@ import jw.fluent_api.files.api.SimpleFilesBuilder;
 import jw.fluent_api.files.implementation.SimpleFileBuilderImpl;
 import jw.fluent_api.logger.api.SimpleLoggerBuilder;
 import jw.fluent_api.logger.implementation.SimpleLoggerBuilderImpl;
-import jw.fluent_api.spigot.commands.api.builder.CommandBuilder;
-import jw.fluent_api.spigot.commands.implementation.builder.CommandBuilderImpl;
 import jw.fluent_api.utilites.ClassTypesManager;
 import jw.fluent_api.utilites.files.FileUtility;
 import jw.fluent_api.utilites.java.ClassTypeUtility;
 import jw.fluent_plugin.api.FluentApiBuilder;
 import jw.fluent_plugin.api.FluentApiContainerBuilder;
 import jw.fluent_plugin.api.FluentApiExtention;
+import jw.fluent_plugin.api.extention.ExtentionPiority;
 import jw.fluent_plugin.implementation.config.FluentConfig;
 import jw.fluent_plugin.implementation.config.FluentConfigImpl;
 import jw.fluent_plugin.implementation.config.PluginConfigFactory;
-import jw.fluent_plugin.implementation.modules.commands.CommandExtention;
-import jw.fluent_plugin.implementation.modules.commands.FluentApiCommandBuilder;
-import jw.fluent_plugin.implementation.modules.commands.FluentApiDefaultCommandBuilder;
+import jw.fluent_plugin.implementation.modules.spigot.commands.FluentApiCommandBuilder;
+import jw.fluent_plugin.implementation.modules.spigot.commands.FluentApiDefaultCommandBuilder;
 import jw.fluent_plugin.implementation.modules.dependecy_injection.FluentInjectionExtention;
 import jw.fluent_plugin.implementation.modules.files.FluentFiles;
 import jw.fluent_plugin.implementation.modules.files.FluentFilesExtention;
@@ -80,7 +78,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
     @Override
     public FluentApiBuilder useExtention(FluentApiExtention extention)
     {
-        extentionsManager.register(extention);
+        extentionsManager.register(extention, ExtentionPiority.MEDIUM);
         return this;
     }
 
@@ -106,14 +104,13 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
     }
 
     public FluentApi build() throws Exception {
-        useExtention(new FluentLoggerExtention(simpleLoggerBuilder));
-        useExtention(new FluentPermissionExtention(fluentPermissionBuilder));
-        useExtention(new FluentMediatorExtention(typeManager));
-        useExtention(new FluentMapperExtention());
-        useExtention(new FluentFilesExtention(simpleFilesBuilder));
-        useExtention(new FluentTranslationExtention());
-
-        useExtention(new FluentApiSpigotExtention());
+        extentionsManager.registerLow(new FluentLoggerExtention(simpleLoggerBuilder));
+        extentionsManager.registerLow(new FluentPermissionExtention(fluentPermissionBuilder));
+        extentionsManager.registerLow(new FluentMediatorExtention(typeManager));
+        extentionsManager.registerLow(new FluentMapperExtention());
+        extentionsManager.registerLow(new FluentFilesExtention(simpleFilesBuilder));
+        extentionsManager.registerLow(new FluentTranslationExtention());
+        extentionsManager.register(new FluentApiSpigotExtention(), ExtentionPiority.HIGH);
 
         extentionsManager.onConfiguration(this);
 
@@ -121,7 +118,6 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         var injectionFactory = new FluentInjectionExtention(containerBuilder, typeManager);
         var result = injectionFactory.create();
         useExtention(injectionFactory);
-        useExtention(new CommandExtention(commandBuilder));
 
         var injection = result.fluentInjection();
         var mapper= injection.findInjection(FluentMapper.class);
@@ -131,6 +127,7 @@ public class FluentApiBuilderImpl implements FluentApiBuilder {
         var _logger = injection.findInjection(FluentLogger.class);
         var permissions = injection.findInjection(FluentPermission.class);
         var fluentAPISpigot = injection.findInjection(FluentApiSpigot.class);
+
 
         return new FluentApi(
                 plugin,

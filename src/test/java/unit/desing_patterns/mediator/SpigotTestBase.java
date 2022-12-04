@@ -19,7 +19,7 @@ public abstract class SpigotTestBase
     {
         server = MockBukkit.mock();
         mockPlugin = MockBukkit.createMockPlugin("TestPlugin");
-        FluentApi.init(mockPlugin);
+
     }
 
     @After
