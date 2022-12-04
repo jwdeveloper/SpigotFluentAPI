@@ -13,6 +13,11 @@ public interface FileUtility {
         return Paths.get("").toAbsolutePath().toString();
     }
 
+    static String separator()
+    {
+       return File.separator;
+    }
+
     static String pluginsPath() {
         return serverPath() + File.separator + "plugins";
     }

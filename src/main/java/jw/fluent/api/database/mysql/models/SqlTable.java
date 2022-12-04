@@ -86,9 +86,9 @@ public class SqlTable<T> implements DbTable<T> {
         final var dto = new EntryQueryDto();
         for (final var entry : entries) {
             switch (entry.getAction()) {
-                case EntryState.INSERT -> dto.insertQueries.put(entry, SqlEntryQueryFactory.insertQuery(entry, tableModel));
-                case EntryState.UPDATE -> dto.updateQuery.put(entry, SqlEntryQueryFactory.updateQuery(entry, tableModel));
-                case EntryState.DELETE -> dto.deleteQuery.put(entry, SqlEntryQueryFactory.deleteQuery(entry, tableModel));
+                case INSERT -> dto.insertQueries.put(entry, SqlEntryQueryFactory.insertQuery(entry, tableModel));
+                case UPDATE -> dto.updateQuery.put(entry, SqlEntryQueryFactory.updateQuery(entry, tableModel));
+                case DELETE -> dto.deleteQuery.put(entry, SqlEntryQueryFactory.deleteQuery(entry, tableModel));
             }
         }
         return dto;

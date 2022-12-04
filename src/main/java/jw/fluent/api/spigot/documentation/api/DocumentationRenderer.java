@@ -1,51 +1,76 @@
 package jw.fluent.api.spigot.documentation.api;
 
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.api.spigot.documentation.api.models.Documentation;
+import jw.fluent.api.spigot.documentation.api.models.DocumentationSection;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 
-public abstract class DocumentationRenderer {
+public abstract class DocumentationRenderer
+{
+    public abstract String getName();
 
-
-    protected MessageBuilder builder;
-
-    protected final int defaultOffset = 4;
-    protected final int propertyOffset = 6;
-    protected final int listOffset = 8;
-
-    public DocumentationRenderer() {
-        builder = FluentMessage.message();
-    }
-
-    public abstract String render();
-
-    protected void renderTitle(String title) {
-        builder.newLine();
-        builder.text("#").bar("=", 100).newLine();
-        builder.text("#").bar(" ", 50).text(" ").text(title).text(" ").bar(" ", 50).newLine();
-        builder.text("#").bar("=", 100).newLine();
-    }
-
-    protected MessageBuilder ymlField(String field)
+    protected void onTitleSection(MessageBuilder builder, DocumentationSection section)
     {
-       return builder.text(field).text(":").newLine();
+        addByDefault(builder,section);
+    }
+    protected void onTextSection(MessageBuilder builder, DocumentationSection section)
+    {
+        addByDefault(builder,section);
+    }
+    protected void onImageSection(MessageBuilder builder, DocumentationSection section)
+    {
+        addByDefault(builder,section);
     }
 
-    protected MessageBuilder ymlField(String field, String value)
+    protected void onListSection(MessageBuilder builder, DocumentationSection section)
     {
-        return builder.text(field).text(":").space().text(value).newLine();
+        addByDefault(builder,section);
     }
 
-    protected MessageBuilder ymlField(String field, String value, int offset)
+    protected void onCodeSection(MessageBuilder builder, DocumentationSection section)
     {
-        return builder.space(offset).text(field).text(":").space().text(value).newLine();
+        addByDefault(builder,section);
     }
-    protected MessageBuilder addComment(String comment)
+    protected void onYmlSection(MessageBuilder builder, DocumentationSection section)
     {
-        return builder.text("#").space().text(comment).newLine();
+        addByDefault(builder,section);
+    }
+    protected void onHtmlSection(MessageBuilder builder, DocumentationSection section)
+    {
+        addByDefault(builder,section);
     }
 
-    protected MessageBuilder smallTitle(String title)
+    protected void onVideoSection(MessageBuilder builder, DocumentationSection section)
     {
-        return builder.text("#").bar("=", 50).space().text(title).space().bar("=", 50-title.length()).newLine();
+        addByDefault(builder,section);
+    }
+
+    public final String render(MessageBuilder builder, Documentation documentation)
+    {
+        for(var section : documentation.getSections())
+        {
+            resolveSection(builder, section);
+        }
+        return builder.build();
+    }
+
+    private void resolveSection(MessageBuilder builder, DocumentationSection section)
+    {
+        switch (section.getSectionType())
+        {
+            case YML -> onYmlSection(builder, section);
+            case CODE-> onCodeSection(builder, section);
+            case TEXT-> onTextSection(builder, section);
+            case IMAGE-> onImageSection(builder, section);
+            case TITlE-> onTitleSection(builder, section);
+            case HTML-> onHtmlSection(builder, section);
+            case LIST-> onListSection(builder, section);
+            case VIDEO-> onVideoSection(builder, section);
+        }
+    }
+
+
+    private void addByDefault(MessageBuilder stringBuilder, DocumentationSection section)
+    {
+        stringBuilder.text(section.getContent()).newLine();
     }
 }

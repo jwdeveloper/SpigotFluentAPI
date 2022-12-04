@@ -3,7 +3,7 @@ package jw.fluent.api.database.mysql.factories;
 import jw.fluent.api.database.api.database_table.annotations.*;
 import jw.fluent.api.database.api.database_table.models.ColumnModel;
 import jw.fluent.api.database.api.database_table.models.TableModel;
-import jw.fluent.database.api.database_table.annotations.*;
+
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

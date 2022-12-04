@@ -7,7 +7,6 @@ import jw.fluent.api.spigot.tasks.FluentTaskTimer;
 import jw.fluent.api.web_socket.annotations.PacketProperty;
 import jw.fluent.api.web_socket.resolver.*;
 import jw.fluent.api.utilites.files.json.JsonUtility;
-import jw.fluent.web_socket.resolver.*;
 import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 import org.java_websocket.WebSocket;
 

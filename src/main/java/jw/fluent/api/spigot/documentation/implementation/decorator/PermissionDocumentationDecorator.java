@@ -1,6 +1,7 @@
-package jw.fluent.api.spigot.documentation.implementation;
+package jw.fluent.api.spigot.documentation.implementation.decorator;
 
-import jw.fluent.api.spigot.documentation.api.DocumentationRenderer;
+import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
+import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.spigot.permissions.api.PermissionGeneratorDto;
 import jw.fluent.api.spigot.permissions.api.PermissionModel;
 import jw.fluent.api.spigot.permissions.api.PermissionSection;
@@ -13,46 +14,69 @@ import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 import java.io.IOException;
 import java.util.*;
 
-public class PermissionDocumentationRenderer extends DocumentationRenderer {
-
+public class PermissionDocumentationDecorator extends DocumentationDecorator {
 
     private final PermissionGeneratorDto permissionGeneratorDto;
 
-    public PermissionDocumentationRenderer(Class<?> _class, List<PermissionModel> models) {
-        this(new PermissionGeneratorDto(_class, StringUtils.EMPTY_STRING, models));
-    }
-
-    public PermissionDocumentationRenderer(Class<?> _class) {
-        this(new PermissionGeneratorDto(_class, StringUtils.EMPTY_STRING, new ArrayList<>()));
-    }
-
-    public PermissionDocumentationRenderer(PermissionGeneratorDto permissionGeneratorDto) {
+    public PermissionDocumentationDecorator(PermissionGeneratorDto permissionGeneratorDto) {
         this.permissionGeneratorDto = permissionGeneratorDto;
     }
 
     @Override
-    public String render() {
+    public void decorate(Documentation documentation) {
+
+        List<PermissionSection> sections  = new ArrayList<PermissionSection>();
         try {
-            return tryGenerate(permissionGeneratorDto);
+            sections = loadPermissionSections();
         } catch (Exception e) {
             FluentLogger.LOGGER.error("Unable to generate permissions", e);
+            return;
         }
-        return StringUtils.EMPTY_STRING;
+
+
+        addTitle("Permissions",documentation);
+
+        var defaultOffset = 2;
+        var propertyOffset = 4;
+        var listOffset = 6;
+
+        var builder= createYmlBuilder();
+        builder.addSection("permissions");
+        builder.newLine();
+        for (var section : sections) {
+            if (section.hasTitle()) {
+                builder.addComment(section.getModel().getTitle());
+            }
+            var model = section.getModel();
+            builder.addSection(model.getName(),defaultOffset);
+            if (section.hasDescription()) {
+                builder.addProperty("description",model.getDescription(),propertyOffset);
+            }
+            if (section.hasVisibility()) {
+                builder.addProperty("default",model.getVisibility().name().toLowerCase(),propertyOffset);
+            }
+            if (section.hasChildren()) {
+                builder.addSection("children",propertyOffset);
+                for (var child : section.getChildren()) {
+                    builder.addListProperty(child.getName(),listOffset);
+                }
+            }
+            builder.newLine();
+        }
+        var yml = builder.build();
+        addYml(yml,documentation);
+
     }
 
-    private String tryGenerate(PermissionGeneratorDto permissionGeneratorDto) throws IllegalAccessException, IOException {
+
+    private List<PermissionSection> loadPermissionSections() throws IllegalAccessException, IOException {
         var models = permissionGeneratorDto.permissionModels();
         if (permissionGeneratorDto._class() != null) {
             var loaded = loadModels(permissionGeneratorDto._class());
             models.addAll(loaded);
         }
-
-
-
         var sections = createSections(models);
-        sections = sortSectionsByGroup(sections);
-        var content = createFileContent(sections);
-        return content;
+        return sortSectionsByGroup(sections);
     }
 
     private List<PermissionModel> loadModels(Class<?> _clazz) throws IllegalAccessException {
@@ -154,32 +178,4 @@ public class PermissionDocumentationRenderer extends DocumentationRenderer {
 
         return result;
     }
-
-    private String createFileContent(List<PermissionSection> sections) {
-        renderTitle("Permissions");
-        builder.text("permissions:").newLine();
-        for (var section : sections) {
-            if (section.hasTitle()) {
-                smallTitle(section.getModel().getTitle());
-            }
-            var model = section.getModel();
-            builder.space(defaultOffset).text(model.getName()).text(":").newLine();
-            if (section.hasDescription()) {
-                builder.space(propertyOffset).text("description:").space().text(model.getDescription()).newLine();
-            }
-            if (section.hasVisibility()) {
-                builder.space(propertyOffset).text("default:").space().text(model.getVisibility().name().toLowerCase()).newLine();
-            }
-            if (section.hasChildren()) {
-                builder.space(propertyOffset).text("children:").newLine();
-                for (var child : section.getChildren()) {
-                    builder.space(listOffset).text("-").space().text(child.getName()).newLine();
-                }
-            }
-            builder.newLine();
-        }
-        return builder.build();
-    }
-
-
 }
