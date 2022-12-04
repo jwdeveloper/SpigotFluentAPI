@@ -1,7 +1,7 @@
 package integration.database.example_data;
 
-import jw.fluent_api.database.api.database_table.annotations.*;
-import jw.fluent_api.database.mysql.utils.SqlTypes;
+import jw.fluent.api.database.api.database_table.annotations.*;
+import jw.fluent.api.database.mysql.utils.SqlTypes;
 import lombok.Data;
 
 @Data

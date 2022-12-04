@@ -2,8 +2,8 @@ package integration.database.builder;
 
 import integration.database.assets.SqlTestBase;
 import integration.database.example_data.UserExampleModel;
-import jw.fluent_api.database.mysql.factories.SqlTableQueryFactory;
-import jw.fluent_api.database.mysql.query_builder.SqlQueryBuilder;
+import jw.fluent.api.database.mysql.factories.SqlTableQueryFactory;
+import jw.fluent.api.database.mysql.query_builder.SqlQueryBuilder;
 import lombok.SneakyThrows;
 import org.junit.*;
 import org.junit.jupiter.api.Assertions;

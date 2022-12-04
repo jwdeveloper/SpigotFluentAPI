@@ -3,8 +3,8 @@ package integration.desing_patterns.dependecy_injection.containers;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleClass;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleInterface;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleWithList;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

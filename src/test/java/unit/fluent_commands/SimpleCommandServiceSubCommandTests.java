@@ -1,9 +1,9 @@
 package unit.fluent_commands;
 
-import jw.fluent_api.spigot.commands.implementation.services.CommandServiceImpl;
-import jw.fluent_api.spigot.commands.implementation.SimpleCommand;
-import jw.fluent_api.spigot.commands.FluentCommand;
-import jw.fluent_api.spigot.commands.api.enums.ArgumentType;
+import jw.fluent.api.spigot.commands.implementation.services.CommandServiceImpl;
+import jw.fluent.api.spigot.commands.implementation.SimpleCommand;
+import jw.fluent.api.spigot.commands.FluentCommand;
+import jw.fluent.api.spigot.commands.api.enums.ArgumentType;
 import org.bukkit.ChatColor;
 import org.junit.Assert;
 import org.junit.Before;

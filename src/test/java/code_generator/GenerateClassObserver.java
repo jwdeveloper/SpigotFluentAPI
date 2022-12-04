@@ -2,7 +2,7 @@ package code_generator;
 
 import org.junit.Ignore;
 import unit.assets.PlayerStats;
-import jw.fluent_api.utilites.code_generator.ObserverClassGenerator;
+import jw.fluent.api.utilites.code_generator.ObserverClassGenerator;
 import org.junit.Before;
 import org.junit.Test;
 

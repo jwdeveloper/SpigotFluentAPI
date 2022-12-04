@@ -1,6 +1,6 @@
 package integration.database.builder;
 
-import jw.fluent_api.database.mysql.query_builder.SqlQueryBuilder;
+import jw.fluent.api.database.mysql.query_builder.SqlQueryBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 

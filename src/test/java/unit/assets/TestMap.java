@@ -1,7 +1,7 @@
 package unit.assets;
 
-import jw.fluent_api.mapper.implementation.SimpleMapper;
-import jw.fluent_api.mapper.api.IMap;
+import jw.fluent.api.mapper.implementation.SimpleMapper;
+import jw.fluent.api.mapper.api.IMap;
 
 import java.util.ArrayList;
 import java.util.List;

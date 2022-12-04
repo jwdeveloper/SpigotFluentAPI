@@ -1,25 +1,22 @@
 package unit.desing_patterns.dependecy_injection;
 
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleClass;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.events.EventHandler;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.events.events.OnInjectionEvent;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.events.events.OnRegistrationEvent;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.search.SearchAgent;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
-import jw.fluent_api.logger.api.SimpleLogger;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.events.EventHandler;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.events.events.OnRegistrationEvent;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.models.InjectionInfo;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.search.SearchAgent;
+import jw.fluent.api.desing_patterns.dependecy_injection.implementation.containers.DefaultContainer;
+import jw.fluent.api.logger.api.SimpleLogger;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.factory.InjectionInfoFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import jw.fluent_api.utilites.java.Pair;
+import jw.fluent.api.utilites.java.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,9 +1,9 @@
 package integration.database.table;
 
 import integration.database.example_data.UserExampleModel;
-import jw.fluent_api.database.mysql.change_tacker.SqlChangeTracker;
-import jw.fluent_api.database.api.database_table.enums.EntryState;
-import jw.fluent_api.database.mysql.factories.SqlTableModelFactory;
+import jw.fluent.api.database.mysql.change_tacker.SqlChangeTracker;
+import jw.fluent.api.database.api.database_table.enums.EntryState;
+import jw.fluent.api.database.mysql.factories.SqlTableModelFactory;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

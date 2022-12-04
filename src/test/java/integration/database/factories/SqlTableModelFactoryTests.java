@@ -2,8 +2,8 @@ package integration.database.factories;
 
 import integration.database.example_data.OrderExampleModel;
 import integration.database.example_data.UserExampleModel;
-import jw.fluent_api.database.mysql.factories.SqlTableModelFactory;
-import jw.fluent_api.database.mysql.factories.SqlTableQueryFactory;
+import jw.fluent.api.database.mysql.factories.SqlTableModelFactory;
+import jw.fluent.api.database.mysql.factories.SqlTableQueryFactory;
 import org.junit.Assert;
 import org.junit.Test;
 

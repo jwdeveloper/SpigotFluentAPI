@@ -2,8 +2,8 @@ package integration.database.factories;
 
 import integration.database.example_data.ExampleContext;
 import integration.database.example_data.UserExampleModel;
-import jw.fluent_api.database.mysql.factories.SqlDbContextFactory;
-import jw.fluent_api.database.mysql.models.SqlTable;
+import jw.fluent.api.database.mysql.factories.SqlDbContextFactory;
+import jw.fluent.api.database.mysql.models.SqlTable;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

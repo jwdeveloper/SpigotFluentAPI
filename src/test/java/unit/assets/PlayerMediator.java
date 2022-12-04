@@ -1,6 +1,6 @@
 package unit.assets;
 
-import jw.fluent_api.desing_patterns.mediator.api.MediatorHandler;
+import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
 
 public class PlayerMediator implements MediatorHandler<PlayerStats,SuperInventory>
 {

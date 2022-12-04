@@ -1,11 +1,5 @@
 package integration.desing_patterns.dependecy_injection.containers;
 
-import integration.desing_patterns.dependecy_injection.example_classes.*;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
-import org.junit.Assert;
-import org.junit.Test;
-
 public class SearchContainerTests
 {
   /*  @Test

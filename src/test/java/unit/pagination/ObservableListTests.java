@@ -1,7 +1,7 @@
 package unit.pagination;
 
 
-import jw.fluent_api.utilites.pagination.Pagination;
+import jw.fluent.api.utilites.pagination.Pagination;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

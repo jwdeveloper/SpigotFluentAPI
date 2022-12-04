@@ -1,17 +1,17 @@
 package integration.desing_patterns.dependecy_injection.containers;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleClass;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleClassV2;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleInterface;
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleInterfaceV2;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
-import jw.fluent_plugin.api.extention.FluentApiExtentionsManager;
-import jw.fluent_plugin.implementation.FluentApiContainerBuilderImpl;
-import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
-import jw.fluent_plugin.implementation.modules.player_context.implementation.FluentPlayerContextListener;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
+import jw.fluent.plugin.api.extention.FluentApiExtentionsManager;
+import jw.fluent.plugin.implementation.FluentApiContainerBuilderImpl;
+import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
+import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContextListener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Assert;
 import org.junit.BeforeClass;

@@ -1,6 +1,6 @@
 package unit.desing_patterns.decorator;
 
-import jw.fluent_api.desing_patterns.decorator.api.annoatations.Decorator;
+import jw.fluent.api.desing_patterns.decorator.api.annoatations.Decorator;
 import lombok.SneakyThrows;
 import org.junit.Test;
 

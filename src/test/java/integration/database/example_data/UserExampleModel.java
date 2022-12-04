@@ -1,10 +1,10 @@
 package integration.database.example_data;
 
-import jw.fluent_api.database.api.database_table.annotations.Column;
-import jw.fluent_api.database.api.database_table.annotations.Key;
-import jw.fluent_api.database.api.database_table.annotations.Required;
-import jw.fluent_api.database.api.database_table.annotations.Table;
-import jw.fluent_api.database.mysql.utils.SqlTypes;
+import jw.fluent.api.database.api.database_table.annotations.Column;
+import jw.fluent.api.database.api.database_table.annotations.Key;
+import jw.fluent.api.database.api.database_table.annotations.Required;
+import jw.fluent.api.database.api.database_table.annotations.Table;
+import jw.fluent.api.database.mysql.utils.SqlTypes;
 import lombok.Data;
 
 import java.util.UUID;

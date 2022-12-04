@@ -4,9 +4,9 @@ import integration.desing_patterns.decorator.example_classes.ExampleDecorator;
 import integration.desing_patterns.decorator.example_classes.ExampleDecorator2;
 import integration.desing_patterns.decorator.example_classes.ExampleInterface;
 import integration.desing_patterns.decorator.example_classes.ExampleClass;
-import jw.fluent_plugin.implementation.modules.decorator.FluentDecorator;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
+import jw.fluent.plugin.implementation.modules.decorator.FluentDecorator;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

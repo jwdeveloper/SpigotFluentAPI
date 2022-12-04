@@ -1,8 +1,8 @@
 package code_generator;
 
-import jw.fluent_api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.provider.InstanceProviderImpl;
-import jw.fluent_api.utilites.code_generator.UnitTestGenerator;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.provider.InstanceProvider;
+import jw.fluent.api.desing_patterns.dependecy_injection.implementation.provider.InstanceProviderImpl;
+import jw.fluent.api.utilites.code_generator.UnitTestGenerator;
 import org.junit.Ignore;
 import org.junit.Test;
 

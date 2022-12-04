@@ -1,6 +1,6 @@
 package unit.assets;
 
-import jw.fluent_api.desing_patterns.dependecy_injection.api.annotations.Injection;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import lombok.Getter;
 import lombok.Setter;
 

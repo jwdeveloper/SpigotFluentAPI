@@ -1,12 +1,12 @@
 package unit.desing_patterns.dependecy_injection;
 
 
-import jw.fluent_api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.containers.FluentContainer;
 import org.junit.Ignore;
 import unit.assets.annotations.TestingAnnotation;
 import unit.assets.interfaces.TestingInterface;
-import jw.fluent_api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent_api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.desing_patterns.dependecy_injection.implementation.containers.builder.ContainerBuilderImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

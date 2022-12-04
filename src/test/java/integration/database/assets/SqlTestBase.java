@@ -2,12 +2,12 @@ package integration.database.assets;
 
 import integration.database.example_data.OrderExampleModel;
 import integration.database.example_data.UserExampleModel;
-import jw.fluent_api.database.mysql.factories.SqlConnectionFactory;
-import jw.fluent_api.database.mysql.models.SqlConnection;
-import jw.fluent_api.database.mysql.models.SqlTable;
-import jw.fluent_api.utilites.files.FileUtility;
-import jw.fluent_api.utilites.files.json.JsonUtility;
-import jw.fluent_plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.api.database.mysql.factories.SqlConnectionFactory;
+import jw.fluent.api.database.mysql.models.SqlConnection;
+import jw.fluent.api.database.mysql.models.SqlTable;
+import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.utilites.files.json.JsonUtility;
+import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 import lombok.SneakyThrows;
 import org.junit.AfterClass;
 import org.junit.Assert;
