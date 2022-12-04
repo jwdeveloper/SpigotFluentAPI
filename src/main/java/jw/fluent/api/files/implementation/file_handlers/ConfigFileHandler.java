@@ -22,7 +22,7 @@ public class ConfigFileHandler implements FileHandler {
             var data = yalConfig.fromConfiguration(pluginConfig,file.getClass());
             ObjectUtility.copyToObject(data, file, data.getClass());
         }
-        pluginConfig.save(FluentApi.plugin()+ File.separator+"config.yml");
+        pluginConfig.save(FluentApi.path()+ File.separator+"config.yml");
     }
 
 

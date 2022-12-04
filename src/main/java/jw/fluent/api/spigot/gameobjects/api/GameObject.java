@@ -92,7 +92,6 @@ public class GameObject implements GameComponent {
                 child.destory();
             }
         }
-        FluentApi.logger().log("Gameobject destroyed",name);
         onDestroy();
     }
 

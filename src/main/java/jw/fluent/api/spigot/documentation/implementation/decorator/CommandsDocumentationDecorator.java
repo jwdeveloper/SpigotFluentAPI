@@ -38,6 +38,11 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
 
 
     private void renderCommandInfo(YmlBuilder builder, SimpleCommand command) {
+        if(command.getName().equals("disable"))
+        {
+            return;
+        }
+
         var defaultOffset =2;
         var propertyOffset = 4;
         var listOffset = 6;

@@ -14,7 +14,6 @@ public class YmlConfigurationImpl implements YmlConfiguration {
         var model = new YmlModelFactory<T>().createModel(obj);
 
         for (var content : model.getContents()) {
-            FluentLogger.LOGGER.log("Contant",content.getFullPath());
             var value = content.getValue();
             configuration.set(content.getFullPath(), value);
         }

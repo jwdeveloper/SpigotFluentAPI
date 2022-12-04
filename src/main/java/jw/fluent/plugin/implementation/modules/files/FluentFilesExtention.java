@@ -27,16 +27,6 @@ public class FluentFilesExtention implements FluentApiExtention {
         this.builder =builder;
     }
 
-    public int getConfigSavingFrequency(FluentConfig configFile, FluentLogger logger)
-    {
-        if(configFile.config().isInt("plugin.saving-frequency"))
-        {
-            var value = configFile.config().getInt("plugin.saving-frequency");
-            return Math.max(value, 1);
-        }
-        logger.warning("Unable to load `plugin.saving-frequency` from config");
-        return 5;
-    }
 
     @Override
     public void onConfiguration(FluentApiBuilder fluentApiBuilder) {
@@ -96,4 +86,16 @@ public class FluentFilesExtention implements FluentApiExtention {
         }
         savingTask.cancel();
     }
+
+    private int getConfigSavingFrequency(FluentConfig configFile, FluentLogger logger)
+    {
+        if(configFile.config().isInt("plugin.saving-frequency"))
+        {
+            var value = configFile.config().getInt("plugin.saving-frequency");
+            return Math.max(value, 1);
+        }
+        logger.warning("Unable to load `plugin.saving-frequency` from config");
+        return 5;
+    }
+
 }

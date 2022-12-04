@@ -4,6 +4,7 @@ import jw.fluent.api.utilites.files.yml.implementation.YmlConfigurationImpl;
 import jw.fluent.api.utilites.files.FileUtility;
 import jw.fluent.api.utilites.files.yml.api.models.FileStatus;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
