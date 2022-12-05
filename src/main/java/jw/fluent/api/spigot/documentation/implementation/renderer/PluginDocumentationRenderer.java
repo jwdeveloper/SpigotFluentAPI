@@ -33,6 +33,12 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
             return;
         }
 
+        if(section.hasAttribute("bold"))
+        {
+            builder.text("#").space().text(section.getContent().toUpperCase()).newLine();
+            return;
+        }
+
         builder.text("#").space().text(section.getContent()).newLine();
     }
 

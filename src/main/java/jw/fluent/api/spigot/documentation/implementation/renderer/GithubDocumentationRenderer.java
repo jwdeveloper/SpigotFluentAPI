@@ -29,6 +29,11 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
         if (section.hasAttribute("github-ignore")) {
             return;
         }
+        if(section.hasAttribute("bold"))
+        {
+            builder.newLine().text("###").space().text(section.getContent()).newLine();
+            return;
+        }
         super.onTextSection(builder, section);
     }
 

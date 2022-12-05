@@ -23,6 +23,11 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
         {
             return;
         }
+        if(section.hasAttribute("bold"))
+        {
+            builder.text("[B]").space().text(section.getContent()).text("[/B]").newLine();
+            return;
+        }
         super.onTextSection(builder, section);
     }
 
