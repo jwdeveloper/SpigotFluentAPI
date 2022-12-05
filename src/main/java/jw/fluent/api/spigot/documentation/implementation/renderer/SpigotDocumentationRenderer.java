@@ -18,6 +18,11 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
 
 
     @Override
+    protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
+        builder.newLine().text("[URL='").text(section.getContent()).text("']").text(section.getId()).text("[/URL]").newLine();
+    }
+
+    @Override
     protected void onTextSection(MessageBuilder builder, DocumentationSection section) {
         if(section.hasAttribute("spigot-ignore"))
         {

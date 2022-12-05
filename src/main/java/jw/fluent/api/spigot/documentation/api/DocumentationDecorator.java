@@ -6,6 +6,7 @@ import jw.fluent.api.spigot.documentation.api.models.SectionType;
 import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
 import jw.fluent.api.spigot.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
+import jw.fluent.api.utilites.java.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +43,10 @@ public abstract class DocumentationDecorator {
         return this;
     }
 
+    protected DocumentationDecorator addText(Documentation documentation) {
+        documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, StringUtils.EMPTY_STRING));
+        return this;
+    }
     protected DocumentationDecorator addText(String text, Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, text));
         return this;

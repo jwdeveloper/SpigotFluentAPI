@@ -46,4 +46,14 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
     protected void onListSection(MessageBuilder builder, DocumentationSection section) {
         builder.text("#").space(3).text("-").text(section.getContent()).newLine();
     }
+
+    @Override
+    protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
+        builder.text("#").space(3).text(section.getId()).text(":").space().text(section.getContent()).newLine();
+    }
+
+    @Override
+    protected void onVideoSection(MessageBuilder builder, DocumentationSection section) {
+        builder.text("#").space(3).text("video:").space().text(section.getContent()).newLine();
+    }
 }

@@ -40,7 +40,7 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
     @Override
     protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
 
-        builder.newLine().text("![" + section.getId() + "]").text("(").text(section.getContent()).text(")").newLine().newLine();
+        builder.newLine().text("[" + section.getId() + "]").text("(").text(section.getContent()).text(")").newLine().newLine();
     }
 
     @Override
