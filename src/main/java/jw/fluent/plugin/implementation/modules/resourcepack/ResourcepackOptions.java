@@ -11,7 +11,7 @@ public class ResourcepackOptions
 {
     private String name;
 
-    private String resourcepackUrl;
+    private String defaultUrl;
 
     private boolean loadOnJoin;
 }

@@ -84,8 +84,13 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
         if (data == null) {
             return false;
         }
+        if(content.contains(data))
+        {
+            return false;
+        }
         if (data.getUuid() == null)
             data.setUuid(UUID.randomUUID());
+
         content.add(data);
         return true;
 

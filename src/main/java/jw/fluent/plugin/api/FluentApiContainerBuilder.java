@@ -6,6 +6,7 @@ import jw.fluent.api.updater.api.UpdaterOptions;
 import jw.fluent.api.player_context.api.PlayerContainerBuilder;
 import jw.fluent.plugin.implementation.modules.documentation.DocumentationOptions;
 import jw.fluent.plugin.implementation.modules.resourcepack.ResourcepackOptions;
+import jw.fluent.plugin.implementation.modules.websocket.api.WebsocketOptions;
 
 import java.util.function.Consumer;
 
@@ -22,6 +23,8 @@ public interface FluentApiContainerBuilder extends ContainerBuilder<FluentApiCon
     FluentApiContainerBuilder addDocumentation();
 
     FluentApiContainerBuilder addResourcePack(Consumer<ResourcepackOptions> options);
+
+    FluentApiContainerBuilder addWebSocket(Consumer<WebsocketOptions> options);
 
     FluentApiContainerBuilder addWebSocket();
 

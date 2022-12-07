@@ -16,6 +16,7 @@ public class FluentMediatorExtention implements FluentApiExtention {
 
     @Override
     public void onConfiguration(FluentApiBuilder builder) {
+
         var mediators = typeManager.findByInterface(MediatorHandler.class);
         builder.container().register(FluentMediator.class,
                 LifeTime.SINGLETON,

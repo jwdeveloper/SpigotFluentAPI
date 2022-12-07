@@ -6,8 +6,16 @@ import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.api.spigot.events.FluentEvent;
 import jw.fluent.plugin.implementation.config.ConfigProperty;
 import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.function.Consumer;
 
 public class ResourcepackExtention implements FluentApiExtention {
@@ -25,7 +33,7 @@ public class ResourcepackExtention implements FluentApiExtention {
         if (options.isLoadOnJoin()) {
             FluentEvent.onEvent(PlayerJoinEvent.class, playerJoinEvent ->
             {
-                playerJoinEvent.getPlayer().setResourcePack(options.getResourcepackUrl());
+                playerJoinEvent.getPlayer().setResourcePack(options.getDefaultUrl());
             });
         }
         builder.command()
@@ -42,31 +50,26 @@ public class ResourcepackExtention implements FluentApiExtention {
                                 {
                                     eventConfig.onPlayerExecute(event ->
                                     {
-                                        event.getPlayer().setResourcePack(options.getResourcepackUrl());
+                                        byte[] sh1 = null;
+                                        try
+                                        {
+                                            FluentLogger.LOGGER.info("RESOURSEPAKC",options.getDefaultUrl());
+                                            sh1 = toSHA1(options.getDefaultUrl());
+                                            event.getPlayer().setResourcePack(options.getDefaultUrl(),sh1);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            event.getPlayer().setResourcePack(options.getDefaultUrl());
+                                        }
+
+
                                     });
                                 });
                     });
                 });
     }
 
-    public static byte[] toSHA1()
-    {
-        var version = FluentApi.plugin().getDescription().getVersion();
-        var bytes = version.getBytes();
-        var res = new byte[20];
-        for(var i=0;i<res.length;i++)
-        {
-            if(i < bytes.length-1)
-            {
-                res[i] = bytes[i];
-            }
-            else
-            {
-                res[i] = (byte)i;
-            }
-        }
-        return bytes;
-    }
+
 
     @Override
     public void onFluentApiEnable(FluentApi fluentAPI) {
@@ -84,7 +87,7 @@ public class ResourcepackExtention implements FluentApiExtention {
         var customUrl = getCustomUrl(config, options);
         var loadOnJoin = getLoadOnJoin(config, options);
 
-        options.setResourcepackUrl(customUrl);
+        options.setDefaultUrl(customUrl);
         options.setLoadOnJoin(loadOnJoin);
         return options;
     }
@@ -92,7 +95,7 @@ public class ResourcepackExtention implements FluentApiExtention {
 
     private String getCustomUrl(FluentConfig config, ResourcepackOptions options) {
         var property = new ConfigProperty<String>("plugin.resourcepack.url",
-                options.getResourcepackUrl(),
+                options.getDefaultUrl(),
                 "If you need to replace default resourcepack with your custom one",
                 "set this to link of you resourcepack",
                 "! after plugin update make sure your custom resourcepack is compatible !"
@@ -108,4 +111,33 @@ public class ResourcepackExtention implements FluentApiExtention {
     }
 
 
+    public static byte[] toSHA1(String  url) throws NoSuchAlgorithmException {
+        var bytes = url.getBytes();
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        return Base64.getEncoder().encode(md.digest(bytes));
+    }
+
+    public static String sha1Code(File file) throws IOException, NoSuchAlgorithmException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+        DigestInputStream digestInputStream = new DigestInputStream(fileInputStream, digest);
+        byte[] bytes = new byte[1024];
+        // read all file content
+        while (digestInputStream.read(bytes) > 0)
+            digest = digestInputStream.getMessageDigest();
+        byte[] resultByteArry = digest.digest();
+        return bytesToHexString(resultByteArry);
+    }
+
+    public static String bytesToHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            int value = b & 0xFF;
+            if (value < 16) {
+                sb.append("0");
+            }
+            sb.append(Integer.toHexString(value).toUpperCase());
+        }
+        return sb.toString();
+    }
 }

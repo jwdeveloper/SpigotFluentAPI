@@ -23,6 +23,8 @@ import jw.fluent.api.logger.implementation.SimpleLoggerImpl;
 import jw.fluent.api.updater.api.UpdaterOptions;
 import jw.fluent.api.player_context.api.PlayerContainerBuilder;
 import jw.fluent.plugin.api.extention.FluentApiExtentionsManager;
+import jw.fluent.plugin.implementation.modules.websocket.FluentWebsocketExtention;
+import jw.fluent.plugin.implementation.modules.websocket.api.WebsocketOptions;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Consumer;
@@ -96,8 +98,14 @@ public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentAp
     }
 
     @Override
-    public FluentApiContainerBuilder addWebSocket() {
+    public FluentApiContainerBuilder addWebSocket(Consumer<WebsocketOptions> options) {
+        extentionsManager.register(new FluentWebsocketExtention(options));
         return this;
+    }
+
+    @Override
+    public FluentApiContainerBuilder addWebSocket() {
+        return addWebSocket((e)->{});
     }
 
     public FluentContainer build() throws Exception {

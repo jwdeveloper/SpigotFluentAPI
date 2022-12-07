@@ -20,11 +20,11 @@ public class WebSocketBase extends WebSocketServer {
         webSocketEvents = new ConcurrentHashMap<>();
     }
 
-    public void registerPackets(Collection<WebSocketPacket> packets)
+    public void registerPackets(Collection<FluentWebsocketPacket> packets)
     {
         for (var packet : packets)
         {
-            webSocketEvents.put(packet.getPacketId(), packet);
+            webSocketEvents.put(packet.getPacketId(), (WebSocketPacket)packet);
         }
     }
 

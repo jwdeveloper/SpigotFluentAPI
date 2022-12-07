@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
-public abstract class WebSocketPacket implements PacketInvokeEvent {
+public abstract class WebSocketPacket implements FluentWebsocketPacket {
     private int packetSize = 0;
     private final int packetIdSize = 4;
     private final List<PacketFieldWrapper> packetFields;

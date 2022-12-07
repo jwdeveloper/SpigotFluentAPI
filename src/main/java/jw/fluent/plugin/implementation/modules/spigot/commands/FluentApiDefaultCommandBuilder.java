@@ -6,7 +6,7 @@ import jw.fluent.api.spigot.commands.implementation.builder.CommandBuilderImpl;
 public class FluentApiDefaultCommandBuilder extends CommandBuilderImpl implements FluentApiCommandBuilder
 {
     @Override
-    public CommandBuilder setName(String  commandName) {
+    public CommandBuilder setDefaultCommandName(String  commandName) {
         model.setName(commandName);
         return this;
     }

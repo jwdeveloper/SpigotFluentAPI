@@ -26,6 +26,7 @@ public class FluentApiSpigot
     {
         this.commandBuilder = commandBuilder;
         this.fluentPlayerContext = fluentPlayerContext;
+        this.particle = new FluentParticle();
     }
 
 
