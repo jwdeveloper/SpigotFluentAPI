@@ -1,6 +1,6 @@
 package jw.fluent.plugin.implementation.config;
-import jw.fluent.api.spigot.messages.FluentMessage;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.file.FileConfiguration;
 public record FluentConfigImpl(FileConfiguration fileConfiguration,
                                String path,
@@ -30,7 +30,7 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
         }
         catch (Exception e)
         {
-            FluentApi.logger().error("Unable to save config path!",e);
+            FluentLogger.LOGGER.error("Unable to save config path!",e);
         }
 
     }
@@ -58,6 +58,7 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
             {
                 builder.bar(" ",3).text(desc).newLine();
             }
+            builder.newLine();
             fileConfiguration.options().header(builder.toString());
             save();
         }

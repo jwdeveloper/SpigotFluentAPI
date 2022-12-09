@@ -1,11 +1,10 @@
 package jw.fluent.plugin.implementation.modules.metrics;
 
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.api.utilites.metricts.MetricsLite;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
-public class MetricsExtention implements FluentApiExtention {
+public class MetricsExtention implements FluentApiExtension {
 
     private int metricsId;
 
@@ -14,7 +13,7 @@ public class MetricsExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
         if (metricsId == 0) {
             return;
@@ -25,13 +24,13 @@ public class MetricsExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) {
 
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
 
     }
 }

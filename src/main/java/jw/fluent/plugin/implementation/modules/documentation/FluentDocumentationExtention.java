@@ -13,11 +13,12 @@ import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDoc
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.spigot.permissions.api.PermissionGeneratorDto;
 import jw.fluent.api.spigot.permissions.api.PermissionModel;
-import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class FluentDocumentationExtention implements FluentApiExtention {
+public class FluentDocumentationExtention implements FluentApiExtension {
 
     private Consumer<DocumentationOptions> options;
 
@@ -34,15 +35,15 @@ public class FluentDocumentationExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
         var model = new DocumentationOptions();
         options.accept(model);
-        var decorators = getDecorator(model, fluentAPI.getFluentPermission().getPermissions());
+        var decorators = getDecorator(model, fluentAPI.permission().getPermissions());
         var documentation = new Documentation();
         for (var decorator : decorators) {
             decorator.decorate(documentation);
@@ -92,7 +93,7 @@ public class FluentDocumentationExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 

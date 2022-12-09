@@ -1,6 +1,6 @@
 package jw.fluent.api.utilites.math.collistions;
 
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.particles.api.enums.ParticleDisplayMode;
 import jw.fluent.api.spigot.particles.implementation.SimpleParticle;
 
@@ -99,9 +99,9 @@ public class HitBox {
 
 
         List<Location> finalLines = lines;
-        return FluentApi.spigot().particles().create()
+        return FluentApi.particles()
                 .startAfterTicks(1)
-                .triggerEveryTicks(2)
+                .triggerEveryTicks(5)
                 .nextStep()
                 .withParticleCount(2)
                 .withFixedLocation(min)

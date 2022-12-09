@@ -1,18 +1,23 @@
 package jw.fluent.api.utilites.java;
 
-import jw.fluent.api.utilites.files.FileUtility;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.api.files.implementation.FileUtility;
 
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class ClassTypeUtility {
     public static boolean isClassContainsType(Class<?> type, Class<?> searchType) {
@@ -44,6 +49,30 @@ public class ClassTypeUtility {
         }
     }
 
+    public static List<String> listAllClasses(final Class<?> clazz) {
+        final CodeSource source = clazz.getProtectionDomain().getCodeSource();
+        if(source == null) return Collections.emptyList();
+        final URL url = source.getLocation();
+        try (
+                final ZipInputStream zip = new ZipInputStream(url.openStream())) {
+            final List<String> classes = new ArrayList<>();
+            while(true) {
+                final ZipEntry entry = zip.getNextEntry();
+                if(entry == null) break;
+                if(entry.isDirectory()) continue;
+                final String name = entry.getName();
+                if(name.endsWith(".class")) {
+                    classes.add(name.replace('/', '.').substring(0, name.length() - 6));
+                }
+            }
+            return classes;
+        } catch (IOException exception) {
+            return Collections.emptyList();
+        }
+    }
+
+
+
     public static List<Class<?>> findClassesInPlugin(JavaPlugin plugin) {
         List<Class<?>> result = new ArrayList<>();
         var file = FileUtility.pluginFile(plugin);
@@ -66,12 +95,12 @@ public class ClassTypeUtility {
 
                     }
                 } catch (Exception ex) {
-                    FluentApi.logger().error("Could not load class", ex);
+                    FluentLogger.LOGGER.error("Could not load class", ex);
                 }
             }
             is.closeEntry();
         } catch (Exception ex) {
-            FluentApi.logger().error("Could not load class", ex);
+            FluentLogger.LOGGER.error("Could not load class", ex);
         }
         return result;
     }
@@ -89,12 +118,12 @@ public class ClassTypeUtility {
                     }
                     result.add(name);
                 } catch (Exception ex) {
-                    FluentApi.logger().error("Could not load class", ex);
+                    FluentLogger.LOGGER.error("Could not load class", ex);
                 }
 
             }
         } catch (Exception ex) {
-            FluentApi.logger().error("Could not load class", ex);
+            FluentLogger.LOGGER.error("Could not load class", ex);
         }
         return result;
     }
@@ -120,7 +149,7 @@ public class ClassTypeUtility {
             return Class.forName(packageName + "."
                     + className.substring(0, className.lastIndexOf('.')));
         } catch (ClassNotFoundException e) {
-            FluentApi.logger().error("Could not load class", e);
+            FluentLogger.LOGGER.error("Could not load class", e);
         }
         return null;
     }

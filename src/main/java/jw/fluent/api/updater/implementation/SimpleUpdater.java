@@ -1,12 +1,12 @@
 package jw.fluent.api.updater.implementation;
 
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.updater.api.UpdaterOptions;
-import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -35,12 +35,12 @@ public class SimpleUpdater {
 
     public void checkUpdate(Consumer<Boolean> consumer) {
         if (github.equals(StringUtils.EMPTY_STRING)) {
-            FluentApi.logger().warning("Updater", "Download url could not be empty");
+            FluentLogger.LOGGER.warning("Updater", "Download url could not be empty");
             return;
         }
         var currentVersion = plugin.getDescription().getVersion();
         var releaseUrl = github + "/releases/latest";
-        FluentApi.spigot().tasks().taskAsync(unused ->
+        FluentApi.tasks().taskAsync(unused ->
         {
             try {
                 var html = getHTML(releaseUrl);
@@ -52,7 +52,7 @@ public class SimpleUpdater {
                 consumer.accept(true);
 
             } catch (Exception e) {
-                FluentApi.logger().error("Checking for update error", e);
+                FluentLogger.LOGGER.error("Checking for update error", e);
             }
         });
     }
@@ -153,7 +153,7 @@ public class SimpleUpdater {
                     .text(" to apply changes")
                     .send(sender);
         } catch (Exception e) {
-            FluentApi.logger().error("Update download error", e);
+            FluentLogger.LOGGER.error("Update download error", e);
         }
     }
 }

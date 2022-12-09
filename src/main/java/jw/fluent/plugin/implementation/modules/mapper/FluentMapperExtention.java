@@ -1,15 +1,15 @@
 package jw.fluent.plugin.implementation.modules.mapper;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
-public class FluentMapperExtention implements FluentApiExtention
+public class FluentMapperExtention implements FluentApiExtension
 {
 
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container().register(FluentMapper.class, LifeTime.SINGLETON,(x) ->
         {
             //TODO mapper
@@ -23,12 +23,12 @@ public class FluentMapperExtention implements FluentApiExtention
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 }

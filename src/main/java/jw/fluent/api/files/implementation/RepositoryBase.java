@@ -3,10 +3,10 @@ package jw.fluent.api.files.implementation;
 import jw.fluent.api.files.api.CustomFile;
 import jw.fluent.api.files.api.Repository;
 import jw.fluent.api.files.api.models.DataModel;
-import jw.fluent.api.utilites.files.FileUtility;
 import jw.fluent.api.utilites.java.ObjectUtility;
-import jw.fluent.api.utilites.files.json.JsonUtility;
+import jw.fluent.api.files.implementation.json.JsonUtility;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
 
 import java.util.*;
@@ -162,7 +162,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             content = JsonUtility.loadList(path, fileName, entityClass);
             return true;
         } catch (Exception e) {
-            FluentApi.logger().error("Repository load error "+fileName + " " + entityClass.getName(), e);
+            FluentLogger.LOGGER.error("Repository load error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }
@@ -173,7 +173,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             JsonUtility.save(content, path, fileName);
             return true;
         } catch (Exception e) {
-            FluentApi.logger().error("Repository save error "+fileName + " " + entityClass.getName(), e);
+            FluentLogger.LOGGER.error("Repository save error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
     }

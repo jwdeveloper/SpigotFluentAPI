@@ -8,6 +8,7 @@ import jw.fluent.api.files.api.FileHandler;
 import jw.fluent.api.files.api.DataContext;
 import jw.fluent.api.files.api.CustomFile;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -69,7 +70,7 @@ public class FilesDataContext implements DataContext {
     public void registerFileHandler(FileHandler fileHandler) {
         if (fileHandlers.containsKey(fileHandler.getClass())) {
 
-            FluentApi.logger().info("DataContext already contains path handler of type " + fileHandler.getClass().getSimpleName());
+            FluentLogger.LOGGER.info("DataContext already contains path handler of type " + fileHandler.getClass().getSimpleName());
             return;
         }
 

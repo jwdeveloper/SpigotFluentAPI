@@ -1,7 +1,7 @@
 package jw.fluent.api.files.implementation.file_handlers;
 
 import jw.fluent.api.files.api.FileHandler;
-import jw.fluent.api.utilites.files.yml.implementation.YmlConfigurationImpl;
+import jw.fluent.api.files.implementation.yml.implementation.YmlConfigurationImpl;
 import jw.fluent.api.utilites.java.ObjectUtility;
 import jw.fluent.plugin.implementation.FluentApi;
 

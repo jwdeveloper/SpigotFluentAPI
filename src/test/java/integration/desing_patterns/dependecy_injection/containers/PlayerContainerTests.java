@@ -8,7 +8,7 @@ import integration.desing_patterns.dependecy_injection.example_classes.ExampleIn
 import integration.desing_patterns.dependecy_injection.example_classes.ExampleInterfaceV2;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.RegistrationType;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
-import jw.fluent.plugin.api.extention.FluentApiExtentionsManager;
+import jw.fluent.plugin.api.extention.FluentApiExtensionsManager;
 import jw.fluent.plugin.implementation.FluentApiContainerBuilderImpl;
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContextListener;
@@ -35,7 +35,7 @@ public class PlayerContainerTests {
     public void Should_Find_By_UUID() throws Exception {
         //Arrange
         var playerUuid = UUID.randomUUID();
-        var extentionsManagerMock = Mockito.mock(FluentApiExtentionsManager.class);
+        var extentionsManagerMock = Mockito.mock(FluentApiExtensionsManager.class);
 
         var builder = new FluentApiContainerBuilderImpl(extentionsManagerMock, plugin);
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
@@ -60,7 +60,7 @@ public class PlayerContainerTests {
         //Arrange
         var player1 = UUID.randomUUID();
         var player2 = UUID.randomUUID();
-        var extentionsManagerMock = Mockito.mock(FluentApiExtentionsManager.class);
+        var extentionsManagerMock = Mockito.mock(FluentApiExtensionsManager.class);
         var builder = new FluentApiContainerBuilderImpl(extentionsManagerMock, plugin);
         builder.register(ExampleInterface.class, ExampleClass.class, LifeTime.SINGLETON);
 

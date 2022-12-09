@@ -63,8 +63,8 @@ public class CommandBuilderImpl implements CommandBuilder {
     }
 
     @Override
-    public CommandBuilder eventsConfig(Consumer<EventConfig> config) {
-        configs.put(config, new EventConfigImpl(eventsService));
+    public CommandBuilder eventsConfig(Consumer<EventConfig> consumer) {
+        configs.put(consumer, new EventConfigImpl(eventsService));
         return this;
     }
 

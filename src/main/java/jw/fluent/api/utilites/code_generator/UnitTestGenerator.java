@@ -1,7 +1,7 @@
 package jw.fluent.api.utilites.code_generator;
 
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.utilites.java.StringUtils;
 
 public class UnitTestGenerator {

@@ -1,6 +1,6 @@
 package unit.files;
 
-import jw.fluent.api.utilites.files.json.JsonUtility;
+import jw.fluent.api.files.implementation.json.JsonUtility;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

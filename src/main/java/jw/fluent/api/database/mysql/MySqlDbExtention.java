@@ -6,14 +6,14 @@ import jw.fluent.api.database.mysql.models.SqlConnection;
 import jw.fluent.api.database.mysql.models.SqlDbContext;
 import jw.fluent.api.database.mysql.models.SqlTable;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class MySqlDbExtention<T> implements FluentApiExtention {
+public class MySqlDbExtention<T> implements FluentApiExtension {
     private final Class contextType;
     private final SqlConnection connectionDto;
     private Connection connection;
@@ -25,7 +25,7 @@ public class MySqlDbExtention<T> implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
         builder.container().register(SqlDbContext.class, LifeTime.SINGLETON, (x) ->
         {
@@ -35,7 +35,7 @@ public class MySqlDbExtention<T> implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
         var conn = new SqlConnectionFactory().getConnection(connectionDto);
         if (conn.isEmpty()) {
             throw new Exception("Can not establish connection");
@@ -55,7 +55,7 @@ public class MySqlDbExtention<T> implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws SQLException {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws SQLException {
         if (connection == null) {
             return;
         }

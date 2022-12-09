@@ -1,6 +1,6 @@
 package jw.fluent.api.utilites;
 
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 public class Stopwatch
 {

@@ -1,6 +1,6 @@
 package jw.fluent.api.utilites.item_stack;
 
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.apache.commons.lang.SerializationUtils;
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class SerlializedMapper<T extends Serializable>
             return SerializationUtils.serialize(complex);
         } catch (Exception e)
         {
-            FluentApi.logger().error("Can not serialize "+complex.getClass().getSimpleName()+ "object to byte array",e);
+            FluentLogger.LOGGER.error("Can not serialize "+complex.getClass().getSimpleName()+ "object to byte array",e);
         }
         return new byte[0];
     }
@@ -24,7 +24,7 @@ public class SerlializedMapper<T extends Serializable>
             return (T)SerializationUtils.deserialize(bytes);
         } catch (Exception e)
         {
-            FluentApi.logger().error("Can not deserialize byte array to object",e);
+            FluentLogger.LOGGER.error("Can not deserialize byte array to object",e);
         }
         return null;
     }

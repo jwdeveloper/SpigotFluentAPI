@@ -1,7 +1,7 @@
 package jw.fluent.tests.integration.api;
 
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

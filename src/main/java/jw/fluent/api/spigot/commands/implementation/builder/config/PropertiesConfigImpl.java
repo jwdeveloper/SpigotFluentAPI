@@ -1,6 +1,7 @@
 package jw.fluent.api.spigot.commands.implementation.builder.config;
 
 import jw.fluent.api.spigot.commands.api.builder.config.PropertiesConfig;
+import jw.fluent.api.spigot.commands.api.enums.AccessType;
 import jw.fluent.api.spigot.commands.api.models.CommandModel;
 
 import java.util.Arrays;
@@ -29,6 +30,12 @@ public class PropertiesConfigImpl implements PropertiesConfig {
     @Override
     public PropertiesConfig setLabel(String label) {
         model.setLabel(label);
+        return this;
+    }
+
+    @Override
+    public PropertiesConfig setAccess(AccessType accessType) {
+        model.getCommandAccesses().add(accessType);
         return this;
     }
 

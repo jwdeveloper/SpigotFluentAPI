@@ -1,12 +1,12 @@
 package jw.fluent.plugin.implementation.modules.permissions.implementation;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
-import jw.fluent.plugin.api.FluentApiBuilder;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermission;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
-public class FluentPermissionExtention implements FluentApiExtention
+public class FluentPermissionExtention implements FluentApiExtension
 {
 
     private FluentPermissionBuilderImpl builder;
@@ -18,7 +18,7 @@ public class FluentPermissionExtention implements FluentApiExtention
 
 
     @Override
-    public void onConfiguration(FluentApiBuilder api) {
+    public void onConfiguration(FluentApiSpigotBuilder api) {
 
         api.container().register(FluentPermission.class, LifeTime.SINGLETON, container ->
         {
@@ -27,12 +27,12 @@ public class FluentPermissionExtention implements FluentApiExtention
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 

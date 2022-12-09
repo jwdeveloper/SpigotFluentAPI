@@ -1,6 +1,6 @@
 package jw.fluent.api.utilites.nms;
 
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

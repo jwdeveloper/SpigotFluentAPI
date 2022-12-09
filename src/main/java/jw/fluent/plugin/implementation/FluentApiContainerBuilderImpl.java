@@ -22,7 +22,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.implementation.search.S
 import jw.fluent.api.logger.implementation.SimpleLoggerImpl;
 import jw.fluent.api.updater.api.UpdaterOptions;
 import jw.fluent.api.player_context.api.PlayerContainerBuilder;
-import jw.fluent.plugin.api.extention.FluentApiExtentionsManager;
+import jw.fluent.plugin.api.extention.FluentApiExtensionsManager;
 import jw.fluent.plugin.implementation.modules.websocket.FluentWebsocketExtention;
 import jw.fluent.plugin.implementation.modules.websocket.api.WebsocketOptions;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,11 +32,11 @@ import java.util.function.Consumer;
 
 public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentApiContainerBuilder> implements FluentApiContainerBuilder
 {
-    private final FluentApiExtentionsManager extentionsManager;
+    private final FluentApiExtensionsManager extentionsManager;
     private final DecoratorBuilder decoratorBuilder;
     private final JavaPlugin plugin;
 
-    public FluentApiContainerBuilderImpl(FluentApiExtentionsManager eventBuilder,
+    public FluentApiContainerBuilderImpl(FluentApiExtensionsManager eventBuilder,
                                          JavaPlugin plugin)
     {
         this.extentionsManager = eventBuilder;

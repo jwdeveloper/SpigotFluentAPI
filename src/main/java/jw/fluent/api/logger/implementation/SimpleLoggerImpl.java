@@ -108,17 +108,17 @@ public class SimpleLoggerImpl implements SimpleLogger {
     }
 
     public void error(String message, Throwable exception) {
-        var errorMessage = new MessageBuilder();
-        var description = getErrorDescription(message, exception);
-        var stackTrace = getStackTrace(exception);
 
+
+
+        var errorMessage = new MessageBuilder();
         if(exception == null)
         {
-            errorMessage
-                    .merge(description)
-                    .sendToConsole();
+           errorMessage.error().text(message).sendToConsole();
+           return;
         }
-
+        var description = getErrorDescription(message, exception);
+        var stackTrace = getStackTrace(exception);
         errorMessage
                 .merge(description)
                 .text(ERROR_BAR)

@@ -3,11 +3,12 @@ package jw.fluent.plugin.implementation.modules.websocket;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.web_socket.FluentWebsocketPacket;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.config.ConfigProperty;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.websocket.api.FluentWebsocket;
 import jw.fluent.plugin.implementation.modules.websocket.api.WebsocketOptions;
 import jw.fluent.plugin.implementation.modules.websocket.implementation.FluentWebsocketImpl;
@@ -18,7 +19,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.function.Consumer;
 
-public class FluentWebsocketExtention implements FluentApiExtention {
+public class FluentWebsocketExtention implements FluentApiExtension {
 
     private boolean runServer;
     private Consumer<WebsocketOptions> consumer;
@@ -28,34 +29,40 @@ public class FluentWebsocketExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
         var config = builder.config();
         var runProperty = runProperty();
         runServer = config.getOrCreate(runProperty);
-        if (!runServer)
-        {
+        if (!runServer) {
             FluentLogger.LOGGER.info("Websocket is disabled in order to enable change piano.websocket.run to true in config.yml");
             return;
         }
         builder.container().register(FluentWebsocket.class, LifeTime.SINGLETON, container ->
         {
-            var options = new WebsocketOptions();
-            consumer.accept(options);
-            var configProperty = portProperty(options.getDefaultPort());
-            var port = config.getOrCreate(configProperty);
-            return new FluentWebsocketImpl(port);
+            try
+            {
+                var options = new WebsocketOptions();
+                consumer.accept(options);
+                var configProperty = portProperty(options.getDefaultPort());
+                var port = config.getOrCreate(configProperty);
+                return new FluentWebsocketImpl(port);
+            } catch (Exception e)
+            {
+                FluentLogger.LOGGER.error("Websocket error, check if port is open and free to use",e);
+                return null;
+            }
         });
         builder.container().registerList(FluentWebsocketPacket.class, LifeTime.SINGLETON);
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
         if (!runServer) {
             return;
         }
-        var config = fluentAPI.getFluentConfig();
-        var webSocket = (FluentWebsocketImpl) fluentAPI.getFluentInjection().findInjection(FluentWebsocket.class);
+        var config = fluentAPI.config();
+        var webSocket = (FluentWebsocketImpl) fluentAPI.container().findInjection(FluentWebsocket.class);
         var customIpProperty = customIpProperty();
         var customIp = config.getOrCreate(customIpProperty);
         if (StringUtils.nullOrEmpty(customIp)) {
@@ -64,19 +71,18 @@ public class FluentWebsocketExtention implements FluentApiExtention {
             webSocket.setServerIp(customIp);
         }
 
-        var packets = fluentAPI.getFluentInjection().findAllByInterface(FluentWebsocketPacket.class);
-        FluentLogger.LOGGER.info("PacketsHandler",packets.size());
+        var packets = fluentAPI.container().findAllByInterface(FluentWebsocketPacket.class);
         webSocket.registerPackets(packets);
         webSocket.start();
-        fluentAPI.getFluentLogger().info("Websocket runs on ",webSocket.getServerIp()+":"+webSocket.getPort());
+        fluentAPI.logger().info("Websocket runs on:", webSocket.getServerIp() + ":" + webSocket.getPort());
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
         if (!runServer) {
             return;
         }
-        var webSocket = fluentAPI.getFluentInjection().findInjection(FluentWebsocket.class);
+        var webSocket = fluentAPI.container().findInjection(FluentWebsocket.class);
         webSocket.stop();
     }
 
@@ -88,14 +94,24 @@ public class FluentWebsocketExtention implements FluentApiExtention {
 
 
     private ConfigProperty<Integer> portProperty(int defaultPort) {
-        return new ConfigProperty<Integer>("plugin.websocket.port", defaultPort, "Set port for websocket, make sure the port is open on your hosting");
+        var description = FluentMessage.message()
+                .text("Set port for websocket").newLine()
+                .text("! Make sure that port is open").newLine()
+                .text("! When you have server on hosting, generate new port on the hosting panel").newLine().toString();
+        return new ConfigProperty<Integer>("plugin.websocket.port", defaultPort, description);
     }
 
     private ConfigProperty<String> customIpProperty() {
-        return new ConfigProperty<String>("plugin.websocket.custom-id", StringUtils.EMPTY_STRING, "Set port for websocket");
+        var description = FluentMessage.message()
+                .text("Set own IP for websocket, by default plugin use IP of your server").newLine()
+                .text("! When you are using proxy set here proxy IP").newLine()
+                .text("! When you are running plugin locally on your PC, set 'localhost'").newLine()
+                .text("! When default IP not works try use IP that you are using in minecraft server list").newLine().toString();
+
+        return new ConfigProperty<String>("plugin.websocket.custom-id", StringUtils.EMPTY_STRING, description);
     }
 
     private ConfigProperty<Boolean> runProperty() {
-        return new ConfigProperty<Boolean>("plugin.websocket.run", true, "if disabled websocket will not run");
+        return new ConfigProperty<Boolean>("plugin.websocket.run", true, "When false websocket will not run ");
     }
 }

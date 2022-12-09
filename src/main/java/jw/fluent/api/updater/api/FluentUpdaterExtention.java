@@ -1,6 +1,6 @@
 package jw.fluent.api.updater.api;
 
-import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.api.FluentApiExtension;
 
-public interface FluentUpdaterExtention extends FluentApiExtention {
+public interface FluentUpdaterExtention extends FluentApiExtension {
 }

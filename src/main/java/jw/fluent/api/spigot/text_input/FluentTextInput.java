@@ -1,7 +1,7 @@
 package jw.fluent.api.spigot.text_input;
 
 import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import jw.fluent.plugin.implementation.FluentApi;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +46,7 @@ public class FluentTextInput extends EventBase
         {
            return;
         }
-        new FluentTaskTimer(1,(iteration, task) ->
+        new SimpleTaskTimer(1,(iteration, task) ->
         {
             try {
                 var textEvent =  getInstance().players.get(event.getPlayer());

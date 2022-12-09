@@ -59,21 +59,9 @@ public class ItemStackDataFormatter
         }
     }
 
-    public static <T extends Serializable> boolean saveData(T _object, ItemStack itemStack)
-    {
-        return saveData(FluentApi.plugin(), _object,  itemStack);
-    }
 
-    public static <T extends Serializable> boolean containsObject(JavaPlugin plugin,Class<T> _class, ItemStack itemStack)
-    {
-        var key = new NamespacedKey(plugin, _class.getClass().getSimpleName());
-        var itemMeta = itemStack.getItemMeta();
-        var tagContainer = itemMeta.getPersistentDataContainer();
-        return tagContainer.has(key,PersistentDataType.BYTE_ARRAY);
-    }
 
-    public static <T extends Serializable> boolean containsObject(Class<T> _class, ItemStack itemStack)
-    {
-        return containsObject(FluentApi.plugin(),_class,itemStack);
-    }
+
+
+
 }

@@ -2,6 +2,7 @@ package jw.fluent.api.spigot.messages.message;
 
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -253,7 +254,7 @@ public class MessageBuilder
             System.out.println(stringBuilder.toString());
             return;
         }
-        FluentApi.logger().log(stringBuilder.toString());
+        FluentLogger.LOGGER.log(stringBuilder.toString());
 
     }
 

@@ -2,12 +2,12 @@ package jw.fluent.plugin.implementation.modules.decorator;
 
 import jw.fluent.api.desing_patterns.decorator.api.Decorator;
 import jw.fluent.api.desing_patterns.decorator.api.builder.DecoratorBuilder;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
-public class FluentDecoratorExtention implements FluentApiExtention {
+public class FluentDecoratorExtention implements FluentApiExtension {
 
     private DecoratorBuilder decoratorBuilder;
 
@@ -17,7 +17,7 @@ public class FluentDecoratorExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
         builder.container().configure(containerConfiguration ->
         {
@@ -33,12 +33,12 @@ public class FluentDecoratorExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 }

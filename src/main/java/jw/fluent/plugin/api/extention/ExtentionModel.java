@@ -1,6 +1,6 @@
 package jw.fluent.plugin.api.extention;
 
-import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.api.FluentApiExtension;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ExtentionModel
 {
-    private FluentApiExtention extention;
+    private FluentApiExtension extention;
 
     private ExtentionPiority piority;
 

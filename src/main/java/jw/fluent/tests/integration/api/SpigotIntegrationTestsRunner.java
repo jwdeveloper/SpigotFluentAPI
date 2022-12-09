@@ -1,6 +1,6 @@
 package jw.fluent.tests.integration.api;
 
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

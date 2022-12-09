@@ -1,8 +1,8 @@
 package jw.fluent.api.translator.implementation;
 
 import jw.fluent.api.translator.api.models.LangData;
-import jw.fluent.api.utilites.files.FileUtility;
-import jw.fluent.api.utilites.files.yml.implementation.reader.YmlReader;
+import jw.fluent.api.files.implementation.FileUtility;
+import jw.fluent.api.files.implementation.yml.implementation.reader.YmlReader;
 import jw.fluent.api.utilites.java.ClassTypeUtility;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.InvalidConfigurationException;

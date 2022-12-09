@@ -1,10 +1,10 @@
 package jw.fluent.plugin.implementation.config;
 
-import jw.fluent.api.utilites.ClassTypesManager;
+import jw.fluent.plugin.implementation.assembly_scanner.AssemblyScanner;
 import jw.fluent.plugin.implementation.config.config_sections.DefaultConfigSection;
 import jw.fluent.plugin.implementation.config.config_sections.FluentConfigSection;
-import jw.fluent.api.utilites.files.FileUtility;
-import jw.fluent.api.utilites.files.yml.implementation.YmlConfigurationImpl;
+import jw.fluent.api.files.implementation.FileUtility;
+import jw.fluent.api.files.implementation.yml.implementation.YmlConfigurationImpl;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,9 +17,9 @@ import java.util.List;
 public class PluginConfigFactory {
 
     private final YmlConfigurationImpl ymlConfiguration;
-    private final ClassTypesManager typesManager;
+    private final AssemblyScanner typesManager;
     private final JavaPlugin javaPlugin;
-    public PluginConfigFactory(ClassTypesManager typesManager, JavaPlugin javaPlugin)
+    public PluginConfigFactory(AssemblyScanner typesManager, JavaPlugin javaPlugin)
     {
         ymlConfiguration =  new YmlConfigurationImpl();
         this.typesManager = typesManager;
@@ -29,7 +29,7 @@ public class PluginConfigFactory {
     private boolean isCreated;
 
 
-    public FluentConfigImpl create(String path, ClassTypesManager typesManager) throws Exception {
+    public FluentConfigImpl create(String path, AssemblyScanner typesManager) throws Exception {
         var sections = typesManager.findByInterface(FluentConfigSection.class);
         var tempObj = new ArrayList<FluentConfigSection>();
         for(var section : sections)

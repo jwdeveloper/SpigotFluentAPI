@@ -1,6 +1,6 @@
 package jw.fluent.api.spigot.inventory_gui.implementation.picker_list_ui;
 
-import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.files.implementation.FileUtility;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;

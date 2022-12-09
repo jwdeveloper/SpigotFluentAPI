@@ -3,11 +3,11 @@ package jw.fluent.api.web_socket;
 
 import com.google.gson.Gson;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
-import jw.fluent.api.spigot.tasks.FluentTaskTimer;
+import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import jw.fluent.api.web_socket.annotations.PacketProperty;
 import jw.fluent.api.web_socket.resolver.*;
-import jw.fluent.api.utilites.files.json.JsonUtility;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.api.files.implementation.json.JsonUtility;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.java_websocket.WebSocket;
 
 import java.lang.reflect.Field;
@@ -21,7 +21,7 @@ public abstract class WebSocketPacket implements FluentWebsocketPacket {
     private final int packetIdSize = 4;
     private final List<PacketFieldWrapper> packetFields;
     private final Queue<Consumer<WebSocket>> tasks = new LinkedBlockingQueue<>();
-    private final FluentTaskTimer taskTimer;
+    private final SimpleTaskTimer taskTimer;
     private final Gson gson;
 
     public abstract void onPacketTriggered(WebSocket webSocket);
@@ -32,7 +32,7 @@ public abstract class WebSocketPacket implements FluentWebsocketPacket {
         gson = JsonUtility.getGson();
         packetFields = loadPacketFields();
         packetSize = getPacketSize();
-        taskTimer = new FluentTaskTimer(1, (time, taskTimer1) ->
+        taskTimer = new SimpleTaskTimer(1, (time, taskTimer1) ->
         {
             for (final var task : tasks) {
                 task.accept(null);

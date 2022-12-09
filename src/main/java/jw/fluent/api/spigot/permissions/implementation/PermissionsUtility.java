@@ -1,6 +1,6 @@
 package jw.fluent.api.spigot.permissions.implementation;
 
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;

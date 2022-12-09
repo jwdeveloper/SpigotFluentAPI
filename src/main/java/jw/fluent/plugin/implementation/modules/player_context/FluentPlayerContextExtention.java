@@ -6,9 +6,9 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.models.Registration
 import jw.fluent.api.player_context.api.PlayerContainerBuilder;
 import jw.fluent.api.player_context.implementation.PlayerContainerBuilderImpl;
 import jw.fluent.api.player_context.api.PlayerContext;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContextListener;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class FluentPlayerContextExtention implements FluentApiExtention {
+public class FluentPlayerContextExtention implements FluentApiExtension {
 
     public Consumer<PlayerContainerBuilder>  options;
 
@@ -29,7 +29,7 @@ public class FluentPlayerContextExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container().configure(containerConfiguration ->
         {
            containerConfiguration.onRegistration(onRegistrationEvent ->
@@ -56,12 +56,12 @@ public class FluentPlayerContextExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
 
     }
 }

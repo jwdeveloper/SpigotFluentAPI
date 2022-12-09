@@ -13,7 +13,7 @@ import jw.fluent.api.spigot.commands.implementation.services.CommandServiceImpl;
 import jw.fluent.tests.integration.api.SpigotIntegrationTest;
 import jw.fluent.tests.integration.api.SpigotTest;
 import jw.fluent.tests.integration.api.spigotAssertions.SpigotAssertion;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -11,6 +11,7 @@ public abstract class EventBase implements Listener
 {
     public EventBase()
     {
+        //TODO handle plugin
         Bukkit.getPluginManager().registerEvents(this, FluentApi.plugin());
     }
 

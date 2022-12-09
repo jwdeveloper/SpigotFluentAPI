@@ -9,7 +9,7 @@ import jw.fluent.api.spigot.permissions.api.annotations.PermissionGroup;
 import jw.fluent.api.spigot.permissions.api.annotations.PermissionProperty;
 import jw.fluent.api.spigot.permissions.api.annotations.PermissionTitle;
 import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.io.IOException;
 import java.util.*;

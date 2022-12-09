@@ -3,7 +3,7 @@ package jw.fluent.api.validator.implementation.builder;
 import jw.fluent.api.validator.api.builder.PropertyValidator;
 import jw.fluent.api.validator.api.builder.ValidatorConfiguration;
 import jw.fluent.api.validator.implementation.ValidationDto;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 public class ValidatiorConfigurationBuilder<T> implements ValidatorConfiguration<T>
 {

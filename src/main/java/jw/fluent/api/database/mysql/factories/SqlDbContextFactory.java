@@ -6,6 +6,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.models.Registration
 import jw.fluent.api.database.mysql.models.SqlDbContext;
 import jw.fluent.api.database.mysql.models.SqlTable;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjectionImpl;
 import lombok.SneakyThrows;
 
@@ -21,7 +22,7 @@ public class SqlDbContextFactory
                 null,
                 LifeTime.SINGLETON,
                 RegistrationType.OnlyImpl);
-        var injection = (FluentInjectionImpl) FluentApi.injection();
+        var injection = (FluentInjectionImpl) FluentApi.container();
         injection.getContainer().register(registrationInfo);
         var context = (SqlDbContext)injection.findInjection(contextType);
         for (var field : contextType.getDeclaredFields()) {

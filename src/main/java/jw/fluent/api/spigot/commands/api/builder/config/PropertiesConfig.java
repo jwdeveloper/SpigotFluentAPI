@@ -1,6 +1,7 @@
 package jw.fluent.api.spigot.commands.api.builder.config;
 
 import jw.fluent.api.spigot.commands.api.builder.BuilderConfig;
+import jw.fluent.api.spigot.commands.api.enums.AccessType;
 
 public interface PropertiesConfig extends BuilderConfig {
     PropertiesConfig setUsageMessage(String usageMessage);
@@ -13,6 +14,7 @@ public interface PropertiesConfig extends BuilderConfig {
 
     PropertiesConfig setDescription(String description);
 
-
     PropertiesConfig addPermissions(String... permissions);
+
+     PropertiesConfig setAccess(AccessType accessType);
 }

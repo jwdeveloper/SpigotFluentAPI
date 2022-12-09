@@ -4,13 +4,12 @@ import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.spigot.documentation.api.models.DocumentationSection;
 import jw.fluent.api.spigot.documentation.api.models.SectionType;
 import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.utilites.java.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class DocumentationDecorator {
     public abstract void decorate(Documentation documentation);

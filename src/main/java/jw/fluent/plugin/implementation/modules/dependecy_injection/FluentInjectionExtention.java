@@ -3,27 +3,27 @@ package jw.fluent.plugin.implementation.modules.dependecy_injection;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.IgnoreInjection;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.models.ContainerConfiguration;
-import jw.fluent.api.utilites.ClassTypesManager;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.assembly_scanner.AssemblyScanner;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.FluentApiContainerBuilderImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FluentInjectionExtention implements FluentApiExtention {
+public class FluentInjectionExtention implements FluentApiExtension {
 
 
     public record Result(FluentInjectionImpl fluentInjection, List<Class<?>> toInitializeTypes){}
     private final List<Class<?>> toInitializeTypes;
     private final FluentApiContainerBuilderImpl builder;
-    private final ClassTypesManager typeManager;
+    private final AssemblyScanner typeManager;
 
     private FluentInjectionImpl fluentInjection;
 
     public FluentInjectionExtention(FluentApiContainerBuilderImpl builder,
-                                    ClassTypesManager classTypesManager)
+                                    AssemblyScanner classTypesManager)
     {
         this.builder = builder;
         toInitializeTypes = new ArrayList<>();
@@ -44,7 +44,7 @@ public class FluentInjectionExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
         for(var toActivate : toInitializeTypes)
         {
             fluentInjection.findInjection(toActivate);
@@ -86,12 +86,12 @@ public class FluentInjectionExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 

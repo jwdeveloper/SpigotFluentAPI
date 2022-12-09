@@ -7,15 +7,16 @@ import jw.fluent.api.spigot.permissions.api.PermissionModel;
 import jw.fluent.api.spigot.permissions.api.enums.Visibility;
 import jw.fluent.api.updater.api.UpdaterOptions;
 import jw.fluent.api.updater.implementation.SimpleUpdater;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import org.bukkit.Bukkit;
 
 import java.util.function.Consumer;
 
-public class FluentUpdaterExtention implements FluentApiExtention {
+public class FluentUpdaterExtention implements FluentApiExtension {
 
     private final Consumer<UpdaterOptions> consumer;
     private final String commandName = "update";
@@ -24,32 +25,32 @@ public class FluentUpdaterExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
         builder.container().register(FluentUpdater.class, LifeTime.SINGLETON, (c) ->
         {
             var options = new UpdaterOptions();
             consumer.accept(options);
-            var simpleUpdater = new SimpleUpdater(options, builder.plugin(),builder.command().getName());
+            var simpleUpdater = new SimpleUpdater(options, builder.plugin(),builder.defaultCommand().getName());
             return new FluentUpdaterImpl(simpleUpdater);
         });
 
         var permission = createPermission(builder.permissions());
         builder.permissions().registerPermission(permission);
-        builder.command()
+        builder.defaultCommand()
                 .subCommandsConfig(subCommandConfig ->
                 {
-                    subCommandConfig.addSubCommand(updatesCommand(permission, builder.command().getName()));
+                    subCommandConfig.addSubCommand(updatesCommand(permission, builder.defaultCommand().getName()));
                 });
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) {
-        var updater= fluentAPI.getFluentInjection().findInjection(FluentUpdater.class);
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) {
+        var updater= fluentAPI.container().findInjection(FluentUpdater.class);
         updater.checkUpdate(Bukkit.getConsoleSender());
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
 
     }
 
@@ -63,7 +64,7 @@ public class FluentUpdaterExtention implements FluentApiExtention {
                 })
                 .eventsConfig(eventConfig ->
                 {
-                    var updater= FluentApi.injection().findInjection(FluentUpdater.class);
+                    var updater= FluentApi.container().findInjection(FluentUpdater.class);
                     eventConfig.onConsoleExecute(consoleCommandEvent ->
                     {
                         updater.downloadUpdate(consoleCommandEvent.getConsoleSender());

@@ -25,12 +25,11 @@ public class CommandServiceImpl implements CommandService {
         if (commandSender instanceof ConsoleCommandSender) {
             return true;
         }
+        var result = true;
         for (var accessType : commandAccessType) {
-            if (!hasSenderAccess(commandSender, accessType)) {
-                return false;
-            }
+            result = hasSenderAccess(commandSender, accessType);
         }
-        return true;
+        return result;
     }
 
     @Override
@@ -68,8 +67,12 @@ public class CommandServiceImpl implements CommandService {
             case ENTITY -> {
                 return commandSender instanceof Entity;
             }
-            case CONSOLE_SENDER -> {
+            case CONSOLE -> {
                 return commandSender instanceof ConsoleCommandSender;
+            }
+            case COMMAND_SENDER ->
+            {
+                return true;
             }
             default -> {
                 return false;

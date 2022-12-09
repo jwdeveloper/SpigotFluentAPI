@@ -3,10 +3,10 @@ package jw.fluent.tests.integration.tests.commands;
 import jw.fluent.api.spigot.commands.FluentCommand;
 import jw.fluent.api.spigot.commands.implementation.SimpleCommand;
 import jw.fluent.api.spigot.commands.implementation.SimpleCommandManger;
+import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.tests.integration.api.SpigotIntegrationTest;
 import jw.fluent.tests.integration.api.SpigotTest;
 import jw.fluent.tests.integration.api.spigotAssertions.SpigotAssertion;
-import jw.fluent.plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.event.server.PluginDisableEvent;
 

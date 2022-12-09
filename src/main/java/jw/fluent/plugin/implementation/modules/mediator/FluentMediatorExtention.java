@@ -2,20 +2,20 @@ package jw.fluent.plugin.implementation.modules.mediator;
 
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.desing_patterns.mediator.api.MediatorHandler;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.api.utilites.ClassTypesManager;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.assembly_scanner.AssemblyScanner;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 
-public class FluentMediatorExtention implements FluentApiExtention {
-    private final ClassTypesManager typeManager;
-    public FluentMediatorExtention(ClassTypesManager classTypesManager)
+public class FluentMediatorExtention implements FluentApiExtension {
+    private final AssemblyScanner typeManager;
+    public FluentMediatorExtention(AssemblyScanner classTypesManager)
     {
         this.typeManager = classTypesManager;
     }
 
     @Override
-    public void onConfiguration(FluentApiBuilder builder) {
+    public void onConfiguration(FluentApiSpigotBuilder builder) {
 
         var mediators = typeManager.findByInterface(MediatorHandler.class);
         builder.container().register(FluentMediator.class,
@@ -24,12 +24,12 @@ public class FluentMediatorExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
 
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
 
     }
 }

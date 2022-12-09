@@ -13,7 +13,7 @@ import jw.fluent.api.spigot.commands.api.enums.ArgumentType;
 import jw.fluent.api.spigot.commands.api.models.CommandArgument;
 import jw.fluent.api.spigot.commands.api.models.CommandModel;
 import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -128,7 +128,7 @@ public class SimpleCommand extends Command {
             displayLog("command invoked with status " + invokeStatus);
             return invokeStatus;
         } catch (Exception exception) {
-            FluentApi.logger().error("error while invoking command " + this.getName(), exception);
+            FluentLogger.LOGGER.error("error while invoking command " + this.getName(), exception);
             return false;
         }
     }
@@ -210,7 +210,7 @@ public class SimpleCommand extends Command {
 
     private void displayLog(String log) {
         if (logs) {
-            FluentApi.logger().info("Command " + this.getName() + " " + log);
+            FluentLogger.LOGGER.info("Command " + this.getName() + " " + log);
         }
     }
 

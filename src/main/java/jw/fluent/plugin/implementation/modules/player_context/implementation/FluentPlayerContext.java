@@ -5,7 +5,7 @@ import jw.fluent.api.desing_patterns.dependecy_injection.api.containers.FluentCo
 import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.models.RegistrationInfo;
 import jw.fluent.api.player_context.implementation.PlayerContainerBuilderImpl;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.player_context.api.FluentPlayer;
 import org.bukkit.entity.Player;
 
@@ -37,7 +37,7 @@ public class FluentPlayerContext {
             try {
                 playerContainers.put(uuid, CreateContainer(uuid));
             } catch (Exception e) {
-                FluentApi.logger().error("Unable register container for player " + uuid.toString(), e);
+                FluentLogger.LOGGER.error("Unable register container for player " + uuid.toString(), e);
                 return null;
             }
         }

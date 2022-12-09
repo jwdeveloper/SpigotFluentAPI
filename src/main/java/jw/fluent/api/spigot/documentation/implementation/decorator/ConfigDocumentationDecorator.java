@@ -2,10 +2,10 @@ package jw.fluent.api.spigot.documentation.implementation.decorator;
 
 import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
 import jw.fluent.api.spigot.documentation.api.models.Documentation;
-import jw.fluent.api.utilites.files.FileUtility;
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

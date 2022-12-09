@@ -1,11 +1,12 @@
 package jw.fluent.api.spigot.particles;
 import jw.fluent.api.spigot.particles.implementation.ParticleSettings;
-import jw.fluent.api.spigot.particles.implementation.builder.builders_pipeline.TimeBuilder;
+import jw.fluent.api.spigot.particles.implementation.builder.builders_pipeline.FluentParticlebuilder;
 
 public class FluentParticle
 {
-    public TimeBuilder create()
+    //Generator https://cloudwolfyt.github.io/pages/gens/particle-plots.html
+    public FluentParticlebuilder create()
     {
-        return new TimeBuilder(new ParticleSettings());
+        return new FluentParticlebuilder(new ParticleSettings());
     }
 }

@@ -1,8 +1,8 @@
 package unit.files;
 
-import jw.fluent.api.utilites.files.yml.implementation.reader.YmlReader;
+import jw.fluent.api.files.implementation.yml.implementation.reader.YmlReader;
 import jw.fluent.api.utilites.java.ClassTypeUtility;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Ignore;

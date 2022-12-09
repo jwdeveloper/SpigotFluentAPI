@@ -1,7 +1,6 @@
 package jw.fluent.api.database.mysql.models;
 
 import jw.fluent.api.database.api.database_table.DbTable;
-import jw.fluent.api.database.api.database_table.enums.EntryState;
 import jw.fluent.api.database.api.database_table.models.TableModel;
 import jw.fluent.api.database.api.query_fluent.select.SelectFluentBridge;
 import jw.fluent.api.database.mysql.change_tacker.SqlChangeTracker;
@@ -9,7 +8,6 @@ import jw.fluent.api.database.mysql.factories.SqlEntryQueryFactory;
 import jw.fluent.api.database.mysql.factories.SqlTableModelFactory;
 import jw.fluent.api.database.mysql.factories.SqlTableQueryFactory;
 import jw.fluent.api.database.mysql.query_fluent.SqlSelect;
-import jw.fluent.plugin.implementation.FluentApi;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -53,7 +51,6 @@ public class SqlTable<T> implements DbTable<T> {
     {
         var statement = connection.createStatement();
         var createTableQuery = SqlTableQueryFactory.createTable(tableModel);
-        FluentApi.logger().success(createTableQuery);
         statement.execute(createTableQuery);
     }
 

@@ -1,7 +1,7 @@
 package jw.fluent.api.spigot.inventory_gui;
 
 import jw.fluent.api.spigot.events.EventBase;
-import jw.fluent.api.spigot.tasks.FluentTasks;
+import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
 import jw.fluent.plugin.implementation.FluentApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

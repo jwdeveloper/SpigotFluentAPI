@@ -9,7 +9,7 @@ import jw.fluent.api.spigot.inventory_gui.implementation.list_ui.search_manager.
 import jw.fluent.api.spigot.inventory_gui.implementation.list_ui.search_manager.events.SearchFilterEvent;
 import jw.fluent.api.spigot.inventory_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.fluent.api.spigot.inventory_gui.implementation.list_ui.content_manger.FilterContentEvent;
-import jw.fluent.api.spigot.messages.FluentMessage;
+import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
@@ -62,9 +62,9 @@ public class ListUI<T> extends ChestUI {
                 .setDescription(FluentMessage
                         .message()
                         .bar(Emoticons.line,20,ChatColor.GRAY).newLine()
-                        .field(FluentApi.translator().get("gui.base.left-click"),FluentApi.translator().get("gui.base.search.desc.left-click")).newLine()
+                        .field(FluentApi.translator().get("gui.base.left-click"), FluentApi.translator().get("gui.base.search.desc.left-click")).newLine()
                         .field(FluentApi.translator().get("gui.base.right-click"),  FluentApi.translator().get("gui.base.search.desc.right-click")).newLine()
-                        .field(FluentApi.translator().get("gui.base.shift-click") ,FluentApi.translator().get("gui.base.search.desc.shift-click")).newLine()
+                        .field(FluentApi.translator().get("gui.base.shift-click") , FluentApi.translator().get("gui.base.search.desc.shift-click")).newLine()
                         .toArray()
                 )
                 .setTitlePrimary(FluentApi.translator().get("gui.base.search.title"))

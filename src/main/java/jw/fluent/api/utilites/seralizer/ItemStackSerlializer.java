@@ -48,7 +48,7 @@ public class ItemStackSerlializer {
     }
 
     private NamespacedKey getNamespace(Class _class) {
-        var plugin = FluentApi.getPlugin();
+        var plugin = FluentApi.plugin();
         return new NamespacedKey(plugin, _class.getName());
     }
 }

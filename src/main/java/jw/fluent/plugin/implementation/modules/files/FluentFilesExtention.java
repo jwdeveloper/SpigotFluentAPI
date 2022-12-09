@@ -6,20 +6,21 @@ import jw.fluent.api.files.api.CustomFile;
 import jw.fluent.api.files.api.annotation.files.JsonFile;
 import jw.fluent.api.files.implementation.FilesDataContext;
 import jw.fluent.api.files.implementation.SimpleFileBuilderImpl;
-import jw.fluent.api.spigot.tasks.FluentTaskTimer;
-import jw.fluent.api.spigot.tasks.FluentTasks;
-import jw.fluent.api.utilites.files.yml.api.annotations.YmlFile;
-import jw.fluent.plugin.api.FluentApiBuilder;
-import jw.fluent.plugin.implementation.modules.logger.FluentLogger;
-import jw.fluent.plugin.api.FluentApiExtention;
-import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
+import jw.fluent.plugin.implementation.config.ConfigProperty;
+import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
+import jw.fluent.api.files.implementation.yml.api.annotations.YmlFile;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.plugin.api.FluentApiExtension;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
 import jw.fluent.plugin.implementation.config.FluentConfig;
 import jw.fluent.plugin.implementation.config.config_sections.FluentConfigSection;
 
-public class FluentFilesExtention implements FluentApiExtention {
+public class FluentFilesExtention implements FluentApiExtension {
 
     private final SimpleFileBuilderImpl builder;
-    private FluentTaskTimer savingTask;
+    private SimpleTaskTimer savingTask;
     private FilesDataContext filesDataContext;
 
     public FluentFilesExtention(SimpleFileBuilderImpl builder)
@@ -29,7 +30,7 @@ public class FluentFilesExtention implements FluentApiExtention {
 
 
     @Override
-    public void onConfiguration(FluentApiBuilder fluentApiBuilder) {
+    public void onConfiguration(FluentApiSpigotBuilder fluentApiBuilder) {
         fluentApiBuilder.container().register(FluentFiles.class, LifeTime.SINGLETON,(x) ->
         {
             filesDataContext = builder.build();
@@ -69,12 +70,12 @@ public class FluentFilesExtention implements FluentApiExtention {
     }
 
     @Override
-    public void onFluentApiEnable(FluentApi fluentAPI) throws Exception {
+    public void onFluentApiEnable(FluentApiSpigot fluentAPI) throws Exception {
         filesDataContext.load();
     }
 
     @Override
-    public void onFluentApiDisabled(FluentApi fluentAPI) {
+    public void onFluentApiDisabled(FluentApiSpigot fluentAPI) {
         if(filesDataContext == null)
         {
             return;
@@ -89,13 +90,14 @@ public class FluentFilesExtention implements FluentApiExtention {
 
     private int getConfigSavingFrequency(FluentConfig configFile, FluentLogger logger)
     {
-        if(configFile.config().isInt("plugin.saving-frequency"))
-        {
-            var value = configFile.config().getInt("plugin.saving-frequency");
-            return Math.max(value, 1);
-        }
-        logger.warning("Unable to load `plugin.saving-frequency` from config");
-        return 5;
+        var property = createSavingPropertyConfig();
+        var propertyValue =  configFile.getOrCreate(property);
+        return propertyValue;
     }
 
+
+    public ConfigProperty<Integer> createSavingPropertyConfig()
+    {
+        return new ConfigProperty<Integer>("plugin.saving-frequency", 5,"Determinate how frequent data is saved to files, value in minutes");
+    }
 }
