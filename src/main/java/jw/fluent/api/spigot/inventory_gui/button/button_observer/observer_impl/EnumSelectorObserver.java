@@ -3,6 +3,7 @@ package jw.fluent.api.spigot.inventory_gui.button.button_observer.observer_impl;
 import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonNotifier;
 import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonObserverEvent;
 import jw.fluent.api.utilites.messages.Emoticons;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
 
 public class EnumSelectorObserver <T extends Enum<T>> implements ButtonNotifier<T>

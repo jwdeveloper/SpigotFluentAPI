@@ -55,14 +55,18 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
 
 
     public <T extends Enum<T>> ButtonObserverUIBuilder enumSelectorObserver(Observer<T> observable) {
-        final var _class = (Class<T>) observable.getType();
+        final var _class = (Class<T>) observable.getValueType();
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
-                .addObserver(observable, new EnumSelectorObserver<T>(_class));
+                .addObserver(observable, new EnumSelectorObserver(_class));
     }
 
 
     public ButtonObserverUIBuilder boolObserver(Observer<Boolean> observable) {
+        return boolObserver(observable, Material.LIME_CONCRETE,Material.RED_CONCRETE );
+    }
+
+    public ButtonObserverUIBuilder boolObserver(Observer<Boolean> observable, Material enableMaterial, Material disableMaterial) {
         return ButtonObserverUI.builder()
                 .setTitle(observable.getFieldName())
                 .addObserver(new ButtonObserverBuilder<Boolean>()
@@ -75,11 +79,11 @@ public class ButtonObserverUIFactory extends ButtonUIFactory {
                         {
                             if (event.getValue()) {
                                 event.getButton().setHighlighted(true);
-                                event.getButton().setMaterial(Material.LIME_CONCRETE);
+                                event.getButton().setMaterial(enableMaterial);
                                 event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.state"), FluentApi.translator().get("gui.base.active")));
                             } else {
                                 event.getButton().setHighlighted(false);
-                                event.getButton().setMaterial(Material.RED_CONCRETE);
+                                event.getButton().setMaterial(disableMaterial);
                                 event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.state"), FluentApi.translator().get("gui.base.inactive")));
                             }
                         })

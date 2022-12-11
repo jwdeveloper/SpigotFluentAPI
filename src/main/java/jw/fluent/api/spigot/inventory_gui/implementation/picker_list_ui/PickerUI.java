@@ -17,8 +17,12 @@ public class PickerUI<T> extends ListUI<T> {
         {
             if (onItemPicked == null)
                 return;
-            displayLog("Content clicked", ChatColor.YELLOW);
             onItemPicked.execute(player, button);
         });
+    }
+
+    public void onContentPicked(ButtonUIEvent onItemPicked)
+    {
+        this.onItemPicked = onItemPicked;
     }
 }

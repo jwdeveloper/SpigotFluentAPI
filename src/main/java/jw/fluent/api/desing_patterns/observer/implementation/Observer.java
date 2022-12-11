@@ -2,6 +2,7 @@ package jw.fluent.api.desing_patterns.observer.implementation;
 
 import jw.fluent.api.desing_patterns.observer.api.Observable;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -32,7 +33,7 @@ public class Observer<T> implements Observable<T> {
         isBinded = true;
     }
 
-    public Class getType() {
+    public Class getValueType() {
         return fieldType;
     }
 

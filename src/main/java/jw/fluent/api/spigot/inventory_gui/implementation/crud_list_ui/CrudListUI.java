@@ -1,5 +1,6 @@
 package jw.fluent.api.spigot.inventory_gui.implementation.crud_list_ui;
 
+import jw.fluent.api.spigot.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.inventory_gui.button.button_observer.ButtonObserverUI;
 import jw.fluent.api.spigot.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.inventory_gui.implementation.list_ui.ListUI;
@@ -90,5 +91,11 @@ public class CrudListUI<T> extends ListUI<T>
     public void onGet(ButtonUIEvent event)
     {
         listViewModel.onGetEvent = event;
+    }
+
+    public void hideEditButton()
+    {
+        getButtonEdit().setActive(false);
+        ButtonUI.factory().backgroundButton(0, 5, Material.GRAY_STAINED_GLASS_PANE).buildAndAdd(this);
     }
 }

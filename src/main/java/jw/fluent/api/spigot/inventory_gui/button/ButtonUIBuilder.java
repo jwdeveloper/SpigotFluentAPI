@@ -77,6 +77,12 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
         return self();
     }
 
+    public SELF setCustomMaterial(Material material, int customMaterialId)
+    {
+        button.setCustomMaterial(material, customMaterialId);
+        return self();
+    }
+
     public SELF setTitleHeader(String title)
     {
         button.setTitle(new MessageBuilder().color(ChatColor.WHITE).inBrackets(title).build());
@@ -109,6 +115,7 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
         {
             button.setCustomMaterial(itemStack.getType(),meta.getCustomModelData());
         }
+        button.setMeta(meta);
         return self();
     }
 

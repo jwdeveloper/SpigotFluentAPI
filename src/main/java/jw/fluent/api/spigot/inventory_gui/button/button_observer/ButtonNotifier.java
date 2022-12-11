@@ -4,5 +4,10 @@ public interface ButtonNotifier<T>
 {
      void onClick(ButtonObserverEvent<T> event);
 
+     default void onRightClick(ButtonObserverEvent<T> event)
+     {
+
+     }
+
      void onValueChanged(ButtonObserverEvent<T> event);
 }

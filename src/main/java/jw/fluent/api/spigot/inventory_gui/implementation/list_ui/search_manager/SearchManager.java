@@ -29,8 +29,22 @@ public class SearchManager<T> {
         return observer;
     }
 
+    public boolean hasProfiles()
+    {
+        var index = indexObserver.get();
+        if(index >= searchProfiles.size())
+        {
+            return false;
+        }
+        return true;
+    }
+
     public boolean search(String searchKey, T data, Player player) {
         var event = new SearchEvent<T>(searchKey, data, player);
+        if(!hasProfiles())
+        {
+            return false;
+        }
         var profile = searchProfiles.get(indexObserver.get());
         return profile.event.execute(event);
     }

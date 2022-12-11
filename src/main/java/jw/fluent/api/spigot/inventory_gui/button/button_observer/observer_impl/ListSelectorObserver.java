@@ -38,12 +38,17 @@ public class ListSelectorObserver<T> implements ButtonNotifier<Integer> {
 
 
     @Override
-    public void onClick(ButtonObserverEvent<Integer> event) {
+    public void onRightClick(ButtonObserverEvent<Integer> event) {
         if (values.size() == 0) {
             return;
         }
         currentIndex = (currentIndex + 1) % values.size();
         event.getObserver().setValue(currentIndex);
+    }
+
+    @Override
+    public void onClick(ButtonObserverEvent<Integer> event) {
+
     }
 
     private ButtonUI buttonHolder;

@@ -54,7 +54,7 @@ public abstract class WebSocketPacket implements FluentWebsocketPacket {
                 continue;
             var observer = new Observer(this, field);
             TypeResolver typeResolver = null;
-            var type = observer.getType();
+            var type = observer.getValueType();
             if (type.getTypeName().equals("int")) {
                 typeResolver = new IntResolver();
             }

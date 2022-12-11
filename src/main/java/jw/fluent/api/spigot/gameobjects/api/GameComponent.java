@@ -35,5 +35,5 @@ public interface GameComponent {
 
     <T extends GameComponent> List<T> getGameComponents(Class<T> _class);
 
-    void destory();
+    void destroy();
 }

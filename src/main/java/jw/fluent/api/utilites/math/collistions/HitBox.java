@@ -1,5 +1,6 @@
 package jw.fluent.api.utilites.math.collistions;
 
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.particles.api.enums.ParticleDisplayMode;
 import jw.fluent.api.spigot.particles.implementation.SimpleParticle;
@@ -19,17 +20,17 @@ import java.util.List;
 
 public class HitBox {
     @Getter
-    private final Location min;
+    private Location min;
     @Getter
-    private final Location max;
+    private Location max;
     private final double[] result = new double[10];
     private SimpleParticle display;
 
     public HitBox(Location a, Location b) {
-        //max = MathUtility.max(a, b);
-        // min = MathUtility.min(a, b);
+        update(a, b);
+    }
 
-
+    public void update(Location a, Location b) {
         var v1 = Vector.getMaximum(a.toVector(), b.toVector());
         var v2 = Vector.getMinimum(a.toVector(), b.toVector());
         max = new Location(a.getWorld(), v1.getX(), v1.getY(), v1.getZ());
@@ -46,6 +47,16 @@ public class HitBox {
     public void show() {
         if (display == null)
             display = getHitboxDisplay();
+        display.start();
+    }
+
+
+    public void show(boolean redraw) {
+        if (display != null) {
+            display.stop();
+            FluentLogger.LOGGER.info("STOP OLD PARtICLE");
+        }
+        display = getHitboxDisplay();
         display.start();
     }
 
@@ -74,10 +85,10 @@ public class HitBox {
         float size = 0.2F;
         Color color = Color.fromRGB(92, 225, 230);
         Color color2 = Color.fromRGB(255, 0, 0);
-        Color color3 = Color.fromRGB(MathUtility.getRandom(0,255), MathUtility.getRandom(0,255), MathUtility.getRandom(0,255));
+        Color color3 = Color.fromRGB(MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255));
         Particle.DustOptions optionsMin = new Particle.DustOptions(color, size);
         Particle.DustOptions optionsMax = new Particle.DustOptions(color2, size);
-        Particle.DustOptions optionsLine = new Particle.DustOptions(color3,0.1f);
+        Particle.DustOptions optionsLine = new Particle.DustOptions(color3, 0.1f);
 
         List lines = new ArrayList<Location>();
         var direcition = new Vector(
@@ -110,8 +121,7 @@ public class HitBox {
                 .onParticle((particle, particleInvoker) ->
                 {
                     particleInvoker.spawnParticle(max, Particle.REDSTONE, 1, optionsMin);
-                    for(var line : finalLines)
-                    {
+                    for (var line : finalLines) {
                         particleInvoker.spawnParticle(line, Particle.REDSTONE, 1, optionsLine);
                     }
                     particleInvoker.spawnParticle(min, Particle.REDSTONE, 1, optionsMax);
@@ -121,20 +131,19 @@ public class HitBox {
     }
 
 
-    public List<Location> createBox()
-    {
+    public List<Location> createBox() {
         var bottom1 = min;
-        var bottom2 = new Location(min.getWorld(),max.getX(),min.getY(),min.getZ());
-        var bottom3 = new Location(min.getWorld(),max.getX(),min.getY(),max.getZ());
-        var bottom4 = new Location(min.getWorld(),min.getX(),min.getY(),max.getZ());
+        var bottom2 = new Location(min.getWorld(), max.getX(), min.getY(), min.getZ());
+        var bottom3 = new Location(min.getWorld(), max.getX(), min.getY(), max.getZ());
+        var bottom4 = new Location(min.getWorld(), min.getX(), min.getY(), max.getZ());
 
-        var top1 = new Location(min.getWorld(),min.getX(),max.getY(),min.getZ());
-        var top2 = new Location(min.getWorld(),max.getX(),max.getY(),min.getZ());
-        var top3 = new Location(min.getWorld(),max.getX(),max.getY(),max.getZ());
-        var top4 = new Location(min.getWorld(),min.getX(),max.getY(),max.getZ());
+        var top1 = new Location(min.getWorld(), min.getX(), max.getY(), min.getZ());
+        var top2 = new Location(min.getWorld(), max.getX(), max.getY(), min.getZ());
+        var top3 = new Location(min.getWorld(), max.getX(), max.getY(), max.getZ());
+        var top4 = new Location(min.getWorld(), min.getX(), max.getY(), max.getZ());
 
 
-        List<Location> result= new ArrayList<>();
+        List<Location> result = new ArrayList<>();
         var points = new ArrayList<Location>();
         points.add(bottom1);
         points.add(bottom2);
@@ -149,19 +158,17 @@ public class HitBox {
         points.add(top1);
 
 
-        result.addAll(getLine(bottom2,top2));
-        result.addAll(getLine(bottom3,top3));
-        result.addAll(getLine(bottom4,top4));
-        for(var i =1;i<points.size();i++)
-        {
-            result.addAll(getLine(points.get(i-1),points.get(i)));
+        result.addAll(getLine(bottom2, top2));
+        result.addAll(getLine(bottom3, top3));
+        result.addAll(getLine(bottom4, top4));
+        for (var i = 1; i < points.size(); i++) {
+            result.addAll(getLine(points.get(i - 1), points.get(i)));
         }
         return result;
     }
 
 
-    public List<Location> getLine(Location a, Location b)
-    {
+    public List<Location> getLine(Location a, Location b) {
         var lines = new ArrayList<Location>();
         var direcition = new Vector(
                 b.getX() - a.getX(),

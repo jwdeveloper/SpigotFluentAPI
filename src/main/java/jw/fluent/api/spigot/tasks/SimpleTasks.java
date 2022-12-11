@@ -19,6 +19,13 @@ public class SimpleTasks
         });
     }
 
+    public void taskLater(TaskAction action, int ticks) {
+        new SimpleTaskTimer(1, action)
+                .startAfterTicks(ticks)
+                .stopAfterIterations(1)
+                .run();
+    }
+
     public BukkitTask taskAsync(Consumer<Void> action) {
         return Bukkit.getScheduler().runTaskAsynchronously(FluentApi.plugin(), () ->
         {

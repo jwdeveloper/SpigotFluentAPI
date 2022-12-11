@@ -43,7 +43,7 @@ public class GameObjectManager extends EventBase {
         getInstance().gameObjects.remove(gameObject);
 
         try {
-            gameObject.destory();
+            gameObject.destroy();
         } catch (Exception e) {
             FluentApi.logger().error("unable to destroy Gameobject" + gameObject.getClass().getSimpleName(), e);
         }
@@ -53,7 +53,7 @@ public class GameObjectManager extends EventBase {
     public void onPluginStop(PluginDisableEvent event) {
         for (var gameObject : gameObjects) {
             try {
-                gameObject.destory();
+                gameObject.destroy();
             } catch (Exception e) {
                 FluentApi.logger().error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
             }

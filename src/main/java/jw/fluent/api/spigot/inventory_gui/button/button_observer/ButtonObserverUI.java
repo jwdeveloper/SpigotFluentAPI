@@ -19,6 +19,7 @@ public class ButtonObserverUI extends ButtonUI {
     @Singular
     protected List<ButtonObserver<?>> observers = new ArrayList<>();
 
+
     public void addObserver(ButtonObserver<?> observer) {
         observer.setButtonUI(this);
         observers.add(observer);
@@ -38,10 +39,19 @@ public class ButtonObserverUI extends ButtonUI {
         return super.getItemStack();
     }
 
-    public void click(Player player, InventoryUI inventoryUI) {
+    public void onClick(Player player, InventoryUI inventoryUI) {
         super.click(player);
         for (var observable : observers) {
             observable.click(player);
+            inventoryUI.refreshButton(observable.buttonUI);
+        }
+        EventsListenerInventoryUI.refreshAllAsync(inventoryUI.getClass(), inventoryUI);
+    }
+
+    public void onRightClick(Player player, InventoryUI inventoryUI) {
+        super.rightClick(player);
+        for (var observable : observers) {
+            observable.rightClick(player);
             inventoryUI.refreshButton(observable.buttonUI);
         }
         EventsListenerInventoryUI.refreshAllAsync(inventoryUI.getClass(), inventoryUI);

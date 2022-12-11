@@ -23,7 +23,7 @@ public class DocumentationOptions
 
     private List<DocumentationDecorator> decorators = new ArrayList<>();
 
-    public void addDecorator(DocumentationDecorator decorator)
+    public void addSection(DocumentationDecorator decorator)
     {
         decorators.add(decorator);
     }

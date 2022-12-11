@@ -9,8 +9,8 @@ gui:
     search:
       title: Search
       desc:
-        left-click: Change option
-        right-click: Search
+        left-click: Search
+        right-click: Change option
         shift-click: Reset
     page-up:
       title: Page up

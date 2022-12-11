@@ -85,14 +85,15 @@ public class GameObject implements GameComponent {
        onLocationUpdated();
     }
 
-    public void destory()
+    public void destroy()
     {
         for (var childSet : childs.values()) {
             for (var child : childSet) {
-                child.destory();
+                child.destroy();
             }
         }
         onDestroy();
+        childs.clear();
     }
 
     @Override
@@ -116,16 +117,14 @@ public class GameObject implements GameComponent {
     }
     public void create(Location location)
     {
+        this.location = location;
         onCreated();
         for (var childSet : childs.values()) {
 
             for (var child : childSet) {
-
-                child.onCreated();
                 child.create(location);
             }
         }
-        setLocation(location);
     }
 
     public final GameComponent getParent() {
@@ -161,8 +160,13 @@ public class GameObject implements GameComponent {
         }
 
         var child = childs.get(class_);
-        child.add((GameObject)gameComponent);
-        ((GameObject) gameComponent).onCreated();
+        var object = (GameObject)gameComponent;
+        if(child.contains(object))
+        {
+            return gameComponent;
+        }
+        child.add(object);
+       // ((GameObject) gameComponent).onCreated();
         return gameComponent;
     }
 

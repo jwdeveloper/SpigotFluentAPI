@@ -105,6 +105,11 @@ public class ButtonUI {
         itemStack.setItemMeta(meta);
     }
 
+    public void setMeta(ItemMeta meta)
+    {
+        itemStack.setItemMeta(meta);
+    }
+
     public void setDescription(MessageBuilder messageBuilder) {
         setDescription(messageBuilder.toString());
     }
@@ -168,6 +173,12 @@ public class ButtonUI {
         if (onClick == null)
             return;
         this.onClick.execute(player, this);
+    }
+
+    public void rightClick(Player player) {
+        if (onRightClick == null)
+            return;
+        this.onRightClick.execute(player, this);
     }
 
     public <T> T getDataContext() {

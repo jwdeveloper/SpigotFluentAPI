@@ -94,17 +94,22 @@ public class ChestUI extends InventoryUI {
             var inventoryClickEvent = (InventoryClickEvent) interactEvent;
             switch (inventoryClickEvent.getClick()) {
                 case SHIFT_LEFT, SHIFT_RIGHT -> button.getOnShiftClick().execute(player, button);
-                case RIGHT -> button.getOnRightClick().execute(player, button);
+                case RIGHT -> {
+                    if (button instanceof ButtonObserverUI buttonObserverUI)
+                        buttonObserverUI.onRightClick(player, this);
+                    else
+                        button.getOnRightClick().execute(player, button);
+                }
                 default -> {
                     if (button instanceof ButtonObserverUI buttonObserverUI)
-                        buttonObserverUI.click(player, this);
+                        buttonObserverUI.onClick(player, this);
                     else
-                        button.click(player);
+                        button.getOnClick().execute(player, button);
                     onClick(player, button);
                 }
             }
         } catch (Exception e) {
-            FluentApi.logger().error("Error onClick, inventory " + this.getName()+" by player "+player.getName(), e);
+            FluentApi.logger().error("Error onClick, inventory " + this.getName() + " by player " + player.getName(), e);
         }
     }
 

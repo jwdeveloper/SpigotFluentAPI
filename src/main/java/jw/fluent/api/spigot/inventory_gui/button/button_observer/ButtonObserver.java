@@ -33,15 +33,20 @@ public class ButtonObserver<T>
 
     public void click(Player player)
     {
-        //FluentPlugin.logInfo("A");
         if(!validateButton())
             return;
         buttonNotifier.onClick(new ButtonObserverEvent(player, buttonUI,this, observable.get()));
     }
 
+    public void rightClick(Player player)
+    {
+        if(!validateButton())
+            return;
+        buttonNotifier.onRightClick(new ButtonObserverEvent(player, buttonUI,this, observable.get()));
+    }
+
     public void refresh()
     {
-       // FluentPlugin.logInfo("B"+ this.toString());
         if(!validateButton())
             return;
         buttonNotifier.onValueChanged(new ButtonObserverEvent(null, buttonUI,this, observable.get()));

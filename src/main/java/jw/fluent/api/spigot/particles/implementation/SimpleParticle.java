@@ -1,6 +1,7 @@
 package jw.fluent.api.spigot.particles.implementation;
 
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -78,7 +79,11 @@ public class SimpleParticle {
 
     public void stop() {
         if (bukkitTask == null)
+        {
+            FluentLogger.LOGGER.info("TASK IS NULL");
             return;
+        }
+
         bukkitTask.cancel();
         time = 0;
         settings.setOnStop(null);

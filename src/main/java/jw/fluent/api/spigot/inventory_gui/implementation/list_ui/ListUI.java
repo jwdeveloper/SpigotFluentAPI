@@ -69,8 +69,12 @@ public class ListUI<T> extends ChestUI {
                 )
                 .setTitlePrimary(FluentApi.translator().get("gui.base.search.title"))
                 .setMaterial(Material.SPYGLASS)
-                .setOnRightClick((player, button) ->
+                .setOnClick((player, button) ->
                 {
+                    if(!searchManager.hasProfiles())
+                    {
+                        return;
+                    }
                     close();
                     FluentMessage.message().inBrackets("Enter search key", ChatColor.AQUA).send(player);
                     EventsListenerInventoryUI.registerTextInput(player, searchedKey ->

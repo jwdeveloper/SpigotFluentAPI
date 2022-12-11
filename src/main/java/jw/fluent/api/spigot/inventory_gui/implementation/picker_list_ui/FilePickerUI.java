@@ -15,7 +15,7 @@ public class FilePickerUI extends PickerUI<String> {
     private String path = "";
     private String[] extensions;
 
-    public FilePickerUI(String name, int height) {
+    public FilePickerUI(String name) {
         super(name);
         onListOpen(player ->
         {
