@@ -47,7 +47,7 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
         var propertyOffset = 4;
         var listOffset = 6;
         var model = command.getCommandModel();
-        var title = StringUtils.nullOrEmpty(model.getUsageMessage())?model.getName():model.getUsageMessage();
+        var title = StringUtils.isNullOrEmpty(model.getUsageMessage())?model.getName():model.getUsageMessage();
         builder.addComment(title);
         builder.addSection(model.getName(), defaultOffset);
         if (!command.getSubCommands().isEmpty()) {
@@ -81,7 +81,7 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
             for (var argument : model.getArguments()) {
                 builder.addListSection(argument.getName(),listOffset);
                 builder.addProperty("type", argument.getType().name().toLowerCase(),listOffset + 4);
-                if (!StringUtils.nullOrEmpty(argument.getDescription())) {
+                if (!StringUtils.isNullOrEmpty(argument.getDescription())) {
                     builder.addProperty("description", argument.getDescription(),listOffset + 4);
                 }
                 if (!argument.getTabCompleter().isEmpty()) {
@@ -93,23 +93,23 @@ public class CommandsDocumentationDecorator extends DocumentationDecorator {
             }
         }
 
-        if (!StringUtils.nullOrEmpty(model.getShortDescription())) {
+        if (!StringUtils.isNullOrEmpty(model.getShortDescription())) {
             builder.addProperty("short-description", model.getShortDescription(), propertyOffset);
         }
 
-        if (!StringUtils.nullOrEmpty(model.getDescription())) {
+        if (!StringUtils.isNullOrEmpty(model.getDescription())) {
             builder.addProperty("description", model.getDescription(), propertyOffset);
         }
 
-        if (!StringUtils.nullOrEmpty(model.getLabel())) {
+        if (!StringUtils.isNullOrEmpty(model.getLabel())) {
             builder.addProperty("label", model.getLabel(), propertyOffset);
         }
 
-        if (!StringUtils.nullOrEmpty(model.getUsageMessage())) {
+        if (!StringUtils.isNullOrEmpty(model.getUsageMessage())) {
             builder.addProperty("usage", model.getUsageMessage(), propertyOffset);
         }
 
-        if (!StringUtils.nullOrEmpty(model.getPermissionMessage())) {
+        if (!StringUtils.isNullOrEmpty(model.getPermissionMessage())) {
             builder.addProperty("permission-message", model.getPermissionMessage(), propertyOffset);
         }
 

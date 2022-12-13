@@ -27,7 +27,7 @@ public class FluentEvents implements Listener {
 
 
     @EventHandler
-    public final void onPluginStart(PluginEnableEvent pluginEnableEvent)
+    protected final void onPluginStart(PluginEnableEvent pluginEnableEvent)
     {
         if(pluginEnableEvent.getPlugin() == FluentApi.plugin())
         {
@@ -39,7 +39,7 @@ public class FluentEvents implements Listener {
     }
 
     @EventHandler
-    public final void onPluginStopEvent(PluginDisableEvent pluginDisableEvent)
+    protected final void onPluginStopEvent(PluginDisableEvent pluginDisableEvent)
     {
         if(pluginDisableEvent.getPlugin() == FluentApi.plugin())
         {

@@ -87,7 +87,7 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
         if (matcher.find()) {
             return matcher.group();
         } else {
-            return StringUtils.EMPTY_STRING;
+            return StringUtils.EMPTY;
         }
     }
 }

@@ -39,7 +39,7 @@ public class FluentPermissionBuilderImpl implements FluentPermissionBuilder {
     @Override
     public String getBasePermissionName() {
 
-        if(StringUtils.nullOrEmpty(basePermission))
+        if(StringUtils.isNullOrEmpty(basePermission))
         {
             return javaPlugin.getName();
         }

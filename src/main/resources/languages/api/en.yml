@@ -24,9 +24,10 @@ gui:
     active: active
     inactive: inactive
     state: state
-    left-click: Left click
-    right-click: Right click
-    shift-click: Shift click
+    click-info: Click info
+    left-click: Left
+    right-click: Right
+    shift-click: Shift
     save: Save
     cancel: Cancel
     title: Title

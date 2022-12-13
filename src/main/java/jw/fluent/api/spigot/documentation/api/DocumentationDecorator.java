@@ -43,7 +43,7 @@ public abstract class DocumentationDecorator {
     }
 
     protected DocumentationDecorator addText(Documentation documentation) {
-        documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, StringUtils.EMPTY_STRING));
+        documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, StringUtils.EMPTY));
         return this;
     }
     protected DocumentationDecorator addText(String text, Documentation documentation) {

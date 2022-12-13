@@ -126,7 +126,8 @@ public class MessageBuilder
         return this;
     }
 
-    public MessageBuilder color(String hexColor) {
+    public MessageBuilder color(String color) {
+        stringBuilder.append(color);
         return this;
     }
 

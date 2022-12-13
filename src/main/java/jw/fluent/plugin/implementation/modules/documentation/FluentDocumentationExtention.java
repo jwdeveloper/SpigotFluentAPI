@@ -49,7 +49,7 @@ public class FluentDocumentationExtention implements FluentApiExtension {
             decorator.decorate(documentation);
         }
         var renderers = getRenderers(model);
-        var basePath = StringUtils.nullOrEmpty(model.getPath()) ? FluentApi.path() : model.getPath();
+        var basePath = StringUtils.isNullOrEmpty(model.getPath()) ? FluentApi.path() : model.getPath();
         for (var renderer : renderers) {
             var builder = new MessageBuilder();
             var result = renderer.render(builder, documentation);

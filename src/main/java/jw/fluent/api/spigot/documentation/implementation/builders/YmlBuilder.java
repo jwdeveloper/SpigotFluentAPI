@@ -19,7 +19,7 @@ public class YmlBuilder
 
     public YmlBuilder addSection(String name, int offset)
     {
-        return addProperty(name, StringUtils.EMPTY_STRING,offset);
+        return addProperty(name, StringUtils.EMPTY,offset);
     }
 
     public YmlBuilder addListProperty(String member, int offset)

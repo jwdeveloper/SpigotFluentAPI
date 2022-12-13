@@ -4,6 +4,8 @@ import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -13,9 +15,8 @@ public interface FileUtility {
         return Paths.get("").toAbsolutePath().toString();
     }
 
-    static String separator()
-    {
-       return File.separator;
+    static String separator() {
+        return File.separator;
     }
 
     static String pluginsPath() {
@@ -56,6 +57,18 @@ public interface FileUtility {
         return javaPlugin.getDataFolder().getAbsoluteFile().toString();
     }
 
+
+    static boolean downloadFile(String url, String outputPath) throws IOException {
+        BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
+        FileOutputStream fileOutputStream = new FileOutputStream(outputPath);
+        byte dataBuffer[] = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+            fileOutputStream.write(dataBuffer, 0, bytesRead);
+        }
+        return true;
+    }
+
     static File pluginFile(JavaPlugin plugin) {
         try {
             var fileField = JavaPlugin.class.getDeclaredField("file");
@@ -75,17 +88,17 @@ public interface FileUtility {
         return res;
     }
 
-     static boolean save(String content, String path, String fileName) {
-        try (FileWriter file = new FileWriter(path+File.separator+fileName))
-        {
+    static boolean save(String content, String path, String fileName) {
+        try (FileWriter file = new FileWriter(path + File.separator + fileName)) {
             file.write(content);
             return true;
         } catch (IOException e) {
-            FluentLogger.LOGGER.error("Save File: " + fileName,e);
+            FluentLogger.LOGGER.error("Save File: " + fileName, e);
             e.printStackTrace();
         }
         return false;
     }
+
     static ArrayList<String> getFolderFilesName(String path, String... extensions) {
         final ArrayList<String> filesName = new ArrayList<>();
         if (!isPathValid(path)) {
@@ -117,13 +130,12 @@ public interface FileUtility {
     }
 
 
-    static boolean pathExists(String path)
-    {
+    static boolean pathExists(String path) {
         var directory = new File(path);
-       return directory.exists();
+        return directory.exists();
     }
 
-     static File ensurePath(String path) {
+    static File ensurePath(String path) {
         var directory = new File(path);
         if (directory.exists()) {
             return directory;

@@ -44,7 +44,7 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
     private String generateDescription(List<YmlContent> contents) {
         var content = contents.stream().filter(c -> !c.getDescription().isEmpty()).toList();
         if(content.size() == 0)
-            return StringUtils.EMPTY_STRING;
+            return StringUtils.EMPTY;
 
         var description = FluentMessage.message();
         var maxDesc = Integer.MIN_VALUE;
@@ -77,7 +77,7 @@ public class YmlModelFactory<T> implements ModelFactory<T> {
     private String getGlobalPath(Class<T> clazz) {
         var ymlFileAnnotation = clazz.getAnnotation(YmlFile.class);
         if (ymlFileAnnotation == null) {
-            return StringUtils.EMPTY_STRING;
+            return StringUtils.EMPTY;
         }
         return ymlFileAnnotation.globalPath();
     }

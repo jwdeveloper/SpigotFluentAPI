@@ -26,19 +26,19 @@ public class PermissionsUtility {
         if (permissions == null || permissions.length == 0) {
            return true;
         }
-        var last = StringUtils.EMPTY_STRING;
-        var current = StringUtils.EMPTY_STRING;
+        var last = StringUtils.EMPTY;
+        var current = StringUtils.EMPTY;
         var subPermissions = new String[0];
         for (var permission : permissions) {
             if (permission == null) {
                 return true;
             }
             subPermissions = permission.split("\\.");
-            last = StringUtils.EMPTY_STRING;
-            current = StringUtils.EMPTY_STRING;
+            last = StringUtils.EMPTY;
+            current = StringUtils.EMPTY;
             for (var i = 0; i < subPermissions.length; i++) {
-                if (last.equals(StringUtils.EMPTY_STRING)) {
-                    current = subPermissions[i].replace(".", StringUtils.EMPTY_STRING);
+                if (last.equals(StringUtils.EMPTY)) {
+                    current = subPermissions[i].replace(".", StringUtils.EMPTY);
                 } else {
                     current = last + "." + subPermissions[i];
                 }
@@ -72,19 +72,19 @@ public class PermissionsUtility {
         if (permissions == null || permissions.length == 0) {
             return true;
         }
-        var last = StringUtils.EMPTY_STRING;
-        var current = StringUtils.EMPTY_STRING;
+        var last = StringUtils.EMPTY;
+        var current = StringUtils.EMPTY;
         var subPermissions = new String[0];
         for (var permission : permissions) {
             if (permission == null) {
                 return true;
             }
             subPermissions = permission.split("\\.");
-            last = StringUtils.EMPTY_STRING;
-            current = StringUtils.EMPTY_STRING;
+            last = StringUtils.EMPTY;
+            current = StringUtils.EMPTY;
             for (var i = 0; i < subPermissions.length; i++) {
-                if (last.equals(StringUtils.EMPTY_STRING)) {
-                    current = subPermissions[i].replace(".", StringUtils.EMPTY_STRING);
+                if (last.equals(StringUtils.EMPTY)) {
+                    current = subPermissions[i].replace(".", StringUtils.EMPTY);
                 } else {
                     current = last + "." + subPermissions[i];
                 }

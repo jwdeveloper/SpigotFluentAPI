@@ -40,7 +40,7 @@ public class UnitTestGenerator {
         CreateProperty(outPut, "private final",
                 _interface.getSimpleName(),
                 sutName,
-                StringUtils.EMPTY_STRING);
+                StringUtils.EMPTY);
 
         //mock definition
         for (var field : fields) {
@@ -97,7 +97,7 @@ public class UnitTestGenerator {
                 .text(typeName)
                 .space()
                 .text(methodName);
-                if(value.equals(StringUtils.EMPTY_STRING))
+                if(value.equals(StringUtils.EMPTY))
                 {
                     outPut.text(";");
                 }

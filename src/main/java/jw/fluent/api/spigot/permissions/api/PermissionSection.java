@@ -32,11 +32,11 @@ public class PermissionSection
 
     public boolean hasTitle()
     {
-        return !model.getTitle().equals(StringUtils.EMPTY_STRING);
+        return !model.getTitle().equals(StringUtils.EMPTY);
     }
 
     public boolean hasDescription()
     {
-        return !model.getDescription().equals(StringUtils.EMPTY_STRING);
+        return !model.getDescription().equals(StringUtils.EMPTY);
     }
 }

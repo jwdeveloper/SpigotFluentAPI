@@ -32,25 +32,7 @@ public class SimpleTaskTimer {
 
         if (onStart != null)
             onStart.accept(this);
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentApi.plugin(), () ->
-        {
-            try
-            {
-                if (time >= stopAfter || isCancel) {
-                    if (this.onStop != null)
-                        this.onStop.accept(this);
-                    stop();
-                    return;
-                }
-                task.execute(time, this);
-                time++;
-            }
-            catch (Exception e)
-            {
-                FluentLogger.LOGGER.error("FluentTask error",e);
-                stop();
-            }
-        }, runAfter, speed);
+        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FluentApi.plugin(), this::taskBody, runAfter, speed);
         return this;
     }
 
@@ -59,36 +41,41 @@ public class SimpleTaskTimer {
     }
 
     public SimpleTaskTimer run() {
-
+        isCancel =false;
         if (onStart != null)
             onStart.accept(this);
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(FluentApi.plugin(), () ->
-        {
-            try
-            {
-                if (time >= stopAfter || isCancel) {
-                    if (onStop != null)
-                        onStop.accept(this);
-                    stop();
-                    return;
-                }
-                task.execute(time, this);
-                time++;
-            }
-            catch (Exception e)
-            {
-                FluentLogger.LOGGER.error("FluentTask error",e);
-                stop();
-            }
-        }, runAfter, speed);
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(FluentApi.plugin(), this::taskBody, runAfter, speed);
         return this;
+    }
+
+    private void taskBody()
+    {
+        try
+        {
+            if (time >= stopAfter || isCancel || bukkitTask.isCancelled())
+            {
+                if (onStop != null)
+                    onStop.accept(this);
+                stop();
+                return;
+            }
+            task.execute(time, this);
+            time++;
+        }
+        catch (Exception e)
+        {
+            FluentLogger.LOGGER.error("FluentTask error",e);
+            stop();
+        }
     }
 
     public void stop() {
         if (bukkitTask == null)
             return;
 
+        Bukkit.getScheduler().cancelTask(bukkitTask.getTaskId());
         bukkitTask.cancel();
+        isCancel =true;
         bukkitTask = null;
     }
 

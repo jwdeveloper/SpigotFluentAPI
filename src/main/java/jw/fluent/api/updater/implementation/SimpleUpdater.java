@@ -34,7 +34,7 @@ public class SimpleUpdater {
 
 
     public void checkUpdate(Consumer<Boolean> consumer) {
-        if (github.equals(StringUtils.EMPTY_STRING)) {
+        if (github.equals(StringUtils.EMPTY)) {
             FluentLogger.LOGGER.warning("Updater", "Download url could not be empty");
             return;
         }
@@ -113,7 +113,7 @@ public class SimpleUpdater {
         conn.setRequestMethod("GET");
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream())))
         {
-            var line = StringUtils.EMPTY_STRING;
+            var line = StringUtils.EMPTY;
             while (true)
             {
                 line = reader.readLine();

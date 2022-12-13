@@ -65,7 +65,7 @@ public class FluentWebsocketExtention implements FluentApiExtension {
         var webSocket = (FluentWebsocketImpl) fluentAPI.container().findInjection(FluentWebsocket.class);
         var customIpProperty = customIpProperty();
         var customIp = config.getOrCreate(customIpProperty);
-        if (StringUtils.nullOrEmpty(customIp)) {
+        if (StringUtils.isNullOrEmpty(customIp)) {
             webSocket.setServerIp(getServerPublicIP());
         } else {
             webSocket.setServerIp(customIp);
@@ -108,7 +108,7 @@ public class FluentWebsocketExtention implements FluentApiExtension {
                 .text("! When you are running plugin locally on your PC, set 'localhost'").newLine()
                 .text("! When default IP not works try use IP that you are using in minecraft server list").newLine().toString();
 
-        return new ConfigProperty<String>("plugin.websocket.custom-id", StringUtils.EMPTY_STRING, description);
+        return new ConfigProperty<String>("plugin.websocket.custom-ip", StringUtils.EMPTY, description);
     }
 
     private ConfigProperty<Boolean> runProperty() {

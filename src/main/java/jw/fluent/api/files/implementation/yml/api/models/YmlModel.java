@@ -10,9 +10,9 @@ import java.util.List;
 @Data
 public class YmlModel
 {
-    private String fileName = StringUtils.EMPTY_STRING;
+    private String fileName = StringUtils.EMPTY;
 
-    private String description = StringUtils.EMPTY_STRING;
+    private String description = StringUtils.EMPTY;
 
     private List<YmlContent> contents = new ArrayList<>();
 

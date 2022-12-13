@@ -60,7 +60,7 @@ public class FluentTranslationExtention implements FluentApiExtension {
 
         var configProperty = createConfigLanguage();
         var languageValue = configFile.getOrCreate(configProperty);
-        if (StringUtils.nullOrEmpty(languageValue))
+        if (StringUtils.isNullOrEmpty(languageValue))
         {
             logger.warning("Unable to load `" + CONFIG_LANG_PATH + "` from config");
             return "en";

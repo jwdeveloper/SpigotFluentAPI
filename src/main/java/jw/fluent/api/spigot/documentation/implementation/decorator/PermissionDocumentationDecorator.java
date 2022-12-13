@@ -120,7 +120,7 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
                 continue;
             }
             var parentGroup = model.getParentGroup();
-            if (parentGroup.equals(StringUtils.EMPTY_STRING)) {
+            if (parentGroup.equals(StringUtils.EMPTY)) {
                 result.add(new PermissionSection(model, children));
                 continue;
             }
@@ -144,14 +144,14 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
         var sorted = new LinkedHashMap<String, List<PermissionSection>>();
         sorted.put("plugin", new LinkedList<PermissionSection>());
         for (var section : sections) {
-            var group = StringUtils.EMPTY_STRING;
+            var group = StringUtils.EMPTY;
             if (section.getModel().isParent()) {
                 group = section.getModel().getParentGroup();
             }
             if (section.hasGroup() && !section.getModel().isParent()) {
                 group = section.getModel().getGroups().get(0);
             }
-            if (StringUtils.nullOrEmpty(group)) {
+            if (StringUtils.isNullOrEmpty(group)) {
                 group = "plugin";
                 section.getModel().getGroups().add(group);
             }

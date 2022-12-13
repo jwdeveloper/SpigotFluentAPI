@@ -10,15 +10,15 @@ import java.util.List;
 @Data
 public class PermissionModel {
 
-    private String name = StringUtils.EMPTY_STRING;
+    private String name = StringUtils.EMPTY;
 
-    private String description = StringUtils.EMPTY_STRING;
+    private String description = StringUtils.EMPTY;
 
     private Visibility visibility = Visibility.None;
 
-    private String parentGroup = StringUtils.EMPTY_STRING;
+    private String parentGroup = StringUtils.EMPTY;
 
-    private String title = StringUtils.EMPTY_STRING;
+    private String title = StringUtils.EMPTY;
 
     private List<String> groups = new ArrayList<>();
 

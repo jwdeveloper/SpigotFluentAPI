@@ -11,6 +11,12 @@ public class ParticleInvoker
         particleEvent.getOriginLocation().getWorld().spawnParticle(particleEvent.getParticle(),particleEvent.originLocation,particleEvent.amount);
     }
 
+    public void spawnParticle(Location location, Particle particle,int amount)
+    {
+        location.getWorld().spawnParticle(particle,location,amount);
+    }
+
+
     public void spawnParticle(Location location, Particle particle)
     {
         location.getWorld().spawnParticle(particle,location,1);

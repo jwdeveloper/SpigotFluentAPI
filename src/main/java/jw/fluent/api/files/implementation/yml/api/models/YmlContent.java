@@ -18,11 +18,11 @@ import java.util.List;
 @Data
 public class YmlContent
 {
-     private String name= StringUtils.EMPTY_STRING;
+     private String name= StringUtils.EMPTY;
 
-     private String path= StringUtils.EMPTY_STRING;
+     private String path= StringUtils.EMPTY;
 
-     private String description = StringUtils.EMPTY_STRING;
+     private String description = StringUtils.EMPTY;
 
      private Object object;
      private Field field;

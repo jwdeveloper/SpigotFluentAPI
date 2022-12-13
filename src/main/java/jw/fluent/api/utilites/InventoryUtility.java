@@ -1,6 +1,6 @@
 package jw.fluent.api.utilites;
 
-import jw.fluent.api.spigot.inventory_gui.InventoryUI;
+import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

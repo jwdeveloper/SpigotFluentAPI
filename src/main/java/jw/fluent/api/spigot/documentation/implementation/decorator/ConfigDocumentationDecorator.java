@@ -31,7 +31,7 @@ public class ConfigDocumentationDecorator extends DocumentationDecorator {
         catch (Exception e)
         {
             FluentLogger.LOGGER.error("ConfigDocumentationDecorator",e);
-            return StringUtils.EMPTY_STRING;
+            return StringUtils.EMPTY;
         }
     }
 }

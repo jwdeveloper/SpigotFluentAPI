@@ -11,6 +11,10 @@ public class Emoticons
     public static final String heartHalf = "♥";
     public static final String arrowLeft = "←";
 
+    public static final String boldBar = "▂";
+    public static final String upperBar = "▔";
+    public static final String lowerBar = "▁";
+
     public static final String cloud = "☁";
     public static final String sun = "☀";
     public static final String unbrella = "☂";

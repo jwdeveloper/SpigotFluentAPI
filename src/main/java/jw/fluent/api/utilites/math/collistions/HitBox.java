@@ -54,7 +54,6 @@ public class HitBox {
     public void show(boolean redraw) {
         if (display != null) {
             display.stop();
-            FluentLogger.LOGGER.info("STOP OLD PARtICLE");
         }
         display = getHitboxDisplay();
         display.start();

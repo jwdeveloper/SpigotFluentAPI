@@ -2,7 +2,6 @@ package jw.fluent.api.desing_patterns.observer.implementation;
 
 import jw.fluent.api.desing_patterns.observer.api.Observable;
 import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -86,6 +85,12 @@ public class Observer<T> implements Observable<T> {
             FluentApi.logger().error("Set binding field: " ,e);
         }
     }
+
+    public void invoke()
+    {
+        set(get());
+    }
+
     public boolean bind(Class _class, String filedName) {
         try {
             this.field = _class.getDeclaredField(filedName);
