@@ -1,7 +1,7 @@
 package jw.fluent.api.spigot.gui.fluent_ui.observers.enums;
 
 import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
 import org.bukkit.ChatColor;
@@ -101,7 +101,7 @@ public class FluentEnumNotifier<T extends Enum<T>> extends FluentButtonNotifier<
             if (i == currentIndex) {
                 description[i] = ChatColor.AQUA + Emoticons.dot + catchDescription[i];
             } else {
-                description[i] = ChatColor.GRAY + catchDescription[i];
+                description[i] = ChatColor.WHITE + catchDescription[i];
             }
             button.updateDescription(getDescriptionIndex()+i, description[i]);
         }

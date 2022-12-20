@@ -1,9 +1,9 @@
 package jw.fluent.api.spigot.gui.inventory_gui.implementation.crud_list_ui;
 
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserver;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverBuilder;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserver;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.ListUI;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;

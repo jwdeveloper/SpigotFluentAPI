@@ -3,10 +3,10 @@ package jw.fluent.api.spigot.gui.fluent_ui;
 
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonNotifier;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverBuilder;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUIBuilder;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.*;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonNotifier;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserver;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.enums.ButtonType;
 import jw.fluent.api.spigot.gui.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.ButtonDescriptionInfoBuilder;
@@ -15,6 +15,7 @@ import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import org.bukkit.Material;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 public class FluentButtonUIBuilder {
@@ -35,10 +36,20 @@ public class FluentButtonUIBuilder {
         return this;
     }
 
+    public <T> FluentButtonUIBuilder setObserver(Supplier<Observer<T>> observer, ButtonNotifier<T> buttonNotifier) {
+        buttonBuilder.addObserver(observer, buttonNotifier);
+        return this;
+    }
+
     public <T> FluentButtonUIBuilder setObserver(Consumer<ButtonObserverBuilder<T>> consumer) {
         var observer = new ButtonObserverBuilder<T>();
         consumer.accept(observer);
         buttonBuilder.addObserver(observer);
+        return this;
+    }
+
+    public <T> FluentButtonUIBuilder setObserver(ButtonObserver<T> buttonObserver) {
+        buttonBuilder.addObserver(buttonObserver);
         return this;
     }
 

@@ -9,9 +9,13 @@ import java.io.File;
 
 public class YmlConfigurationImpl implements YmlConfiguration {
 
+    public <T> FileConfiguration toConfiguration(T obj) throws IllegalAccessException {
+        var configuration = new YamlConfiguration();
+        return toConfiguration(obj, configuration);
+    }
+
     public <T> FileConfiguration toConfiguration(T obj, FileConfiguration configuration) throws IllegalAccessException {
         var model = new YmlModelFactory<T>().createModel(obj);
-
         for (var content : model.getContents()) {
             var value = content.getValue();
             configuration.set(content.getFullPath(), value);
@@ -27,10 +31,6 @@ public class YmlConfigurationImpl implements YmlConfiguration {
         return configuration;
     }
 
-    public <T> FileConfiguration toConfiguration(T obj) throws IllegalAccessException {
-        var configuration = new YamlConfiguration();
-        return toConfiguration(obj, configuration);
-    }
 
     public <T> T fromConfiguration(File file, Class<T> tClass) throws IllegalAccessException, InstantiationException {
         var configuration = YamlConfiguration.loadConfiguration(file);

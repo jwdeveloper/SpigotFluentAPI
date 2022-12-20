@@ -1,4 +1,4 @@
-package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button;
+package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers;
 
 public interface ButtonNotifier<T>
 {

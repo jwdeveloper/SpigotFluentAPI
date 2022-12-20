@@ -10,7 +10,12 @@ import java.util.function.Function;
 @Setter
 public class ListNotifierOptions<T> extends NotifierOptions
 {
-    private String prefix;
+    private String selectedPrefix;
+
+    private String unselectedPrefix;
+
+    private boolean ignoreRightClick;
+
     private Function<T,String> onNameMapping;
     private Consumer<onSelectEvent<T>> onSelectionChanged;
 
@@ -18,9 +23,19 @@ public class ListNotifierOptions<T> extends NotifierOptions
         return onNameMapping;
     }
 
-    String getPrefix()
+    String getSelectedPrefix()
     {
-        return prefix;
+        return selectedPrefix;
+    }
+
+    String getUnSelectedPrefix()
+    {
+        return unselectedPrefix;
+    }
+
+    boolean isIgnoreRightClick()
+    {
+        return ignoreRightClick;
     }
 
     Consumer<onSelectEvent<T>> getOnSelectionChanged()

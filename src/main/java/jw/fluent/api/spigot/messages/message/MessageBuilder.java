@@ -7,6 +7,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MessageBuilder
-{
+public class MessageBuilder {
     private final StringBuilder stringBuilder;
+
     public MessageBuilder() {
         stringBuilder = new StringBuilder();
     }
@@ -32,8 +33,9 @@ public class MessageBuilder
     }
 
     public MessageBuilder field(String name, Object value) {
-        return field(Emoticons.dot,name,value);
+        return field(Emoticons.dot, name, value);
     }
+
     public MessageBuilder field(String prefix, String name, Object value) {
         return color(ChatColor.WHITE)
                 .text(prefix)
@@ -67,6 +69,14 @@ public class MessageBuilder
         return this;
     }
 
+    public MessageBuilder location(Location text) {
+        color(ChatColor.AQUA).text("World ").color(ChatColor.WHITE).text(text.getWorld().getName()).space();
+        color(ChatColor.AQUA).text("X ").color(ChatColor.WHITE).text(text.getX()).space();
+        color(ChatColor.AQUA).text("Y ").color(ChatColor.WHITE).text(text.getY()).space();
+        color(ChatColor.AQUA).text("Z ").color(ChatColor.WHITE).text(text.getZ()).space();
+        return this;
+    }
+
     public MessageBuilder textPrimary(Object text) {
         color(ChatColor.AQUA).text(text).reset();
         return this;
@@ -86,11 +96,18 @@ public class MessageBuilder
     }
 
     public MessageBuilder bar(String bar, int length, ChatColor color) {
-        return this.color(color).bar(bar,length).reset();
+        return this.color(color).bar(bar, length).reset();
     }
 
     public MessageBuilder text(Object text, ChatColor color) {
         stringBuilder.append(color).append(text);
+        return this;
+    }
+
+    public MessageBuilder text(Object... args) {
+        for (var arg : args) {
+            text(arg).space();
+        }
         return this;
     }
 
@@ -100,15 +117,15 @@ public class MessageBuilder
     }
 
     public MessageBuilder info() {
-        return inBrackets(FluentApi.plugin().getName()+" info", ChatColor.AQUA).space();
+        return inBrackets(FluentApi.plugin().getName() + " info", ChatColor.AQUA).space();
     }
 
     public MessageBuilder error() {
-        return inBrackets(FluentApi.plugin().getName()+" error", ChatColor.RED).space();
+        return inBrackets(FluentApi.plugin().getName() + " error", ChatColor.RED).space();
     }
 
     public MessageBuilder warning() {
-        return inBrackets(FluentApi.plugin().getName()+" warning", ChatColor.YELLOW).space();
+        return inBrackets(FluentApi.plugin().getName() + " warning", ChatColor.YELLOW).space();
     }
 
     public MessageBuilder color(int r, int g, int b) {
@@ -204,8 +221,7 @@ public class MessageBuilder
         return build().split(System.lineSeparator());
     }
 
-    public MessageBuilder merge(MessageBuilder messageBuilder)
-    {
+    public MessageBuilder merge(MessageBuilder messageBuilder) {
         this.text(messageBuilder.toString());
         return this;
     }
@@ -222,26 +238,26 @@ public class MessageBuilder
 
     public void send(CommandSender... receivers) {
         var messages = toArray();
-        for (var receiver : receivers)
-        {
-            for(var message : messages)
-            {
+        for (var receiver : receivers) {
+            for (var message : messages) {
                 receiver.sendMessage(message);
             }
         }
     }
 
 
-    public void sendActionBar(Player player)
+    public TextComponent toTextComponent()
     {
+        return new TextComponent(toString());
+    }
+    public void sendActionBar(Player player) {
         var tc = new TextComponent();
         tc.setText(this.toString());
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, tc);
     }
 
     public void sendToConsole() {
-        if(Bukkit.getServer()==null)
-        {
+        if (Bukkit.getServer() == null) {
 
             System.out.println(stringBuilder.toString());
             return;
@@ -250,8 +266,7 @@ public class MessageBuilder
     }
 
     public void sendLog() {
-        if(Bukkit.getServer()==null)
-        {
+        if (Bukkit.getServer() == null) {
             System.out.println(stringBuilder.toString());
             return;
         }
@@ -260,15 +275,12 @@ public class MessageBuilder
     }
 
 
-    public void sendToAllPlayer()
-    {
-        if(Bukkit.getServer()==null)
-        {
+    public void sendToAllPlayer() {
+        if (Bukkit.getServer() == null) {
             System.out.println(stringBuilder.toString());
             return;
         }
-        for(var player : Bukkit.getOnlinePlayers())
-        {
+        for (var player : Bukkit.getOnlinePlayers()) {
             send(player);
         }
     }

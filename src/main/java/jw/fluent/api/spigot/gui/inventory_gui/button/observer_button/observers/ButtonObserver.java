@@ -1,11 +1,10 @@
-package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button;
+package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers;
 
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import org.bukkit.entity.Player;
 
-public class ButtonObserver<T>
-{
+public class ButtonObserver<T> implements ButtonObservable<T> {
     private final Observer<T> observable;
     private final ButtonNotifier buttonNotifier;
     public ButtonUI buttonUI;
@@ -24,6 +23,11 @@ public class ButtonObserver<T>
     public static <T> ButtonObserverBuilder<T> builder()
     {
         return new ButtonObserverBuilder<T>();
+    }
+
+    @Override
+    public ButtonUI getButtonUI() {
+        return buttonUI;
     }
 
     public void setButtonUI(ButtonUI buttonUI)

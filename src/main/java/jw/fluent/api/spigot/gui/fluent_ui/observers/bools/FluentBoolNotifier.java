@@ -1,7 +1,7 @@
 package jw.fluent.api.spigot.gui.fluent_ui.observers.bools;
 
 import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;

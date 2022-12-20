@@ -5,7 +5,8 @@ import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_manager.events.SearchEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_manager.events.SearchFilterEvent;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserver;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserver;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -20,7 +21,8 @@ public class SearchManager<T> {
 
     private final ObserverBag<Integer> indexObserver;
 
-    private ButtonObserver<Integer> observer;
+    @Getter
+    private final ButtonObserver<Integer> buttonObserver;
 
 
     public SearchManager() {
@@ -28,13 +30,9 @@ public class SearchManager<T> {
         indexObserver = new ObserverBag<>(0);
         var options = new ListNotifierOptions<SearchProfile<T>>();
         options.setOnNameMapping(SearchProfile::name);
-        observer = new ButtonObserver<Integer>(indexObserver.getObserver(),new FluentListNotifier<SearchProfile<T>>(searchProfiles, options));
+        buttonObserver = new ButtonObserver<>(indexObserver.getObserver(), new FluentListNotifier<>(searchProfiles, options));
     }
 
-    public ButtonObserver<Integer> getObserver()
-    {
-        return observer;
-    }
 
     public boolean hasProfiles()
     {
@@ -60,7 +58,4 @@ public class SearchManager<T> {
     {
         searchProfiles.add(new SearchProfile<>(name,event));
     }
-
-
-
 }

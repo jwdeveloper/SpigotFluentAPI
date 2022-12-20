@@ -11,9 +11,7 @@ public class FluentChestUI
 {
     private final FluentTranslator translator;
     private final FluentButtonStyle style;
-
     private final CatchButtonStyleRenderer renderer;
-
 
     @Inject
     public FluentChestUI(FluentTranslator translator)

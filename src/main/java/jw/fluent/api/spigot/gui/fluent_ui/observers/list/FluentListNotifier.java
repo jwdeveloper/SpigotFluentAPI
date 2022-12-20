@@ -2,10 +2,11 @@ package jw.fluent.api.spigot.gui.fluent_ui.observers.list;
 
 import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.events.onSelectEvent;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -36,8 +37,11 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
             options.setOnSelectionChanged(tonSelectEvent -> {
             });
         }
-        if (StringUtils.isNullOrEmpty(options.getPrefix())) {
-            options.setPrefix(ChatColor.AQUA + Emoticons.dot + " ");
+        if (StringUtils.isNullOrEmpty(options.getSelectedPrefix())) {
+            options.setSelectedPrefix(ChatColor.AQUA + Emoticons.dot + " ");
+        }
+        if (StringUtils.isNullOrEmpty(options.getUnSelectedPrefix())) {
+            options.setUnselectedPrefix(ChatColor.WHITE + " ");
         }
         initialDescription = event.getButton().getDescription();
         onUpdate(event);
@@ -55,6 +59,10 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
 
     @Override
     public void onRightClick(ButtonObserverEvent<Integer> event) {
+        if (options.isIgnoreRightClick()) {
+            return;
+        }
+
         if (values.size() == 0) {
             return;
         }
@@ -68,11 +76,15 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
 
     @Override
     protected void onUpdate(ButtonObserverEvent<Integer> event) {
-        if (currentIndex == Integer.MIN_VALUE) {
-            currentIndex = event.getValue();
-        }
         if (hasValueBeenChanged()) {
             createDescription(event.getButton());
+        }
+        currentIndex = event.getValue();
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        }
+        if (currentIndex > lastValuesSize) {
+            currentIndex = lastValuesSize;
         }
         updateDescription(event.getPlayer(), event.getButton());
     }
@@ -80,20 +92,17 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
     public void createDescription(ButtonUI button) {
         var result = new ArrayList<String>();
         for (var i = 0; i < initialDescription.size(); i++) {
-            if (i == getDescriptionIndex())
-            {
+            if (i == getDescriptionIndex()) {
                 for (int j = 0; j < values.size(); j++) {
                     result.add(" ");
                 }
-            } else
-            {
+            } else {
                 result.add(initialDescription.get(i));
             }
         }
 
-        if(values.size()-1 < currentIndex)
-        {
-            currentIndex = values.size()-1;
+        if (values.size() - 1 < currentIndex) {
+            currentIndex = values.size() - 1;
         }
 
         lastValuesSize = values.size();
@@ -106,11 +115,11 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
         for (var i = 0; i < values.size(); i++) {
             value = values.get(i);
             if (i == currentIndex) {
-                button.updateDescription(index + i, options.getPrefix() + options.getOnNameMapping().apply(value));
-                options.getOnSelectionChanged().accept(new onSelectEvent<T>(button, value, player));
+                button.updateDescription(index + i, options.getSelectedPrefix() + options.getOnNameMapping().apply(value));
+                options.getOnSelectionChanged().accept(new onSelectEvent<T>(button, value, currentIndex, player));
                 continue;
             }
-            button.updateDescription(index + i, options.getOnNameMapping().apply(value));
+            button.updateDescription(index + i, options.getUnSelectedPrefix() + options.getOnNameMapping().apply(value));
         }
     }
 

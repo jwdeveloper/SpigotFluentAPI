@@ -1,5 +1,6 @@
 package jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui;
 
+import jw.fluent.api.spigot.gui.fluent_ui.FluentChestUI;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.spigot.gui.inventory_gui.EventsListenerInventoryUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
@@ -11,8 +12,8 @@ import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.content_man
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.content_manger.FilterContentEvent;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
@@ -30,7 +31,8 @@ public class ListUI<T> extends ChestUI {
     private final List<Consumer<Player>> onListOpen;
     private final List<Consumer<Player>> onListClose;
     private final List<ButtonUIEvent> onClickContent;
-
+    private final FluentTranslator translator;
+    private final FluentChestUI fluentUI;
     private ButtonObserverUI buttonSearch;
     private ButtonUI buttonExit;
     private ButtonObserverUI buttonPageUp;
@@ -40,7 +42,6 @@ public class ListUI<T> extends ChestUI {
     @Setter
     private String listTitle = "";
 
-
     public ListUI(String name, int height) {
         super(name, height);
         onListOpen = new ArrayList<>();
@@ -48,6 +49,8 @@ public class ListUI<T> extends ChestUI {
         onClickContent = new ArrayList<>();
         searchManager = new SearchManager<>();
         listContentManager = new ListUIManager<>(this);
+        translator = FluentApi.translator();
+        fluentUI = FluentApi.container().findInjection(FluentChestUI.class);
         loadSpecialButtons();
     }
 
@@ -55,24 +58,21 @@ public class ListUI<T> extends ChestUI {
 
         setBorderMaterial(Material.GRAY_STAINED_GLASS_PANE);
 
-        buttonSearch = ButtonObserverUI
-                .builder()
-                .addObserver(searchManager.getObserver())
+        buttonSearch = fluentUI
+                .buttonBuilder()
+                .setObserver(searchManager.getButtonObserver())
                 .setLocation(0, 0)
-                .setDescription(FluentMessage
-                        .message()
-                        .bar(Emoticons.line,20,ChatColor.GRAY).newLine()
-                        .field(FluentApi.translator().get("gui.base.left-click"), FluentApi.translator().get("gui.base.search.desc.left-click")).newLine()
-                        .field(FluentApi.translator().get("gui.base.right-click"),  FluentApi.translator().get("gui.base.search.desc.right-click")).newLine()
-                        .field(FluentApi.translator().get("gui.base.shift-click") , FluentApi.translator().get("gui.base.search.desc.shift-click")).newLine()
-                        .toArray()
-                )
-                .setTitlePrimary(FluentApi.translator().get("gui.base.search.title"))
-                .setMaterial(Material.SPYGLASS)
-                .setOnClick((player, button) ->
+                .setDescription(options ->
                 {
-                    if(!searchManager.hasProfiles())
-                    {
+                    options.setTitle(translator.get("gui.base.search.title"));
+                    options.setOnLeftClick(translator.get("gui.base.search.desc.left-click"));
+                    options.setOnRightClick(translator.get("gui.base.search.desc.right-click"));
+                    options.setOnShiftClick(translator.get("gui.base.search.desc.shift-click"));
+                })
+                .setMaterial(Material.SPYGLASS)
+                .setOnLeftClick((player, button) ->
+                {
+                    if (!searchManager.hasProfiles()) {
                         return;
                     }
                     close();
@@ -81,7 +81,7 @@ public class ListUI<T> extends ChestUI {
                     {
                         addContentFilter(input ->
                         {
-                            return searchManager.search(searchedKey,input,player);
+                            return searchManager.search(searchedKey, input, player);
                         });
                         applyFilters();
                         open(player);
@@ -91,36 +91,42 @@ public class ListUI<T> extends ChestUI {
                 {
                     resetFilter();
                 })
-                .buildAndAdd(this);
+                .build(this);
 
-        buttonPageDown = ButtonObserverUI
-                .builder()
+        buttonPageDown = fluentUI
+                .buttonBuilder()
                 .setLocation(getHeight() - 1, 3)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.page-down.title")))
+                .setDescription(options ->
+                {
+                    options.setTitle(translator.get("gui.base.page-down.title"));
+                })
                 .setMaterial(Material.ARROW)
-                .setOnClick((player, button) ->
+                .setOnLeftClick((player, button) ->
                 {
                     listContentManager.lastPage();
                 })
-                .buildAndAdd(this);
+                .build(this);
 
-        buttonPageUp = ButtonObserverUI
-                .builder()
+        buttonPageUp = fluentUI
+                .buttonBuilder()
                 .setLocation(getHeight() - 1, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.page-up.title")))
+                .setDescription(options ->
+                {
+                    options.setTitle(translator.get("gui.base.page-up.title"));
+                })
                 .setMaterial(Material.ARROW)
-                .setOnClick((player, button) ->
+                .setOnLeftClick((player, button) ->
                 {
                     listContentManager.nextPage();
                 })
-                .buildAndAdd(this);
+                .build(this);
 
-        buttonExit = ButtonObserverUI.factory()
-                .goBackButton(this)
-                .setOnClick((player, button) ->
+        buttonExit = fluentUI.buttonFactory()
+                .back(this)
+                .setOnLeftClick((player, button) ->
                 {
                     openParent();
-                }).buildAndAdd(this);
+                }).build(this);
     }
 
     @Override
@@ -179,13 +185,11 @@ public class ListUI<T> extends ChestUI {
         refreshButtons();
     }
 
-    public final void addSearchStrategy(String name,SearchFilterEvent<T> event)
-    {
+    public final void addSearchStrategy(String name, SearchFilterEvent<T> event) {
         searchManager.addSearchProfile(name, event);
     }
 
-    public void setListTitlePrimary(String value)
-    {
+    public void setListTitlePrimary(String value) {
         setListTitle(FluentMessage.message().color(ChatColor.DARK_AQUA).bold().text(value).build());
     }
 
@@ -199,5 +203,13 @@ public class ListUI<T> extends ChestUI {
 
     public final void onListClose(Consumer<Player> event) {
         onListClose.add(event);
+    }
+
+    protected final FluentTranslator getTranslator() {
+        return translator;
+    }
+
+    protected final FluentChestUI getFluentUI() {
+        return fluentUI;
     }
 }

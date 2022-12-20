@@ -5,6 +5,7 @@ import jw.fluent.api.logger.api.SimpleLogger;
 import jw.fluent.api.utilites.messages.LogUtility;
 import jw.fluent.plugin.implementation.FluentApi;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -18,8 +19,7 @@ public class SimpleLoggerImpl implements SimpleLogger {
 
     private Logger logger;
 
-    public SimpleLoggerImpl(Logger logger)
-    {
+    public SimpleLoggerImpl(Logger logger) {
         this.logger = logger;
     }
 
@@ -29,36 +29,32 @@ public class SimpleLoggerImpl implements SimpleLogger {
     }
 
     @Override
-    public boolean isLoggable(Level level)
-    {
+    public boolean isLoggable(Level level) {
         return true;
     }
 
     @Override
     public void log(Level level, ResourceBundle bundle, String msg, Throwable thrown) {
 
-        switch (level)
-        {
+        switch (level) {
             case INFO -> info(msg);
             case WARNING -> warning(msg);
-            case ERROR ->error(msg,thrown);
-            case ALL ->success(msg);
+            case ERROR -> error(msg, thrown);
+            case ALL -> success(msg);
         }
     }
 
     @Override
     public void log(Level level, ResourceBundle bundle, String format, Object... params) {
-        switch (level)
-        {
+        switch (level) {
             case INFO -> info(format);
             case WARNING -> warning(format);
-            case ALL ->success(format);
+            case ALL -> success(format);
         }
     }
 
-    public enum LogType
-    {
-        SUCCESS,INFO,WARNING
+    public enum LogType {
+        SUCCESS, INFO, WARNING
     }
 
 
@@ -74,35 +70,32 @@ public class SimpleLoggerImpl implements SimpleLogger {
         log(message, LogType.INFO, params);
     }
 
-    public void log(String message, LogType logType, Object... params)
-    {
+    public void log(String message, LogType logType, Object... params) {
         var msg = new MessageBuilder();
 
-        if(FluentApi.plugin() != null)
-        {
+        if (FluentApi.plugin() != null) {
             msg.inBrackets(FluentApi.plugin().getName()).space();
-        }
-        else
-        {
+        } else {
             msg.inBrackets("plugin").space();
         }
 
-        var format =switch (logType)
-        {
+        var format = switch (logType) {
             case INFO -> LogUtility.info();
             case SUCCESS -> LogUtility.success();
             case WARNING -> LogUtility.warning();
         };
         msg.text(format);
-        if(params.length == 0)
-        {
+        if (params.length == 0) {
             msg.text(message).sendToConsole();
             return;
         }
         msg.text(message);
-        for (var param:params)
-        {
-         msg.space().text(param);
+        for (var param : params) {
+            if (param instanceof Location loc) {
+                msg.space().location(loc);
+                continue;
+            }
+            msg.space().text(param);
         }
         msg.sendToConsole();
     }
@@ -110,12 +103,10 @@ public class SimpleLoggerImpl implements SimpleLogger {
     public void error(String message, Throwable exception) {
 
 
-
         var errorMessage = new MessageBuilder();
-        if(exception == null)
-        {
-           errorMessage.error().text(message).sendToConsole();
-           return;
+        if (exception == null) {
+            errorMessage.error().text(message).sendToConsole();
+            return;
         }
         var description = getErrorDescription(message, exception);
         var stackTrace = getStackTrace(exception);
@@ -129,7 +120,7 @@ public class SimpleLoggerImpl implements SimpleLogger {
 
     @Override
     public void error(String message) {
-        error(message,null);
+        error(message, null);
     }
 
     private MessageBuilder getErrorDescription(String message, Throwable exception) {
@@ -142,8 +133,9 @@ public class SimpleLoggerImpl implements SimpleLogger {
             return stackTrace;
         }
         var cause = exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
-        stackTrace.color(ChatColor.DARK_RED).inBrackets("Reason").color(ChatColor.YELLOW).space().text(cause)
-                .color(ChatColor.RESET).newLine()
+        stackTrace.newLine().color(ChatColor.DARK_RED)
+                .inBrackets("Reason").color(ChatColor.YELLOW).space().text(cause).color(ChatColor.RESET).newLine()
+
                 .color(ChatColor.DARK_RED).inBrackets("Exception type")
                 .color(ChatColor.YELLOW).space().text(exception.getClass().getSimpleName())
                 .color(ChatColor.RESET);

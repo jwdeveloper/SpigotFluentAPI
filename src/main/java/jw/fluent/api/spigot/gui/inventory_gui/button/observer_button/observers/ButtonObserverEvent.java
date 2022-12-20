@@ -1,4 +1,4 @@
-package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button;
+package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers;
 
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ public class ButtonObserverEvent<T>
 {
     private Player player;
     private ButtonUI button;
-    private ButtonObserver<T> observer;
+    private ButtonObservable<T> observer;
     private T value;
 
     @Override

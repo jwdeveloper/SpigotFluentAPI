@@ -11,7 +11,7 @@ import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.FluentButtonStyle;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverBuilder;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUIBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
@@ -26,6 +26,7 @@ import org.bukkit.Material;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class FluentButtonUIFactory {
     private final FluentButtonStyle fluentButtonStyle;
@@ -41,7 +42,7 @@ public class FluentButtonUIFactory {
         this.builder = builder;
     }
 
-    public FluentButtonUIBuilder observeInt(Observer<Integer> observer, Consumer<IntNotifierOptions> consumer) {
+    public FluentButtonUIBuilder observeInt(Supplier<Observer<Integer>> observer, Consumer<IntNotifierOptions> consumer) {
         var options = new IntNotifierOptions();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
@@ -54,8 +55,8 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public <T extends Enum<T>> FluentButtonUIBuilder observeEnum(Observer<T> observer, Consumer<EnumNotifierOptions> consumer) {
-        var _class = (Class<T>) observer.getValueType();
+    public <T extends Enum<T>> FluentButtonUIBuilder observeEnum(Supplier<Observer<T>> observer, Consumer<EnumNotifierOptions> consumer) {
+        var _class = (Class<T>) observer.get().getValueType();
         var options = new EnumNotifierOptions();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
@@ -68,12 +69,12 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public <T extends Enum<T>> FluentButtonUIBuilder observeEnum(Observer<T> observer) {
+    public <T extends Enum<T>> FluentButtonUIBuilder observeEnum(Supplier<Observer<T>> observer) {
 
         return observeEnum(observer, enumNotifierOptions -> {});
     }
 
-    public <T> FluentButtonUIBuilder observeList(Observer<Integer> indexObserver, List<T> values,  Consumer<ListNotifierOptions<T>> consumer) {
+    public <T> FluentButtonUIBuilder observeList(Supplier<Observer<Integer>> indexObserver, List<T> values,  Consumer<ListNotifierOptions<T>> consumer) {
         var options = new ListNotifierOptions<T>();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
@@ -86,16 +87,16 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public FluentButtonUIBuilder observeBool(Observer<Boolean> observer) {
+    public FluentButtonUIBuilder observeBool(Supplier<Observer<Boolean>> observer) {
         return observeBool(observer,boolNotifierOptions -> {});
     }
-    public FluentButtonUIBuilder observeBool(Observer<Boolean> observer, Consumer<BoolNotifierOptions> consumer) {
+    public FluentButtonUIBuilder observeBool(Supplier<Observer<Boolean>> observer, Consumer<BoolNotifierOptions> consumer) {
         var options = new BoolNotifierOptions();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
         {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-            buttonDescriptionInfoBuilder.setOnLeftClick("Change value");
+            buttonDescriptionInfoBuilder.setOnLeftClick("Change state");
         });
         builder.setObserver(observer, new FluentBoolNotifier(translator, options));
         return builder;
@@ -119,9 +120,9 @@ public class FluentButtonUIFactory {
                 {
                     var title = StringUtils.EMPTY;
                     if (parent == null)
-                        title = new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.exit.title")).toString();
+                        title = FluentApi.translator().get("gui.base.exit.title");
                     else
-                        title = new MessageBuilder().color(ChatColor.GRAY).inBrackets(FluentApi.translator().get("gui.base.back.title")).toString();
+                        title = FluentApi.translator().get("gui.base.back.title");
                     buttonDescriptionInfoBuilder.setTitle(title);
                 })
                 .setMaterial(Material.ARROW)

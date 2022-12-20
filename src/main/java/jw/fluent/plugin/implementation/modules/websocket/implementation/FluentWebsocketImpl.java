@@ -2,7 +2,6 @@ package jw.fluent.plugin.implementation.modules.websocket.implementation;
 
 import jw.fluent.api.web_socket.FluentWebsocketPacket;
 import jw.fluent.api.web_socket.WebSocketBase;
-import jw.fluent.api.web_socket.WebSocketPacket;
 import jw.fluent.plugin.implementation.modules.websocket.api.FluentWebsocket;
 
 import java.util.Collection;

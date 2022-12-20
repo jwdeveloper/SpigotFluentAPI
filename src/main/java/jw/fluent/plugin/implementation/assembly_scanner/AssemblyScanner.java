@@ -50,12 +50,14 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 if (!name.endsWith(".class")) continue;
                 name = name.replace('/', '.').substring(0, name.length() - 6);
                 try {
-                    classes.add(Class.forName(name));
+                    classes.add(Class.forName(name,false,clazz.getClassLoader()));
                 }
-                catch (Exception e)
+                catch (NoClassDefFoundError | ClassNotFoundException e)
                 {
-                    FluentLogger.LOGGER.error("Unable to load class", e);
+                    FluentLogger.LOGGER.warning("Unable to load class:"+name);
                 }
+
+
             }
             return classes;
         } catch (IOException e) {

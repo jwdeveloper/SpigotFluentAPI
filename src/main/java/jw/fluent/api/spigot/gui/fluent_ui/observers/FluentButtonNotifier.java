@@ -1,13 +1,12 @@
 package jw.fluent.api.spigot.gui.fluent_ui.observers;
 
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonNotifier;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonNotifier;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import lombok.Getter;
 
 import java.util.List;
 
 public abstract class FluentButtonNotifier<T> implements ButtonNotifier<T> {
-
 
     @Getter
     private final String id;

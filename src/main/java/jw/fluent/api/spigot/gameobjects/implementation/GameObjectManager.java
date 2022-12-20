@@ -2,7 +2,6 @@ package jw.fluent.api.spigot.gameobjects.implementation;
 
 import jw.fluent.api.spigot.events.EventBase;
 import jw.fluent.api.spigot.gameobjects.api.GameComponent;
-import jw.fluent.api.spigot.gameobjects.api.GameObject;
 import jw.fluent.plugin.implementation.FluentApi;
 import org.bukkit.Location;
 import org.bukkit.event.server.PluginDisableEvent;

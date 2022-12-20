@@ -1,6 +1,7 @@
 package jw.fluent.api.spigot.events;
 
 import jw.fluent.plugin.implementation.FluentApi;
+import lombok.Getter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerEvent;
@@ -14,6 +15,10 @@ public class SimpleEvent<T extends Event> {
     private final List<Consumer<T>> nextActions;
     private Consumer<Exception> onError;
     private boolean isActive;
+
+    @Getter
+    private boolean isRegister =true;
+
     private String permission;
 
     public SimpleEvent(Consumer<T> onEvent) {
@@ -29,6 +34,11 @@ public class SimpleEvent<T extends Event> {
 
     public SimpleEvent<T> setActive(boolean isActive) {
         this.isActive = isActive;
+        return this;
+    }
+
+    public SimpleEvent<T> unregister() {
+        isRegister = false;
         return this;
     }
 

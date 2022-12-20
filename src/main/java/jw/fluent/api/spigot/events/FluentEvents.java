@@ -1,13 +1,13 @@
 package jw.fluent.api.spigot.events;
 
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -64,10 +64,15 @@ public class FluentEvents implements Listener {
             onPluginEnableEvents.add((SimpleEvent<PluginEnableEvent>)fluentEvent);
             return fluentEvent;
         }
-
         Bukkit.getPluginManager().registerEvent(eventType,this, EventPriority.NORMAL,
                 (listener, event) ->
                 {
+                    if(!fluentEvent.isRegister())
+                    {
+                        event.getHandlers().unregister(this);
+                        return;
+                    }
+
                     if(!event.getClass().getSimpleName().equalsIgnoreCase(eventType.getSimpleName()))
                     {
                         return;

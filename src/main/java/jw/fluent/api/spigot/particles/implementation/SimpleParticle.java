@@ -80,7 +80,6 @@ public class SimpleParticle {
     public void stop() {
         if (bukkitTask == null)
         {
-            FluentLogger.LOGGER.info("TASK IS NULL");
             return;
         }
 

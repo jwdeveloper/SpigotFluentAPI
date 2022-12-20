@@ -5,7 +5,6 @@ import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObser
 import jw.fluent.api.spigot.gui.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.ListUI;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.plugin.implementation.FluentApi;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,6 +21,7 @@ public class CrudListUI<T> extends ListUI<T>
     @Getter
     private ButtonObserverUI buttonInsert;
 
+
     public CrudListUI(String name, int height)
     {
         super(name, height);
@@ -31,35 +31,44 @@ public class CrudListUI<T> extends ListUI<T>
 
     protected void loadCrudButtons()
     {
-        buttonDelete = ButtonObserverUI
-                .builder()
+        buttonDelete = getFluentUI()
+                .buttonBuilder()
                 .setLocation(0, 7)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_RED).inBrackets(FluentApi.translator().get("gui.base.delete.title")))
+                .setDescription(options ->
+                {
+                    options.setTitle(getTranslator().get("gui.base.delete.title"));
+                })
                 .setMaterial(Material.BARRIER)
-                .addObserver(listViewModel.deleteObserver())
-                .buildAndAdd(this);
+                .setObserver(listViewModel.deleteObserver())
+                .build(this);
 
-        buttonEdit = ButtonObserverUI
-                .builder()
+        buttonEdit = getFluentUI()
+                .buttonBuilder()
                 .setLocation(0, 5)
-                .setTitle(new MessageBuilder().color(ChatColor.YELLOW).inBrackets(FluentApi.translator().get("gui.base.edit.title")))
+                .setDescription(options ->
+                {
+                    options.setTitle(getTranslator().get("gui.base.edit.title"));
+                })
                 .setMaterial(Material.WRITABLE_BOOK)
-                .addObserver(listViewModel.editObserver())
-                .buildAndAdd(this);
+                .setObserver(listViewModel.editObserver())
+                .build(this);
 
-        buttonInsert = ButtonObserverUI
-                .builder()
+        buttonInsert = getFluentUI()
+                .buttonBuilder()
                 .setLocation(0, 6)
-                .setTitle(new MessageBuilder().color(ChatColor.DARK_GREEN).inBrackets(FluentApi.translator().get("gui.base.insert.title")))
+                .setDescription(options ->
+                {
+                    options.setTitle(getTranslator().get("gui.base.insert.title"));
+                })
                 .setMaterial(Material.CRAFTING_TABLE)
-                .addObserver(listViewModel.insertObserver())
-                .buildAndAdd(this);
+                .setObserver(listViewModel.insertObserver())
+                .build(this);
 
-        buttonCancel = ButtonObserverUI
-                .builder()
+        buttonCancel = getFluentUI()
+                .buttonBuilder()
                 .setLocation(getHeight() - 1, 4)
-                .addObserver(listViewModel.cancelObserver())
-                .buildAndAdd(this);
+                .setObserver(listViewModel.cancelObserver())
+                .build(this);
 
         onListOpen(player ->
         {

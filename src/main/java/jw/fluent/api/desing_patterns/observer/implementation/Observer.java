@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class Observer<T> implements Observable<T> {
@@ -15,7 +17,7 @@ public class Observer<T> implements Observable<T> {
     protected Object object;
     protected Class fieldType;
     protected boolean isBinded;
-    protected List<Consumer<T>> onChange = new ArrayList<>();
+    protected Set<Consumer<T>> onChange = new LinkedHashSet<>();
     public Observer() {
 
     }
@@ -42,6 +44,10 @@ public class Observer<T> implements Observable<T> {
 
     public void onChange(Consumer<T> onChangeEvent) {
         this.onChange.add(onChangeEvent);
+    }
+
+    public void unsubscribe(Consumer<T> onChangeEvent) {
+        this.onChange.remove(onChangeEvent);
     }
 
     public void setObject(Object object) {

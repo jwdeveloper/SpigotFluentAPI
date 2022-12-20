@@ -2,6 +2,11 @@ package jw.fluent.api.spigot.gui.inventory_gui.button.observer_button;
 
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUIBuilder;
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonNotifier;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserver;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
+
+import java.util.function.Supplier;
 
 
 public class ButtonObserverUIBuilder  extends ButtonUIBuilder<ButtonObserverUIBuilder,ButtonObserverUI>
@@ -27,6 +32,13 @@ public class ButtonObserverUIBuilder  extends ButtonUIBuilder<ButtonObserverUIBu
         button.addObserver(observable, buttonNotifier);
         return self();
     }
+
+    public <T> ButtonObserverUIBuilder addObserver(Supplier<Observer<T>> observable, ButtonNotifier<T> buttonNotifier)
+    {
+        button.addObserver(observable, buttonNotifier);
+        return self();
+    }
+
 
     public <T> ButtonObserverUIBuilder addObserver(ButtonObserverBuilder<T> buttonObserverBuilder)
     {

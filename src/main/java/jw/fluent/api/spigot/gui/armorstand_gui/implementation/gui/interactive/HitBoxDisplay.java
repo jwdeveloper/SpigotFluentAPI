@@ -2,12 +2,10 @@ package jw.fluent.api.spigot.gui.armorstand_gui.implementation.gui.interactive;
 
 import jw.fluent.api.spigot.particles.api.enums.ParticleDisplayMode;
 import jw.fluent.api.spigot.particles.implementation.SimpleParticle;
+import jw.fluent.api.utilites.math.InteractiveHitBox;
 import jw.fluent.api.utilites.math.MathUtility;
-import jw.fluent.api.utilites.math.collistions.HitBox;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
-import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -16,48 +14,51 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HitBoxDisplay
-{
+public class HitBoxDisplay {
 
     private InteractiveHitBox hitBox;
     private SimpleParticle task;
+
+    private  Particle.DustOptions lineOptions;
+
+    private Color lineColor;
 
     private List<Location> lines;
 
     private float particleSize = 0.1f;
 
-    public HitBoxDisplay(InteractiveHitBox hitBox)
-    {
+    public HitBoxDisplay(InteractiveHitBox hitBox) {
         this.hitBox = hitBox;
+        lineColor = Color.fromRGB(MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255));
+        lineOptions = new Particle.DustOptions(lineColor, particleSize);
         task = getHitboxDisplay();
     }
 
-
-    public void show(float particleSize)
+    public void color(Color color)
     {
-        this.particleSize  =particleSize;
+        this.lineColor = color;
+        lineOptions = new Particle.DustOptions(color, particleSize);
+    }
+
+    public void show(float particleSize) {
+        lineOptions = new Particle.DustOptions(lineColor, particleSize);
         lines = createBox();
         task.start();
     }
 
-    public void hide()
-    {
+    public void hide() {
         task.stop();
     }
 
 
     private SimpleParticle getHitboxDisplay() {
-        float size = 0.2F;
+        float size = 2F;
         Color color = Color.fromRGB(92, 225, 230);
         Color color2 = Color.fromRGB(255, 0, 0);
-        Color color3 = Color.fromRGB(MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255), MathUtility.getRandom(0, 255));
         Particle.DustOptions optionsMin = new Particle.DustOptions(color, size);
         Particle.DustOptions optionsMax = new Particle.DustOptions(color2, size);
-        Particle.DustOptions optionsLine = new Particle.DustOptions(color3, 1);
         var mini = hitBox.getOrigin().clone().add(hitBox.getMin());
         var maxi = hitBox.getOrigin().clone().add(hitBox.getMin());
-        FluentLogger.LOGGER.info("IM MIN",mini.toVector().toString());
-        FluentLogger.LOGGER.info("IM MAX",maxi.toVector().toString());
         return FluentApi.particles()
                 .startAfterTicks(1)
                 .triggerEveryTicks(5)
@@ -70,7 +71,7 @@ public class HitBoxDisplay
                 {
                     particleInvoker.spawnParticle(maxi, Particle.REDSTONE, 1, optionsMin);
                     for (var line : lines) {
-                        particleInvoker.spawnParticle(line, Particle.REDSTONE, 1, optionsLine);
+                        particleInvoker.spawnParticle(line, Particle.REDSTONE, 1, lineOptions);
                     }
                     particleInvoker.spawnParticle(mini, Particle.REDSTONE, 1, optionsMax);
                 })
@@ -83,7 +84,7 @@ public class HitBoxDisplay
         var min = hitBox.getMin();
         var max = hitBox.getMax();
         var wordl = hitBox.getOrigin().getWorld();
-        var bottom1 =new Location(wordl, min.getX(), min.getY(), min.getZ());
+        var bottom1 = new Location(wordl, min.getX(), min.getY(), min.getZ());
         var bottom2 = new Location(wordl, max.getX(), min.getY(), min.getZ());
         var bottom3 = new Location(wordl, max.getX(), min.getY(), max.getZ());
         var bottom4 = new Location(wordl, min.getX(), min.getY(), max.getZ());

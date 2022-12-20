@@ -1,4 +1,4 @@
-package jw.fluent.api.spigot.gui.armorstand_gui.implementation.gui.interactive;
+package jw.fluent.api.utilites.math;
 
 import jw.fluent.api.spigot.particles.api.enums.ParticleDisplayMode;
 import jw.fluent.api.spigot.particles.implementation.SimpleParticle;
