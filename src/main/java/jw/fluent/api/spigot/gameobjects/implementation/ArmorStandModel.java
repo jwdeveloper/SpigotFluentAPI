@@ -40,10 +40,26 @@ public class ArmorStandModel extends GameObject {
         armorStand.setInvisible(true);
     }
 
+    public void setVisible(boolean isVisible)
+    {
+        if(isVisible)
+            show();
+        else
+            hide();
+    }
 
     public void setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
         updateModel();
+    }
+
+    public void setCustomModelId(int customModelId) {
+        if(itemStack == null)
+            return;
+        var meta = itemStack.getItemMeta();
+        meta.setCustomModelData(customModelId);
+        itemStack.setItemMeta(meta);
+        armorStand.getEquipment().setHelmet(itemStack);
     }
 
     public void setItemStack(Material material, int customModelId)
@@ -94,7 +110,7 @@ public class ArmorStandModel extends GameObject {
             armorStand.setCustomName(name);
             armorStand.setCustomNameVisible(true);
         }
-        armorStand.setHelmet(itemStack);
+        armorStand.getEquipment().setHelmet(itemStack);
     }
 
     public void onVisibilityChange(boolean state) {

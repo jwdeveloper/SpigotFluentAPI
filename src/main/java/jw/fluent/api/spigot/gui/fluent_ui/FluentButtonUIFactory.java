@@ -7,6 +7,7 @@ import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.EnumNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.FluentEnumNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.IntNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentIntNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListIndexNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
@@ -74,7 +75,7 @@ public class FluentButtonUIFactory {
         return observeEnum(observer, enumNotifierOptions -> {});
     }
 
-    public <T> FluentButtonUIBuilder observeList(Supplier<Observer<Integer>> indexObserver, List<T> values,  Consumer<ListNotifierOptions<T>> consumer) {
+    public <T> FluentButtonUIBuilder observeList(Supplier<Observer<T>> indexObserver, Supplier<List<T>> values,  Consumer<ListNotifierOptions<T>> consumer) {
         var options = new ListNotifierOptions<T>();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
@@ -83,7 +84,7 @@ public class FluentButtonUIFactory {
             buttonDescriptionInfoBuilder.setOnLeftClick("Next");
             buttonDescriptionInfoBuilder.setOnRightClick("Previous");
         });
-        builder.setObserver(indexObserver, new FluentListNotifier<T>(values, options));
+        builder.setObserver(indexObserver, new FluentListNotifier<>(values, options));
         return builder;
     }
 

@@ -28,32 +28,49 @@ public class InteractiveHitBox {
 
     private Vector box;
 
+
+
     private final double[] result = new double[10];
+
+    public InteractiveHitBox(Location origin, Vector min, Vector max)
+    {
+        this.origin = origin.clone();
+        this.root = origin.clone();
+        this.min = min;
+        this.max = max;
+        update(min, max);
+    }
+
 
     public InteractiveHitBox(Location origin, Vector box) {
         this.origin = origin.clone();
         this.root = origin.clone();
-        update(box);
+        this.min = new Vector(-box.getX(), -box.getY(), -box.getZ());
+        this.max = new Vector(box.getX(), box.getY(), box.getZ());
+        update(min, max);
     }
 
     public void updateOrigin(Location origin)
     {
         this.root = origin.clone();
         this.origin = origin.clone();
-        update(box);
+        update(min, max);
     }
 
-    public void update(Vector box) {
-        this.box = box;
-        min = new Vector(-box.getX(), -box.getY(), -box.getZ());
-        max = new Vector(box.getX(), box.getY(), box.getZ());
+    public void update(Vector box)
+    {
+        this.min = new Vector(-box.getX(), -box.getY(), -box.getZ());
+        this.max = new Vector(box.getX(), box.getY(), box.getZ());
+        update(this.min, this.max);
+    }
 
+    public void update(Vector min, Vector max) {
         origin = root.clone();
         min = origin.clone().toVector().add(min);
         max = origin.clone().toVector().add(max);
 
-        min = Vector.getMinimum(min, max);
-        max = Vector.getMaximum(min, max);
+        this.min = Vector.getMinimum(min, max);
+        this.max = Vector.getMaximum(min, max);
     }
 
     public boolean isCollider(Location location, float length) {

@@ -30,23 +30,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.function.Consumer;
 
 
-public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentApiContainerBuilder> implements FluentApiContainerBuilder
-{
+public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentApiContainerBuilder> implements FluentApiContainerBuilder {
     private final FluentApiExtensionsManager extentionsManager;
     private final DecoratorBuilder decoratorBuilder;
     private final JavaPlugin plugin;
 
     public FluentApiContainerBuilderImpl(FluentApiExtensionsManager eventBuilder,
-                                         JavaPlugin plugin)
-    {
+                                         JavaPlugin plugin) {
         this.extentionsManager = eventBuilder;
         this.plugin = plugin;
         this.decoratorBuilder = FluentDecorator.CreateDecorator();
     }
 
     @Override
-    public FluentApiContainerBuilder addMetrics(int metricsId)
-    {
+    public FluentApiContainerBuilder addMetrics(int metricsId) {
         extentionsManager.register(new MetricsExtention(metricsId));
         return this;
     }
@@ -62,9 +59,11 @@ public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentAp
         extentionsManager.register(new FluentDocumentationExtention(options), ExtentionPiority.HIGH);
         return this;
     }
+
     @Override
     public FluentApiContainerBuilder addDocumentation() {
-        extentionsManager.register(new FluentDocumentationExtention((e)->{}));
+        extentionsManager.register(new FluentDocumentationExtention((e) -> {
+        }));
         return this;
     }
 
@@ -81,14 +80,14 @@ public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentAp
     }
 
     public FluentApiContainerBuilder addPlayerContext() {
-        extentionsManager.register(new FluentPlayerContextExtention((e)->{}));
+        extentionsManager.register(new FluentPlayerContextExtention((e) -> {
+        }));
         return this;
     }
 
     @Override
-    public <T> FluentApiContainerBuilder registerDecorator(Class<T> _interface, Class<? extends T> _implementaition)
-    {
-        decoratorBuilder.decorate(_interface,_implementaition);
+    public <T> FluentApiContainerBuilder registerDecorator(Class<T> _interface, Class<? extends T> _implementaition) {
+        decoratorBuilder.decorate(_interface, _implementaition);
         return this;
     }
 
@@ -105,7 +104,8 @@ public class FluentApiContainerBuilderImpl extends ContainerBuilderImpl<FluentAp
 
     @Override
     public FluentApiContainerBuilder addWebSocket() {
-        return addWebSocket((e)->{});
+        return addWebSocket((e) -> {
+        });
     }
 
     public FluentContainer build() throws Exception {

@@ -6,7 +6,7 @@ import jw.fluent.api.web_socket.FluentWebsocketPacket;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
-import jw.fluent.plugin.implementation.config.ConfigProperty;
+import jw.fluent.plugin.api.config.ConfigProperty;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.websocket.api.FluentWebsocket;
@@ -63,14 +63,15 @@ public class FluentWebsocketExtention implements FluentApiExtension {
         }
         var config = fluentAPI.config();
         var webSocket = (FluentWebsocketImpl) fluentAPI.container().findInjection(FluentWebsocket.class);
-        var customIpProperty = customIpProperty();
-        var customIp = config.getOrCreate(customIpProperty);
-        if (StringUtils.isNullOrEmpty(customIp)) {
-            webSocket.setServerIp(getServerPublicIP());
-        } else {
-            webSocket.setServerIp(customIp);
+        var ipProperty = customIpProperty();
+        var serverIp = config.getOrCreate(ipProperty);
+        if (StringUtils.isNullOrEmpty(serverIp)) {
+            serverIp = getServerPublicIP();
+            config.configFile().set("plugin.websocket.server-ip", serverIp);
+            config.save();
         }
 
+        webSocket.setServerIp(serverIp);
         var packets = fluentAPI.container().findAllByInterface(FluentWebsocketPacket.class);
         webSocket.registerPackets(packets);
         webSocket.start();
@@ -108,7 +109,7 @@ public class FluentWebsocketExtention implements FluentApiExtension {
                 .text("! When you are running plugin locally on your PC, set 'localhost'").newLine()
                 .text("! When default IP not works try use IP that you are using in minecraft server list").newLine().toString();
 
-        return new ConfigProperty<String>("plugin.websocket.custom-ip", StringUtils.EMPTY, description);
+        return new ConfigProperty<String>("plugin.websocket.server-ip", StringUtils.EMPTY, description);
     }
 
     private ConfigProperty<Boolean> runProperty() {

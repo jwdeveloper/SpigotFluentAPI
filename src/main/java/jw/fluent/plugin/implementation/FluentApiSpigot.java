@@ -17,7 +17,7 @@ import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermission;
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import jw.fluent.plugin.api.extention.FluentApiExtensionsManager;
-import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.config.FluentConfig;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class FluentApiSpigot {

@@ -2,7 +2,7 @@ package jw.fluent.api.translator.implementation;
 
 import jw.fluent.api.translator.api.models.LangData;
 import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.api.files.implementation.yml.implementation.reader.YmlReader;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.YmlPathReader;
 import jw.fluent.api.utilites.java.ClassTypeUtility;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,7 +29,7 @@ public class SimpleLangLoader {
     public List<LangData> load(String folderPath, String languageName) throws IOException, InvalidConfigurationException {
 
         var result = new ArrayList<LangData>();
-        var reader = new YmlReader();
+        var reader = new YmlPathReader();
         var files = FileUtility.getFolderFilesName(folderPath, "yml");
         for (var file : files) {
             var name = StringUtils.split(file, ".")[0];
@@ -54,7 +54,7 @@ public class SimpleLangLoader {
     public void generateFiles(String outputPath) throws IOException, InvalidConfigurationException {
         var file = FileUtility.pluginFile(plugin);
         var langPaths = ClassTypeUtility.findAllYmlFiles(file);
-        var reader = new YmlReader();
+        var reader = new YmlPathReader();
         var results = new HashMap<String, YamlConfiguration>();
         for (var path : langPaths) {
             if (!path.contains(languagePath)) {

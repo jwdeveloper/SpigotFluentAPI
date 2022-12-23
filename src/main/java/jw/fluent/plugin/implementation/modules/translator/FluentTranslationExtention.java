@@ -5,7 +5,7 @@ import jw.fluent.api.spigot.permissions.api.PermissionModel;
 import jw.fluent.api.spigot.permissions.api.enums.Visibility;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
-import jw.fluent.plugin.implementation.config.ConfigProperty;
+import jw.fluent.plugin.api.config.ConfigProperty;
 import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.api.translator.implementation.SimpleLangLoader;
@@ -14,7 +14,7 @@ import jw.fluent.api.spigot.commands.api.builder.CommandBuilder;
 import jw.fluent.api.spigot.commands.api.enums.ArgumentDisplay;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
-import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
@@ -99,7 +99,7 @@ public class FluentTranslationExtention implements FluentApiExtension {
                                     .send(commandEvent.getSender());
                             return;
                         }
-                        configFile.config().set(CONFIG_LANG_PATH, languageName);
+                        configFile.configFile().set(CONFIG_LANG_PATH, languageName);
                         configFile.save();
                         FluentMessage.message()
                                 .info()

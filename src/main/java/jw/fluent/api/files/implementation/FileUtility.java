@@ -94,7 +94,6 @@ public interface FileUtility {
             return true;
         } catch (IOException e) {
             FluentLogger.LOGGER.error("Save File: " + fileName, e);
-            e.printStackTrace();
         }
         return false;
     }

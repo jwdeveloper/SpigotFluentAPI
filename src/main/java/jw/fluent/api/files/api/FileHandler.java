@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface FileHandler
 {
-  public void load() throws IllegalAccessException, InstantiationException, IOException;
+  public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException;
 
   public void save();
 

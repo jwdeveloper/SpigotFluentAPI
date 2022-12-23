@@ -1,4 +1,6 @@
 package jw.fluent.plugin.implementation.config;
+import jw.fluent.plugin.api.config.ConfigProperty;
+import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,7 +13,7 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
         return (T) fileConfiguration.get(name);
     }
 
-    public FileConfiguration config()
+    public FileConfiguration configFile()
     {
         return fileConfiguration;
     }

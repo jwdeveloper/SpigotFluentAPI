@@ -77,7 +77,7 @@ public class FilesDataContext implements DataContext {
         fileHandlers.put(fileHandler.getClass(), fileHandler);
     }
 
-    public void load() throws IllegalAccessException, InstantiationException, IOException {
+    public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException {
         for (var filesHandler : fileHandlers.values()) {
             filesHandler.load();
         }

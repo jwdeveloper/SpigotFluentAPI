@@ -6,7 +6,7 @@ import jw.fluent.plugin.api.FluentApiContainerBuilder;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.api.assembly_scanner.FluentAssemblyScanner;
-import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
 import jw.fluent.plugin.implementation.modules.command.FluentApiCommandBuilder;
@@ -19,13 +19,13 @@ public class FluentApiBuilder implements FluentApiSpigotBuilder
     public static FluentApiBuilder create(JavaPlugin plugin)
     {
         FluentApi.setPlugin(plugin);
-        return new FluentApiBuilder(new FluentApiSpiogtBuilderImpl(plugin));
+        return new FluentApiBuilder(new FluentApiSpigotBuilderImpl(plugin));
     }
 
 
-    private FluentApiSpiogtBuilderImpl builder;
+    private FluentApiSpigotBuilderImpl builder;
 
-    FluentApiBuilder(FluentApiSpiogtBuilderImpl builder)
+    FluentApiBuilder(FluentApiSpigotBuilderImpl builder)
     {
         this.builder = builder;
     }

@@ -1,6 +1,6 @@
 package jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_manager;
 
-import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListIndexNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_manager.events.SearchEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_manager.events.SearchFilterEvent;
@@ -30,7 +30,7 @@ public class SearchManager<T> {
         indexObserver = new ObserverBag<>(0);
         var options = new ListNotifierOptions<SearchProfile<T>>();
         options.setOnNameMapping(SearchProfile::name);
-        buttonObserver = new ButtonObserver<>(indexObserver.getObserver(), new FluentListNotifier<>(searchProfiles, options));
+        buttonObserver = new ButtonObserver<>(indexObserver.getObserver(), new FluentListIndexNotifier<>(searchProfiles, options));
     }
 
 

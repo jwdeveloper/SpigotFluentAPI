@@ -4,8 +4,8 @@ import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
-import jw.fluent.plugin.implementation.config.ConfigProperty;
-import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.config.ConfigProperty;
+import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.event.player.PlayerJoinEvent;
 

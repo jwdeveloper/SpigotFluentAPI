@@ -1,6 +1,6 @@
 package unit.files;
 
-import jw.fluent.api.files.implementation.yml.implementation.reader.YmlReader;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.YmlPathReader;
 import jw.fluent.api.utilites.java.ClassTypeUtility;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -56,7 +56,7 @@ public class YmlReaderTests
 
     @Test
     public void shouldReadFile() throws IOException, InvalidConfigurationException {
-        var reader = new YmlReader();
+        var reader = new YmlPathReader();
         var result= reader.read("D:\\tmp\\test.yml");
         for(var k : result.entrySet())
         {

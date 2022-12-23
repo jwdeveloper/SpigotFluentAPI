@@ -6,7 +6,7 @@ import jw.fluent.api.spigot.messages.SimpleMessage;
 import jw.fluent.api.spigot.particles.implementation.builder.builders_pipeline.FluentParticlebuilder;
 import jw.fluent.api.spigot.tasks.SimpleTasks;
 import jw.fluent.api.files.implementation.FileUtility;
-import jw.fluent.plugin.implementation.config.FluentConfig;
+import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.dependecy_injection.FluentInjection;
 import jw.fluent.plugin.implementation.modules.files.FluentFiles;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;

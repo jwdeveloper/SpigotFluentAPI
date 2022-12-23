@@ -7,15 +7,14 @@ import jw.fluent.api.files.api.annotation.files.JsonFile;
 import jw.fluent.api.files.implementation.FilesDataContext;
 import jw.fluent.api.files.implementation.SimpleFileBuilderImpl;
 import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
-import jw.fluent.plugin.implementation.config.ConfigProperty;
+import jw.fluent.plugin.api.config.ConfigProperty;
 import jw.fluent.plugin.implementation.modules.tasks.FluentTasks;
-import jw.fluent.api.files.implementation.yml.api.annotations.YmlFile;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.api.FluentApiExtension;
 import jw.fluent.plugin.implementation.FluentApiSpigot;
-import jw.fluent.plugin.implementation.config.FluentConfig;
-import jw.fluent.plugin.implementation.config.config_sections.FluentConfigSection;
+import jw.fluent.plugin.api.config.FluentConfig;
+import jw.fluent.plugin.api.config.ConfigSection;
 
 public class FluentFilesExtention implements FluentApiExtension {
 
@@ -30,7 +29,8 @@ public class FluentFilesExtention implements FluentApiExtension {
 
 
     @Override
-    public void onConfiguration(FluentApiSpigotBuilder fluentApiBuilder) {
+    public void onConfiguration(FluentApiSpigotBuilder fluentApiBuilder)
+    {
         fluentApiBuilder.container().register(FluentFiles.class, LifeTime.SINGLETON,(x) ->
         {
             filesDataContext = builder.build();
@@ -40,17 +40,17 @@ public class FluentFilesExtention implements FluentApiExtension {
             var config = (FluentConfig)searchContainer.find(FluentConfig.class);
 
             var customFiles = searchContainer.findAllByInterface(CustomFile.class);
-            var ymlFiles = searchContainer.findAllByAnnotation(YmlFile.class);
+            //var ymlFiles = searchContainer.findAllByAnnotation(YmlFile.class);
             var jsonFiles =  searchContainer.findAllByAnnotation(JsonFile.class);
-            var configSections =  searchContainer.findAllByInterface(FluentConfigSection.class);
+            var configSections =  searchContainer.findAllByInterface(ConfigSection.class);
             for (var file: customFiles)
             {
                 filesDataContext.addCustomFileObject(file);
             }
-            for (var file: ymlFiles)
+          /*  for (var file: ymlFiles)
             {
                 filesDataContext.addYmlObject(file);
-            }
+            }*/
             for (var file: jsonFiles)
             {
                 filesDataContext.addJsonObject(file);

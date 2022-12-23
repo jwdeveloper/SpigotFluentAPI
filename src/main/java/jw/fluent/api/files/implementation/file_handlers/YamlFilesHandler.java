@@ -1,9 +1,9 @@
 package jw.fluent.api.files.implementation.file_handlers;
 
 import jw.fluent.api.files.api.FileHandler;
-import jw.fluent.plugin.implementation.config.config_sections.FluentConfigSection;
-import jw.fluent.api.utilites.java.ObjectUtility;
-import jw.fluent.api.files.implementation.yml.YmlFileUtility;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.SimpleYamlReader;
+import jw.fluent.plugin.api.config.ConfigSection;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.YmlFileUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,20 +11,27 @@ import java.util.List;
 public class YamlFilesHandler implements FileHandler {
 
     private final List<Object> files = new ArrayList<>();
+    private SimpleYamlReader yamlReader;
+
+    public YamlFilesHandler()
+    {
+        yamlReader = new SimpleYamlReader();
+    }
+
     @Override
     public void load() {
         for (var file: files)
         {
-            if(file instanceof FluentConfigSection)
+            if(file instanceof ConfigSection)
             {
                 continue;
             }
-            var data = YmlFileUtility.load(file.getClass().getSimpleName(), file);
+         /*   var data = YmlFileUtility.load(file.getClass().getSimpleName(), file);
             if (data == null) {
                 YmlFileUtility.save(file.getClass().getSimpleName(), file);
                 return;
             }
-            ObjectUtility.copyToObject(data, file, data.getClass());
+            ObjectUtility.copyToObject(data, file, data.getClass());*/
         }
     }
 
@@ -33,11 +40,11 @@ public class YamlFilesHandler implements FileHandler {
 
         for (var file: files)
         {
-            if(file instanceof FluentConfigSection)
+            if(file instanceof ConfigSection)
             {
                 continue;
             }
-            YmlFileUtility.save(file.getClass().getSimpleName(), file);
+           // YmlFileUtility.save(file.getClass().getSimpleName(), file);
         }
     }
 

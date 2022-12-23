@@ -1,35 +1,37 @@
 package jw.fluent.api.spigot.gui.fluent_ui.observers.list;
 
 import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.events.onSelectEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.button.ButtonUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.events.onSelectEvent;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 
-
-public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
-    private final List<T> values;
-
-    private List<String> initialDescription;
+public class FluentListNotifier<T> extends FluentButtonNotifier<T> {
     private final ListNotifierOptions<T> options;
+    private final Supplier<List<T>> supplier;
+
+    protected List<T> values;
+    private List<String> initialDescription;
+
     private int currentIndex = Integer.MIN_VALUE;
     private int lastValuesSize = Integer.MIN_VALUE;
 
-    public FluentListNotifier(List<T> values, ListNotifierOptions<T> options) {
+    public FluentListNotifier(Supplier<List<T>> supplier, ListNotifierOptions<T> options) {
         super(options);
         this.options = options;
-        this.values = values;
-        this.initialDescription = new ArrayList<>();
+        this.supplier = supplier;
+        values = supplier.get();
     }
 
     @Override
-    protected void onInitialize(ButtonObserverEvent<Integer> event) {
+    protected void onInitialize(ButtonObserverEvent<T> event) {
         if (options.getOnNameMapping() == null) {
             options.setOnNameMapping(Object::toString);
         }
@@ -47,18 +49,19 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
         onUpdate(event);
     }
 
+
+
     @Override
-    public void onLeftClick(ButtonObserverEvent<Integer> event) {
+    public void onLeftClick(ButtonObserverEvent<T> event) {
         if (values.size() == 0) {
             return;
         }
         currentIndex = (currentIndex + 1) % values.size();
-        event.getObserver().setValue(currentIndex);
+        event.getObserver().setValue(values.get(currentIndex));
     }
 
-
     @Override
-    public void onRightClick(ButtonObserverEvent<Integer> event) {
+    public void onRightClick(ButtonObserverEvent<T> event) {
         if (options.isIgnoreRightClick()) {
             return;
         }
@@ -70,16 +73,17 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
         if (currentIndex < 0) {
             currentIndex = values.size() - 1;
         }
-        event.getObserver().setValue(currentIndex);
+        event.getObserver().setValue(values.get(currentIndex));
+
     }
 
-
     @Override
-    protected void onUpdate(ButtonObserverEvent<Integer> event) {
+    protected void onUpdate(ButtonObserverEvent<T> event) {
+        values = supplier.get();
         if (hasValueBeenChanged()) {
             createDescription(event.getButton());
         }
-        currentIndex = event.getValue();
+        currentIndex = findCurrentIndex(event);
         if (currentIndex < 0) {
             currentIndex = 0;
         }
@@ -87,6 +91,18 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
             currentIndex = lastValuesSize;
         }
         updateDescription(event.getPlayer(), event.getButton());
+    }
+
+    private int findCurrentIndex(ButtonObserverEvent<T>  event)
+    {
+        for(var i =0;i<values.size();i++)
+        {
+            if(values.get(i).equals(event.getValue()))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void createDescription(ButtonUI button) {
@@ -126,6 +142,4 @@ public class FluentListNotifier<T> extends FluentButtonNotifier<Integer> {
     public boolean hasValueBeenChanged() {
         return values.size() != lastValuesSize;
     }
-
-
 }
