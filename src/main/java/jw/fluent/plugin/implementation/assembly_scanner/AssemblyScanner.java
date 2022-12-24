@@ -17,20 +17,20 @@ public class AssemblyScanner implements FluentAssemblyScanner {
     @Getter
     private final List<Class<?>> classes;
 
-    private final HashMap<Class<?>, List<Class<?>>> byInterfaceCatch;
+    private final Map<Class<?>, List<Class<?>>> byInterfaceCatch;
 
-    private final HashMap<Class<?>, List<Class<?>>> byParentCatch;
+    private final Map<Class<?>, List<Class<?>>> byParentCatch;
 
-    private final HashMap<Class<? extends Annotation>, List<Class<?>>> byAnnotationCatch;
+    private final Map<Class<? extends Annotation>, List<Class<?>>> byAnnotationCatch;
 
-    private final HashMap<Package, List<Class<?>>> byPackageCatch;
+    private final Map<Package, List<Class<?>>> byPackageCatch;
 
 
     public AssemblyScanner(JavaPlugin plugin) {
         classes = loadPluginClasses(plugin.getClass());
-        byInterfaceCatch = new HashMap<>();
-        byParentCatch = new HashMap<>();
-        byPackageCatch = new HashMap<>();
+        byInterfaceCatch = new IdentityHashMap<>();
+        byParentCatch = new IdentityHashMap<>();
+        byPackageCatch = new IdentityHashMap<>();
         byAnnotationCatch = new HashMap<>();
     }
 
@@ -39,8 +39,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
         final var source = clazz.getProtectionDomain().getCodeSource();
         if (source == null) return Collections.emptyList();
         final var url = source.getLocation();
-        try (final var zip = new ZipInputStream(url.openStream()))
-        {
+        try (final var zip = new ZipInputStream(url.openStream())) {
             final List<Class<?>> classes = new ArrayList<>();
             while (true) {
                 final ZipEntry entry = zip.getNextEntry();
@@ -50,22 +49,19 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 if (!name.endsWith(".class")) continue;
                 name = name.replace('/', '.').substring(0, name.length() - 6);
                 try {
-                    classes.add(Class.forName(name,false,clazz.getClassLoader()));
-                }
-                catch (NoClassDefFoundError | ClassNotFoundException e)
-                {
-                    FluentLogger.LOGGER.warning("Unable to load class:"+name);
+                    classes.add(Class.forName(name, false, clazz.getClassLoader()));
+                } catch (NoClassDefFoundError | ClassNotFoundException e) {
+                    FluentLogger.LOGGER.warning("Unable to load class:" + name);
                 }
 
 
             }
             return classes;
         } catch (IOException e) {
-            FluentLogger.LOGGER.error("Unable to open classes loader for: "+clazz.getName(), e);
+            FluentLogger.LOGGER.error("Unable to open classes loader for: " + clazz.getName(), e);
             return Collections.emptyList();
         }
     }
-
 
 
     public Collection<Class<?>> findByAnnotation(Class<? extends Annotation> annotation) {

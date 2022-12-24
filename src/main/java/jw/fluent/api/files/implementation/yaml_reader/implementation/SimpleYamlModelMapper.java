@@ -31,11 +31,26 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
         }
         if (model.hasDescription())
         {
+            var header = configuration.options().header();
+            var openTag = "<" +data.getClass().getSimpleName()+">";
+            var closeTag = "</"+data.getClass().getSimpleName()+">";
+            var startIndex = header.indexOf(openTag);
+            var endIndex = header.indexOf(closeTag);
+            if(startIndex != -1 && endIndex != -1)
+            {
+                var temp = "";
+                temp = header.substring(0, startIndex-1);
+
+                endIndex= header.indexOf(">",endIndex);
+                temp +=header.substring(endIndex+1);
+                header =temp;
+            }
             var description = FluentMessage
                     .message()
-                    .text(configuration.options().header())
-                    .newLine()
+                    .text(header)
+                    .text(openTag).newLine()
                     .text(model.getDescription())
+                    .text(closeTag)
                     .toString();
             configuration.options().header(description);
         }

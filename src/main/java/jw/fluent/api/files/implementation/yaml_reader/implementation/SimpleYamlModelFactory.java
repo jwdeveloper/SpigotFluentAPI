@@ -38,20 +38,17 @@ public class SimpleYamlModelFactory implements YamlModelFactory {
             var content = getYamlContent(clazz, field, annotation);
 
             var fieldClazz = field.getType();
-            var fieldPath = path.isEmpty()?  content.getPath():  path+"."+content.getPath();
+            var fieldPath = path.isEmpty() ? content.getPath() : path + "." + content.getPath();
 
             List<YamlContent> children = new ArrayList<YamlContent>();
-            if (field.getType().isAssignableFrom(List.class))
-            {
+            if (field.getType().isAssignableFrom(List.class)) {
                 ParameterizedType arrayType = (ParameterizedType) field.getGenericType();
                 var memberType = arrayType.getActualTypeArguments()[0];
-                var memberClass =Class.forName(memberType.getTypeName());
+                var memberClass = Class.forName(memberType.getTypeName());
                 children = createContent(memberClass, fieldPath);
                 content.setList(true);
-            }
-            else
-            {
-              children = createContent(fieldClazz, fieldPath);
+            } else {
+                children = createContent(fieldClazz, fieldPath);
             }
 
             content.setClazz(fieldClazz);
@@ -63,24 +60,33 @@ public class SimpleYamlModelFactory implements YamlModelFactory {
         return result;
     }
 
-
-
-
     private String generateDescription(List<YamlContent> contents) {
-        var content = contents.stream().filter(c -> !c.getDescription().isEmpty()).toList();
-        if (content.size() == 0)
+        if (contents.isEmpty())
             return StringUtils.EMPTY;
-        var description = FluentMessage.message();
-        var maxDesc = Integer.MIN_VALUE;
-        for (YamlContent ymlContent : content) {
-            var desc = ymlContent.getDescription();
-            description.text(ymlContent.getFullPath()).newLine()
-                    .text("-> ").text(desc).newLine().newLine();
-            if (desc.length() > maxDesc) {
-                maxDesc = desc.length();
+
+
+        var builder = FluentMessage.message();
+        for (var ymlContent : contents) {
+            var parentPath = ymlContent.getFullPath();
+
+
+            if (StringUtils.isNotNullOrEmpty(ymlContent.getDescription()) && !ymlContent.getDescription().equals(" ")) {
+                builder.newLine().text(parentPath).newLine()
+                        .space().text(ymlContent.getDescription()).newLine().newLine();
+            }
+
+
+            for (var child : ymlContent.getChildren()) {
+                var description = child.getDescription();
+                if (description.isEmpty() || StringUtils.isNullOrEmpty(description) || description.equals(" ")) {
+                    continue;
+                }
+                builder.newLine().text(parentPath + "." + child.getFullPath()).newLine()
+                        .space().text(description).newLine();
             }
         }
-        return description.toString();
+
+        return builder.toString();
     }
 
 

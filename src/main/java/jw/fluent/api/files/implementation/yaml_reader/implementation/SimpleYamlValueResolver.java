@@ -112,7 +112,7 @@ public class SimpleYamlValueResolver {
                 var childSection = section.createSection(childPath);
                 for (var child : content.getChildren()) {
                     var value = getFieldValue(obj, child);
-                    childSection.set(child.getPath(), value);
+                    childSection.set(child.getName(), value);
                 }
                 i++;
             }

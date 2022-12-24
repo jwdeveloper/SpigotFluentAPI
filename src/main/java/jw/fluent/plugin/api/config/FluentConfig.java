@@ -16,6 +16,8 @@ public interface FluentConfig {
 
     void save();
 
+    void save(Object object);
+
     FileConfiguration configFile();
 
     boolean created();

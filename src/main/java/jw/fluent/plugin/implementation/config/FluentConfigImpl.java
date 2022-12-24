@@ -1,9 +1,14 @@
 package jw.fluent.plugin.implementation.config;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.SimpleYamlModelFactory;
+import jw.fluent.api.files.implementation.yaml_reader.implementation.SimpleYamlModelMapper;
 import jw.fluent.plugin.api.config.ConfigProperty;
+import jw.fluent.plugin.api.config.ConfigSection;
 import jw.fluent.plugin.api.config.FluentConfig;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 public record FluentConfigImpl(FileConfiguration fileConfiguration,
                                String path,
                                boolean updated,
@@ -28,6 +33,24 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
     public void save() {
         try
         {
+            fileConfiguration.save(path);
+        }
+        catch (Exception e)
+        {
+            FluentLogger.LOGGER.error("Unable to save config path!",e);
+        }
+
+    }
+
+
+    public void save(Object configSection)
+    {
+        try
+        {
+            var factory = new SimpleYamlModelFactory();
+            var model = factory.createModel(configSection.getClass());
+            var mapper = new SimpleYamlModelMapper();
+            mapper.mapToConfiguration(configSection, model,(YamlConfiguration)fileConfiguration);
             fileConfiguration.save(path);
         }
         catch (Exception e)
