@@ -4,11 +4,15 @@ import jw.fluent.api.utilites.java.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.EulerAngle;
+
+import java.util.UUID;
 
 public class ArmorStandModel extends GameObject {
 
@@ -20,6 +24,10 @@ public class ArmorStandModel extends GameObject {
 
     @Getter
     private String name;
+
+    private UUID uuid;
+
+    private NamespacedKey namespacedKey;
 
     @Getter
     @Setter
@@ -52,6 +60,40 @@ public class ArmorStandModel extends GameObject {
         this.itemStack = itemStack;
         updateModel();
     }
+
+    public void setId(NamespacedKey namespacedKey, UUID uuid)
+    {
+        if(armorStand == null)
+            return;
+
+        if(namespacedKey == null || uuid == null)
+            return;
+
+        this.uuid = uuid;
+        this.namespacedKey = namespacedKey;
+        var container = armorStand.getPersistentDataContainer();
+        container.set(namespacedKey, PersistentDataType.STRING, uuid.toString());
+    }
+
+
+    public void refresh()
+    {
+        var isSmall = false;
+        if(armorStand != null)
+        {
+            isSmall = armorStand.isSmall();
+            armorStand.remove();
+        }
+
+
+        armorStand = createArmorStand();
+        armorStand.setHelmet(itemStack);
+        armorStand.setSmall(isSmall);
+        armorStand.teleport(location);
+        setId(namespacedKey, uuid);
+        updateModel();
+    }
+
 
     public void setCustomModelId(int customModelId) {
         if(itemStack == null)

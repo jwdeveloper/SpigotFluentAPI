@@ -41,7 +41,14 @@ public class FluentConfigMigrator implements ConfigMigrator {
         for(var migration : sorted)
         {
             FluentLogger.LOGGER.log("Migrating config to plugin version",migration.version());
-            migration.onPluginUpdate(configuration);
+            try {
+                migration.onPluginUpdate(configuration);
+            }
+            catch (Exception e)
+            {
+                 FluentLogger.LOGGER.warning("Error while migration to"+migration.version(),e.getMessage());
+            }
+
         }
         configuration.set(VERSION_PATH, currentVersion);
     }
