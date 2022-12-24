@@ -28,59 +28,7 @@ like # Commands, Events, Particle registration and more
 
 ## Code example
 
-### Example command
-```java
-   FluentCommand.create("give-item")
-                  .setDescription("give yourself an item")
-                  .setUsageMessage("example of use /give-item DIAMOND 1")
-                  .addPermissions("example.permission","example.player")
-                .nextStep()
-                  .withArgument("material", ArgumentType.CUSTOM)
-                   .setTabComplete(Arrays.asList("diamond","apple","sword"))
-                   .addValidator(mateiralName ->
-                   {
-                      if(mateiralName.length() == 1)
-                          return new ValidationResult(false,"too short name");
-                      else 
-                          return new ValidationResult(true,"");
-                   })
-                   .build()
-                  .withArgument("amount",ArgumentType.INT)
-                   .build()
-                .nextStep()
-                  .onPlayerExecute(event ->
-                  {
-                    Player player = event.getPlayerSender();
-                    Material material = Material.valueOf(event.getArgumentValue(0));
-                    int amount = event.getArgumentValue(1);
-                    ItemStack itemStack = new ItemStack(material,amount);
-                    player.getInventory().setItemInMainHand(itemStack);
-                  })
-                  .onConsoleExecute(event ->
-                  {
-                    event.getConsoleSender().sendMessage("This command is only for players");
-                  })
-                .nextStep()
-                  .buildAndRegister();
-```
-### Example task
-```java
- FluentTasks.taskTimer(20, (iteration, task) ->
-        {
-            Bukkit.getConsoleSender().sendMessage("Current iteration "+iteration);
-            int players = Bukkit.getOnlinePlayers().size();
-            if(players == 0)
-            {
-                task.cancel();
-            }
-            Bukkit.getConsoleSender().sendMessage("Current player number "+players);
-        }).startAfterIterations(100)
-          .onStop(fluentTaskTimer ->
-          {
-            Bukkit.getConsoleSender().sendMessage("Task is done");
-          })
-          .run();
-```
+
 ### Example event
 ```java
   FluentEvent.onEvent(PlayerJoinEvent.class, event ->
