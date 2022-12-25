@@ -39,7 +39,8 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
             if(startIndex != -1 && endIndex != -1)
             {
                 var temp = "";
-                temp = header.substring(0, startIndex-1);
+                startIndex =  startIndex > 1? startIndex-1:startIndex;
+                temp = header.substring(0, startIndex);
 
                 endIndex= header.indexOf(">",endIndex);
                 temp +=header.substring(endIndex+1);
