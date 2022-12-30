@@ -19,7 +19,7 @@ public class DocumentationOptions
 
     private boolean useSpigotDocumentation =false;
 
-    private Class<?> permissionModel;
+    private Class<?> permissionTemplate;
 
     private List<DocumentationDecorator> decorators = new ArrayList<>();
 

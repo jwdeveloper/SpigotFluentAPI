@@ -1,13 +1,17 @@
 package jw.fluent.api.spigot.gameobjects.implementation;
 
 import jw.fluent.api.utilites.java.StringUtils;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Consumer;
 import org.bukkit.util.EulerAngle;
@@ -28,6 +32,8 @@ public class ArmorStandModel extends GameObject {
     private UUID uuid;
 
     private NamespacedKey namespacedKey;
+
+    private Color color;
 
     @Getter
     @Setter
@@ -142,7 +148,6 @@ public class ArmorStandModel extends GameObject {
         if (armorStand == null)
             return;
         if (!visible) {
-
             armorStand.getEquipment().setHelmet(null);
             return;
         }
@@ -170,6 +175,28 @@ public class ArmorStandModel extends GameObject {
         updateModel();
 
         onCreated.accept(this);
+    }
+
+
+    public void setColor(Color color)
+    {
+        this.color = color;
+
+        if(itemStack == null)
+        {
+
+            return;
+        }
+        FluentLogger.LOGGER.log("A", color.toString());
+        FluentLogger.LOGGER.log("B");
+        var meta = itemStack.getItemMeta();
+        if(meta instanceof LeatherArmorMeta horseMeta)
+        {
+            horseMeta.setColor(color);
+            itemStack.setItemMeta(horseMeta);
+            FluentLogger.LOGGER.log("C");
+        }
+        updateModel();
     }
 
     protected ArmorStand createArmorStand()

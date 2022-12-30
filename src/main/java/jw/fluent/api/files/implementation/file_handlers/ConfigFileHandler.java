@@ -5,6 +5,7 @@ import jw.fluent.api.files.implementation.yaml_reader.api.YamlReader;
 import jw.fluent.api.files.implementation.yaml_reader.implementation.SimpleYamlReader;
 import jw.fluent.api.utilites.java.ObjectUtility;
 import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class FluentListNotifier<T> extends FluentButtonNotifier<T> {
-    private final ListNotifierOptions<T> options;
+    protected final ListNotifierOptions<T> options;
     private final Supplier<List<T>> supplier;
 
     protected List<T> values;

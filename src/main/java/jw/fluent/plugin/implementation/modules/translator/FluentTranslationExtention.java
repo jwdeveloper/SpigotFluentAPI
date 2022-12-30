@@ -118,8 +118,7 @@ public class FluentTranslationExtention implements FluentApiExtension {
         var pluginName = builder.getBasePermissionName();
         permission.setName(pluginName + ".commands.lang");
         permission.setDescription("Allow player to change plugin language");
-        permission.setVisibility(Visibility.Op);
-        permission.getGroups().add(builder.defaultPermissionSections().commands().getParentGroup());
+        builder.defaultPermissionSections().commands().addChild(permission);
         return permission;
     }
 

@@ -101,6 +101,11 @@ public class ButtonUI {
     {
         itemStack.setType(material);
         final var meta = itemStack.getItemMeta();
+        if(meta == null)
+        {
+            return;
+        }
+
         meta.setCustomModelData(id);
         itemStack.setItemMeta(meta);
     }

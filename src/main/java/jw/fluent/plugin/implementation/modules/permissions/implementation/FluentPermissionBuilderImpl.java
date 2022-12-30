@@ -57,14 +57,15 @@ public class FluentPermissionBuilderImpl implements FluentPermissionBuilder {
         var pluginPermission = defaultPermissionBuilder.plugin();
         pluginPermission.setName(getBasePermissionName());
 
-        var command = defaultPermissionBuilder.commands();
-        command.getGroups().add(pluginPermission.getParentGroup());
-
+        var commands = defaultPermissionBuilder.commands();
         var gui  = defaultPermissionBuilder.gui();
-        gui.getGroups().add(pluginPermission.getParentGroup());
+
+
+        pluginPermission.addChild(commands);
+        pluginPermission.addChild(gui);
 
         models.add(pluginPermission);
-        models.add(command);
+        models.add(commands);
         models.add(gui);
         return new FluentPermissionImpl(models, basePermission);
     }

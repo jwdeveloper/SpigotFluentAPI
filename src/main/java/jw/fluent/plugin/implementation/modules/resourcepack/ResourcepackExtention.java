@@ -99,7 +99,7 @@ public class ResourcepackExtention implements FluentApiExtension {
     }
 
     private boolean getLoadOnJoin(FluentConfig config, ResourcepackOptions options) {
-        var property = new ConfigProperty<Boolean>("plugin.resourcepack.load-on-join",
+        var property = new ConfigProperty<Boolean>("plugin.resourcepack.download-on-join",
                 options.isLoadOnJoin(),
                 "Downloads resourcepack when player joins to server");
         return config.getOrCreate(property);

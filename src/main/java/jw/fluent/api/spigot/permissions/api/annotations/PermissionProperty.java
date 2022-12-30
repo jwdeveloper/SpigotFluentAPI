@@ -14,8 +14,4 @@ public @interface PermissionProperty {
     String description() default "";
 
     Visibility visibility() default Visibility.None;
-
-    String group() default "";
-
-    boolean isParent() default false;
 }

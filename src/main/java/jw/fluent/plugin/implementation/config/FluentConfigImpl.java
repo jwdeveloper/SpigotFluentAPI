@@ -70,23 +70,25 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
 
     @Override
     public <T> T getOrCreate(String path, T defaultValue, String ... description) {
+
         if(!fileConfiguration.contains(path))
         {
             fileConfiguration.set(path,defaultValue);
-            var builder = FluentMessage.message();
-
-
-            builder.text(fileConfiguration.options().header());
-            builder.text(path);
-            builder.newLine();
-            for(var desc : description)
-            {
-                builder.bar(" ",3).text(desc).newLine();
-            }
-            builder.newLine();
-            fileConfiguration.options().header(builder.toString());
-            save();
         }
+
+        var builder = FluentMessage.message();
+        builder.text(fileConfiguration.options().header());
+        builder.newLine();
+        builder.text(path);
+        builder.newLine();
+        for(var desc : description)
+        {
+            builder.bar(" ",3).text(desc).newLine();
+        }
+        builder.newLine();
+        fileConfiguration.options().header(builder.toString());
+        save();
+
         return (T)fileConfiguration.get(path);
     }
 

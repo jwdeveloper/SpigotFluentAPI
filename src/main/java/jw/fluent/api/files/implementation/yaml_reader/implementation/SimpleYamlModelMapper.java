@@ -2,6 +2,7 @@ package jw.fluent.api.files.implementation.yaml_reader.implementation;
 
 import jw.fluent.api.files.implementation.yaml_reader.api.YamlModelMapper;
 import jw.fluent.api.files.implementation.yaml_reader.api.models.YamlModel;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 

@@ -2,11 +2,13 @@ package jw.fluent.plugin.implementation.config;
 
 import jw.fluent.api.files.implementation.yaml_reader.api.YamlReader;
 import jw.fluent.api.files.implementation.yaml_reader.implementation.SimpleYamlReader;
+import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.assembly_scanner.AssemblyScanner;
 import jw.fluent.plugin.api.config.ConfigSection;
 import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.plugin.implementation.config.migrations.FluentConfigMigrator;
 import jw.fluent.plugin.implementation.config.sections.DefaultConfigSection;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,6 +38,8 @@ public class FluentConfigLoader {
 
     public FluentConfigImpl load(String path) throws Exception {
         var yamlConfiguration = getConfigFile(path);
+        yamlConfiguration.options().header(StringUtils.EMPTY);
+
         if (migrator.isPluginUpdated(yamlConfiguration)) {
             migrator.makeMigration(yamlConfiguration);
             yamlConfiguration.save(path);

@@ -2,181 +2,84 @@ package jw.fluent.api.spigot.documentation.implementation.decorator;
 
 import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
 import jw.fluent.api.spigot.documentation.api.models.Documentation;
-import jw.fluent.api.spigot.permissions.api.PermissionGeneratorDto;
+import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
+import jw.fluent.api.spigot.permissions.api.PermissionDto;
+
 import jw.fluent.api.spigot.permissions.api.PermissionModel;
-import jw.fluent.api.spigot.permissions.api.PermissionSection;
-import jw.fluent.api.spigot.permissions.api.annotations.PermissionGroup;
-import jw.fluent.api.spigot.permissions.api.annotations.PermissionProperty;
-import jw.fluent.api.spigot.permissions.api.annotations.PermissionTitle;
-import jw.fluent.api.utilites.java.StringUtils;
+import jw.fluent.api.spigot.permissions.implementation.PermissionModelResolver;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PermissionDocumentationDecorator extends DocumentationDecorator {
 
-    private final PermissionGeneratorDto permissionGeneratorDto;
+    private final PermissionDto permissionGeneratorDto;
 
-    public PermissionDocumentationDecorator(PermissionGeneratorDto permissionGeneratorDto) {
+    private final PermissionModelResolver resolver;
+
+    private final int defaultOffset = 2;
+    private final int propertyOffset = 4;
+    private final int listOffset = 6;
+
+    public PermissionDocumentationDecorator(PermissionDto permissionGeneratorDto) {
         this.permissionGeneratorDto = permissionGeneratorDto;
+        resolver = new PermissionModelResolver();
     }
 
     @Override
     public void decorate(Documentation documentation) {
-
-        List<PermissionSection> sections  = new ArrayList<PermissionSection>();
-        try {
-            sections = loadPermissionSections();
-        } catch (Exception e) {
-            FluentLogger.LOGGER.error("Unable to generate permissions", e);
-            return;
-        }
-
-
-        addTitle("Permissions",documentation,"yml-title");
-        addImage("https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/banners/permissions.png",documentation);
-
-        var defaultOffset = 2;
-        var propertyOffset = 4;
-        var listOffset = 6;
-
-        var builder= createYmlBuilder();
+        var models = getModels();
+        addTitle("Permissions", documentation, "yml-title");
+        addImage("https://raw.githubusercontent.com/jwdeveloper/SpigotFluentAPI/master/resources/banners/permissions.png", documentation);
+        var builder = createYmlBuilder();
         builder.addSection("permissions");
         builder.newLine();
-        for (var section : sections) {
-            if (section.hasTitle()) {
-                builder.addComment(section.getModel().getTitle());
-            }
-            var model = section.getModel();
-            builder.addSection(model.getName(),defaultOffset);
-            if (section.hasDescription()) {
-                builder.addProperty("description",model.getDescription(),propertyOffset);
-            }
-            if (section.hasVisibility()) {
-                builder.addProperty("default",model.getVisibility().name().toLowerCase(),propertyOffset);
-            }
-            if (section.hasChildren()) {
-                builder.addSection("children",propertyOffset);
-                for (var child : section.getChildren()) {
-                    builder.addListProperty(child.getName(),listOffset);
-                }
-            }
-            builder.newLine();
-        }
+        renderSections(builder, models);
         var yml = builder.build();
-        addYml(yml,documentation);
-
+        addYml(yml, documentation);
     }
 
-
-    private List<PermissionSection> loadPermissionSections() throws IllegalAccessException, IOException {
-        var models = permissionGeneratorDto.permissionModels();
-        if (permissionGeneratorDto._class() != null) {
-            var loaded = loadModels(permissionGeneratorDto._class());
-            models.addAll(loaded);
-        }
-        var sections = createSections(models);
-        return sortSectionsByGroup(sections);
-    }
-
-    private List<PermissionModel> loadModels(Class<?> _clazz) throws IllegalAccessException {
-        var result = new ArrayList<PermissionModel>();
-        for (var field : _clazz.getDeclaredFields()) {
-            if (!field.isAnnotationPresent(PermissionProperty.class)) {
-                continue;
-            }
-            field.setAccessible(true);
-            var annotation = field.getAnnotation(PermissionProperty.class);
-            var value = (String) field.get(null);
-
-            var model = new PermissionModel();
-            model.setName(value);
-            model.setDescription(annotation.description());
-            model.setParentGroup(annotation.group());
-            model.setParent(annotation.isParent());
-
-            var permissionGroups = field.getAnnotationsByType(PermissionGroup.class);
-            for (var permissionGroup : permissionGroups) {
-                model.getGroups().add(permissionGroup.group());
-            }
-
-            if (field.isAnnotationPresent(PermissionTitle.class)) {
-                var permissionTitle = field.getAnnotation(PermissionTitle.class);
-                model.setTitle(permissionTitle.title());
-            }
-
-            result.add(model);
-        }
-        return result;
-    }
-
-    private List<PermissionSection> createSections(List<PermissionModel> models) throws IllegalAccessException {
-        var result = new ArrayList<PermissionSection>();
-        for (var model : models) {
-            var children = new ArrayList<PermissionModel>();
-            if (!model.isParent()) {
-                result.add(new PermissionSection(model, children));
-                continue;
-            }
-            var parentGroup = model.getParentGroup();
-            if (parentGroup.equals(StringUtils.EMPTY)) {
-                result.add(new PermissionSection(model, children));
-                continue;
-            }
-
-            for (var child : models) {
-                if (child.equals(model)) {
-                    continue;
-                }
-                if (!child.getGroups().contains(parentGroup)) {
-                    continue;
-                }
-                children.add(child);
-            }
-            result.add(new PermissionSection(model, children));
-        }
-        return result;
-    }
-
-    private List<PermissionSection> sortSectionsByGroup(List<PermissionSection> sections) throws IllegalAccessException {
-        var result = new LinkedList<PermissionSection>();
-        var sorted = new LinkedHashMap<String, List<PermissionSection>>();
-        sorted.put("plugin", new LinkedList<PermissionSection>());
+    private void renderSections(YmlBuilder builder, List<PermissionModel> sections) {
         for (var section : sections) {
-            var group = StringUtils.EMPTY;
-            if (section.getModel().isParent()) {
-                group = section.getModel().getParentGroup();
-            }
-            if (section.hasGroup() && !section.getModel().isParent()) {
-                group = section.getModel().getGroups().get(0);
-            }
-            if (StringUtils.isNullOrEmpty(group)) {
-                group = "plugin";
-                section.getModel().getGroups().add(group);
-            }
+            renderSection(builder, section);
+            renderSections(builder, section.getChildren());
+        }
+    }
 
-            if (!sorted.containsKey(group)) {
-                sorted.put(group, new LinkedList<PermissionSection>());
-            }
-
-            sorted.get(group).add(section);
+    private void renderSection(YmlBuilder builder, PermissionModel section) {
+        if (section.hasTitle()) {
+            builder.addComment(section.getTitle());
         }
 
 
-        for (var entry : sorted.entrySet()) {
-            var hasParent = entry.getValue().stream().filter(c -> c.getModel().isParent()).findFirst();
-            if (hasParent.isEmpty()) {
-                result.addAll(entry.getValue());
-                continue;
+        builder.addSection(section.getRealFullPath(), defaultOffset);
+        var description = section.getDescription();
+        if (section.hasDescription()) {
+            builder.addProperty("description", description, propertyOffset);
+        } else {
+            if (!section.hasChildren()) {
+                builder.addProperty("description", "default", propertyOffset);
             }
-
-            var parent = hasParent.get();
-            result.add(parent);
-            entry.getValue().remove(parent);
-            result.addAll(entry.getValue());
         }
+        if (section.hasChildren()) {
+            builder.addSection("children", propertyOffset);
+            for (var child : section.getChildren()) {
+                builder.addListProperty(child.getRealFullPath(), listOffset);
+            }
+        }
+        builder.newLine();
+    }
 
-        return result;
+    private List<PermissionModel> getModels() {
+        List<PermissionModel> models = new ArrayList<>();
+        try {
+            var model = resolver.createModels(permissionGeneratorDto._class());
+            models = resolver.merge(model, permissionGeneratorDto.permissionModels());
+        } catch (Exception e) {
+            FluentLogger.LOGGER.error("Unable to generate permissions", e);
+        }
+        return models;
     }
 }

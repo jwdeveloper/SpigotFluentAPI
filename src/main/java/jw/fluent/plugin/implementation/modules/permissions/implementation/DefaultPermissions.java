@@ -35,11 +35,8 @@ public class DefaultPermissions
     private PermissionModel createDefaultModel(String name)
     {
         var permissionModel = new PermissionModel();
-        permissionModel.setParent(true);
         permissionModel.setName(name);
         permissionModel.setTitle(name);
-        permissionModel.setDescription("Default permission for "+name);
-        permissionModel.setParentGroup(name);
         return permissionModel;
     }
 }

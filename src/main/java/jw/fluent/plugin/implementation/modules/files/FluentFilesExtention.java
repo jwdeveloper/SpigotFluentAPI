@@ -40,17 +40,12 @@ public class FluentFilesExtention implements FluentApiExtension {
             var config = (FluentConfig)searchContainer.find(FluentConfig.class);
 
             var customFiles = searchContainer.findAllByInterface(CustomFile.class);
-            //var ymlFiles = searchContainer.findAllByAnnotation(YmlFile.class);
             var jsonFiles =  searchContainer.findAllByAnnotation(JsonFile.class);
             var configSections =  searchContainer.findAllByInterface(ConfigSection.class);
             for (var file: customFiles)
             {
                 filesDataContext.addCustomFileObject(file);
             }
-          /*  for (var file: ymlFiles)
-            {
-                filesDataContext.addYmlObject(file);
-            }*/
             for (var file: jsonFiles)
             {
                 filesDataContext.addJsonObject(file);

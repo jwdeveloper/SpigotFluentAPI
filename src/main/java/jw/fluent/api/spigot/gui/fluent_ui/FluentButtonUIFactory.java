@@ -1,15 +1,17 @@
 package jw.fluent.api.spigot.gui.fluent_ui;
 
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
+import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.BoolNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.FluentBoolNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.EnumNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.FluentEnumNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.IntNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentIntNotifier;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListIndexNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.FluentCheckboxListNotifier;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.FluentButtonStyle;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
@@ -17,8 +19,10 @@ import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObser
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUIBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
+import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent.api.spigot.text_input.FluentTextInput;
 import jw.fluent.api.utilites.java.StringUtils;
+import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import org.bukkit.ChatColor;
@@ -49,8 +53,8 @@ public class FluentButtonUIFactory {
         builder.setDescription(buttonDescriptionInfoBuilder ->
         {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-            buttonDescriptionInfoBuilder.setOnLeftClick("+ "+options.getYield());
-            buttonDescriptionInfoBuilder.setOnRightClick("- "+options.getYield());
+            buttonDescriptionInfoBuilder.setOnLeftClick("+ " + options.getYield());
+            buttonDescriptionInfoBuilder.setOnRightClick("- " + options.getYield());
         });
         builder.setObserver(observer, new FluentIntNotifier(translator, options));
         return builder;
@@ -72,10 +76,11 @@ public class FluentButtonUIFactory {
 
     public <T extends Enum<T>> FluentButtonUIBuilder observeEnum(Supplier<Observer<T>> observer) {
 
-        return observeEnum(observer, enumNotifierOptions -> {});
+        return observeEnum(observer, enumNotifierOptions -> {
+        });
     }
 
-    public <T> FluentButtonUIBuilder observeList(Supplier<Observer<T>> indexObserver, Supplier<List<T>> values,  Consumer<ListNotifierOptions<T>> consumer) {
+    public <T> FluentButtonUIBuilder observeList(Supplier<Observer<T>> indexObserver, Supplier<List<T>> values, Consumer<ListNotifierOptions<T>> consumer) {
         var options = new ListNotifierOptions<T>();
         consumer.accept(options);
         builder.setDescription(buttonDescriptionInfoBuilder ->
@@ -88,9 +93,41 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public FluentButtonUIBuilder observeBool(Supplier<Observer<Boolean>> observer) {
-        return observeBool(observer,boolNotifierOptions -> {});
+    public <T> FluentButtonUIBuilder observeCheckBoxList(InventoryUI inventoryUI, Supplier<List<CheckBox>> values, Consumer<ListNotifierOptions<CheckBox>> consumer) {
+        var options = new ListNotifierOptions<CheckBox>();
+        var observerBag = new ObserverBag<CheckBox>(new CheckBox());
+        consumer.accept(options);
+        builder.setDescription(buttonDescriptionInfoBuilder ->
+                {
+                    buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
+                    buttonDescriptionInfoBuilder.setOnLeftClick("Next");
+                    buttonDescriptionInfoBuilder.setOnRightClick("Previous");
+                    buttonDescriptionInfoBuilder.setOnShiftClick("Enable/Disable");
+                })
+                .setOnShiftClick((player, button) ->
+                {
+                    var observer = observerBag.getObserver();
+                    if (observer.get() == null) {
+                        return;
+                    }
+
+                    var value = observer.get();
+                    var permission = value.getPermission();
+                    if (!PermissionsUtility.hasOnePermission(player, permission)) {
+                        return;
+                    }
+                    value.getObserver().set(!value.getObserver().get());
+                    inventoryUI.refreshButton(button);
+                });
+        builder.setObserver(observerBag.getObserver(), new FluentCheckboxListNotifier(values, options));
+        return builder;
     }
+
+    public FluentButtonUIBuilder observeBool(Supplier<Observer<Boolean>> observer) {
+        return observeBool(observer, boolNotifierOptions -> {
+        });
+    }
+
     public FluentButtonUIBuilder observeBool(Supplier<Observer<Boolean>> observer, Consumer<BoolNotifierOptions> consumer) {
         var options = new BoolNotifierOptions();
         consumer.accept(options);

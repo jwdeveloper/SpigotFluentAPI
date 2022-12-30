@@ -9,10 +9,10 @@ import java.util.List;
 
 @Getter
 public class SimpleLang {
+    private final String NOT_FOUND = ChatColor.RED+"TRANSLATION NOT FOUND";
     private final List<LangData> languages;
     private LangData currentLang;
     private LangData defaultLang;
-    private String NOT_FOUND = ChatColor.RED+"TRANSLATION NOT FOUND";
 
     public SimpleLang(List<LangData> languages)
     {

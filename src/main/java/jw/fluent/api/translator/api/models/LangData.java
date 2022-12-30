@@ -4,11 +4,12 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Data
 public class LangData
 {
-    private String country = "undefind";
+    private String country = "undefined";
 
-    private Map<String, String> translations = new HashMap<>();
+    private Map<String, String> translations = new ConcurrentHashMap<>();
 }

@@ -6,14 +6,14 @@ import jw.fluent.api.spigot.documentation.api.DocumentationRenderer;
 import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.spigot.documentation.implementation.decorator.CommandsDocumentationDecorator;
 import jw.fluent.api.spigot.documentation.implementation.decorator.ConfigDocumentationDecorator;
+import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDocumentationDecorator;
 import jw.fluent.api.spigot.documentation.implementation.renderer.GithubDocumentationRenderer;
 import jw.fluent.api.spigot.documentation.implementation.renderer.PluginDocumentationRenderer;
 import jw.fluent.api.spigot.documentation.implementation.renderer.SpigotDocumentationRenderer;
-import jw.fluent.api.spigot.documentation.implementation.decorator.PermissionDocumentationDecorator;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.spigot.permissions.api.PermissionGeneratorDto;
-import jw.fluent.api.spigot.permissions.api.PermissionModel;
+import jw.fluent.api.spigot.permissions.api.PermissionDto;
 import jw.fluent.api.files.implementation.FileUtility;
+import jw.fluent.api.spigot.permissions.api.PermissionModel;
 import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.api.FluentApiExtension;
@@ -68,7 +68,7 @@ public class FluentDocumentationExtention implements FluentApiExtension {
         var commandDocumentation = new CommandsDocumentationDecorator(SimpleCommandManger.getRegisteredCommands());
         result.add(commandDocumentation);
 
-        var permissionDocumentation = new PermissionDocumentationDecorator(new PermissionGeneratorDto(options.getPermissionModel(), permissionModels));
+        var permissionDocumentation = new PermissionDocumentationDecorator(new PermissionDto(options.getPermissionTemplate(), permissionModels));
         result.add(permissionDocumentation);
         return result;
     }

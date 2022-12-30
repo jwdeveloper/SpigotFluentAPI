@@ -82,8 +82,7 @@ public class FluentUpdaterExtention implements FluentApiExtension {
         var pluginName = builder.getBasePermissionName();
         permission.setName(pluginName+".commands.update");
         permission.setDescription("players with this permission can update plugin");
-        permission.setVisibility(Visibility.Op);
-        permission.getGroups().add(builder.defaultPermissionSections().commands().getParentGroup());
+        builder.defaultPermissionSections().commands().addChild(permission);
         return permission;
     }
 }
