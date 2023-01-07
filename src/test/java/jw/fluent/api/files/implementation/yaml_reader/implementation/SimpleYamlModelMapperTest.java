@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +43,13 @@ public class SimpleYamlModelMapperTest {
 
 
     @Test
-    public void mapToConfiguration() throws IOException, IllegalAccessException {
+    public void mapToConfiguration() throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         configuration = mapper.mapToConfiguration(data, model, configuration);
         configuration.save(path);
     }
 
     @Test
-    public void mapFromConfiguration() throws IllegalAccessException, InstantiationException {
+    public void mapFromConfiguration() throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         var data = new ExampleYamlData();
         var result =  mapper.mapFromConfiguration(data, model, configuration);
     }

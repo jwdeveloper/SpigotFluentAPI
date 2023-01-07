@@ -6,15 +6,15 @@ import jw.fluent.api.spigot.gui.inventory_gui.enums.PermissionType;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
 import lombok.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.Consumer;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -97,6 +97,14 @@ public class ButtonUI {
         itemStack.setType(material);
     }
 
+    public void setPlayerHead(UUID uuid)
+    {
+        itemStack.setType(Material.PLAYER_HEAD);
+        var skullMeta = (SkullMeta) itemStack.getItemMeta();
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+        itemStack.setItemMeta(skullMeta);
+    }
+
     public void setCustomMaterial(Material material, int id)
     {
         itemStack.setType(material);
@@ -110,6 +118,21 @@ public class ButtonUI {
         itemStack.setItemMeta(meta);
     }
 
+
+
+    public void setColor(Color color)
+    {
+        var meta = itemStack.getItemMeta();
+        if(meta == null)
+        {
+            return;
+        }
+        if(meta instanceof LeatherArmorMeta horseMeta)
+        {
+            horseMeta.setColor(color);
+            itemStack.setItemMeta(horseMeta);
+        }
+    }
     public void setMeta(ItemMeta meta)
     {
         itemStack.setItemMeta(meta);
@@ -121,6 +144,14 @@ public class ButtonUI {
 
     public void setDescription(String... description) {
         setDescription(new ArrayList(Arrays.asList(description)));
+    }
+
+
+    public void setDescription(Consumer<MessageBuilder> consumer)
+    {
+        var builder = new MessageBuilder();
+        consumer.accept(builder);
+        setDescription(builder.toArray());
     }
 
     public void addDescription(String... description) {

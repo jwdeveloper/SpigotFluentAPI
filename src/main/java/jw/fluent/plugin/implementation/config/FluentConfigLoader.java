@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class FluentConfigLoader {
     }
 
 
-    private List<ConfigSection> createAndMapSections(YamlConfiguration configuration) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    private List<ConfigSection> createAndMapSections(YamlConfiguration configuration) throws InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
 
         var sections = new ArrayList<ConfigSection>();
         var sectionsClasses = assemblyScanner.findByInterface(ConfigSection.class);
@@ -61,7 +62,7 @@ public class FluentConfigLoader {
         return sections;
     }
 
-    private YamlConfiguration getConfigFile(String path) throws IllegalAccessException, IOException, ClassNotFoundException {
+    private YamlConfiguration getConfigFile(String path) throws IllegalAccessException, IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
         if (!FileUtility.pathExists(path)) {
             var yamlConfig = new YamlConfiguration();
             yamlMapper.toConfiguration(new DefaultConfigSection(), yamlConfig);

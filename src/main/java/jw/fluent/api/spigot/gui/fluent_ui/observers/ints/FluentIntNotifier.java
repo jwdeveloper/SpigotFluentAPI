@@ -9,7 +9,7 @@ import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 public class FluentIntNotifier extends FluentButtonNotifier<Integer>
 {
     private final FluentTranslator translator;
-    private final IntNotifierOptions options;
+    protected final IntNotifierOptions options;
 
     public FluentIntNotifier(FluentTranslator translator, IntNotifierOptions notifierOptions) {
         super(notifierOptions);

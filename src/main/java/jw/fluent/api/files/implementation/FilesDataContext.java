@@ -11,6 +11,7 @@ import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class FilesDataContext implements DataContext {
@@ -77,7 +78,7 @@ public class FilesDataContext implements DataContext {
         fileHandlers.put(fileHandler.getClass(), fileHandler);
     }
 
-    public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException {
+    public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
         for (var filesHandler : fileHandlers.values()) {
             filesHandler.load();
         }

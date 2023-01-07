@@ -27,6 +27,23 @@ public interface FileUtility {
         return new File(path).exists();
     }
 
+    public static String getProjectPath() {
+        File currDir = new File(".");
+        String path = currDir.getAbsolutePath();
+        path = path.substring(0, path.length() - 1);
+        return path;
+    }
+
+    public static void saveClassFile(String result, boolean isTest, String _package, String fileName) throws IOException {
+        var path = getProjectPath();
+        path = isTest ? path + "src\\test\\java\\" : path + "src\\main\\java\\";
+        path = path + _package.replace(".", "\\");
+        path = path + "\\" + fileName + ".java";
+        var writer = new FileWriter(path);
+        writer.write(result);
+        writer.close();
+    }
+
     static void removeDirectory(File file) {
         if (file == null)
             return;

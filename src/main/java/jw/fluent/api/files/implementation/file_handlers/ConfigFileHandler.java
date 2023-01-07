@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ConfigFileHandler implements FileHandler {
         reader = new SimpleYamlReader();
     }
 
-    public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException {
+    public void load() throws IllegalAccessException, InstantiationException, IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
         var pluginConfig =  (YamlConfiguration) FluentApi.plugin().getConfig();
         for (var configSection: configSections)
         {

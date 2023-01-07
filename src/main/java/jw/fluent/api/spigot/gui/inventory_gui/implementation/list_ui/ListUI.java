@@ -11,7 +11,6 @@ import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.search_mana
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.content_manger.ButtonUIMapper;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.list_ui.content_manger.FilterContentEvent;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
-import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import lombok.Getter;

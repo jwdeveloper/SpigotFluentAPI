@@ -7,8 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
 public class SimpleYamlValueResolver {
 
 
-    public <T> void setValue(T data, YamlConfiguration configuration, YamlContent content) throws IllegalAccessException {
+    public <T> void setValue(T data, YamlConfiguration configuration, YamlContent content) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Object value = getFieldValue(data, content);
         configuration.set(content.getFullPath(), value);
     }
 
 
-    private Object getFieldValue(Object object, YamlContent content) throws IllegalAccessException {
+    private Object getFieldValue(Object object, YamlContent content) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         var field = content.getField();
         field.setAccessible(true);
         Object value = field.get(object);
@@ -30,13 +30,9 @@ public class SimpleYamlValueResolver {
             return getDefaultValue(content.getClazz());
         }
         field.setAccessible(false);
-        if (value.getClass().equals(Material.class)) {
-            var material = (Material) value;
-            value = material.name();
-        }
-        if (value.getClass().equals(ChatColor.class)) {
-            var color = (ChatColor) value;
-            value = color.name();
+        if (value.getClass().isEnum()) {
+            var method = value.getClass().getMethod("name");
+            return method.invoke(value, null);
         }
         if (field.getType().getName().equalsIgnoreCase("double")) {
             value = Double.parseDouble(value.toString());
@@ -47,7 +43,7 @@ public class SimpleYamlValueResolver {
         return value;
     }
 
-    private Object getDefaultValue(Class<?> type) {
+    private Object getDefaultValue(Class<?> type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (type.equals(String.class)) {
             return StringUtils.EMPTY;
         }
@@ -68,6 +64,12 @@ public class SimpleYamlValueResolver {
         }
         if (type.equals(ChatColor.class)) {
             return ChatColor.WHITE;
+        }
+        if (type.isEnum()) {
+            var enums = type.getEnumConstants();
+            if (enums.length != 0) {
+                return enums[0];
+            }
         }
 
         return StringUtils.EMPTY;
@@ -122,11 +124,20 @@ public class SimpleYamlValueResolver {
     }
 
 
-    public Object getValue(ConfigurationSection section, YamlContent content) {
+    public Object getValue(ConfigurationSection section, YamlContent content) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+
         var value = section.get(content.getFullPath());
         if (value == null) {
             return getDefaultValue(content.getClazz());
         }
+
+        if (content.getClazz().isEnum())
+        {
+              return Enum.valueOf((Class<? extends Enum>)content.getClazz(), (String) value);
+        }
+
+
+
         return value;
     }
 

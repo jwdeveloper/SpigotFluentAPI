@@ -50,6 +50,18 @@ public class GameObject implements GameComponent, GameComponentEvents {
         }
     }
 
+    public void rotateYaw(int degree) {
+        var l = getLocation();
+        l.setYaw(degree);
+
+        onRotation(degree);
+        for (var childSet : children.values()) {
+            for (var child : childSet) {
+                child.rotate(degree);
+            }
+        }
+    }
+
     public final void destroy() {
         for (var childSet : children.values()) {
             for (var child : childSet) {
@@ -93,6 +105,12 @@ public class GameObject implements GameComponent, GameComponentEvents {
                 child.create(loc);
             }
         }
+        onCreated();
+    }
+
+    public void onCreated()
+    {
+
     }
 
     @Override

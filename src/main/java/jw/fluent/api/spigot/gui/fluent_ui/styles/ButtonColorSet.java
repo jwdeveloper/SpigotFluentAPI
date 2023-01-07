@@ -62,7 +62,6 @@ public class ButtonColorSet
         }
 
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-
     }
 }
 

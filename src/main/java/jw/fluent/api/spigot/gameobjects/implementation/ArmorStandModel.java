@@ -181,20 +181,15 @@ public class ArmorStandModel extends GameObject {
     public void setColor(Color color)
     {
         this.color = color;
-
         if(itemStack == null)
         {
-
             return;
         }
-        FluentLogger.LOGGER.log("A", color.toString());
-        FluentLogger.LOGGER.log("B");
         var meta = itemStack.getItemMeta();
         if(meta instanceof LeatherArmorMeta horseMeta)
         {
             horseMeta.setColor(color);
             itemStack.setItemMeta(horseMeta);
-            FluentLogger.LOGGER.log("C");
         }
         updateModel();
     }

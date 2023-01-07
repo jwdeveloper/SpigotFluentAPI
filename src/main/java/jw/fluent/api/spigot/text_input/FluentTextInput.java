@@ -36,7 +36,7 @@ public class FluentTextInput extends EventBase
              getInstance().players.remove(player);
          }
         getInstance().players.put(player,onInput);
-         player.sendMessage(message);
+        player.sendMessage(message);
     }
 
     @EventHandler

@@ -12,6 +12,7 @@ import jw.fluent.api.spigot.gui.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.ButtonDescriptionInfoBuilder;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.renderer.ButtonStyleRenderer;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
+import org.bukkit.Color;
 import org.bukkit.Material;
 
 import java.util.function.Consumer;
@@ -71,6 +72,12 @@ public class FluentButtonUIBuilder {
 
     public FluentButtonUIBuilder setMaterial(Material material, int customMaterialId) {
         buttonBuilder.setCustomMaterial(material, customMaterialId);
+        return this;
+    }
+
+    public FluentButtonUIBuilder setMaterial(Material material, int customMaterialId, Color color)
+    {
+        buttonBuilder.setCustomMaterial(material, customMaterialId, color);
         return this;
     }
 

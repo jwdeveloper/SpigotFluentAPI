@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class SimpleYamlValueResolverTest {
 
 
     @Test
-    public void makeTest() throws IOException, ClassNotFoundException, IllegalAccessException {
+    public void makeTest() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         MockBukkit.mock();
         saveToYaml();
         loadFromYaml();
@@ -50,7 +51,7 @@ public class SimpleYamlValueResolverTest {
     }
 
     @Test
-    public void saveToYaml() throws ClassNotFoundException, IOException, IllegalAccessException {
+    public void saveToYaml() throws ClassNotFoundException, IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         var factory = new SimpleYamlModelFactory();
         var clazz = ExampleYamlData.class;
         var model = factory.createModel(clazz);

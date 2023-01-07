@@ -27,7 +27,10 @@ public class AssemblyScanner implements FluentAssemblyScanner {
 
 
     public AssemblyScanner(JavaPlugin plugin) {
-        classes = loadPluginClasses(plugin.getClass());
+        this(plugin.getClass());
+    }
+    public AssemblyScanner(Class<?> clazz) {
+        classes = loadPluginClasses(clazz);
         byInterfaceCatch = new IdentityHashMap<>();
         byParentCatch = new IdentityHashMap<>();
         byPackageCatch = new IdentityHashMap<>();
@@ -35,7 +38,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
     }
 
 
-    public static List<Class<?>> loadPluginClasses(final Class<?> clazz) {
+    private static List<Class<?>> loadPluginClasses(final Class<?> clazz) {
         final var source = clazz.getProtectionDomain().getCodeSource();
         if (source == null) return Collections.emptyList();
         final var url = source.getLocation();
@@ -51,6 +54,16 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 try {
                     classes.add(Class.forName(name, false, clazz.getClassLoader()));
                 } catch (NoClassDefFoundError | ClassNotFoundException e) {
+
+                    if(name.equals("jw.fluent.api.web_socket.WebSocketBase"))
+                    {
+                        continue;
+                    }
+                    if(name.equals("jw.fluent.plugin.implementation.modules.websocket.implementation.FluentWebsocketImpl"))
+                    {
+                        continue;
+                    }
+
                     FluentLogger.LOGGER.warning("Unable to load class:" + name);
                 }
 

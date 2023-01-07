@@ -111,6 +111,16 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder textFormat(String pattern, Object... args)
+    {
+        return text(String.format(pattern,args));
+    }
+
+    public MessageBuilder textNewLine(Object text)
+    {
+        return text(text).newLine();
+    }
+
     public MessageBuilder color(ChatColor chatColor) {
         stringBuilder.append(chatColor);
         return this;

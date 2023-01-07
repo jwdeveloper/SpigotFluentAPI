@@ -1,0 +1,51 @@
+package jw.fluent.api.desing_patterns.dependecy_injection.generator;
+
+import jw.fluent.api.desing_patterns.dependecy_injection.api.containers.Container;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+//GENERATED CODE
+
+public class GeneratedContainer implements Container
+{
+    private final Map<Class<?>, Supplier<Object>> injections;
+
+    public GeneratedContainer()
+    {
+        injections = new HashMap<>();
+        injections.put(ExampleFactory.class, this::getExampleFactoryInstance);
+        injections.put(ExampleService.class, this::getExampleService);
+    }
+
+
+    @Override
+    public Object find(Class<?> type)
+    {
+        if(!injections.containsKey(type))
+        {
+            System.out.println("Injection not found");
+            return null;
+        }
+        return injections.get(type);
+    }
+
+    //Trainsinet - ExampleFactory Class
+    private Object getExampleFactoryInstance()
+    {
+        return new ExampleFactory();
+    }
+
+    //Singleton - ExampleService class
+    private ExampleService exampleServiceInstance;
+    private Object getExampleService()
+    {
+        if(exampleServiceInstance != null)
+        {
+            return exampleServiceInstance;
+        }
+        exampleServiceInstance = new ExampleService(getExampleFactoryInstance());
+        return exampleServiceInstance;
+    }
+}

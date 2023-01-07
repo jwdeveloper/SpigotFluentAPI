@@ -4,6 +4,7 @@ import jw.fluent.api.spigot.gui.inventory_gui.enums.ButtonType;
 import jw.fluent.api.spigot.gui.inventory_gui.events.ButtonUIEvent;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
@@ -85,6 +86,13 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
     public SELF setCustomMaterial(Material material, int customMaterialId)
     {
         button.setCustomMaterial(material, customMaterialId);
+        return self();
+    }
+
+    public SELF setCustomMaterial(Material material, int customMaterialId, Color color)
+    {
+        button.setCustomMaterial(material, customMaterialId);
+        button.setColor(color);
         return self();
     }
 

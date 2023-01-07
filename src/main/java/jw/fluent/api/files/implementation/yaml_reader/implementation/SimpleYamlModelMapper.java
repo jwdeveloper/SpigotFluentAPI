@@ -6,6 +6,8 @@ import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.messages.FluentMessage;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class SimpleYamlModelMapper implements YamlModelMapper {
     private final SimpleYamlValueResolver resolver;
 
@@ -15,7 +17,7 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
     }
 
     @Override
-    public <T> YamlConfiguration mapToConfiguration(T data, YamlModel model, YamlConfiguration configuration) throws IllegalAccessException {
+    public <T> YamlConfiguration mapToConfiguration(T data, YamlModel model, YamlConfiguration configuration) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         for (var content : model.getContents())
         {
             if(content.isList())
@@ -60,7 +62,7 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
     }
 
     @Override
-    public Object mapFromConfiguration(Object object, YamlModel model, YamlConfiguration configuration) throws IllegalAccessException, InstantiationException {
+    public Object mapFromConfiguration(Object object, YamlModel model, YamlConfiguration configuration) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         for (var content : model.getContents())
         {
             var field = content.getField();

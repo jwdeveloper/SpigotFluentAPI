@@ -21,4 +21,9 @@ public class ObserverBag<T>
     }
 
 
+    public void set(T value)
+    {
+        observer.set(value);
+    }
+
 }

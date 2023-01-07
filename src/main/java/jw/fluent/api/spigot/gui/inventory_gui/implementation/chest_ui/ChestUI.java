@@ -93,14 +93,17 @@ public class ChestUI extends InventoryUI {
 
             var inventoryClickEvent = (InventoryClickEvent) interactEvent;
             switch (inventoryClickEvent.getClick()) {
-                case SHIFT_LEFT, SHIFT_RIGHT -> button.getOnShiftClick().execute(player, button);
+                case SHIFT_LEFT,SHIFT_RIGHT ->
+                {
+                    button.getOnShiftClick().execute(player, button);
+                }
                 case RIGHT -> {
                     if (button instanceof ButtonObserverUI buttonObserverUI)
                         buttonObserverUI.onRightClick(player, this);
                     else
                         button.getOnRightClick().execute(player, button);
                 }
-                default -> {
+                case LEFT -> {
                     if (button instanceof ButtonObserverUI buttonObserverUI)
                         buttonObserverUI.onClick(player, this);
                     else

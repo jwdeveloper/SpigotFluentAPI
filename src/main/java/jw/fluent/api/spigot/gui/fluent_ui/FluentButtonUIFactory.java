@@ -2,27 +2,32 @@ package jw.fluent.api.spigot.gui.fluent_ui;
 
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.NotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.BoolNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.FluentBoolNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.EnumNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.FluentEnumNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentBarIntNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.IntNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentIntNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.FluentCheckboxListNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.string.StringNotifierOptions;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.string.TextInputEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.FluentButtonStyle;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUIBuilder;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
 import jw.fluent.api.spigot.text_input.FluentTextInput;
 import jw.fluent.api.utilites.java.StringUtils;
-import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import org.bukkit.ChatColor;
@@ -45,6 +50,20 @@ public class FluentButtonUIFactory {
         fluentButtonStyle = style;
         this.translator = translator;
         this.builder = builder;
+    }
+
+
+    public FluentButtonUIBuilder observeBarInt(Supplier<Observer<Integer>> observer, Consumer<IntNotifierOptions> consumer) {
+        var options = new IntNotifierOptions();
+        consumer.accept(options);
+        builder.setDescription(buttonDescriptionInfoBuilder ->
+        {
+            buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
+            buttonDescriptionInfoBuilder.setOnLeftClick("increase");
+            buttonDescriptionInfoBuilder.setOnRightClick("decrease");
+        });
+        builder.setObserver(observer, new FluentBarIntNotifier(fluentButtonStyle, translator, options));
+        return builder;
     }
 
     public FluentButtonUIBuilder observeInt(Supplier<Observer<Integer>> observer, Consumer<IntNotifierOptions> consumer) {
@@ -168,28 +187,22 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public ButtonObserverUIBuilder stringInput(Observer<String> observable, ChestUI chestUI) {
-        return ButtonObserverUI.builder()
-                .setTitle(observable.getFieldName())
-                .addObserver(new ButtonObserverBuilder<String>()
-                        .withObserver(observable)
-                        .onClick(event ->
-                        {
-                            chestUI.close();
-                            var message = new MessageBuilder()
-                                    .color(ChatColor.GREEN)
-                                    .inBrackets("Enter text value").toString();
-                            FluentTextInput.openTextInput(event.getPlayer(), message, value ->
-                            {
-                                event.getObserver().setValue(value);
-                                chestUI.open(event.getPlayer());
-                            });
-                        })
-                        .onValueChange(event ->
-                        {
-                            event.getButton().setDescription(new MessageBuilder().field(FluentApi.translator().get("gui.base.value"), event.getValue()));
-                        })
-                );
+    public FluentButtonUIBuilder stringInput(Consumer<StringNotifierOptions> consumer, ChestUI chestUI) {
+        var options = new StringNotifierOptions();
+        consumer.accept(options);
+        return builder
+                .setOnLeftClick((player, button) ->
+                {
+                    chestUI.close();
+
+                    var builder = new MessageBuilder();
+                    options.getMessage().accept(builder);
+                    builder.send(player);
+                    FluentTextInput.openTextInput(player, StringUtils.EMPTY, value ->
+                    {
+                        options.getOnTextInput().accept(new TextInputEvent(player, value));
+                    });
+                });
     }
 
     public ButtonObserverUIBuilder intInput(Observer<Integer> observable, ChestUI chestUI) {
