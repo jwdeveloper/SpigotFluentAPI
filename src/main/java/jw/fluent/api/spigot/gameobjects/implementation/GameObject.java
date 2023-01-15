@@ -6,7 +6,6 @@ import jw.fluent.plugin.implementation.FluentApi;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -86,10 +85,10 @@ public class GameObject implements GameComponent, GameComponentEvents {
         }
     }
 
-    public final void setVisibility(boolean visible) {
+    public  void setVisible(boolean visible) {
         for (var childSet : children.values()) {
             for (var child : childSet) {
-                child.setVisibility(visible);
+                child.setVisible(visible);
             }
         }
         this.visible = visible;
@@ -171,5 +170,20 @@ public class GameObject implements GameComponent, GameComponentEvents {
         }
         var gameComponent = children.get(_class);
         return (List<T>) gameComponent.stream().toList();
+    }
+
+
+    public final <T extends GameComponent> void removeGameComponents(Class<T> _class)
+    {
+        var result = getGameComponents(_class);
+        if (result.isEmpty()) {
+            return;
+        }
+
+        for(var component : result)
+        {
+            component.destroy();
+        }
+        children.remove(_class);
     }
 }

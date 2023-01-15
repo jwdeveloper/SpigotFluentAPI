@@ -73,7 +73,7 @@ public class SimpleYamlValueResolverTest {
                 resolver.setListContent(data, configuration, content);
                 continue;
             }
-            resolver.setValue(data, configuration,content);
+            resolver.setValue(data, configuration,content, true);
         }
         configuration.save(path);
     }

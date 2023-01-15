@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: Neue hinzufügen
+    delete:
+      title: Löschen
+    edit:
+      title: Bearbeiten
+    search:
+      desc:
+        left-click: Suche
+        right-click: Option ändern
+        shift-click: Zurücksetzen
+      title: Suche
+    page-up:
+      title: Seite nach oben
+    page-down:
+      title: Bild nach unten
+    exit:
+      title: Ausgang
+    back:
+      title: Geh zurück
+    value: Wert
+    active: aktiv
+    inactive: inaktiv
+    state: Zustand
+    left-click: Links
+    right-click: Rechts
+    shift-click: Schicht
+    save: Speichern
+    cancel: Absagen
+    title: Titel
+    icon: Symbol
+    next: Nächste
+    remove: Entfernen
+    previous: Vorherige
+    increase: Zunahme
+    decrease: Verkleinern
+    select: Wählen
+    enable-disable: Aktivieren deaktivieren
+    example: Beispiel
+    click-info: Mausklick-Info
+permissions:
+  one-required: Sie müssen über eine dieser Berechtigungen verfügen
+  all-required: Sie müssen Berechtigungen haben
+  incorrect-number-of-arguments: Falsche Anzahl von Argumenten, sollte sein
+copy:
+  title: Kopieren
+  info: Klicken Sie, um den Wert zu kopieren
+  to-chat: in den Chat kopieren
+  to-clipboard: in die Zwischenablage kopieren
+resourepack:
+  download: Auf Minecraft herunterladen
+  send-url: Download-URL senden
+color-picker:
+  command:
+    desc-1: Geben Sie im Chat eine benutzerdefinierte Hex-Farbe ein
+    desc-3: Oder klicken Sie auf die Farbkachel, um ihren Hex-Wert zu kopieren
+  gui:
+    add-color:
+      title: Farbe hinzufügen
+      desc-1: Der Wert muss in Hex angegeben werden
+    title: Farbwähler
+  change-color: Farbe ändern

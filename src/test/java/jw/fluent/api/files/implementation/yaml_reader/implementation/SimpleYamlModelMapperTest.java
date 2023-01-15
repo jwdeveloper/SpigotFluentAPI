@@ -44,7 +44,7 @@ public class SimpleYamlModelMapperTest {
 
     @Test
     public void mapToConfiguration() throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        configuration = mapper.mapToConfiguration(data, model, configuration);
+        configuration = mapper.mapToConfiguration(data, model, configuration, true);
         configuration.save(path);
     }
 

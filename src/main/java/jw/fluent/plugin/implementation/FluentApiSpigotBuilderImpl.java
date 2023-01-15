@@ -30,9 +30,10 @@ import jw.fluent.plugin.implementation.modules.permissions.implementation.Fluent
 import jw.fluent.plugin.implementation.modules.player_context.implementation.FluentPlayerContext;
 import jw.fluent.plugin.implementation.modules.command.FluentApiCommandBuilder;
 import jw.fluent.plugin.implementation.modules.command.FluentApiDefaultCommandBuilder;
-import jw.fluent.plugin.implementation.modules.translator.FluentTranslationExtention;
+import jw.fluent.plugin.implementation.modules.translator.FluentTranslationExtension;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import lombok.SneakyThrows;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FluentApiSpigotBuilderImpl implements FluentApiSpigotBuilder {
@@ -107,13 +108,13 @@ public class FluentApiSpigotBuilderImpl implements FluentApiSpigotBuilder {
         extensionsManager.registerLow(new FluentMediatorExtention(assemblyScanner));
         extensionsManager.registerLow(new FluentMapperExtention());
         extensionsManager.registerLow(new FluentFilesExtention(simpleFilesBuilder));
-        extensionsManager.registerLow(new FluentTranslationExtention());
+        extensionsManager.registerLow(new FluentTranslationExtension());
         extensionsManager.register(new FluentDefaultCommandExtension(commandBuilder), ExtentionPiority.HIGH);
 
         extensionsManager.onConfiguration(this);
 
         containerBuilder.registerSigleton(FluentConfig.class, configFile);
-        containerBuilder.registerSigleton(JavaPlugin.class, plugin);
+        containerBuilder.registerSigleton(Plugin.class, plugin);
         containerBuilder.registerSigleton(FluentAssemblyScanner.class, assemblyScanner);
         final var injectionFactory = new FluentInjectionExtention(containerBuilder, assemblyScanner);
         final var result = injectionFactory.create();

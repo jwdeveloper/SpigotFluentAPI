@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: Přidat nový
+    delete:
+      title: Vymazat
+    edit:
+      title: Upravit
+    search:
+      desc:
+        left-click: Vyhledávání
+        right-click: Změnit možnost
+        shift-click: Resetovat
+      title: Vyhledávání
+    page-up:
+      title: O stránku nahoru
+    page-down:
+      title: O stránku dolů
+    exit:
+      title: Výstup
+    back:
+      title: Vraťte se
+    value: hodnota
+    active: aktivní
+    inactive: neaktivní
+    state: Stát
+    left-click: Vlevo, odjet
+    right-click: Že jo
+    shift-click: Posun
+    save: Uložit
+    cancel: zrušení
+    title: Titul
+    icon: Ikona
+    next: další
+    remove: Odstranit
+    previous: Předchozí
+    increase: Zvýšit
+    decrease: Pokles
+    select: Vybrat
+    enable-disable: Povolit zakázat
+    example: Příklad
+    click-info: Informace o kliknutí myší
+permissions:
+  one-required: Musíte mít jedno z těchto oprávnění
+  all-required: Musíte mít oprávnění
+  incorrect-number-of-arguments: Nesprávný počet argumentů by měl být
+copy:
+  title: kopírovat
+  info: Kliknutím zkopírujete hodnotu
+  to-chat: zkopírovat do chatu
+  to-clipboard: zkopírovat do schránky
+resourepack:
+  download: Stáhnout do minecraftu
+  send-url: Odeslat adresu URL ke stažení
+color-picker:
+  command:
+    desc-1: Zadejte vlastní hexadecimální barvu v chatu
+    desc-3: Nebo klikněte na dlaždici barvy a zkopírujte její hexadecimální hodnotu
+  gui:
+    add-color:
+      title: Přidat barvu
+      desc-1: Hodnota musí být v Hex
+    title: Výběr barvy
+  change-color: Změnit barvu

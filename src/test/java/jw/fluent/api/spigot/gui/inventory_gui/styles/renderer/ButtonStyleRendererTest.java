@@ -4,10 +4,11 @@ import jw.fluent.api.spigot.gui.fluent_ui.styles.ButtonColorSet;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.ButtonStyleInfo;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.renderer.ButtonStyleRenderer;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
-import jw.fluent.api.utilites.SpigotMock;
+import jw.fluent.api.utilites.FluentApiMock;
 import jw.fluent.plugin.implementation.FluentApiBuilder;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,13 +23,13 @@ public class ButtonStyleRendererTest {
     @Before
     public void setup()
     {
-        SpigotMock.getInstance();
+        FluentApiMock.getInstance();
     }
 
     @Test
     public void createDescription()
     {
-        FluentApiBuilder.create(SpigotMock.getInstance().getPluginMock()).build();
+        FluentApiBuilder.create((JavaPlugin) FluentApiMock.getInstance().getPluginMock()).build();
         // injection = (FluentInjectionImpl)FluentApi.container();
 
         var languageMock = mock(FluentTranslator.class);

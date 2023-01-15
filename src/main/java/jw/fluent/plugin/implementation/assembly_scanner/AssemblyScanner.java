@@ -63,11 +63,8 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                     {
                         continue;
                     }
-
                     FluentLogger.LOGGER.warning("Unable to load class:" + name);
                 }
-
-
             }
             return classes;
         } catch (IOException e) {
@@ -87,7 +84,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 result.add(_class);
             }
         }
-
+        byAnnotationCatch.put(annotation, result);
         return result;
     }
 
@@ -104,6 +101,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 }
             }
         }
+        byInterfaceCatch.put(_interface, result);
         return result;
     }
 
@@ -117,6 +115,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 result.add(_class);
             }
         }
+        byParentCatch.put(parentClass, result);
         return result;
     }
 
@@ -133,6 +132,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
                 }
             }
         }
+        byPackageCatch.put(_package, result);
         return result;
     }
 

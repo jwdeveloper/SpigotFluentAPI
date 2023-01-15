@@ -192,6 +192,7 @@ public class ListUI<T> extends ChestUI {
         setListTitle(FluentMessage.message().color(ChatColor.DARK_AQUA).bold().text(value).build());
     }
 
+
     public final void onListOpen(Consumer<Player> event) {
         onListOpen.add(event);
     }

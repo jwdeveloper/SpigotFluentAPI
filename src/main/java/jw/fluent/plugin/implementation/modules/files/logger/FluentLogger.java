@@ -18,9 +18,11 @@ public interface FluentLogger {
 
     void log(String message, Object... params);
 
-    static FluentLogger LOGGER = createInstanace();
 
-    static FluentLogger createInstanace()
+
+    static FluentLogger LOGGER = createInstance();
+
+    static FluentLogger createInstance()
     {
         if(Bukkit.getServer() != null)
         {
@@ -29,5 +31,7 @@ public interface FluentLogger {
 
         return new FluentLoggerImpl(new SimpleLoggerImpl(Logger.getGlobal()));
     }
+
+
 
 }

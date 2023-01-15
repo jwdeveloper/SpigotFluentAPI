@@ -3,6 +3,7 @@ package jw.fluent.api.spigot.gui.fluent_ui;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Inject;
 import jw.fluent.api.desing_patterns.dependecy_injection.api.annotations.Injection;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.FluentButtonStyle;
+import jw.fluent.api.spigot.gui.fluent_ui.styles.renderer.ButtonStyleRenderer;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.renderer.CatchButtonStyleRenderer;
 import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 
@@ -24,6 +25,12 @@ public class FluentChestUI
     public FluentTranslator lang()
     {
         return translator;
+    }
+
+
+    public ButtonStyleRenderer renderer()
+    {
+        return renderer;
     }
 
     public FluentButtonUIBuilder buttonBuilder()

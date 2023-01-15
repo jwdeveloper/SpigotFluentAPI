@@ -53,7 +53,7 @@ public class SimpleLangLoader {
 
     public void generateFiles(String outputPath) throws IOException, InvalidConfigurationException {
         var file = FileUtility.pluginFile(plugin);
-        var langPaths = ClassTypeUtility.findAllYmlFiles(file);
+        var langPaths = FileUtility.findAllYmlFiles(file);
         var reader = new YmlPathReader();
         var results = new HashMap<String, YamlConfiguration>();
         for (var path : langPaths) {

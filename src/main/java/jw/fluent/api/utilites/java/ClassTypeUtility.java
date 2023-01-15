@@ -21,12 +21,17 @@ import java.util.zip.ZipInputStream;
 
 public class ClassTypeUtility {
     public static boolean isClassContainsType(Class<?> type, Class<?> searchType) {
+
         while (true) {
             if (type.isAssignableFrom(searchType)) {
                 return true;
             }
             type = type.getSuperclass();
 
+            if(type == null)
+            {
+                return false;
+            }
             if (type.equals(Object.class)) {
                 return false;
             }
@@ -105,28 +110,7 @@ public class ClassTypeUtility {
         return result;
     }
 
-    public static List<String> findAllYmlFiles(File file) {
-        List<String> result = new ArrayList<>();
-        try {
-            JarInputStream is = new JarInputStream(new FileInputStream(file));
-            JarEntry entry;
-            while ((entry = is.getNextJarEntry()) != null) {
-                try {
-                    String name = entry.getName();
-                    if (!name.endsWith(".yml")) {
-                        continue;
-                    }
-                    result.add(name);
-                } catch (Exception ex) {
-                    FluentLogger.LOGGER.error("Could not load class", ex);
-                }
 
-            }
-        } catch (Exception ex) {
-            FluentLogger.LOGGER.error("Could not load class", ex);
-        }
-        return result;
-    }
 
 
     private static Type[] getInterfaceGenericTypes(Class<?> _class, Class<?> _interface) {

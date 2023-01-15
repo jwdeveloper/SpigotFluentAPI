@@ -9,6 +9,8 @@ import java.util.List;
 
 @Getter
 public class SimpleLang {
+
+    private final String LANGUAGE_NOT_SELECTED = ChatColor.RED+"LANGUAGE NOT SELECTED";
     private final String NOT_FOUND = ChatColor.RED+"TRANSLATION NOT FOUND";
     private final List<LangData> languages;
     private LangData currentLang;
@@ -20,6 +22,11 @@ public class SimpleLang {
     }
 
     public String get(String key) {
+        if(currentLang == null)
+        {
+            return LANGUAGE_NOT_SELECTED;
+        }
+
         if (currentLang.getTranslations().containsKey(key)) {
             return currentLang.getTranslations().get(key);
         }

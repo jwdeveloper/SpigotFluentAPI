@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: Добавить новое
+    delete:
+      title: Удалить
+    edit:
+      title: Редактировать
+    search:
+      desc:
+        left-click: Поиск
+        right-click: Изменить вариант
+        shift-click: Сброс настроек
+      title: Поиск
+    page-up:
+      title: Страница вверх
+    page-down:
+      title: Листать вниз
+    exit:
+      title: Выход
+    back:
+      title: Вернись
+    value: ценить
+    active: активный
+    inactive: неактивный
+    state: Состояние
+    left-click: Левый
+    right-click: Верно
+    shift-click: Сдвиг
+    save: Сохранить
+    cancel: Отмена
+    title: Заголовок
+    icon: Икона
+    next: Следующий
+    remove: Удалять
+    previous: Предыдущий
+    increase: Увеличивать
+    decrease: Снижаться
+    select: Выбирать
+    enable-disable: Включить выключить
+    example: Пример
+    click-info: Информация о щелчке мыши
+permissions:
+  one-required: Вам необходимо иметь одно из этих разрешений
+  all-required: У вас должны быть разрешения
+  incorrect-number-of-arguments: Неверное количество аргументов, должно быть
+copy:
+  title: копировать
+  info: Нажмите, чтобы скопировать значение
+  to-chat: скопировать в чат
+  to-clipboard: скопировать в буфер обмена
+resourepack:
+  download: Скачать в майнкрафт
+  send-url: Отправить ссылку для скачивания
+color-picker:
+  command:
+    desc-1: Введите собственный шестнадцатеричный цвет в чате
+    desc-3: Или щелкните плитку цвета, чтобы скопировать ее шестнадцатеричное значение.
+  gui:
+    add-color:
+      title: Добавить цвет
+      desc-1: Значение должно быть в шестнадцатеричном формате
+    title: Выбор цвета
+  change-color: Изменить цвет

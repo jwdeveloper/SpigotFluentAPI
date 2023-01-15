@@ -3,10 +3,12 @@ package jw.fluent.api.spigot.permissions.implementation;
 import jw.fluent.api.spigot.permissions.api.PermissionModel;
 import jw.fluent.api.spigot.permissions.api.annotations.PermissionGroup;
 import jw.fluent.api.spigot.permissions.api.annotations.PermissionProperty;
+import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PermissionModelResolver
 {
@@ -19,12 +21,53 @@ public class PermissionModelResolver
           {
               if(model.getName().equals(root.getName()))
               {
-
+                  continue;
               }
+              var duplication = findParent(root, model);
+              if(duplication.isEmpty())
+              {
+                  root.addChild(model);
+                  continue;
+              }
+              var parent = duplication.get();
+              var isChildDuplciated = parent.getChildren().stream().filter(s -> s.getName().equals(model.getName())).findFirst();
+              if(isChildDuplciated.isEmpty())
+              {
+                  parent.addChild(model);
+                  continue;
+              }
+              var duplicated  = isChildDuplciated.get();
+              merge(duplicated, model.getChildren());
           }
+          result.add(root);
           return result;
     }
 
+    public Optional<PermissionModel> findParent(PermissionModel target, PermissionModel model)
+    {
+        if(model.getParent() == null)
+        {
+            return Optional.empty();
+        }
+
+        if(target.getName().equals(model.getParent().getName()))
+        {
+            return Optional.of(target);
+        }
+        if(!target.hasChildren())
+        {
+            return Optional.empty();
+        }
+        for(var child : target.getChildren())
+        {
+            var result = findParent(child, model);
+            if(result.isPresent())
+            {
+                return result;
+            }
+        }
+        return Optional.empty();
+    }
 
     public PermissionModel createModels(Class<?> clazz) throws IllegalAccessException {
         return getPermissionModelFromClass(clazz);

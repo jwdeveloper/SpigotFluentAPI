@@ -50,7 +50,7 @@ public record FluentConfigImpl(FileConfiguration fileConfiguration,
             var factory = new SimpleYamlModelFactory();
             var model = factory.createModel(configSection.getClass());
             var mapper = new SimpleYamlModelMapper();
-            mapper.mapToConfiguration(configSection, model,(YamlConfiguration)fileConfiguration);
+            mapper.mapToConfiguration(configSection, model,(YamlConfiguration)fileConfiguration ,true);
             fileConfiguration.save(path);
         }
         catch (Exception e)

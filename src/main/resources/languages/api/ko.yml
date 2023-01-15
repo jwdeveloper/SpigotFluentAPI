@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: 새로운 걸 더하다
+    delete:
+      title: 삭제
+    edit:
+      title: 편집하다
+    search:
+      desc:
+        left-click: 찾다
+        right-click: 옵션 변경
+        shift-click: 초기화
+      title: 찾다
+    page-up:
+      title: 페이지 위로
+    page-down:
+      title: 페이지 다운
+    exit:
+      title: 출구
+    back:
+      title: 돌아가기
+    value: 값
+    active: 활동적인
+    inactive: 비활성
+    state: 상태
+    left-click: 왼쪽
+    right-click: 오른쪽
+    shift-click: 옮기다
+    save: 구하다
+    cancel: 취소
+    title: 제목
+    icon: 상
+    next: 다음
+    remove: 제거하다
+    previous: 이전의
+    increase: 증가하다
+    decrease: 감소하다
+    select: 고르다
+    enable-disable: 켜기 끄기
+    example: 예
+    click-info: 마우스 클릭 정보
+permissions:
+  one-required: 이러한 권한 중 하나가 있어야 합니다.
+  all-required: 권한이 필요합니다.
+  incorrect-number-of-arguments: 인수의 수가 잘못되었습니다.
+copy:
+  title: 복사
+  info: 값을 복사하려면 클릭
+  to-chat: 채팅에 복사
+  to-clipboard: 클립 보드에 복사
+resourepack:
+  download: 마인크래프트로 다운로드
+  send-url: 다운로드 URL 보내기
+color-picker:
+  command:
+    desc-1: 채팅에 사용자 지정 16진수 색상 입력
+    desc-3: 또는 색상 타일을 클릭하여 16진수 값을 복사합니다.
+  gui:
+    add-color:
+      title: 색상 추가
+      desc-1: 값은 16진수여야 합니다.
+    title: 색상 선택기
+  change-color: 색상 변경

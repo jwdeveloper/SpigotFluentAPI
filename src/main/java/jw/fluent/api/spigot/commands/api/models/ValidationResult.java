@@ -11,10 +11,10 @@ public class ValidationResult
     private  boolean success;
     private String message;
 
-    public ValidationResult(boolean success, String message)
+    public ValidationResult(boolean success, String errorMessage)
     {
         this.success = success;
-        this.message = message;
+        this.message = errorMessage;
     }
 
     public ValidationResult(boolean success)

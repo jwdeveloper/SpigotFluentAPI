@@ -3,6 +3,7 @@ package jw.fluent.api.spigot.documentation.implementation.decorator;
 import jw.fluent.api.spigot.documentation.api.DocumentationDecorator;
 import jw.fluent.api.spigot.documentation.api.models.Documentation;
 import jw.fluent.api.spigot.documentation.implementation.builders.YmlBuilder;
+import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.spigot.permissions.api.PermissionDto;
 
 import jw.fluent.api.spigot.permissions.api.PermissionModel;
@@ -21,7 +22,6 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
 
     private final int defaultOffset = 2;
     private final int propertyOffset = 4;
-    private final int listOffset = 6;
 
     public PermissionDocumentationDecorator(PermissionDto permissionGeneratorDto) {
         this.permissionGeneratorDto = permissionGeneratorDto;
@@ -49,10 +49,17 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
     }
 
     private void renderSection(YmlBuilder builder, PermissionModel section) {
-        if (section.hasTitle()) {
-            builder.addComment(section.getTitle());
-        }
 
+        if(section.hasChildren())
+        {
+            var msg = new MessageBuilder();
+            msg.bar("=",40);
+            msg.space();
+            msg.text(section.getFullPath());
+            msg.space();
+            msg.bar("=",41-section.getFullPath().length());
+            builder.addComment(msg.toString());
+        }
 
         builder.addSection(section.getRealFullPath(), defaultOffset);
         var description = section.getDescription();
@@ -64,10 +71,7 @@ public class PermissionDocumentationDecorator extends DocumentationDecorator {
             }
         }
         if (section.hasChildren()) {
-            builder.addSection("children", propertyOffset);
-            for (var child : section.getChildren()) {
-                builder.addListProperty(child.getRealFullPath(), listOffset);
-            }
+            builder.addProperty("description", "full access", propertyOffset);
         }
         builder.newLine();
     }

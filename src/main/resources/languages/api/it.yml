@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: Aggiungere nuova
+    delete:
+      title: Elimina
+    edit:
+      title: Modificare
+    search:
+      desc:
+        left-click: Ricerca
+        right-click: Cambia opzione
+        shift-click: Ripristina
+      title: Ricerca
+    page-up:
+      title: Pagina su
+    page-down:
+      title: Pagina giù
+    exit:
+      title: Uscita
+    back:
+      title: Torna indietro
+    value: valore
+    active: attivo
+    inactive: inattivo
+    state: Stato
+    left-click: Sono partiti
+    right-click: Destra
+    shift-click: Spostare
+    save: Salva
+    cancel: Annulla
+    title: Titolo
+    icon: Icona
+    next: Prossimo
+    remove: Rimuovere
+    previous: Precedente
+    increase: Aumento
+    decrease: Diminuire
+    select: Selezionare
+    enable-disable: Abilita / Disabilita
+    example: Esempio
+    click-info: Informazioni sui clic del mouse
+permissions:
+  one-required: Devi avere una di queste autorizzazioni
+  all-required: Devi avere i permessi
+  incorrect-number-of-arguments: Numero errato di argomenti, dovrebbe essere
+copy:
+  title: copia
+  info: Fare clic per copiare il valore
+  to-chat: copia per chattare
+  to-clipboard: copia negli appunti
+resourepack:
+  download: Scarica su minecraft
+  send-url: Invia URL di download
+color-picker:
+  command:
+    desc-1: Inserisci il colore esadecimale personalizzato nella chat
+    desc-3: Oppure fai clic sulla tessera del colore per copiarne il valore esadecimale
+  gui:
+    add-color:
+      title: Aggiungi colore
+      desc-1: Il valore deve essere in esadecimale
+    title: Color Picker
+  change-color: Cambia colore

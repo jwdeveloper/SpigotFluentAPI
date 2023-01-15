@@ -29,8 +29,7 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
         if (section.hasAttribute("github-ignore")) {
             return;
         }
-        if(section.hasAttribute("bold"))
-        {
+        if (section.hasAttribute("bold")) {
             builder.newLine().text("###").space().text(section.getContent()).newLine();
             return;
         }
@@ -41,6 +40,15 @@ public class GithubDocumentationRenderer extends DocumentationRenderer {
     protected void onLinkSection(MessageBuilder builder, DocumentationSection section) {
 
         builder.newLine().text("[" + section.getId() + "]").text("(").text(section.getContent()).text(")").newLine().newLine();
+    }
+
+    @Override
+    protected void onCodeSection(MessageBuilder builder, DocumentationSection section) {
+        builder.newLine()
+                .text(" ```java")
+                .text(section.getContent())
+                .text("```")
+                .newLine();
     }
 
     @Override

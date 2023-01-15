@@ -14,14 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleYamlValueResolver {
-
-
-    public <T> void setValue(T data, YamlConfiguration configuration, YamlContent content) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Object value = getFieldValue(data, content);
-        configuration.set(content.getFullPath(), value);
-    }
-
-
     private Object getFieldValue(Object object, YamlContent content) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         var field = content.getField();
         field.setAccessible(true);
@@ -75,8 +67,22 @@ public class SimpleYamlValueResolver {
         return StringUtils.EMPTY;
     }
 
-    public ConfigurationSection setObject(Object object, YamlConfiguration configuration, YamlContent content) {
-        var section = configuration.createSection(content.getFullPath());
+    public <T> void setValue(T data, YamlConfiguration configuration, YamlContent content, boolean override) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        Object value = getFieldValue(data, content);
+        if (configuration.contains(content.getFullPath()) && !override) {
+            return;
+        }
+        configuration.set(content.getFullPath(), value);
+    }
+
+
+    public ConfigurationSection setObject(Object object, YamlConfiguration configuration, YamlContent content, boolean overrite) {
+        ConfigurationSection section = null;
+        if (configuration.isConfigurationSection(content.getFullPath())) {
+            section = configuration.getConfigurationSection(content.getFullPath());
+        } else {
+            section = configuration.createSection(content.getFullPath());
+        }
         try {
             content.getField().setAccessible(true);
             var instance = content.getField().get(object);
@@ -86,6 +92,9 @@ public class SimpleYamlValueResolver {
 
             for (var child : content.getChildren()) {
                 var value = getFieldValue(instance, child);
+                if (section.contains(child.getFullPath()) && !overrite) {
+                    continue;
+                }
                 section.set(child.getFullPath(), value);
             }
             content.getField().setAccessible(false);
@@ -131,11 +140,9 @@ public class SimpleYamlValueResolver {
             return getDefaultValue(content.getClazz());
         }
 
-        if (content.getClazz().isEnum())
-        {
-              return Enum.valueOf((Class<? extends Enum>)content.getClazz(), (String) value);
+        if (content.getClazz().isEnum()) {
+            return Enum.valueOf((Class<? extends Enum>) content.getClazz(), (String) value);
         }
-
 
 
         return value;

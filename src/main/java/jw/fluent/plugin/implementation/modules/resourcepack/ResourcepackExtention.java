@@ -1,12 +1,18 @@
 package jw.fluent.plugin.implementation.modules.resourcepack;
 
-import jw.fluent.plugin.api.FluentApiSpigotBuilder;
+import jw.fluent.api.desing_patterns.dependecy_injection.api.enums.LifeTime;
+import jw.fluent.api.spigot.messages.message.MessageBuilder;
+import jw.fluent.api.utilites.LinkMessageUtility;
 import jw.fluent.plugin.api.FluentApiExtension;
-import jw.fluent.plugin.implementation.FluentApi;
-import jw.fluent.plugin.implementation.FluentApiSpigot;
+import jw.fluent.plugin.api.FluentApiSpigotBuilder;
 import jw.fluent.plugin.api.config.ConfigProperty;
 import jw.fluent.plugin.api.config.FluentConfig;
-import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
+import jw.fluent.plugin.implementation.FluentApi;
+import jw.fluent.plugin.implementation.FluentApiSpigot;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
@@ -32,32 +38,68 @@ public class ResourcepackExtention implements FluentApiExtension {
     @Override
     public void onConfiguration(FluentApiSpigotBuilder builder) {
         options = loadOptions(builder.config());
+
+
+        builder.container().register(ResourcepackOptions.class, LifeTime.SINGLETON,container ->
+        {
+            return options;
+        });
         builder.defaultCommand()
                 .subCommandsConfig(subCommandConfig ->
                 {
                     subCommandConfig.addSubCommand(commandName, commandBuilder ->
                     {
                         commandBuilder.propertiesConfig(propertiesConfig ->
-                                {
-                                    propertiesConfig.setDescription("downloads plugin resourcepack");
-                                    propertiesConfig.setUsageMessage("/" + builder.defaultCommand().getName() + " " + commandName);
-                                })
-                                .eventsConfig(eventConfig ->
-                                {
-                                    eventConfig.onPlayerExecute(event ->
-                                    {
-                                        byte[] sh1 = null;
-                                        try {
-                                            FluentLogger.LOGGER.info("RESOURSEPAKC", options.getDefaultUrl());
-                                            sh1 = toSHA1(options.getDefaultUrl());
-                                            event.getPlayer().setResourcePack(options.getDefaultUrl(), sh1);
-                                        } catch (Exception e) {
-                                            event.getPlayer().setResourcePack(options.getDefaultUrl());
-                                        }
-                                    });
-                                });
+                        {
+                            propertiesConfig.setDescription("downloads plugin resourcepack");
+                            propertiesConfig.setUsageMessage("/" + builder.defaultCommand().getName() + " " + commandName);
+                        });
+
+                        commandBuilder.subCommandsConfig(subCommandConfig1 ->
+                        {
+                            subCommandConfig1.addSubCommand("download", commandBuilder1 ->
+                            {
+                                commandBuilder1.propertiesConfig(propertiesConfig ->
+                                        {
+                                            propertiesConfig.setDescription("downloads plugin resourcepack");
+                                            propertiesConfig.setUsageMessage("/" + builder.defaultCommand().getName() + " " + commandName + " download");
+                                        })
+                                        .eventsConfig(eventConfig ->
+                                        {
+                                            eventConfig.onPlayerExecute(event ->
+                                            {
+                                                byte[] sh1 = null;
+                                                try {
+                                                    sh1 = toSHA1(options.getDefaultUrl());
+                                                    event.getPlayer().setResourcePack(options.getDefaultUrl(), sh1);
+                                                } catch (Exception e) {
+                                                    event.getPlayer().setResourcePack(options.getDefaultUrl());
+                                                }
+                                            });
+                                        });
+                            });
+
+                            subCommandConfig1.addSubCommand("link", commandBuilder1 ->
+                            {
+                                commandBuilder1.propertiesConfig(propertiesConfig ->
+                                        {
+                                            propertiesConfig.setDescription("sending to player resourcepack link");
+                                            propertiesConfig.setUsageMessage("/" + builder.defaultCommand().getName() + " " + commandName + " link");
+                                        })
+                                        .eventsConfig(eventConfig ->
+                                        {
+                                            eventConfig.onPlayerExecute(event ->
+                                            {
+                                                LinkMessageUtility.send(event.getPlayer(), options.getDefaultUrl(), "Resourcepack URL");
+                                            });
+                                        });
+                            });
+                        });
+
                     });
                 });
+
+
     }
 
 

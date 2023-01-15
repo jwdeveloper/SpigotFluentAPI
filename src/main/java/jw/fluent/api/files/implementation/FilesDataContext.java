@@ -3,7 +3,6 @@ package jw.fluent.api.files.implementation;
 import jw.fluent.api.files.implementation.file_handlers.JsonFilesHandler;
 import jw.fluent.api.files.implementation.file_handlers.ConfigFileHandler;
 import jw.fluent.api.files.implementation.file_handlers.CustomFilesHandler;
-import jw.fluent.api.files.implementation.file_handlers.YamlFilesHandler;
 import jw.fluent.api.files.api.FileHandler;
 import jw.fluent.api.files.api.DataContext;
 import jw.fluent.api.files.api.CustomFile;
@@ -27,7 +26,6 @@ public class FilesDataContext implements DataContext {
         this.path = path;
         this.fileHandlers = new HashMap<>();
         this.registerFileHandler(new JsonFilesHandler(path));
-        this.registerFileHandler(new YamlFilesHandler());
         this.registerFileHandler(new CustomFilesHandler());
         this.registerFileHandler(new ConfigFileHandler());
     }
@@ -40,12 +38,6 @@ public class FilesDataContext implements DataContext {
     @Override
     public void addCustomFileObject(CustomFile object) {
         final var handler = fileHandlers.get(CustomFilesHandler.class);
-        handler.addObject(object);
-    }
-
-    @Override
-    public void addYmlObject(Object object) {
-        final var handler = fileHandlers.get(YamlFilesHandler.class);
         handler.addObject(object);
     }
 

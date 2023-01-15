@@ -53,7 +53,7 @@ public class ButtonUI {
 
     protected PermissionType permissionType;
 
-    private ButtonUIEvent onClick = (player, button) -> {
+    private ButtonUIEvent onLeftClick = (player, button) -> {
     };
 
     private ButtonUIEvent onShiftClick = (player, button) -> {
@@ -216,9 +216,9 @@ public class ButtonUI {
     }
 
     public void click(Player player) {
-        if (onClick == null)
+        if (onLeftClick == null)
             return;
-        this.onClick.execute(player, this);
+        this.onLeftClick.execute(player, this);
     }
 
     public void rightClick(Player player) {

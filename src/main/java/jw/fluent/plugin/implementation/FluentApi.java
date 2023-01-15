@@ -106,7 +106,10 @@ public class FluentApi {
     }
 
     public static String path() {
-
         return FileUtility.pluginPath(plugin);
+    }
+
+    public static String dataPath() {
+        return path()+FileUtility.separator()+"data";
     }
 }

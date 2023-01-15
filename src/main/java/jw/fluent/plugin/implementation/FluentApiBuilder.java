@@ -11,10 +11,16 @@ import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import jw.fluent.plugin.implementation.modules.permissions.api.FluentPermissionBuilder;
 import jw.fluent.plugin.implementation.modules.command.FluentApiCommandBuilder;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FluentApiBuilder implements FluentApiSpigotBuilder
 {
+
+    public static FluentApiBuilder create(Plugin plugin)
+    {
+        return create((JavaPlugin) plugin);
+    }
 
     public static FluentApiBuilder create(JavaPlugin plugin)
     {

@@ -54,7 +54,7 @@ public class SimpleLoggerImpl implements SimpleLogger {
     }
 
     public enum LogType {
-        SUCCESS, INFO, WARNING
+        SUCCESS, INFO, WARNING, LOG
     }
 
 
@@ -83,6 +83,7 @@ public class SimpleLoggerImpl implements SimpleLogger {
             case INFO -> LogUtility.info();
             case SUCCESS -> LogUtility.success();
             case WARNING -> LogUtility.warning();
+            case LOG -> "";
         };
         msg.text(format);
         if (params.length == 0) {
@@ -135,7 +136,6 @@ public class SimpleLoggerImpl implements SimpleLogger {
         var cause = exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage();
         stackTrace.newLine().color(ChatColor.DARK_RED)
                 .inBrackets("Reason").color(ChatColor.YELLOW).space().text(cause).color(ChatColor.RESET).newLine()
-
                 .color(ChatColor.DARK_RED).inBrackets("Exception type")
                 .color(ChatColor.YELLOW).space().text(exception.getClass().getSimpleName())
                 .color(ChatColor.RESET);

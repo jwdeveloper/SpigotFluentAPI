@@ -51,6 +51,15 @@ public class PermissionModel {
         return parent.getFullPath()+"."+name;
     }
 
+    public String getParentPath()
+    {
+        if(!hasParentGroup())
+        {
+            return StringUtils.EMPTY;
+        }
+        return parent.getFullPath();
+    }
+
     public String getRealFullPath()
     {
         if(!hasChildren())

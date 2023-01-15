@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: Yeni ekle
+    delete:
+      title: Silmek
+    edit:
+      title: Düzenlemek
+    search:
+      desc:
+        left-click: Arama
+        right-click: Seçeneği değiştir
+        shift-click: Sıfırla
+      title: Arama
+    page-up:
+      title: Sayfa yukarı
+    page-down:
+      title: sayfa aşağı
+    exit:
+      title: çıkış
+    back:
+      title: Geri dön
+    value: değer
+    active: aktif
+    inactive: etkin değil
+    state: Belirtmek, bildirmek
+    left-click: Ayrıldı
+    right-click: Sağ
+    shift-click: Vardiya
+    save: Kayıt etmek
+    cancel: İptal
+    title: Başlık
+    icon: simge
+    next: Sonraki
+    remove: Kaldırmak
+    previous: Öncesi
+    increase: Arttırmak
+    decrease: Azaltmak
+    select: Seçme
+    enable-disable: Etkinleştirme / Devre dışı
+    example: Misal
+    click-info: Fare tıklama bilgisi
+permissions:
+  one-required: Bu izinlerden birine sahip olmanız gerekir.
+  all-required: izinlere sahip olmanız gerekir
+  incorrect-number-of-arguments: Yanlış sayıda bağımsız değişken, olmalıdır
+copy:
+  title: kopyalamak
+  info: Değeri kopyalamak için tıklayın
+  to-chat: sohbete kopyala
+  to-clipboard: panoya kopyala
+resourepack:
+  download: Minecraft'a indir
+  send-url: İndirme url'sini gönder
+color-picker:
+  command:
+    desc-1: Sohbette özel Hex rengi girin
+    desc-3: Veya onaltılık değerini kopyalamak için renk döşemesine tıklayın
+  gui:
+    add-color:
+      title: Renk Ekle
+      desc-1: Değer Hex cinsinden olmalıdır
+    title: Renk seçici
+  change-color: Rengi değiştir

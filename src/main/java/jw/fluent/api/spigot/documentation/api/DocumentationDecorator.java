@@ -42,6 +42,11 @@ public abstract class DocumentationDecorator {
         return this;
     }
 
+    protected DocumentationDecorator addYml(String yml, Documentation documentation, String... arrtibutes) {
+        documentation.getSections().add(new DocumentationSection("yml", SectionType.YML, yml, Arrays.stream(arrtibutes).toList()));
+        return this;
+    }
+
     protected DocumentationDecorator addText(Documentation documentation) {
         documentation.getSections().add(new DocumentationSection("text", SectionType.TEXT, StringUtils.EMPTY));
         return this;

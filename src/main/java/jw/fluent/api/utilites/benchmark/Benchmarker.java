@@ -25,7 +25,7 @@ public class Benchmarker
 
     public static long  run(String name, int repeat, Consumer<Void> work)
     {
-        var sum =0;
+        long sum =0;
         for(int i=0;i<repeat;i++)
         {
             var start = System.nanoTime();
@@ -37,8 +37,15 @@ public class Benchmarker
         var inMilisec = result/Math.pow(10,6);
         System.out.println("=============================================================");
         System.out.println("Benchmark: " +name+" for "+repeat+ " calls");
-        System.out.println("All calls time Nanoseconds: " +sum);
-        System.out.println("Average time for one call Nanoseconds: " +result);
+        System.out.println("Nanoseconds: " +sum);
+        float mili = sum/1_000_000f;
+        float second = mili/1000f;
+        System.out.println("Miliseconds: " +mili);
+        System.out.println("Seconds: " + second);
+        System.out.println("Minecraft ticks: " + second*20f);
+
+
+
      //   System.out.println("Mili: " +inMilisec);
         return sum/repeat;
     }

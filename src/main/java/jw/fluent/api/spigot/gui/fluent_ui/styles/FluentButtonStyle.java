@@ -11,13 +11,11 @@ import org.bukkit.ChatColor;
 public class FluentButtonStyle
 {
     private final ButtonColorSet colorSet;
-    private final ButtonStyleRenderer renderer;
 
     @Inject
     public FluentButtonStyle(FluentTranslator translator)
     {
         this.colorSet = getColorSet();
-        this.renderer = new CatchButtonStyleRenderer(translator,colorSet);
     }
 
     public ButtonColorSet getColorSet()

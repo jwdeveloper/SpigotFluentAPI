@@ -22,7 +22,21 @@ public class PluginDocumentationRenderer  extends DocumentationRenderer {
     }
 
     @Override
+    protected void onYmlSection(MessageBuilder builder, DocumentationSection section) {
+        if(section.hasAttribute("plugin-ignore"))
+        {
+            return;
+        }
+        super.onYmlSection(builder, section);
+    }
+
+    @Override
     protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
+
+    }
+
+    @Override
+    protected void onCodeSection(MessageBuilder builder, DocumentationSection section) {
 
     }
 

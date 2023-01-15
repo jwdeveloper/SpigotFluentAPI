@@ -1,0 +1,64 @@
+gui:
+  base:
+    insert:
+      title: 添新
+    delete:
+      title: 删除
+    edit:
+      title: 编辑
+    search:
+      desc:
+        left-click: 搜索
+        right-click: 更改选项
+        shift-click: 重置
+      title: 搜索
+    page-up:
+      title: 向上翻页
+    page-down:
+      title: 向下翻页
+    exit:
+      title: 出口
+    back:
+      title: 回去
+    value: 价值
+    active: 积极的
+    inactive: 不活跃
+    state: 状态
+    left-click: 剩下
+    right-click: 正确的
+    shift-click: 转移
+    save: 救
+    cancel: 取消
+    title: 标题
+    icon: 图标
+    next: 下一个
+    remove: 消除
+    previous: 以前的
+    increase: 增加
+    decrease: 减少
+    select: 选择
+    enable-disable: 启用/禁用
+    example: 例子
+    click-info: 鼠标点击信息
+permissions:
+  one-required: 您需要拥有这些权限之一
+  all-required: 你需要有权限
+  incorrect-number-of-arguments: 参数数量不正确，应该是
+copy:
+  title: 复制
+  info: 点击复制值
+  to-chat: 复制到聊天
+  to-clipboard: 复制到剪贴板
+resourepack:
+  download: 下载到我的世界
+  send-url: 发送下载地址
+color-picker:
+  command:
+    desc-1: 在聊天中输入自定义十六进制颜色
+    desc-3: 或者单击颜色块以复制其十六进制值
+  gui:
+    add-color:
+      title: 添加颜色
+      desc-1: 值必须为十六进制
+    title: 颜色选择器
+  change-color: 换颜色

@@ -107,4 +107,10 @@ public class CrudListUI<T> extends ListUI<T>
         getButtonEdit().setActive(false);
         ButtonUI.factory().backgroundButton(0, 5, Material.GRAY_STAINED_GLASS_PANE).buildAndAdd(this);
     }
+
+    public void hideDeleteButton()
+    {
+        getButtonEdit().setActive(false);
+        ButtonUI.factory().backgroundButton(0, 7, Material.GRAY_STAINED_GLASS_PANE).buildAndAdd(this);
+    }
 }

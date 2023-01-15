@@ -4,7 +4,6 @@ import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -35,31 +34,40 @@ public class ArmorStandModel extends GameObject {
 
     private Color color;
 
+    private boolean needParent = true;
+
+    public ArmorStandModel() {
+
+    }
+
+    public ArmorStandModel(boolean needParent) {
+        this.needParent = needParent;
+    }
+
     @Getter
     @Setter
-    private Consumer<ArmorStandModel> onCreated = (e)->{};
-    public void show()
-    {
-        if(armorStand == null)
+    private Consumer<ArmorStandModel> onCreated = (e) -> {
+    };
+
+    public void show() {
+        if (armorStand == null)
             return;
         armorStand.setVisible(true);
         armorStand.setInvisible(false);
     }
 
-    public void hide()
-    {
-        if(armorStand == null)
+    public void hide() {
+        if (armorStand == null)
             return;
         armorStand.setVisible(false);
         armorStand.setInvisible(true);
     }
 
-    public void setVisible(boolean isVisible)
-    {
-        if(isVisible)
-            show();
+    public void setVisible(boolean isVisible) {
+        if (isVisible)
+            armorStand.setHelmet(itemStack);
         else
-            hide();
+            armorStand.setHelmet(null);
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -67,12 +75,11 @@ public class ArmorStandModel extends GameObject {
         updateModel();
     }
 
-    public void setId(NamespacedKey namespacedKey, UUID uuid)
-    {
-        if(armorStand == null)
+    public void setId(NamespacedKey namespacedKey, UUID uuid) {
+        if (armorStand == null)
             return;
 
-        if(namespacedKey == null || uuid == null)
+        if (namespacedKey == null || uuid == null)
             return;
 
         this.uuid = uuid;
@@ -82,11 +89,9 @@ public class ArmorStandModel extends GameObject {
     }
 
 
-    public void refresh()
-    {
+    public void refresh() {
         var isSmall = false;
-        if(armorStand != null)
-        {
+        if (armorStand != null) {
             isSmall = armorStand.isSmall();
             armorStand.remove();
         }
@@ -102,7 +107,7 @@ public class ArmorStandModel extends GameObject {
 
 
     public void setCustomModelId(int customModelId) {
-        if(itemStack == null)
+        if (itemStack == null)
             return;
         var meta = itemStack.getItemMeta();
         meta.setCustomModelData(customModelId);
@@ -110,8 +115,7 @@ public class ArmorStandModel extends GameObject {
         armorStand.getEquipment().setHelmet(itemStack);
     }
 
-    public void setItemStack(Material material, int customModelId)
-    {
+    public void setItemStack(Material material, int customModelId) {
         var itemStack = new ItemStack(material);
         var meta = itemStack.getItemMeta();
         meta.setCustomModelData(customModelId);
@@ -119,10 +123,13 @@ public class ArmorStandModel extends GameObject {
         setItemStack(itemStack);
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
         updateModel();
+    }
+
+    public void setNameWithoutUpdate(String name) {
+        this.name = name;
     }
 
     @Override
@@ -140,7 +147,7 @@ public class ArmorStandModel extends GameObject {
             return;
         }
 
-         armorStand.teleport(location);
+        armorStand.teleport(location);
     }
 
     public void updateModel() {
@@ -152,8 +159,7 @@ public class ArmorStandModel extends GameObject {
             return;
         }
 
-        if(StringUtils.isNotNullOrEmpty(name))
-        {
+        if (StringUtils.isNotNullOrEmpty(name)) {
             armorStand.setCustomName(name);
             armorStand.setCustomNameVisible(true);
         }
@@ -166,36 +172,31 @@ public class ArmorStandModel extends GameObject {
 
     @Override
     public void onCreate() {
-        if (getParent() == null)
+        if (needParent && getParent() == null)
             return;
         if (getLocation() == null) {
             return;
         }
         armorStand = createArmorStand();
         updateModel();
-
         onCreated.accept(this);
     }
 
 
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         this.color = color;
-        if(itemStack == null)
-        {
+        if (itemStack == null) {
             return;
         }
         var meta = itemStack.getItemMeta();
-        if(meta instanceof LeatherArmorMeta horseMeta)
-        {
+        if (meta instanceof LeatherArmorMeta horseMeta) {
             horseMeta.setColor(color);
             itemStack.setItemMeta(horseMeta);
         }
         updateModel();
     }
 
-    protected ArmorStand createArmorStand()
-    {
+    protected ArmorStand createArmorStand() {
         ArmorStand armorStand;
         armorStand = location.getWorld().spawn(getLocation(), ArmorStand.class);
         armorStand.setVisible(false);
@@ -216,7 +217,7 @@ public class ArmorStandModel extends GameObject {
 
     @Override
     public void onDestroy() {
-        if(armorStand == null)
+        if (armorStand == null)
             return;
 
         armorStand.remove();

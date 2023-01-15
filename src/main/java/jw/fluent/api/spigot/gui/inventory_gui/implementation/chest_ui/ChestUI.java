@@ -107,7 +107,7 @@ public class ChestUI extends InventoryUI {
                     if (button instanceof ButtonObserverUI buttonObserverUI)
                         buttonObserverUI.onClick(player, this);
                     else
-                        button.getOnClick().execute(player, button);
+                        button.getOnLeftClick().execute(player, button);
                     onClick(player, button);
                 }
             }

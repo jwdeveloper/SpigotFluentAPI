@@ -70,6 +70,11 @@ public class MethodCodeGenerator {
         return this;
     }
 
+    public MethodCodeGenerator addParameter(Class clazz, String parameter) {
+        this.parameters.add(clazz.getSimpleName()+" "+parameter);
+        return this;
+    }
+
     public String build() {
         var builder = new MessageBuilder();
 

@@ -1,5 +1,6 @@
 package unit.files;
 
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.files.implementation.yaml_reader.implementation.YmlPathReader;
 import jw.fluent.api.utilites.java.ClassTypeUtility;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
@@ -67,7 +68,7 @@ public class YmlReaderTests
     public void shouldFindYmlFiles()
     {
         var file = new File("D:\\MC\\paper_1.19\\plugins\\JW_Piano.jar");
-        var result =  ClassTypeUtility.findAllYmlFiles(file);
+        var result =  FileUtility.findAllYmlFiles(file);
         for(var k :result)
         {
             FluentLogger.LOGGER.info("Name "+k);

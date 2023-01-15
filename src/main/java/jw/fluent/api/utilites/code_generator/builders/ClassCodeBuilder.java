@@ -21,6 +21,8 @@ public class ClassCodeBuilder  {
     private final List<String> comments;
     private final List<String> constructors;
 
+    private final List<String> classes;
+
     public ClassCodeBuilder() {
         imports = new ArrayList<>();
         methods = new ArrayList<>();
@@ -29,6 +31,7 @@ public class ClassCodeBuilder  {
         fields = new ArrayList<>();
         constructors = new ArrayList<>();
         comments = new ArrayList<>();
+        classes = new ArrayList<>();
     }
 
     public ClassCodeBuilder addComment(String comment)
@@ -65,6 +68,19 @@ public class ClassCodeBuilder  {
 
     public ClassCodeBuilder addMethod(String method) {
         methods.add(method);
+        return this;
+    }
+
+    public ClassCodeBuilder addClass(String clazz) {
+        methods.add(clazz);
+        return this;
+    }
+
+    public ClassCodeBuilder addClass(Consumer<ClassCodeBuilder> consumer) {
+        var builder = new ClassCodeBuilder();
+        consumer.accept(builder);
+        var result = builder.build();
+        methods.add(result);
         return this;
     }
 
@@ -115,7 +131,11 @@ public class ClassCodeBuilder  {
         comments.add("@JW generated code source don't modify it");
         var builder = new MessageBuilder();
 
-        builder.text("package").space().text(_package).textNewLine(";");
+        if(StringUtils.isNotNullOrEmpty(_package))
+        {
+            builder.text("package").space().text(_package).textNewLine(";");
+        }
+
         builder.newLine();
         for(var _import : imports)
         {
@@ -175,6 +195,15 @@ public class ClassCodeBuilder  {
         for(var method : methods)
         {
             for(var line : method.lines().toList())
+            {
+                builder.space(offset).textNewLine(line);
+            }
+            builder.newLine();
+        }
+
+        for(var clazz : classes)
+        {
+            for(var line : clazz.lines().toList())
             {
                 builder.space(offset).textNewLine(line);
             }

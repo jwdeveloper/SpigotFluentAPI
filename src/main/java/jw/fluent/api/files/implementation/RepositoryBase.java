@@ -32,8 +32,14 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
         this.fileName = filename;
     }
 
+
+
     public RepositoryBase(Class<T> entityClass) {
-        this(FileUtility.pluginPath(FluentApi.plugin()), entityClass, entityClass.getSimpleName());
+        this(FluentApi.dataPath(), entityClass, entityClass.getSimpleName());
+    }
+
+    public RepositoryBase(Class<T> entityClass, String fileName) {
+        this(FluentApi.dataPath(), entityClass, fileName);
     }
 
     public Stream<T> query() {
@@ -92,6 +98,7 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             data.setUuid(UUID.randomUUID());
 
         content.add(data);
+
         return true;
 
     }
@@ -176,5 +183,12 @@ public class RepositoryBase<T extends DataModel> implements Repository<T,UUID>, 
             FluentLogger.LOGGER.error("Repository save error "+fileName + " " + entityClass.getName(), e);
             return false;
         }
+    }
+
+    public static String getDataPath()
+    {
+        var path =  FileUtility.pluginPath(FluentApi.plugin())+FileUtility.separator()+"data";
+        FileUtility.ensurePath(path);
+        return path;
     }
 }

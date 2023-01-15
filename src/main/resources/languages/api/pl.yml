@@ -1,7 +1,7 @@
 gui:
   base:
     insert:
-      title: Dodaj
+      title: Dodaj nowe
     delete:
       title: Usuń
     edit:
@@ -31,8 +31,34 @@ gui:
     cancel: Anuluj
     title: Tytuł
     icon: Ikonka
-
+    next: Następny
+    previous: Poprzedni
+    increase: Zwiększ
+    remove: Usuń
+    decrease: Zmniejsz
+    select: Wybierz
+    enable-disable: Włącz / Wyłącz
+    example: Przykład
+    click-info: Informacje o kliknięciu myszą
 permissions:
-      one-required: Musisz posiadać jedną z tych permisji
-      all-required: Musisz mieć te permisje
-      incorrect-number-of-arguments: Zła ilość argumentów, powinno być,
+  one-required: Musisz posiadać jedną z tych permisji
+  all-required: Musisz mieć te permisje
+  incorrect-number-of-arguments: Zła ilość argumentów, powinno być,
+copy:
+  title: Kopiuj
+  info: Wartość zostanie skopiowania po kliknięciu
+  to-chat: Kopiuj do czatu
+  to-clipboard: Kopiuj do schowka
+resourepack:
+  download: Pobierz do minecrafta
+  send-url: Wyślij link do pobrania
+color-picker:
+  change-color: Zmień kolor
+  command:
+    desc-1: Wprowadź niestandardowy kolor szesnastkowy na czacie
+    desc-3: Lub kliknij kafelek koloru, aby skopiować jego wartość szesnastkową
+  gui:
+    title: Narzędzie do wybierania kolorów
+    add-color:
+      title: Dodaj kolor
+      desc-1: Wartość musi być w formacie szesnastkowym

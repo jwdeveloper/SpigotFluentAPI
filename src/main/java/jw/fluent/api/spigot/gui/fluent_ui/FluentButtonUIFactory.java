@@ -2,27 +2,24 @@ package jw.fluent.api.spigot.gui.fluent_ui;
 
 import jw.fluent.api.desing_patterns.observer.implementation.Observer;
 import jw.fluent.api.desing_patterns.observer.implementation.ObserverBag;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.FluentButtonNotifier;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.NotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.BoolNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.bools.FluentBoolNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.EnumNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.enums.FluentEnumNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentBarIntNotifier;
-import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.IntNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.FluentIntNotifier;
+import jw.fluent.api.spigot.gui.fluent_ui.observers.ints.IntNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.FluentListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.ListNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.CheckBox;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.list.checkbox.FluentCheckboxListNotifier;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.string.StringNotifierOptions;
 import jw.fluent.api.spigot.gui.fluent_ui.observers.string.TextInputEvent;
-import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.fluent.api.spigot.gui.fluent_ui.styles.FluentButtonStyle;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
+import jw.fluent.api.spigot.gui.inventory_gui.InventoryUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUI;
 import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.ButtonObserverUIBuilder;
-import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverEvent;
+import jw.fluent.api.spigot.gui.inventory_gui.button.observer_button.observers.ButtonObserverBuilder;
 import jw.fluent.api.spigot.gui.inventory_gui.implementation.chest_ui.ChestUI;
 import jw.fluent.api.spigot.messages.message.MessageBuilder;
 import jw.fluent.api.spigot.permissions.implementation.PermissionsUtility;
@@ -33,14 +30,13 @@ import jw.fluent.plugin.implementation.modules.translator.FluentTranslator;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class FluentButtonUIFactory {
     private final FluentButtonStyle fluentButtonStyle;
-    private final FluentTranslator translator;
+    private final FluentTranslator lang;
 
     private final FluentButtonUIBuilder builder;
 
@@ -48,7 +44,7 @@ public class FluentButtonUIFactory {
                                  FluentButtonStyle style,
                                  FluentButtonUIBuilder builder) {
         fluentButtonStyle = style;
-        this.translator = translator;
+        this.lang = translator;
         this.builder = builder;
     }
 
@@ -59,10 +55,10 @@ public class FluentButtonUIFactory {
         builder.setDescription(buttonDescriptionInfoBuilder ->
         {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-            buttonDescriptionInfoBuilder.setOnLeftClick("increase");
-            buttonDescriptionInfoBuilder.setOnRightClick("decrease");
+            buttonDescriptionInfoBuilder.setOnLeftClick(lang.get("gui.base.increase"));
+            buttonDescriptionInfoBuilder.setOnRightClick(lang.get("gui.base.decrease"));
         });
-        builder.setObserver(observer, new FluentBarIntNotifier(fluentButtonStyle, translator, options));
+        builder.setObserver(observer, new FluentBarIntNotifier(fluentButtonStyle, lang, options));
         return builder;
     }
 
@@ -75,7 +71,7 @@ public class FluentButtonUIFactory {
             buttonDescriptionInfoBuilder.setOnLeftClick("+ " + options.getYield());
             buttonDescriptionInfoBuilder.setOnRightClick("- " + options.getYield());
         });
-        builder.setObserver(observer, new FluentIntNotifier(translator, options));
+        builder.setObserver(observer, new FluentIntNotifier(lang, options));
         return builder;
     }
 
@@ -86,8 +82,8 @@ public class FluentButtonUIFactory {
         builder.setDescription(buttonDescriptionInfoBuilder ->
         {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-            buttonDescriptionInfoBuilder.setOnLeftClick("Next");
-            buttonDescriptionInfoBuilder.setOnRightClick("Previous");
+            buttonDescriptionInfoBuilder.setOnLeftClick(lang.get("gui.base.next"));
+            buttonDescriptionInfoBuilder.setOnRightClick(lang.get("gui.base.previous"));
         });
         builder.setObserver(observer, new FluentEnumNotifier<T>(_class, options));
         return builder;
@@ -105,8 +101,8 @@ public class FluentButtonUIFactory {
         builder.setDescription(buttonDescriptionInfoBuilder ->
         {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-            buttonDescriptionInfoBuilder.setOnLeftClick("Next");
-            buttonDescriptionInfoBuilder.setOnRightClick("Previous");
+            buttonDescriptionInfoBuilder.setOnLeftClick(lang.get("gui.base.next"));
+            buttonDescriptionInfoBuilder.setOnRightClick(lang.get("gui.base.previous"));
         });
         builder.setObserver(indexObserver, new FluentListNotifier<>(values, options));
         return builder;
@@ -119,9 +115,9 @@ public class FluentButtonUIFactory {
         builder.setDescription(buttonDescriptionInfoBuilder ->
                 {
                     buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
-                    buttonDescriptionInfoBuilder.setOnLeftClick("Next");
-                    buttonDescriptionInfoBuilder.setOnRightClick("Previous");
-                    buttonDescriptionInfoBuilder.setOnShiftClick("Enable/Disable");
+                    buttonDescriptionInfoBuilder.setOnLeftClick(lang.get("gui.base.next"));
+                    buttonDescriptionInfoBuilder.setOnRightClick(lang.get("gui.base.previous"));
+                    buttonDescriptionInfoBuilder.setOnShiftClick(lang.get("gui.base.enable-disable"));
                 })
                 .setOnShiftClick((player, button) ->
                 {
@@ -155,7 +151,7 @@ public class FluentButtonUIFactory {
             buttonDescriptionInfoBuilder.addObserverPlaceholder(options.getId());
             buttonDescriptionInfoBuilder.setOnLeftClick("Change state");
         });
-        builder.setObserver(observer, new FluentBoolNotifier(translator, options));
+        builder.setObserver(observer, new FluentBoolNotifier(lang, options));
         return builder;
     }
 
@@ -187,7 +183,7 @@ public class FluentButtonUIFactory {
         return builder;
     }
 
-    public FluentButtonUIBuilder stringInput(Consumer<StringNotifierOptions> consumer, ChestUI chestUI) {
+    public FluentButtonUIBuilder textInput(Consumer<StringNotifierOptions> consumer, ChestUI chestUI) {
         var options = new StringNotifierOptions();
         consumer.accept(options);
         return builder

@@ -5,7 +5,7 @@ import jw.fluent.api.spigot.commands.implementation.services.CommandServiceImpl;
 import jw.fluent.api.spigot.commands.implementation.validators.CommandArgumentValidator;
 import jw.fluent.api.spigot.commands.implementation.validators.BoolValidator;
 import jw.fluent.api.spigot.commands.implementation.validators.NumberValidator;
-import jw.fluent.tests.integration.api.SpigotIntegrationTest;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class SimpleCommandServiceValidationTests extends SpigotIntegrationTest
+public class SimpleCommandServiceValidationTests
 {
     CommandServiceImpl simpleCommandService;
 

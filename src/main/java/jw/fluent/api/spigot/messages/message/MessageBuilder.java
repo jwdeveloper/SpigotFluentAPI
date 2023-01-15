@@ -1,5 +1,6 @@
 package jw.fluent.api.spigot.messages.message;
 
+import jw.fluent.api.utilites.java.StringUtils;
 import jw.fluent.api.utilites.messages.Emoticons;
 import jw.fluent.plugin.implementation.FluentApi;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
@@ -111,13 +112,11 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder textFormat(String pattern, Object... args)
-    {
-        return text(String.format(pattern,args));
+    public MessageBuilder textFormat(String pattern, Object... args) {
+        return text(String.format(pattern, args));
     }
 
-    public MessageBuilder textNewLine(Object text)
-    {
+    public MessageBuilder textNewLine(Object text) {
         return text(text).newLine();
     }
 
@@ -127,7 +126,10 @@ public class MessageBuilder {
     }
 
     public MessageBuilder info() {
-        return inBrackets(FluentApi.plugin().getName() + " info", ChatColor.AQUA).space();
+        return bold()
+                .inBrackets(FluentApi.plugin().getName() + " info", ChatColor.AQUA)
+                .space()
+                .reset();
     }
 
     public MessageBuilder error() {
@@ -171,12 +173,18 @@ public class MessageBuilder {
     }
 
     public MessageBuilder inBrackets(String message) {
-        stringBuilder.append("[").append(message).append("]");
+        stringBuilder.append("[").append(message).append("]").append(ChatColor.RESET);
         return this;
     }
 
+
     public MessageBuilder inBrackets(String message, ChatColor color) {
-        stringBuilder.append(color).append("[").append(message).append("]").append(ChatColor.RESET);
+        stringBuilder.append(color).append("[").append(message).append("]");
+        return this;
+    }
+
+    public MessageBuilder inBrackets(String message, ChatColor color, ChatColor colorBorder) {
+        stringBuilder.append(colorBorder).append("[").append(color).append(message).append(colorBorder).append("]");
         return this;
     }
 
@@ -256,10 +264,10 @@ public class MessageBuilder {
     }
 
 
-    public TextComponent toTextComponent()
-    {
+    public TextComponent toTextComponent() {
         return new TextComponent(toString());
     }
+
     public void sendActionBar(Player player) {
         var tc = new TextComponent();
         tc.setText(this.toString());
@@ -276,12 +284,22 @@ public class MessageBuilder {
     }
 
     public void sendLog() {
+        sendLog("");
+    }
+
+    public void sendLog(String prefix) {
+
+        var message = stringBuilder.toString();
+        if (!StringUtils.isNullOrEmpty(prefix)) {
+
+            message = prefix + message;
+        }
+
         if (Bukkit.getServer() == null) {
-            System.out.println(stringBuilder.toString());
+            System.out.println(message);
             return;
         }
-        FluentLogger.LOGGER.log(stringBuilder.toString());
-
+        FluentLogger.LOGGER.log(message);
     }
 
 

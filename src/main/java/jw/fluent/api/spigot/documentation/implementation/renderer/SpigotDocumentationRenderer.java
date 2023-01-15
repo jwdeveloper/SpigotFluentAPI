@@ -54,6 +54,14 @@ public class SpigotDocumentationRenderer extends DocumentationRenderer {
     }
 
     @Override
+    protected void onCodeSection(MessageBuilder builder, DocumentationSection section) {
+        builder.text("[code=Java]").space()
+                .text(section.getContent())
+                .space()
+                .text("[/code]");
+    }
+
+    @Override
     protected void onImageSection(MessageBuilder builder, DocumentationSection section) {
         if(section.hasAttribute("link"))
         {

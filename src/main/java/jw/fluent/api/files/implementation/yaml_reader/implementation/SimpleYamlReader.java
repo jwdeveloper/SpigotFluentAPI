@@ -25,7 +25,7 @@ public class SimpleYamlReader implements YamlReader {
     @Override
     public <T> YamlConfiguration toConfiguration(T data, YamlConfiguration configuration) throws IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
         var model = factory.createModel(data.getClass());
-        return mapper.mapToConfiguration(data, model, configuration);
+        return mapper.mapToConfiguration(data, model, configuration, false);
     }
 
     @Override

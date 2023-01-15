@@ -1,13 +1,12 @@
 package jw.fluent.api.spigot.gameobjects.api;
 
 import org.bukkit.Location;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 
 public interface GameComponent {
 
-    void setVisibility(boolean visible);
+    void setVisible(boolean visible);
 
     <T extends GameComponent> T addGameComponent(T gameComponent);
 

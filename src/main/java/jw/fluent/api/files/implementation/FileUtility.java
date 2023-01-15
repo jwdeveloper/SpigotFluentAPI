@@ -1,14 +1,19 @@
 package jw.fluent.api.files.implementation;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 public interface FileUtility {
     static String serverPath() {
@@ -34,9 +39,9 @@ public interface FileUtility {
         return path;
     }
 
-    public static void saveClassFile(String result, boolean isTest, String _package, String fileName) throws IOException {
+    public static void saveClassFile(String result, boolean useTestPath, String _package, String fileName) throws IOException {
         var path = getProjectPath();
-        path = isTest ? path + "src\\test\\java\\" : path + "src\\main\\java\\";
+        path = useTestPath ? path + "src\\test\\java\\" : path + "src\\main\\java\\";
         path = path + _package.replace(".", "\\");
         path = path + "\\" + fileName + ".java";
         var writer = new FileWriter(path);
@@ -158,5 +163,38 @@ public interface FileUtility {
         }
         directory.mkdir();
         return directory;
+    }
+
+
+    static String loadFileContent(String path) throws IOException {
+        return Files.asCharSource(new File(path), Charsets.UTF_8).read();
+    }
+
+    static void saveToFile(String path, String name, String content) throws IOException {
+        ensurePath(path);
+        Files.write(content.getBytes(), new File(Path.of(path, name).toString()));
+        ;
+    }
+
+    public static List<String> findAllYmlFiles(File file) {
+        List<String> result = new ArrayList<>();
+        try (JarInputStream is = new JarInputStream(new FileInputStream(file))) {
+            JarEntry entry;
+            while ((entry = is.getNextJarEntry()) != null) {
+                try {
+                    String name = entry.getName();
+                    if (!name.endsWith(".yml")) {
+                        continue;
+                    }
+                    result.add(name);
+                } catch (Exception ex) {
+                    FluentLogger.LOGGER.error("Could not load class", ex);
+                }
+
+            }
+        } catch (Exception ex) {
+            FluentLogger.LOGGER.error("Could not load class", ex);
+        }
+        return result;
     }
 }

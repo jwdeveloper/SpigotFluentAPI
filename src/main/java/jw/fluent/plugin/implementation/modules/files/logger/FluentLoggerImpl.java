@@ -57,7 +57,7 @@ public class FluentLoggerImpl implements FluentLogger {
                 res[i] = params[i].toString();
             }
         }
-        simpleLogger.log(message, SimpleLoggerImpl.LogType.INFO,res);
+        simpleLogger.log(message, SimpleLoggerImpl.LogType.LOG,res);
     }
 
 }

@@ -134,7 +134,7 @@ public class ButtonUIBuilder<SELF extends ButtonUIBuilder<SELF, B>, B extends Bu
 
     public SELF setOnClick(ButtonUIEvent onClick)
     {
-        button.setOnClick(onClick);
+        button.setOnLeftClick(onClick);
         return self();
     }
     public SELF setOnShiftClick(ButtonUIEvent onClick)

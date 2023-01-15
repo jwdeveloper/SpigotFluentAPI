@@ -1,7 +1,7 @@
 gui:
   base:
     insert:
-      title: Insert
+      title: Add new
     delete:
       title: Delete
     edit:
@@ -23,8 +23,8 @@ gui:
     value: value
     active: active
     inactive: inactive
-    state: state
-    click-info: Click info
+    state: State
+    click-info: Mouse click info
     left-click: Left
     right-click: Right
     shift-click: Shift
@@ -32,8 +32,37 @@ gui:
     cancel: Cancel
     title: Title
     icon: Icon
+    next: Next
+    remove: Remove
+    previous: Previous
+    increase: Increase
+    decrease: Decrease
+    select: Select
+    enable-disable: Enable / Disable
+    example: Example
 
 permissions:
       one-required: You need to have one of those permissions
       all-required: You need to have permissions
       incorrect-number-of-arguments: Incorrect number of arguments, should be
+
+copy:
+ title: copy
+ info: Click to copy value
+ to-chat: copy to chat
+ to-clipboard: copy to clipboard
+
+resourepack:
+  download: Download to minecraft
+  send-url: Send download url
+
+color-picker:
+  change-color: Change color
+  command:
+    desc-1: Input custom Hex color in chat
+    desc-3: Or click at the color tile to copy its hex value
+  gui:
+    title: Color picker
+    add-color:
+      title: Add Color
+      desc-1: Value must be in Hex

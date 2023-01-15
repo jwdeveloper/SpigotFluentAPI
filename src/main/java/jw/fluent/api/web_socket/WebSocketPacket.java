@@ -7,6 +7,7 @@ import jw.fluent.api.spigot.tasks.SimpleTaskTimer;
 import jw.fluent.api.web_socket.annotations.PacketProperty;
 import jw.fluent.api.web_socket.resolver.*;
 import jw.fluent.api.files.implementation.json.JsonUtility;
+import jw.fluent.plugin.implementation.FluentPlugin;
 import jw.fluent.plugin.implementation.modules.files.logger.FluentLogger;
 import org.java_websocket.WebSocket;
 
@@ -80,7 +81,7 @@ public abstract class WebSocketPacket implements FluentWebsocketPacket {
 
     public boolean resolvePacket(ByteBuffer buffer) {
         if (packetSize != buffer.limit()) {
-           // FluentPlugin.logSuccess(packetSize+" "+buffer.limit());
+            FluentLogger.LOGGER.warning(getClass().getSimpleName(),"Invalid incoming packet size", buffer.limit(), "expected size",packetSize);
             return false;
         }
         int currentIndex = packetIdSize;

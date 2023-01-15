@@ -17,7 +17,10 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
     }
 
     @Override
-    public <T> YamlConfiguration mapToConfiguration(T data, YamlModel model, YamlConfiguration configuration) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public <T> YamlConfiguration mapToConfiguration(T data,
+                                                    YamlModel model,
+                                                    YamlConfiguration configuration,
+                                                    boolean overrite) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         for (var content : model.getContents())
         {
             if(content.isList())
@@ -27,10 +30,10 @@ public class SimpleYamlModelMapper implements YamlModelMapper {
             }
             if(content.isObject())
             {
-                resolver.setObject(data,configuration,content);
+                resolver.setObject(data,configuration,content, overrite);
                 continue;
             }
-            resolver.setValue(data,configuration,content);
+            resolver.setValue(data,configuration,content, overrite);
         }
         if (model.hasDescription())
         {
