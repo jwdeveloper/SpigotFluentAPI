@@ -37,10 +37,23 @@ public class TemplateUtility
         return template;
     }
 
+    public static String generateTemplate2(String template, Map<String, Object> values) {
+        for(var entry : values.entrySet())
+        {
+            template = doReplacement2(template,entry.getKey(), entry.getValue().toString());
+        }
+        return template;
+    }
+
     private static String doReplacement(String template, String keyword, String value)
     {
         var key = "\\{"+keyword+"}";
         return template.replaceAll(key, value);
     }
 
+    private static String doReplacement2(String template, String keyword, String value)
+    {
+        var key = "(\\$)("+keyword+")(\\$)";
+        return template.replaceAll(key, value);
+    }
 }

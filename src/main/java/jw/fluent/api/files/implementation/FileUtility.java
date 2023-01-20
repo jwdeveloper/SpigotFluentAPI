@@ -39,14 +39,19 @@ public interface FileUtility {
         return path;
     }
 
-    public static void saveClassFile(String result, boolean useTestPath, String _package, String fileName) throws IOException {
-        var path = getProjectPath();
+
+    public static void saveClassFile(String result, boolean useTestPath, String _package, String fileName, String path) throws IOException {
+
         path = useTestPath ? path + "src\\test\\java\\" : path + "src\\main\\java\\";
         path = path + _package.replace(".", "\\");
         path = path + "\\" + fileName + ".java";
         var writer = new FileWriter(path);
         writer.write(result);
         writer.close();
+    }
+
+    public static void saveClassFile(String result, boolean useTestPath, String _package, String fileName) throws IOException {
+        saveClassFile(result, useTestPath,_package, fileName, getProjectPath());
     }
 
     static void removeDirectory(File file) {
@@ -168,6 +173,19 @@ public interface FileUtility {
 
     static String loadFileContent(String path) throws IOException {
         return Files.asCharSource(new File(path), Charsets.UTF_8).read();
+    }
+
+   static String[] loadFile(String filePath) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lines.toArray(new String[0]);
     }
 
     static void saveToFile(String path, String name, String content) throws IOException {

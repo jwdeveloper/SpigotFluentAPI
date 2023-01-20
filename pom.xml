@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>jw</groupId>
-    <artifactId>SpigotFluentApi</artifactId>
+    <artifactId>spigot-fluent-api</artifactId>
     <version>${project.version}</version>
-    <packaging>pom</packaging>
+
     <name>SpigotFluentApi</name>
 
     <properties>
@@ -126,11 +126,6 @@
             <version>1.7.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>jw.spigot.tester</groupId>
-            <artifactId>SpigotTester</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 </project>

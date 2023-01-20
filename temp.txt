@@ -1,0 +1,163 @@
+net.minecraft.world.level.saveddata.maps.WorldMap
+net.minecraft.server." + ver + ".WorldMap
+net.minecraft.core.EnumDirection
+net.minecraft.server." + ver + ".EnumDirection
+net.minecraft.world.entity.decoration.EntityItemFrame
+net.minecraft.server." + ver + ".EntityItemFrame
+net.minecraft.server.level.WorldServer
+net.minecraft.server." + ver + ".WorldServer
+net.minecraft.world.level.World
+net.minecraft.server." + ver + ".World
+net.minecraft.core.BlockPosition
+net.minecraft.server." + ver + ".BlockPosition
+net.minecraft.server.MinecraftServer
+net.minecraft.server." + ver + ".MinecraftServer
+net.minecraft.server.ScoreboardServer
+net.minecraft.server." + ver + ".ScoreboardServer
+net.minecraft.world.score.ScoreboardTeam
+net.minecraft.server." + ver + ".ScoreboardTeam
+net.minecraft.world.score.Scoreboard
+net.minecraft.server." + ver + ".Scoreboard
+org.bukkit.craftbukkit." + ver + ".CraftWorld
+org.bukkit.craftbukkit." + ver + ".scoreboard.CraftTeam
+org.bukkit.craftbukkit." + ver + ".scoreboard.CraftScoreboard
+org.bukkit.craftbukkit." + ver + ".scoreboard.CraftScoreboardManager
+net.minecraft.network.protocol.Packet
+net.minecraft.server." + ver + ".Packet
+net.minecraft.network.chat.IChatBaseComponent
+net.minecraft.server." + ver + ".IChatBaseComponent
+net.minecraft.network.chat.IChatBaseComponent$ChatSerializer
+net.minecraft.server." + ver + ".IChatBaseComponent$ChatSerializer
+net.minecraft.network.chat.ChatMessageType
+net.minecraft.server." + ver + ".ChatMessageType
+net.minecraft.server.network.FilteredText
+net.minecraft.network.chat.MessageSignature
+net.minecraft.network.chat.PlayerChatMessage
+net.minecraft.network.NetworkManager
+net.minecraft.server." + ver + ".NetworkManager
+net.minecraft.network.NetworkManager$QueuedPacket
+net.minecraft.server." + ver + ".NetworkManager$QueuedPacket
+net.minecraft.server.network.ServerConnection
+net.minecraft.server." + ver + ".ServerConnection
+net.minecraft.server.network.PlayerConnection
+net.minecraft.server." + ver + ".PlayerConnection
+net.minecraft.network.syncher.DataWatcher
+net.minecraft.server." + ver + ".DataWatcher
+net.minecraft.world.entity.EntityTypes
+net.minecraft.server." + ver + ".EntityTypes
+net.minecraft.server.players.PlayerList
+net.minecraft.server." + ver + ".PlayerList
+net.minecraft.resources.ResourceKey
+net.minecraft.network.PacketDataSerializer
+net.minecraft.server." + ver + ".PacketDataSerializer
+net.minecraft.world.item.Item
+net.minecraft.server." + ver + ".Item
+net.minecraft.world.item.ItemStack
+net.minecraft.server." + ver + ".ItemStack
+net.minecraft.world.entity.ai.attributes.GenericAttributes
+net.minecraft.server." + ver + ".GenericAttributes
+net.minecraft.world.entity.ai.attributes.AttributeBase
+net.minecraft.server." + ver + ".AttributeBase
+net.minecraft.network.chat.ChatComponentText
+net.minecraft.server." + ver + ".ChatComponentText
+net.minecraft.network.protocol.game.PacketPlayOutMap
+net.minecraft.server." + ver + ".PacketPlayOutMap
+net.minecraft.network.protocol.game.PacketPlayOutEntityDestroy
+net.minecraft.server." + ver + ".PacketPlayOutEntityDestroy
+net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport
+net.minecraft.server." + ver + ".PacketPlayOutEntityTeleport
+net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata
+net.minecraft.server." + ver + ".PacketPlayOutEntityMetadata
+net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity
+net.minecraft.server." + ver + ".PacketPlayOutSpawnEntity
+net.minecraft.network.protocol.game.PacketPlayOutOpenWindow
+net.minecraft.server." + ver + ".PacketPlayOutOpenWindow
+net.minecraft.network.protocol.game.PacketPlayOutSetSlot
+net.minecraft.server." + ver + ".PacketPlayOutSetSlot
+net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo
+net.minecraft.server." + ver + ".PacketPlayOutPlayerInfo
+net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo$EnumPlayerInfoAction
+net.minecraft.server." + ver + ".PacketPlayOutPlayerInfo$EnumPlayerInfoAction
+net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo$PlayerInfoData
+net.minecraft.server." + ver + ".PacketPlayOutPlayerInfo$PlayerInfoData
+net.minecraft.network.protocol.game.PacketPlayOutChat
+net.minecraft.server." + ver + ".PacketPlayOutChat
+net.minecraft.network.protocol.game.PacketPlayOutWindowData
+net.minecraft.server." + ver + ".PacketPlayOutWindowData
+net.minecraft.server." + ver + ".PacketPlayOutTitle
+net.minecraft.network.protocol.login.PacketLoginOutSuccess
+net.minecraft.server." + ver + ".PacketLoginOutSuccess
+net.minecraft.network.protocol.game.PacketPlayOutKeepAlive
+net.minecraft.server." + ver + ".PacketPlayOutKeepAlive
+net.minecraft.network.protocol.game.PacketPlayOutScoreboardTeam
+net.minecraft.server." + ver + ".PacketPlayOutScoreboardTeam
+net.minecraft.server." + ver + ".PacketPlayOutTitle$EnumTitleAction
+net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket
+net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket
+net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket
+net.minecraft.network.protocol.game.ClientboundSystemChatPacket
+net.minecraft.network.protocol.game.PacketPlayInBEdit
+net.minecraft.server." + ver + ".PacketPlayInBEdit
+net.minecraft.network.protocol.game.PacketPlayInSetCreativeSlot
+net.minecraft.server." + ver + ".PacketPlayInSetCreativeSlot
+net.minecraft.network.protocol.game.PacketPlayInItemName
+net.minecraft.server." + ver + ".PacketPlayInItemName
+net.minecraft.network.protocol.handshake.PacketHandshakingInSetProtocol
+net.minecraft.server." + ver + ".PacketHandshakingInSetProtocol
+net.minecraft.network.protocol.login.PacketLoginInStart
+net.minecraft.server." + ver + ".PacketLoginInStart
+net.minecraft.network.protocol.game.PacketPlayInKeepAlive
+net.minecraft.server." + ver + ".PacketPlayInKeepAlive
+net.minecraft.network.protocol.game.PacketPlayInChat
+net.minecraft.server." + ver + ".PacketPlayInChat
+net.minecraft.world.level.block.entity.TileEntityFurnace
+net.minecraft.server." + ver + ".TileEntityFurnace
+net.minecraft.nbt.NBTReadLimiter
+net.minecraft.server." + ver + ".NBTReadLimiter
+net.minecraft.nbt.NBTTagList
+net.minecraft.server." + ver + ".NBTTagList
+net.minecraft.nbt.NBTList
+net.minecraft.server." + ver + ".NBTList
+net.minecraft.nbt.NBTNumber
+net.minecraft.server." + ver + ".NBTNumber
+net.minecraft.nbt.NBTTagCompound
+net.minecraft.server." + ver + ".NBTTagCompound
+net.minecraft.nbt.NBTTagString
+net.minecraft.server." + ver + ".NBTTagString
+net.minecraft.nbt.NBTTagInt
+net.minecraft.server." + ver + ".NBTTagInt
+net.minecraft.nbt.NBTTagIntArray
+net.minecraft.server." + ver + ".NBTTagIntArray
+net.minecraft.nbt.NBTTagByteArray
+net.minecraft.server." + ver + ".NBTTagByteArray
+net.minecraft.nbt.NBTTagLongArray
+net.minecraft.server." + ver + ".NBTTagLongArray
+net.minecraft.nbt.NBTTagFloat
+net.minecraft.server." + ver + ".NBTTagFloat
+net.minecraft.nbt.NBTTagByte
+net.minecraft.server." + ver + ".NBTTagByte
+net.minecraft.nbt.NBTTagShort
+net.minecraft.server." + ver + ".NBTTagShort
+net.minecraft.nbt.NBTTagLong
+net.minecraft.server." + ver + ".NBTTagLong
+net.minecraft.nbt.NBTTagDouble
+net.minecraft.server." + ver + ".NBTTagDouble
+net.minecraft.nbt.NBTBase
+net.minecraft.server." + ver + ".NBTBase
+net.minecraft.world.entity.Entity
+net.minecraft.server." + ver + ".Entity
+net.minecraft.world.entity.player.EntityHuman
+net.minecraft.server." + ver + ".EntityHuman
+net.minecraft.server.level.EntityPlayer
+net.minecraft.server." + ver + ".EntityPlayer
+net.minecraft.world.inventory.Container
+net.minecraft.server." + ver + ".Container
+org.bukkit.craftbukkit." + ver + ".inventory.CraftItemStack
+org.bukkit.craftbukkit." + ver + ".CraftServer
+org.bukkit.craftbukkit." + ver + ".map.CraftMapView
+org.bukkit.craftbukkit." + ver + ".inventory.CraftMetaItem
+org.bukkit.craftbukkit." + ver + ".entity.CraftPlayer
+org.bukkit.craftbukkit." + ver + ".entity.CraftItem
+net.minecraft.world.level.EnumGamemode
+net.minecraft.server." + ver + ".EnumGamemode
+net.minecraft.world.entity.player.ProfilePublicKey

@@ -1,5 +1,6 @@
 package jw.fluent.api.spigot.gameobjects.implementation;
 
+import jw.fluent.api.files.implementation.FileUtility;
 import jw.fluent.api.spigot.events.EventBase;
 import jw.fluent.api.spigot.gameobjects.api.GameComponent;
 import jw.fluent.plugin.implementation.FluentApi;
@@ -48,11 +49,13 @@ public class GameObjectManager extends EventBase {
         }
     }
 
+
     @Override
     public void onPluginStop(PluginDisableEvent event) {
         for (var gameObject : gameObjects) {
             try {
                 gameObject.destroy();
+
             } catch (Exception e) {
                 FluentApi.logger().error("unable to destroy gameobject" + gameObject.getClass().getSimpleName(), e);
             }

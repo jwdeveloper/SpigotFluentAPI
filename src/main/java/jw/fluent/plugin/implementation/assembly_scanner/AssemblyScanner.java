@@ -21,7 +21,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
 
     private final Map<Class<?>, List<Class<?>>> byParentCatch;
 
-    private final Map<Class<? extends Annotation>, List<Class<?>>> byAnnotationCatch;
+
 
     private final Map<Package, List<Class<?>>> byPackageCatch;
 
@@ -72,7 +72,7 @@ public class AssemblyScanner implements FluentAssemblyScanner {
             return Collections.emptyList();
         }
     }
-
+    private final Map<Class<? extends Annotation>, List<Class<?>>> byAnnotationCatch;
 
     public Collection<Class<?>> findByAnnotation(Class<? extends Annotation> annotation) {
         if (byAnnotationCatch.containsKey(annotation)) {

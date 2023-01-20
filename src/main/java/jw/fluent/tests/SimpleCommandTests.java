@@ -51,6 +51,8 @@ public class SimpleCommandTests {
     CommandService commandServiceMock;
 
 
+
+
     public void beforeAll() {
         simpleCommand = FluentCommand
                 .create_OLDWAY("example-command")
